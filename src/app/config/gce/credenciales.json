@@ -1,0 +1,22 @@
+{
+  "web": {
+    "client_id": "267250279964-43tlub6j6cltdlf9eucv8pmt33ea71ec.apps.googleusercontent.com",
+    "project_id": "echadospalante",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_secret": "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",
+    "redirect_uris": [
+      "https://echadospalante.com/emprendimientos",
+      "http://localhost:5173/emprendimientos",
+      "http://localhost",
+      "http://localhost:8888/Callback"
+    ],
+    "javascript_origins": [
+      "https://echadospalante.com",
+      "http://localhost:5173",
+      "http://localhost",
+      "http://localhost:8888"
+    ]
+  }
+}
