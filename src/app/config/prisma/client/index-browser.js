@@ -129,11 +129,11 @@ exports.Prisma.UserScalarFieldEnum = {
   firstName: 'firstName',
   lastName: 'lastName',
   active: 'active',
-  verified: 'verified',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   onboardingCompleted: 'onboardingCompleted',
-  userDetailId: 'userDetailId'
+  userDetailId: 'userDetailId',
+  verified: 'verified'
 };
 
 exports.Prisma.XUserPreferencesScalarFieldEnum = {
@@ -190,9 +190,19 @@ exports.Prisma.EventDonationScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
-exports.Prisma.LocationScalarFieldEnum = {
+exports.Prisma.EventLocationScalarFieldEnum = {
   id: 'id',
   ventureEventId: 'ventureEventId',
+  lat: 'lat',
+  lng: 'lng',
+  description: 'description',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.VentureLocationScalarFieldEnum = {
+  id: 'id',
+  ventureId: 'ventureId',
   lat: 'lat',
   lng: 'lng',
   description: 'description',
@@ -249,6 +259,16 @@ exports.Prisma.VentureScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.VentureContactScalarFieldEnum = {
+  id: 'id',
+  ventureId: 'ventureId',
+  email: 'email',
+  phoneCode: 'phoneCode',
+  phoneNumber: 'phoneNumber',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.XVentureVencureCategoryScalarFieldEnum = {
   ventureId: 'ventureId',
   categoryId: 'categoryId'
@@ -284,11 +304,11 @@ exports.Prisma.VentureEventScalarFieldEnum = {
 exports.Prisma.VenturePublicationScalarFieldEnum = {
   id: 'id',
   description: 'description',
-  detailId: 'detailId',
   type: 'type',
   clapsCount: 'clapsCount',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  detailId: 'detailId'
 };
 
 exports.Prisma.VentureSponsorshipScalarFieldEnum = {
@@ -352,7 +372,7 @@ exports.NotificationStatus = exports.$Enums.NotificationStatus = {
 exports.ContentType = exports.$Enums.ContentType = {
   TEXT: 'TEXT',
   IMAGE: 'IMAGE',
-  VIDEO: 'VIDEO',
+  VIDEOf: 'VIDEOf',
   ANNOUNCEMENT: 'ANNOUNCEMENT',
   ACHIEVEMENT: 'ACHIEVEMENT'
 };
@@ -381,12 +401,14 @@ exports.Prisma.ModelName = {
   Comment: 'Comment',
   EventCategory: 'EventCategory',
   EventDonation: 'EventDonation',
-  Location: 'Location',
+  EventLocation: 'EventLocation',
+  VentureLocation: 'VentureLocation',
   Notification: 'Notification',
   PublicationClap: 'PublicationClap',
   PublicationContent: 'PublicationContent',
   Role: 'Role',
   Venture: 'Venture',
+  VentureContact: 'VentureContact',
   XVentureVencureCategory: 'XVentureVencureCategory',
   VentureCategory: 'VentureCategory',
   VentureDetail: 'VentureDetail',
