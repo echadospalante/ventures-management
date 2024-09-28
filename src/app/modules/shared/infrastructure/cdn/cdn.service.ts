@@ -13,7 +13,7 @@ export class ContentCdnImpl implements ContentCdn {
     );
   }
 
-  public async uploadFile(file: Express.Multer.File): Promise<string> {
+  public uploadFile(file: Express.Multer.File): Promise<string> {
     const blob = this.venturesBucket.file(file.originalname);
     const blobStream = blob.createWriteStream();
 
