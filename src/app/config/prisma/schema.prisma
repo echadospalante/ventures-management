@@ -9,29 +9,29 @@ datasource db {
 }
 
 model User {
-  id                   String                @id @default(cuid())
-  picture              String
-  email                String                @unique
-  firstName            String
-  lastName             String
-  active               Boolean               @default(true)
-  createdAt            DateTime              @default(now())
-  updatedAt            DateTime              @default(now()) @updatedAt
-  onboardingCompleted  Boolean               @default(false)
-  userDetailId         String?               @unique
-  verified             Boolean               @default(false)
-  comments             Comment[]
-  eventDonations       EventDonation[]
-  notifications        Notification[]
-  publicationClaps     PublicationClap[]
-  detail               UserDetail?           @relation(fields: [userDetailId], references: [id])
-  ventures             Venture[]
-  ventureSponsorships  VentureSponsorship[]
-  ventureSubscriptions VentureSubscription[]
-  XUserPreferences     XUserPreferences[]
-  XUserRoles           XUserRoles[]
-  preferences          VentureCategory[]     @relation("XUserPreferences")
-  roles                Role[]                @relation("XUserRoles")
+  id                  String                @id @default(cuid())
+  picture             String
+  email               String                @unique
+  firstName           String
+  lastName            String
+  active              Boolean               @default(true)
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @default(now()) @updatedAt
+  onboardingCompleted Boolean               @default(false)
+  userDetailId        String?               @unique
+  verified            Boolean               @default(false)
+  comments            Comment[]
+  donations           EventDonation[]
+  notifications       Notification[]
+  claps               PublicationClap[]
+  detail              UserDetail?           @relation(fields: [userDetailId], references: [id])
+  ventures            Venture[]
+  sponsorships        VentureSponsorship[]
+  subscriptions       VentureSubscription[]
+  XUserPreferences    XUserPreferences[]
+  XUserRoles          XUserRoles[]
+  preferences         VentureCategory[]     @relation("XUserPreferences")
+  roles               Role[]                @relation("XUserRoles")
 }
 
 model XUserPreferences {
@@ -93,25 +93,22 @@ model EventCategory {
 }
 
 model EventDonation {
-  id        String       @id @default(cuid())
-  userId    String
-  eventId   String
-  amount    Float
-  currency  String
-  createdAt DateTime     @default(now())
-  event     VentureEvent @relation(fields: [eventId], references: [id])
-  user      User         @relation(fields: [userId], references: [id])
+  id         String       @id @default(cuid())
+  userId     String
+  eventId    String
+  amount     Float
+  currency   String
+  createdAt  DateTime     @default(now())
+  event      VentureEvent @relation(fields: [eventId], references: [id])
+  donor      User         @relation(fields: [userId], references: [id])
 }
 
 model EventLocation {
   id             String       @id @default(cuid())
-  ventureEventId String
   lat            Float?
   lng            Float?
   description    String?
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @default(now())
-  event          VentureEvent @relation(fields: [ventureEventId], references: [id])
+  event          VentureEvent?
 }
 
 model VentureLocation {
@@ -241,7 +238,8 @@ model VentureEvent {
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @default(now())
   donations      EventDonation[]
-  locations      EventLocation[]
+  location       EventLocation    @relation(fields: [locationId], references: [id]) 
+  locationId     String           @unique 
   ventureDetail  VentureDetail    @relation(fields: [ventureId], references: [id])
   XEventCategory XEventCategory[]
   EventCategory  EventCategory[]  @relation("XEventCategory")
