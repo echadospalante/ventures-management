@@ -15,7 +15,7 @@ model User {
   firstName            String
   lastName             String
   active               Boolean               @default(true)
-  verified               Boolean               @default(false)
+  verified             Boolean               @default(false)
   createdAt            DateTime              @default(now())
   updatedAt            DateTime              @default(now()) @updatedAt
   onboardingCompleted  Boolean               @default(false)
@@ -158,21 +158,21 @@ model Role {
 }
 
 model Venture {
-  id            String        @id
-  name          String
-  slug          String        @unique
-  coverPhoto    String
-  description   String
-  ownerId       String
-  active        Boolean       @default(true)
-  verified      Boolean       @default(false)
-  detailId      String        @unique
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @default(now())
-  detail        VentureDetail @relation(fields: [detailId], references: [id])
-  owner         User          @relation(fields: [ownerId], references: [id])
+  id          String        @id
+  name        String
+  slug        String        @unique
+  coverPhoto  String
+  description String
+  ownerId     String
+  active      Boolean       @default(true)
+  verified    Boolean       @default(false)
+  detailId    String        @unique
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @default(now())
+  detail      VentureDetail @relation(fields: [detailId], references: [id])
+  owner       User          @relation(fields: [ownerId], references: [id])
 
-  categories    VentureCategory[]         @relation("XVentureVencureCategory")
+  categories              VentureCategory[]         @relation("XVentureVencureCategory")
   XVentureVencureCategory XVentureVencureCategory[]
 }
 
@@ -200,12 +200,12 @@ model VentureCategory {
 }
 
 model VentureDetail {
-  id                  String                @id
-  createdAt           DateTime              @default(now())
-  updatedAt           DateTime              @default(now())
-  Venture             Venture?
+  id           String                @id @default(cuid())
+  createdAt    DateTime              @default(now())
+  updatedAt    DateTime              @default(now())
+  Venture      Venture?
   event        VentureEvent[]
-  publications  VenturePublication[]
+  publications VenturePublication[]
   sponsorship  VentureSponsorship[]
   subscription VentureSubscription[]
 }

@@ -4631,18 +4631,28 @@ export namespace Prisma {
 
   export type AggregateXUserPreferences = {
     _count: XUserPreferencesCountAggregateOutputType | null
+    _avg: XUserPreferencesAvgAggregateOutputType | null
+    _sum: XUserPreferencesSumAggregateOutputType | null
     _min: XUserPreferencesMinAggregateOutputType | null
     _max: XUserPreferencesMaxAggregateOutputType | null
   }
 
+  export type XUserPreferencesAvgAggregateOutputType = {
+    categoryId: number | null
+  }
+
+  export type XUserPreferencesSumAggregateOutputType = {
+    categoryId: number | null
+  }
+
   export type XUserPreferencesMinAggregateOutputType = {
     userId: string | null
-    categoryId: string | null
+    categoryId: number | null
   }
 
   export type XUserPreferencesMaxAggregateOutputType = {
     userId: string | null
-    categoryId: string | null
+    categoryId: number | null
   }
 
   export type XUserPreferencesCountAggregateOutputType = {
@@ -4651,6 +4661,14 @@ export namespace Prisma {
     _all: number
   }
 
+
+  export type XUserPreferencesAvgAggregateInputType = {
+    categoryId?: true
+  }
+
+  export type XUserPreferencesSumAggregateInputType = {
+    categoryId?: true
+  }
 
   export type XUserPreferencesMinAggregateInputType = {
     userId?: true
@@ -4706,6 +4724,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: XUserPreferencesAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: XUserPreferencesSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: XUserPreferencesMinAggregateInputType
@@ -4736,14 +4766,18 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: XUserPreferencesCountAggregateInputType | true
+    _avg?: XUserPreferencesAvgAggregateInputType
+    _sum?: XUserPreferencesSumAggregateInputType
     _min?: XUserPreferencesMinAggregateInputType
     _max?: XUserPreferencesMaxAggregateInputType
   }
 
   export type XUserPreferencesGroupByOutputType = {
     userId: string
-    categoryId: string
+    categoryId: number
     _count: XUserPreferencesCountAggregateOutputType | null
+    _avg: XUserPreferencesAvgAggregateOutputType | null
+    _sum: XUserPreferencesSumAggregateOutputType | null
     _min: XUserPreferencesMinAggregateOutputType | null
     _max: XUserPreferencesMaxAggregateOutputType | null
   }
@@ -4798,7 +4832,7 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       userId: string
-      categoryId: string
+      categoryId: number
     }, ExtArgs["result"]["xUserPreferences"]>
     composites: {}
   }
@@ -5195,7 +5229,7 @@ export namespace Prisma {
    */ 
   interface XUserPreferencesFieldRefs {
     readonly userId: FieldRef<"XUserPreferences", 'String'>
-    readonly categoryId: FieldRef<"XUserPreferences", 'String'>
+    readonly categoryId: FieldRef<"XUserPreferences", 'Int'>
   }
     
 
@@ -17279,18 +17313,28 @@ export namespace Prisma {
 
   export type AggregateXVentureVencureCategory = {
     _count: XVentureVencureCategoryCountAggregateOutputType | null
+    _avg: XVentureVencureCategoryAvgAggregateOutputType | null
+    _sum: XVentureVencureCategorySumAggregateOutputType | null
     _min: XVentureVencureCategoryMinAggregateOutputType | null
     _max: XVentureVencureCategoryMaxAggregateOutputType | null
   }
 
+  export type XVentureVencureCategoryAvgAggregateOutputType = {
+    categoryId: number | null
+  }
+
+  export type XVentureVencureCategorySumAggregateOutputType = {
+    categoryId: number | null
+  }
+
   export type XVentureVencureCategoryMinAggregateOutputType = {
     ventureId: string | null
-    categoryId: string | null
+    categoryId: number | null
   }
 
   export type XVentureVencureCategoryMaxAggregateOutputType = {
     ventureId: string | null
-    categoryId: string | null
+    categoryId: number | null
   }
 
   export type XVentureVencureCategoryCountAggregateOutputType = {
@@ -17299,6 +17343,14 @@ export namespace Prisma {
     _all: number
   }
 
+
+  export type XVentureVencureCategoryAvgAggregateInputType = {
+    categoryId?: true
+  }
+
+  export type XVentureVencureCategorySumAggregateInputType = {
+    categoryId?: true
+  }
 
   export type XVentureVencureCategoryMinAggregateInputType = {
     ventureId?: true
@@ -17354,6 +17406,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: XVentureVencureCategoryAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: XVentureVencureCategorySumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: XVentureVencureCategoryMinAggregateInputType
@@ -17384,14 +17448,18 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: XVentureVencureCategoryCountAggregateInputType | true
+    _avg?: XVentureVencureCategoryAvgAggregateInputType
+    _sum?: XVentureVencureCategorySumAggregateInputType
     _min?: XVentureVencureCategoryMinAggregateInputType
     _max?: XVentureVencureCategoryMaxAggregateInputType
   }
 
   export type XVentureVencureCategoryGroupByOutputType = {
     ventureId: string
-    categoryId: string
+    categoryId: number
     _count: XVentureVencureCategoryCountAggregateOutputType | null
+    _avg: XVentureVencureCategoryAvgAggregateOutputType | null
+    _sum: XVentureVencureCategorySumAggregateOutputType | null
     _min: XVentureVencureCategoryMinAggregateOutputType | null
     _max: XVentureVencureCategoryMaxAggregateOutputType | null
   }
@@ -17446,7 +17514,7 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       ventureId: string
-      categoryId: string
+      categoryId: number
     }, ExtArgs["result"]["xVentureVencureCategory"]>
     composites: {}
   }
@@ -17843,7 +17911,7 @@ export namespace Prisma {
    */ 
   interface XVentureVencureCategoryFieldRefs {
     readonly ventureId: FieldRef<"XVentureVencureCategory", 'String'>
-    readonly categoryId: FieldRef<"XVentureVencureCategory", 'String'>
+    readonly categoryId: FieldRef<"XVentureVencureCategory", 'Int'>
   }
     
 
@@ -18182,12 +18250,22 @@ export namespace Prisma {
 
   export type AggregateVentureCategory = {
     _count: VentureCategoryCountAggregateOutputType | null
+    _avg: VentureCategoryAvgAggregateOutputType | null
+    _sum: VentureCategorySumAggregateOutputType | null
     _min: VentureCategoryMinAggregateOutputType | null
     _max: VentureCategoryMaxAggregateOutputType | null
   }
 
+  export type VentureCategoryAvgAggregateOutputType = {
+    id: number | null
+  }
+
+  export type VentureCategorySumAggregateOutputType = {
+    id: number | null
+  }
+
   export type VentureCategoryMinAggregateOutputType = {
-    id: string | null
+    id: number | null
     name: string | null
     slug: string | null
     description: string | null
@@ -18196,7 +18274,7 @@ export namespace Prisma {
   }
 
   export type VentureCategoryMaxAggregateOutputType = {
-    id: string | null
+    id: number | null
     name: string | null
     slug: string | null
     description: string | null
@@ -18214,6 +18292,14 @@ export namespace Prisma {
     _all: number
   }
 
+
+  export type VentureCategoryAvgAggregateInputType = {
+    id?: true
+  }
+
+  export type VentureCategorySumAggregateInputType = {
+    id?: true
+  }
 
   export type VentureCategoryMinAggregateInputType = {
     id?: true
@@ -18281,6 +18367,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: VentureCategoryAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: VentureCategorySumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: VentureCategoryMinAggregateInputType
@@ -18311,18 +18409,22 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: VentureCategoryCountAggregateInputType | true
+    _avg?: VentureCategoryAvgAggregateInputType
+    _sum?: VentureCategorySumAggregateInputType
     _min?: VentureCategoryMinAggregateInputType
     _max?: VentureCategoryMaxAggregateInputType
   }
 
   export type VentureCategoryGroupByOutputType = {
-    id: string
+    id: number
     name: string
     slug: string
     description: string
     createdAt: Date
     updatedAt: Date
     _count: VentureCategoryCountAggregateOutputType | null
+    _avg: VentureCategoryAvgAggregateOutputType | null
+    _sum: VentureCategorySumAggregateOutputType | null
     _min: VentureCategoryMinAggregateOutputType | null
     _max: VentureCategoryMaxAggregateOutputType | null
   }
@@ -18391,7 +18493,7 @@ export namespace Prisma {
       XVentureVencureCategory: Prisma.$XVentureVencureCategoryPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
-      id: string
+      id: number
       name: string
       slug: string
       description: string
@@ -18794,7 +18896,7 @@ export namespace Prisma {
    * Fields of the VentureCategory model
    */ 
   interface VentureCategoryFieldRefs {
-    readonly id: FieldRef<"VentureCategory", 'String'>
+    readonly id: FieldRef<"VentureCategory", 'Int'>
     readonly name: FieldRef<"VentureCategory", 'String'>
     readonly slug: FieldRef<"VentureCategory", 'String'>
     readonly description: FieldRef<"VentureCategory", 'String'>
@@ -19994,7 +20096,7 @@ export namespace Prisma {
     /**
      * The data needed to create a VentureDetail.
      */
-    data: XOR<VentureDetailCreateInput, VentureDetailUncheckedCreateInput>
+    data?: XOR<VentureDetailCreateInput, VentureDetailUncheckedCreateInput>
   }
 
   /**
@@ -26677,7 +26779,7 @@ export namespace Prisma {
     OR?: XUserPreferencesWhereInput[]
     NOT?: XUserPreferencesWhereInput | XUserPreferencesWhereInput[]
     userId?: StringFilter<"XUserPreferences"> | string
-    categoryId?: StringFilter<"XUserPreferences"> | string
+    categoryId?: IntFilter<"XUserPreferences"> | number
     User?: XOR<UserRelationFilter, UserWhereInput>
     VentureCategory?: XOR<VentureCategoryRelationFilter, VentureCategoryWhereInput>
   }
@@ -26695,7 +26797,7 @@ export namespace Prisma {
     OR?: XUserPreferencesWhereInput[]
     NOT?: XUserPreferencesWhereInput | XUserPreferencesWhereInput[]
     userId?: StringFilter<"XUserPreferences"> | string
-    categoryId?: StringFilter<"XUserPreferences"> | string
+    categoryId?: IntFilter<"XUserPreferences"> | number
     User?: XOR<UserRelationFilter, UserWhereInput>
     VentureCategory?: XOR<VentureCategoryRelationFilter, VentureCategoryWhereInput>
   }, "userId_categoryId">
@@ -26704,8 +26806,10 @@ export namespace Prisma {
     userId?: SortOrder
     categoryId?: SortOrder
     _count?: XUserPreferencesCountOrderByAggregateInput
+    _avg?: XUserPreferencesAvgOrderByAggregateInput
     _max?: XUserPreferencesMaxOrderByAggregateInput
     _min?: XUserPreferencesMinOrderByAggregateInput
+    _sum?: XUserPreferencesSumOrderByAggregateInput
   }
 
   export type XUserPreferencesScalarWhereWithAggregatesInput = {
@@ -26713,7 +26817,7 @@ export namespace Prisma {
     OR?: XUserPreferencesScalarWhereWithAggregatesInput[]
     NOT?: XUserPreferencesScalarWhereWithAggregatesInput | XUserPreferencesScalarWhereWithAggregatesInput[]
     userId?: StringWithAggregatesFilter<"XUserPreferences"> | string
-    categoryId?: StringWithAggregatesFilter<"XUserPreferences"> | string
+    categoryId?: IntWithAggregatesFilter<"XUserPreferences"> | number
   }
 
   export type UserDetailWhereInput = {
@@ -27481,7 +27585,7 @@ export namespace Prisma {
     OR?: XVentureVencureCategoryWhereInput[]
     NOT?: XVentureVencureCategoryWhereInput | XVentureVencureCategoryWhereInput[]
     ventureId?: StringFilter<"XVentureVencureCategory"> | string
-    categoryId?: StringFilter<"XVentureVencureCategory"> | string
+    categoryId?: IntFilter<"XVentureVencureCategory"> | number
     Venture?: XOR<VentureRelationFilter, VentureWhereInput>
     VentureCategory?: XOR<VentureCategoryRelationFilter, VentureCategoryWhereInput>
   }
@@ -27499,7 +27603,7 @@ export namespace Prisma {
     OR?: XVentureVencureCategoryWhereInput[]
     NOT?: XVentureVencureCategoryWhereInput | XVentureVencureCategoryWhereInput[]
     ventureId?: StringFilter<"XVentureVencureCategory"> | string
-    categoryId?: StringFilter<"XVentureVencureCategory"> | string
+    categoryId?: IntFilter<"XVentureVencureCategory"> | number
     Venture?: XOR<VentureRelationFilter, VentureWhereInput>
     VentureCategory?: XOR<VentureCategoryRelationFilter, VentureCategoryWhereInput>
   }, "ventureId_categoryId">
@@ -27508,8 +27612,10 @@ export namespace Prisma {
     ventureId?: SortOrder
     categoryId?: SortOrder
     _count?: XVentureVencureCategoryCountOrderByAggregateInput
+    _avg?: XVentureVencureCategoryAvgOrderByAggregateInput
     _max?: XVentureVencureCategoryMaxOrderByAggregateInput
     _min?: XVentureVencureCategoryMinOrderByAggregateInput
+    _sum?: XVentureVencureCategorySumOrderByAggregateInput
   }
 
   export type XVentureVencureCategoryScalarWhereWithAggregatesInput = {
@@ -27517,14 +27623,14 @@ export namespace Prisma {
     OR?: XVentureVencureCategoryScalarWhereWithAggregatesInput[]
     NOT?: XVentureVencureCategoryScalarWhereWithAggregatesInput | XVentureVencureCategoryScalarWhereWithAggregatesInput[]
     ventureId?: StringWithAggregatesFilter<"XVentureVencureCategory"> | string
-    categoryId?: StringWithAggregatesFilter<"XVentureVencureCategory"> | string
+    categoryId?: IntWithAggregatesFilter<"XVentureVencureCategory"> | number
   }
 
   export type VentureCategoryWhereInput = {
     AND?: VentureCategoryWhereInput | VentureCategoryWhereInput[]
     OR?: VentureCategoryWhereInput[]
     NOT?: VentureCategoryWhereInput | VentureCategoryWhereInput[]
-    id?: StringFilter<"VentureCategory"> | string
+    id?: IntFilter<"VentureCategory"> | number
     name?: StringFilter<"VentureCategory"> | string
     slug?: StringFilter<"VentureCategory"> | string
     description?: StringFilter<"VentureCategory"> | string
@@ -27550,7 +27656,7 @@ export namespace Prisma {
   }
 
   export type VentureCategoryWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
+    id?: number
     slug?: string
     AND?: VentureCategoryWhereInput | VentureCategoryWhereInput[]
     OR?: VentureCategoryWhereInput[]
@@ -27573,15 +27679,17 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: VentureCategoryCountOrderByAggregateInput
+    _avg?: VentureCategoryAvgOrderByAggregateInput
     _max?: VentureCategoryMaxOrderByAggregateInput
     _min?: VentureCategoryMinOrderByAggregateInput
+    _sum?: VentureCategorySumOrderByAggregateInput
   }
 
   export type VentureCategoryScalarWhereWithAggregatesInput = {
     AND?: VentureCategoryScalarWhereWithAggregatesInput | VentureCategoryScalarWhereWithAggregatesInput[]
     OR?: VentureCategoryScalarWhereWithAggregatesInput[]
     NOT?: VentureCategoryScalarWhereWithAggregatesInput | VentureCategoryScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"VentureCategory"> | string
+    id?: IntWithAggregatesFilter<"VentureCategory"> | number
     name?: StringWithAggregatesFilter<"VentureCategory"> | string
     slug?: StringWithAggregatesFilter<"VentureCategory"> | string
     description?: StringWithAggregatesFilter<"VentureCategory"> | string
@@ -28172,7 +28280,7 @@ export namespace Prisma {
 
   export type XUserPreferencesUncheckedCreateInput = {
     userId: string
-    categoryId: string
+    categoryId: number
   }
 
   export type XUserPreferencesUpdateInput = {
@@ -28182,12 +28290,12 @@ export namespace Prisma {
 
   export type XUserPreferencesUncheckedUpdateInput = {
     userId?: StringFieldUpdateOperationsInput | string
-    categoryId?: StringFieldUpdateOperationsInput | string
+    categoryId?: IntFieldUpdateOperationsInput | number
   }
 
   export type XUserPreferencesCreateManyInput = {
     userId: string
-    categoryId: string
+    categoryId: number
   }
 
   export type XUserPreferencesUpdateManyMutationInput = {
@@ -28196,7 +28304,7 @@ export namespace Prisma {
 
   export type XUserPreferencesUncheckedUpdateManyInput = {
     userId?: StringFieldUpdateOperationsInput | string
-    categoryId?: StringFieldUpdateOperationsInput | string
+    categoryId?: IntFieldUpdateOperationsInput | number
   }
 
   export type UserDetailCreateInput = {
@@ -28979,7 +29087,7 @@ export namespace Prisma {
 
   export type XVentureVencureCategoryUncheckedCreateInput = {
     ventureId: string
-    categoryId: string
+    categoryId: number
   }
 
   export type XVentureVencureCategoryUpdateInput = {
@@ -28989,12 +29097,12 @@ export namespace Prisma {
 
   export type XVentureVencureCategoryUncheckedUpdateInput = {
     ventureId?: StringFieldUpdateOperationsInput | string
-    categoryId?: StringFieldUpdateOperationsInput | string
+    categoryId?: IntFieldUpdateOperationsInput | number
   }
 
   export type XVentureVencureCategoryCreateManyInput = {
     ventureId: string
-    categoryId: string
+    categoryId: number
   }
 
   export type XVentureVencureCategoryUpdateManyMutationInput = {
@@ -29003,11 +29111,10 @@ export namespace Prisma {
 
   export type XVentureVencureCategoryUncheckedUpdateManyInput = {
     ventureId?: StringFieldUpdateOperationsInput | string
-    categoryId?: StringFieldUpdateOperationsInput | string
+    categoryId?: IntFieldUpdateOperationsInput | number
   }
 
   export type VentureCategoryCreateInput = {
-    id?: string
     name: string
     slug: string
     description: string
@@ -29020,7 +29127,7 @@ export namespace Prisma {
   }
 
   export type VentureCategoryUncheckedCreateInput = {
-    id?: string
+    id?: number
     name: string
     slug: string
     description: string
@@ -29033,7 +29140,6 @@ export namespace Prisma {
   }
 
   export type VentureCategoryUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
@@ -29046,7 +29152,7 @@ export namespace Prisma {
   }
 
   export type VentureCategoryUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
+    id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
@@ -29059,7 +29165,7 @@ export namespace Prisma {
   }
 
   export type VentureCategoryCreateManyInput = {
-    id?: string
+    id?: number
     name: string
     slug: string
     description: string
@@ -29068,7 +29174,6 @@ export namespace Prisma {
   }
 
   export type VentureCategoryUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
@@ -29077,7 +29182,7 @@ export namespace Prisma {
   }
 
   export type VentureCategoryUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
+    id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
@@ -29086,7 +29191,7 @@ export namespace Prisma {
   }
 
   export type VentureDetailCreateInput = {
-    id: string
+    id?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     Venture?: VentureCreateNestedOneWithoutDetailInput
@@ -29097,7 +29202,7 @@ export namespace Prisma {
   }
 
   export type VentureDetailUncheckedCreateInput = {
-    id: string
+    id?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     Venture?: VentureUncheckedCreateNestedOneWithoutDetailInput
@@ -29130,7 +29235,7 @@ export namespace Prisma {
   }
 
   export type VentureDetailCreateManyInput = {
-    id: string
+    id?: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -29782,6 +29887,17 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
   export type UserRelationFilter = {
     is?: UserWhereInput
     isNot?: UserWhereInput
@@ -29794,11 +29910,15 @@ export namespace Prisma {
 
   export type XUserPreferencesUserIdCategoryIdCompoundUniqueInput = {
     userId: string
-    categoryId: string
+    categoryId: number
   }
 
   export type XUserPreferencesCountOrderByAggregateInput = {
     userId?: SortOrder
+    categoryId?: SortOrder
+  }
+
+  export type XUserPreferencesAvgOrderByAggregateInput = {
     categoryId?: SortOrder
   }
 
@@ -29812,7 +29932,11 @@ export namespace Prisma {
     categoryId?: SortOrder
   }
 
-  export type IntFilter<$PrismaModel = never> = {
+  export type XUserPreferencesSumOrderByAggregateInput = {
+    categoryId?: SortOrder
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
     notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -29820,7 +29944,12 @@ export namespace Prisma {
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type UserNullableRelationFilter = {
@@ -29860,22 +29989,6 @@ export namespace Prisma {
 
   export type UserDetailSumOrderByAggregateInput = {
     municipalityId?: SortOrder
-  }
-
-  export type IntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type MunicipalityListRelationFilter = {
@@ -30426,11 +30539,15 @@ export namespace Prisma {
 
   export type XVentureVencureCategoryVentureIdCategoryIdCompoundUniqueInput = {
     ventureId: string
-    categoryId: string
+    categoryId: number
   }
 
   export type XVentureVencureCategoryCountOrderByAggregateInput = {
     ventureId?: SortOrder
+    categoryId?: SortOrder
+  }
+
+  export type XVentureVencureCategoryAvgOrderByAggregateInput = {
     categoryId?: SortOrder
   }
 
@@ -30444,6 +30561,10 @@ export namespace Prisma {
     categoryId?: SortOrder
   }
 
+  export type XVentureVencureCategorySumOrderByAggregateInput = {
+    categoryId?: SortOrder
+  }
+
   export type VentureCategoryCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
@@ -30451,6 +30572,10 @@ export namespace Prisma {
     description?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type VentureCategoryAvgOrderByAggregateInput = {
+    id?: SortOrder
   }
 
   export type VentureCategoryMaxOrderByAggregateInput = {
@@ -30469,6 +30594,10 @@ export namespace Prisma {
     description?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type VentureCategorySumOrderByAggregateInput = {
+    id?: SortOrder
   }
 
   export type VentureNullableRelationFilter = {
@@ -31246,6 +31375,14 @@ export namespace Prisma {
     update?: XOR<XOR<VentureCategoryUpdateToOneWithWhereWithoutXUserPreferencesInput, VentureCategoryUpdateWithoutXUserPreferencesInput>, VentureCategoryUncheckedUpdateWithoutXUserPreferencesInput>
   }
 
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
   export type UserCreateNestedOneWithoutDetailInput = {
     create?: XOR<UserCreateWithoutDetailInput, UserUncheckedCreateWithoutDetailInput>
     connectOrCreate?: UserCreateOrConnectWithoutDetailInput
@@ -31280,14 +31417,6 @@ export namespace Prisma {
     upsert?: MunicipalityUpsertWithoutUserDetailInput
     connect?: MunicipalityWhereUniqueInput
     update?: XOR<XOR<MunicipalityUpdateToOneWithWhereWithoutUserDetailInput, MunicipalityUpdateWithoutUserDetailInput>, MunicipalityUncheckedUpdateWithoutUserDetailInput>
-  }
-
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
   }
 
   export type UserUncheckedUpdateOneWithoutDetailNestedInput = {
@@ -33182,7 +33311,6 @@ export namespace Prisma {
   }
 
   export type VentureCategoryCreateWithoutUsersInput = {
-    id?: string
     name: string
     slug: string
     description: string
@@ -33194,7 +33322,7 @@ export namespace Prisma {
   }
 
   export type VentureCategoryUncheckedCreateWithoutUsersInput = {
-    id?: string
+    id?: number
     name: string
     slug: string
     description: string
@@ -33215,7 +33343,7 @@ export namespace Prisma {
   }
 
   export type XUserPreferencesUncheckedCreateWithoutUserInput = {
-    categoryId: string
+    categoryId: number
   }
 
   export type XUserPreferencesCreateOrConnectWithoutUserInput = {
@@ -33525,7 +33653,7 @@ export namespace Prisma {
     AND?: VentureCategoryScalarWhereInput | VentureCategoryScalarWhereInput[]
     OR?: VentureCategoryScalarWhereInput[]
     NOT?: VentureCategoryScalarWhereInput | VentureCategoryScalarWhereInput[]
-    id?: StringFilter<"VentureCategory"> | string
+    id?: IntFilter<"VentureCategory"> | number
     name?: StringFilter<"VentureCategory"> | string
     slug?: StringFilter<"VentureCategory"> | string
     description?: StringFilter<"VentureCategory"> | string
@@ -33554,7 +33682,7 @@ export namespace Prisma {
     OR?: XUserPreferencesScalarWhereInput[]
     NOT?: XUserPreferencesScalarWhereInput | XUserPreferencesScalarWhereInput[]
     userId?: StringFilter<"XUserPreferences"> | string
-    categoryId?: StringFilter<"XUserPreferences"> | string
+    categoryId?: IntFilter<"XUserPreferences"> | number
   }
 
   export type UserCreateWithoutXUserPreferencesInput = {
@@ -33611,7 +33739,6 @@ export namespace Prisma {
   }
 
   export type VentureCategoryCreateWithoutXUserPreferencesInput = {
-    id?: string
     name: string
     slug: string
     description: string
@@ -33623,7 +33750,7 @@ export namespace Prisma {
   }
 
   export type VentureCategoryUncheckedCreateWithoutXUserPreferencesInput = {
-    id?: string
+    id?: number
     name: string
     slug: string
     description: string
@@ -33710,7 +33837,6 @@ export namespace Prisma {
   }
 
   export type VentureCategoryUpdateWithoutXUserPreferencesInput = {
-    id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
@@ -33722,7 +33848,7 @@ export namespace Prisma {
   }
 
   export type VentureCategoryUncheckedUpdateWithoutXUserPreferencesInput = {
-    id?: StringFieldUpdateOperationsInput | string
+    id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
@@ -35060,7 +35186,7 @@ export namespace Prisma {
   }
 
   export type VentureDetailCreateWithoutVentureInput = {
-    id: string
+    id?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     event?: VentureEventCreateNestedManyWithoutVentureDetailInput
@@ -35070,7 +35196,7 @@ export namespace Prisma {
   }
 
   export type VentureDetailUncheckedCreateWithoutVentureInput = {
-    id: string
+    id?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     event?: VentureEventUncheckedCreateNestedManyWithoutVentureDetailInput
@@ -35138,7 +35264,6 @@ export namespace Prisma {
   }
 
   export type VentureCategoryCreateWithoutVenturesInput = {
-    id?: string
     name: string
     slug: string
     description: string
@@ -35150,7 +35275,7 @@ export namespace Prisma {
   }
 
   export type VentureCategoryUncheckedCreateWithoutVenturesInput = {
-    id?: string
+    id?: number
     name: string
     slug: string
     description: string
@@ -35171,7 +35296,7 @@ export namespace Prisma {
   }
 
   export type XVentureVencureCategoryUncheckedCreateWithoutVentureInput = {
-    categoryId: string
+    categoryId: number
   }
 
   export type XVentureVencureCategoryCreateOrConnectWithoutVentureInput = {
@@ -35311,7 +35436,7 @@ export namespace Prisma {
     OR?: XVentureVencureCategoryScalarWhereInput[]
     NOT?: XVentureVencureCategoryScalarWhereInput | XVentureVencureCategoryScalarWhereInput[]
     ventureId?: StringFilter<"XVentureVencureCategory"> | string
-    categoryId?: StringFilter<"XVentureVencureCategory"> | string
+    categoryId?: IntFilter<"XVentureVencureCategory"> | number
   }
 
   export type VentureCreateWithoutXVentureVencureCategoryInput = {
@@ -35350,7 +35475,6 @@ export namespace Prisma {
   }
 
   export type VentureCategoryCreateWithoutXVentureVencureCategoryInput = {
-    id?: string
     name: string
     slug: string
     description: string
@@ -35362,7 +35486,7 @@ export namespace Prisma {
   }
 
   export type VentureCategoryUncheckedCreateWithoutXVentureVencureCategoryInput = {
-    id?: string
+    id?: number
     name: string
     slug: string
     description: string
@@ -35431,7 +35555,6 @@ export namespace Prisma {
   }
 
   export type VentureCategoryUpdateWithoutXVentureVencureCategoryInput = {
-    id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
@@ -35443,7 +35566,7 @@ export namespace Prisma {
   }
 
   export type VentureCategoryUncheckedUpdateWithoutXVentureVencureCategoryInput = {
-    id?: StringFieldUpdateOperationsInput | string
+    id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
@@ -35972,7 +36095,7 @@ export namespace Prisma {
   }
 
   export type VentureDetailCreateWithoutEventInput = {
-    id: string
+    id?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     Venture?: VentureCreateNestedOneWithoutDetailInput
@@ -35982,7 +36105,7 @@ export namespace Prisma {
   }
 
   export type VentureDetailUncheckedCreateWithoutEventInput = {
-    id: string
+    id?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     Venture?: VentureUncheckedCreateNestedOneWithoutDetailInput
@@ -36234,7 +36357,7 @@ export namespace Prisma {
   }
 
   export type VentureDetailCreateWithoutPublicationsInput = {
-    id: string
+    id?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     Venture?: VentureCreateNestedOneWithoutDetailInput
@@ -36244,7 +36367,7 @@ export namespace Prisma {
   }
 
   export type VentureDetailUncheckedCreateWithoutPublicationsInput = {
-    id: string
+    id?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     Venture?: VentureUncheckedCreateNestedOneWithoutDetailInput
@@ -36403,7 +36526,7 @@ export namespace Prisma {
   }
 
   export type VentureDetailCreateWithoutSponsorshipInput = {
-    id: string
+    id?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     Venture?: VentureCreateNestedOneWithoutDetailInput
@@ -36413,7 +36536,7 @@ export namespace Prisma {
   }
 
   export type VentureDetailUncheckedCreateWithoutSponsorshipInput = {
-    id: string
+    id?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     Venture?: VentureUncheckedCreateNestedOneWithoutDetailInput
@@ -36571,7 +36694,7 @@ export namespace Prisma {
   }
 
   export type VentureDetailCreateWithoutSubscriptionInput = {
-    id: string
+    id?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     Venture?: VentureCreateNestedOneWithoutDetailInput
@@ -36581,7 +36704,7 @@ export namespace Prisma {
   }
 
   export type VentureDetailUncheckedCreateWithoutSubscriptionInput = {
-    id: string
+    id?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     Venture?: VentureUncheckedCreateNestedOneWithoutDetailInput
@@ -37047,7 +37170,7 @@ export namespace Prisma {
   }
 
   export type XUserPreferencesCreateManyUserInput = {
-    categoryId: string
+    categoryId: number
   }
 
   export type CommentUpdateWithoutUserInput = {
@@ -37276,7 +37399,6 @@ export namespace Prisma {
   }
 
   export type VentureCategoryUpdateWithoutUsersInput = {
-    id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
@@ -37288,7 +37410,7 @@ export namespace Prisma {
   }
 
   export type VentureCategoryUncheckedUpdateWithoutUsersInput = {
-    id?: StringFieldUpdateOperationsInput | string
+    id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
@@ -37300,7 +37422,7 @@ export namespace Prisma {
   }
 
   export type VentureCategoryUncheckedUpdateManyWithoutUsersInput = {
-    id?: StringFieldUpdateOperationsInput | string
+    id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
@@ -37313,11 +37435,11 @@ export namespace Prisma {
   }
 
   export type XUserPreferencesUncheckedUpdateWithoutUserInput = {
-    categoryId?: StringFieldUpdateOperationsInput | string
+    categoryId?: IntFieldUpdateOperationsInput | number
   }
 
   export type XUserPreferencesUncheckedUpdateManyWithoutUserInput = {
-    categoryId?: StringFieldUpdateOperationsInput | string
+    categoryId?: IntFieldUpdateOperationsInput | number
   }
 
   export type MunicipalityCreateManyDepartmentInput = {
@@ -37520,11 +37642,10 @@ export namespace Prisma {
   }
 
   export type XVentureVencureCategoryCreateManyVentureInput = {
-    categoryId: string
+    categoryId: number
   }
 
   export type VentureCategoryUpdateWithoutVenturesInput = {
-    id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
@@ -37536,7 +37657,7 @@ export namespace Prisma {
   }
 
   export type VentureCategoryUncheckedUpdateWithoutVenturesInput = {
-    id?: StringFieldUpdateOperationsInput | string
+    id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
@@ -37548,7 +37669,7 @@ export namespace Prisma {
   }
 
   export type VentureCategoryUncheckedUpdateManyWithoutVenturesInput = {
-    id?: StringFieldUpdateOperationsInput | string
+    id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
@@ -37561,11 +37682,11 @@ export namespace Prisma {
   }
 
   export type XVentureVencureCategoryUncheckedUpdateWithoutVentureInput = {
-    categoryId?: StringFieldUpdateOperationsInput | string
+    categoryId?: IntFieldUpdateOperationsInput | number
   }
 
   export type XVentureVencureCategoryUncheckedUpdateManyWithoutVentureInput = {
-    categoryId?: StringFieldUpdateOperationsInput | string
+    categoryId?: IntFieldUpdateOperationsInput | number
   }
 
   export type XUserPreferencesCreateManyVentureCategoryInput = {

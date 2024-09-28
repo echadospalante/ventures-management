@@ -110,7 +110,7 @@ export class VenturesRepositoryImpl implements VenturesRepository {
             id: venture.owner.id,
           },
         },
-        ventureDetail: {
+        detail: {
           create: venture.detail,
         },
       },
