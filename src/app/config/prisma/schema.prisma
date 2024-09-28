@@ -93,14 +93,14 @@ model EventCategory {
 }
 
 model EventDonation {
-  id           String       @id @default(cuid())
-  userId       String
-  eventId      String
-  amount       Float
-  currency     String
-  createdAt    DateTime     @default(now())
-  event        VentureEvent @relation(fields: [eventId], references: [id])
-  user         User         @relation(fields: [userId], references: [id])
+  id        String       @id @default(cuid())
+  userId    String
+  eventId   String
+  amount    Float
+  currency  String
+  createdAt DateTime     @default(now())
+  event     VentureEvent @relation(fields: [eventId], references: [id])
+  user      User         @relation(fields: [userId], references: [id])
 }
 
 model EventLocation {
@@ -115,14 +115,14 @@ model EventLocation {
 }
 
 model VentureLocation {
-  id             String       @id @default(cuid())
-  ventureId      String
-  lat            Float?
-  lng            Float?
-  description    String?
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @default(now())
-  venture        Venture      @relation(fields: [ventureId], references: [id])
+  id          String   @id @default(cuid())
+  ventureId   String
+  lat         Float?
+  lng         Float?
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+  venture     Venture  @relation(fields: [ventureId], references: [id])
 }
 
 model Notification {
@@ -138,7 +138,7 @@ model Notification {
 }
 
 model PublicationClap {
-  id                 String             @id  @default(cuid())
+  id                 String             @id @default(cuid())
   userId             String
   publicationId      String
   createdAt          DateTime           @default(now())
@@ -182,26 +182,26 @@ model Venture {
   owner                   User                      @relation(fields: [ownerId], references: [id])
   XVentureVencureCategory XVentureVencureCategory[]
   categories              VentureCategory[]         @relation("XVentureVencureCategory")
-  locations VentureLocation[]
-  contact VentureContact[]
+  locations               VentureLocation[]
+  contact                 VentureContact[]
 }
 
 model VentureContact {
-  id           String   @id @default(cuid())
-  ventureId    String
-  email        String 
-  phoneCode    String 
-  phoneNumber  String
-  venture      Venture  @relation(fields: [ventureId], references: [id])
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @default(now())
+  id          String   @id @default(cuid())
+  ventureId   String
+  email       String
+  phoneCode   String
+  phoneNumber String
+  venture     Venture  @relation(fields: [ventureId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
 }
 
 model XVentureVencureCategory {
-  ventureId       String
-  categoryId      String
-  category        VentureCategory @relation(fields: [categoryId], references: [id])
-  venture         Venture         @relation(fields: [ventureId], references: [id])
+  ventureId  String
+  categoryId String
+  category   VentureCategory @relation(fields: [categoryId], references: [id])
+  venture    Venture         @relation(fields: [ventureId], references: [id])
 
   @@id([ventureId, categoryId])
 }
@@ -220,14 +220,14 @@ model VentureCategory {
 }
 
 model VentureDetail {
-  id           String                @id @default(cuid())
-  venture      Venture?
-  events       VentureEvent[]
-  publications VenturePublication[]
+  id            String                @id @default(cuid())
+  venture       Venture?
+  events        VentureEvent[]
+  publications  VenturePublication[]
   sponsorships  VentureSponsorship[]
   subscriptions VentureSubscription[]
-  createdAt    DateTime              @default(now())
-  updatedAt    DateTime              @default(now())
+  createdAt     DateTime              @default(now())
+  updatedAt     DateTime              @default(now())
 }
 
 model VentureEvent {
@@ -248,17 +248,17 @@ model VentureEvent {
 }
 
 model VenturePublication {
-  id                 String               @id
-  description        String
-  type               PublicationType
-  clapsCount         Int
-  createdAt          DateTime             @default(now())
-  updatedAt          DateTime             @default(now())
-  detailId           String
-  comments           Comment[]
-  claps              PublicationClap[]
-  contents           PublicationContent[]
-  detail             VentureDetail        @relation(fields: [detailId], references: [id])
+  id          String               @id
+  description String
+  type        PublicationType
+  clapsCount  Int
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @default(now())
+  detailId    String
+  comments    Comment[]
+  claps       PublicationClap[]
+  contents    PublicationContent[]
+  detail      VentureDetail        @relation(fields: [detailId], references: [id])
 }
 
 model VentureSponsorship {
@@ -273,19 +273,19 @@ model VentureSponsorship {
 }
 
 model VentureSubscription {
-  id            String        @id
-  subscriberId  String
-  ventureId     String
-  createdAt     DateTime      @default(now())
-  user          User          @relation(fields: [subscriberId], references: [id])
-  detail        VentureDetail @relation(fields: [ventureId], references: [id])
+  id           String        @id
+  subscriberId String
+  ventureId    String
+  createdAt    DateTime      @default(now())
+  user         User          @relation(fields: [subscriberId], references: [id])
+  detail       VentureDetail @relation(fields: [ventureId], references: [id])
 }
 
 model XEventCategory {
-  eventId       String
-  categoryId    String
-  category      EventCategory @relation(fields: [categoryId], references: [id])
-  event         VentureEvent  @relation(fields: [eventId], references: [id])
+  eventId    String
+  categoryId String
+  category   EventCategory @relation(fields: [categoryId], references: [id])
+  event      VentureEvent  @relation(fields: [eventId], references: [id])
 
   @@id([eventId, categoryId])
 }
