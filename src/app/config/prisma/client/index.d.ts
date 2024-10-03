@@ -19,15 +19,20 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
  */
 export type User = $Result.DefaultSelection<Prisma.$UserPayload>
 /**
- * Model XUserPreferences
- * 
- */
-export type XUserPreferences = $Result.DefaultSelection<Prisma.$XUserPreferencesPayload>
-/**
  * Model UserDetail
  * 
  */
 export type UserDetail = $Result.DefaultSelection<Prisma.$UserDetailPayload>
+/**
+ * Model UserContact
+ * 
+ */
+export type UserContact = $Result.DefaultSelection<Prisma.$UserContactPayload>
+/**
+ * Model XUserPreferences
+ * 
+ */
+export type XUserPreferences = $Result.DefaultSelection<Prisma.$XUserPreferencesPayload>
 /**
  * Model Department
  * 
@@ -39,10 +44,10 @@ export type Department = $Result.DefaultSelection<Prisma.$DepartmentPayload>
  */
 export type Municipality = $Result.DefaultSelection<Prisma.$MunicipalityPayload>
 /**
- * Model Comment
+ * Model PublicationComment
  * 
  */
-export type Comment = $Result.DefaultSelection<Prisma.$CommentPayload>
+export type PublicationComment = $Result.DefaultSelection<Prisma.$PublicationCommentPayload>
 /**
  * Model EventCategory
  * 
@@ -145,13 +150,16 @@ export type XUserRoles = $Result.DefaultSelection<Prisma.$XUserRolesPayload>
 export namespace $Enums {
   export const NotificationType: {
   WELCOME: 'WELCOME',
+  REGISTER_COMPLETED: 'REGISTER_COMPLETED',
   ACCOUNT_VERIFIED: 'ACCOUNT_VERIFIED',
+  ACCOUNT_UNVERIFIED: 'ACCOUNT_UNVERIFIED',
   ACCOUNT_LOCKED: 'ACCOUNT_LOCKED',
   ACCOUNT_UNLOCKED: 'ACCOUNT_UNLOCKED',
-  NEW_FOLLOWER: 'NEW_FOLLOWER',
-  NEW_COMMENT: 'NEW_COMMENT',
+  LOGIN: 'LOGIN',
+  NEW_SUBSCRIPTION: 'NEW_SUBSCRIPTION',
   NEW_SPONSOR: 'NEW_SPONSOR',
-  NEW_DONATION: 'NEW_DONATION'
+  NEW_DONATION: 'NEW_DONATION',
+  NEW_COMMENT: 'NEW_COMMENT'
 };
 
 export type NotificationType = (typeof NotificationType)[keyof typeof NotificationType]
@@ -187,11 +195,11 @@ export type AppRole = (typeof AppRole)[keyof typeof AppRole]
 
 
 export const PublicationType: {
-  TEXTUAL: 'TEXTUAL',
-  VIDEO: 'VIDEO',
-  IMAGE: 'IMAGE',
+  STANDARD: 'STANDARD',
   ANNOUNCEMENT: 'ANNOUNCEMENT',
-  ACHIEVEMENT: 'ACHIEVEMENT'
+  ACHIEVEMENT: 'ACHIEVEMENT',
+  PROMOTION: 'PROMOTION',
+  BEHIND_THE_SCENES: 'BEHIND_THE_SCENES'
 };
 
 export type PublicationType = (typeof PublicationType)[keyof typeof PublicationType]
@@ -352,16 +360,6 @@ export class PrismaClient<
   get user(): Prisma.UserDelegate<ExtArgs>;
 
   /**
-   * `prisma.xUserPreferences`: Exposes CRUD operations for the **XUserPreferences** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more XUserPreferences
-    * const xUserPreferences = await prisma.xUserPreferences.findMany()
-    * ```
-    */
-  get xUserPreferences(): Prisma.XUserPreferencesDelegate<ExtArgs>;
-
-  /**
    * `prisma.userDetail`: Exposes CRUD operations for the **UserDetail** model.
     * Example usage:
     * ```ts
@@ -370,6 +368,26 @@ export class PrismaClient<
     * ```
     */
   get userDetail(): Prisma.UserDetailDelegate<ExtArgs>;
+
+  /**
+   * `prisma.userContact`: Exposes CRUD operations for the **UserContact** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more UserContacts
+    * const userContacts = await prisma.userContact.findMany()
+    * ```
+    */
+  get userContact(): Prisma.UserContactDelegate<ExtArgs>;
+
+  /**
+   * `prisma.xUserPreferences`: Exposes CRUD operations for the **XUserPreferences** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more XUserPreferences
+    * const xUserPreferences = await prisma.xUserPreferences.findMany()
+    * ```
+    */
+  get xUserPreferences(): Prisma.XUserPreferencesDelegate<ExtArgs>;
 
   /**
    * `prisma.department`: Exposes CRUD operations for the **Department** model.
@@ -392,14 +410,14 @@ export class PrismaClient<
   get municipality(): Prisma.MunicipalityDelegate<ExtArgs>;
 
   /**
-   * `prisma.comment`: Exposes CRUD operations for the **Comment** model.
+   * `prisma.publicationComment`: Exposes CRUD operations for the **PublicationComment** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more Comments
-    * const comments = await prisma.comment.findMany()
+    * // Fetch zero or more PublicationComments
+    * const publicationComments = await prisma.publicationComment.findMany()
     * ```
     */
-  get comment(): Prisma.CommentDelegate<ExtArgs>;
+  get publicationComment(): Prisma.PublicationCommentDelegate<ExtArgs>;
 
   /**
    * `prisma.eventCategory`: Exposes CRUD operations for the **EventCategory** model.
@@ -1032,11 +1050,12 @@ export namespace Prisma {
 
   export const ModelName: {
     User: 'User',
-    XUserPreferences: 'XUserPreferences',
     UserDetail: 'UserDetail',
+    UserContact: 'UserContact',
+    XUserPreferences: 'XUserPreferences',
     Department: 'Department',
     Municipality: 'Municipality',
-    Comment: 'Comment',
+    PublicationComment: 'PublicationComment',
     EventCategory: 'EventCategory',
     EventDonation: 'EventDonation',
     EventLocation: 'EventLocation',
@@ -1071,7 +1090,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
     meta: {
-      modelProps: "user" | "xUserPreferences" | "userDetail" | "department" | "municipality" | "comment" | "eventCategory" | "eventDonation" | "eventLocation" | "ventureLocation" | "notification" | "publicationClap" | "publicationContent" | "role" | "venture" | "ventureContact" | "xVentureVencureCategory" | "ventureCategory" | "ventureDetail" | "ventureEvent" | "venturePublication" | "ventureSponsorship" | "ventureSubscription" | "xEventCategory" | "xUserRoles"
+      modelProps: "user" | "userDetail" | "userContact" | "xUserPreferences" | "department" | "municipality" | "publicationComment" | "eventCategory" | "eventDonation" | "eventLocation" | "ventureLocation" | "notification" | "publicationClap" | "publicationContent" | "role" | "venture" | "ventureContact" | "xVentureVencureCategory" | "ventureCategory" | "ventureDetail" | "ventureEvent" | "venturePublication" | "ventureSponsorship" | "ventureSubscription" | "xEventCategory" | "xUserRoles"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1145,76 +1164,6 @@ export namespace Prisma {
           }
         }
       }
-      XUserPreferences: {
-        payload: Prisma.$XUserPreferencesPayload<ExtArgs>
-        fields: Prisma.XUserPreferencesFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.XUserPreferencesFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$XUserPreferencesPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.XUserPreferencesFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$XUserPreferencesPayload>
-          }
-          findFirst: {
-            args: Prisma.XUserPreferencesFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$XUserPreferencesPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.XUserPreferencesFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$XUserPreferencesPayload>
-          }
-          findMany: {
-            args: Prisma.XUserPreferencesFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$XUserPreferencesPayload>[]
-          }
-          create: {
-            args: Prisma.XUserPreferencesCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$XUserPreferencesPayload>
-          }
-          createMany: {
-            args: Prisma.XUserPreferencesCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.XUserPreferencesCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$XUserPreferencesPayload>[]
-          }
-          delete: {
-            args: Prisma.XUserPreferencesDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$XUserPreferencesPayload>
-          }
-          update: {
-            args: Prisma.XUserPreferencesUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$XUserPreferencesPayload>
-          }
-          deleteMany: {
-            args: Prisma.XUserPreferencesDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.XUserPreferencesUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          upsert: {
-            args: Prisma.XUserPreferencesUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$XUserPreferencesPayload>
-          }
-          aggregate: {
-            args: Prisma.XUserPreferencesAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateXUserPreferences>
-          }
-          groupBy: {
-            args: Prisma.XUserPreferencesGroupByArgs<ExtArgs>
-            result: $Utils.Optional<XUserPreferencesGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.XUserPreferencesCountArgs<ExtArgs>
-            result: $Utils.Optional<XUserPreferencesCountAggregateOutputType> | number
-          }
-        }
-      }
       UserDetail: {
         payload: Prisma.$UserDetailPayload<ExtArgs>
         fields: Prisma.UserDetailFieldRefs
@@ -1282,6 +1231,146 @@ export namespace Prisma {
           count: {
             args: Prisma.UserDetailCountArgs<ExtArgs>
             result: $Utils.Optional<UserDetailCountAggregateOutputType> | number
+          }
+        }
+      }
+      UserContact: {
+        payload: Prisma.$UserContactPayload<ExtArgs>
+        fields: Prisma.UserContactFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.UserContactFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserContactPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.UserContactFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserContactPayload>
+          }
+          findFirst: {
+            args: Prisma.UserContactFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserContactPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.UserContactFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserContactPayload>
+          }
+          findMany: {
+            args: Prisma.UserContactFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserContactPayload>[]
+          }
+          create: {
+            args: Prisma.UserContactCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserContactPayload>
+          }
+          createMany: {
+            args: Prisma.UserContactCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.UserContactCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserContactPayload>[]
+          }
+          delete: {
+            args: Prisma.UserContactDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserContactPayload>
+          }
+          update: {
+            args: Prisma.UserContactUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserContactPayload>
+          }
+          deleteMany: {
+            args: Prisma.UserContactDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.UserContactUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.UserContactUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserContactPayload>
+          }
+          aggregate: {
+            args: Prisma.UserContactAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateUserContact>
+          }
+          groupBy: {
+            args: Prisma.UserContactGroupByArgs<ExtArgs>
+            result: $Utils.Optional<UserContactGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.UserContactCountArgs<ExtArgs>
+            result: $Utils.Optional<UserContactCountAggregateOutputType> | number
+          }
+        }
+      }
+      XUserPreferences: {
+        payload: Prisma.$XUserPreferencesPayload<ExtArgs>
+        fields: Prisma.XUserPreferencesFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.XUserPreferencesFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$XUserPreferencesPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.XUserPreferencesFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$XUserPreferencesPayload>
+          }
+          findFirst: {
+            args: Prisma.XUserPreferencesFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$XUserPreferencesPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.XUserPreferencesFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$XUserPreferencesPayload>
+          }
+          findMany: {
+            args: Prisma.XUserPreferencesFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$XUserPreferencesPayload>[]
+          }
+          create: {
+            args: Prisma.XUserPreferencesCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$XUserPreferencesPayload>
+          }
+          createMany: {
+            args: Prisma.XUserPreferencesCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.XUserPreferencesCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$XUserPreferencesPayload>[]
+          }
+          delete: {
+            args: Prisma.XUserPreferencesDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$XUserPreferencesPayload>
+          }
+          update: {
+            args: Prisma.XUserPreferencesUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$XUserPreferencesPayload>
+          }
+          deleteMany: {
+            args: Prisma.XUserPreferencesDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.XUserPreferencesUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.XUserPreferencesUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$XUserPreferencesPayload>
+          }
+          aggregate: {
+            args: Prisma.XUserPreferencesAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateXUserPreferences>
+          }
+          groupBy: {
+            args: Prisma.XUserPreferencesGroupByArgs<ExtArgs>
+            result: $Utils.Optional<XUserPreferencesGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.XUserPreferencesCountArgs<ExtArgs>
+            result: $Utils.Optional<XUserPreferencesCountAggregateOutputType> | number
           }
         }
       }
@@ -1425,73 +1514,73 @@ export namespace Prisma {
           }
         }
       }
-      Comment: {
-        payload: Prisma.$CommentPayload<ExtArgs>
-        fields: Prisma.CommentFieldRefs
+      PublicationComment: {
+        payload: Prisma.$PublicationCommentPayload<ExtArgs>
+        fields: Prisma.PublicationCommentFieldRefs
         operations: {
           findUnique: {
-            args: Prisma.CommentFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CommentPayload> | null
+            args: Prisma.PublicationCommentFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PublicationCommentPayload> | null
           }
           findUniqueOrThrow: {
-            args: Prisma.CommentFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CommentPayload>
+            args: Prisma.PublicationCommentFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PublicationCommentPayload>
           }
           findFirst: {
-            args: Prisma.CommentFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CommentPayload> | null
+            args: Prisma.PublicationCommentFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PublicationCommentPayload> | null
           }
           findFirstOrThrow: {
-            args: Prisma.CommentFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CommentPayload>
+            args: Prisma.PublicationCommentFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PublicationCommentPayload>
           }
           findMany: {
-            args: Prisma.CommentFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CommentPayload>[]
+            args: Prisma.PublicationCommentFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PublicationCommentPayload>[]
           }
           create: {
-            args: Prisma.CommentCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CommentPayload>
+            args: Prisma.PublicationCommentCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PublicationCommentPayload>
           }
           createMany: {
-            args: Prisma.CommentCreateManyArgs<ExtArgs>
+            args: Prisma.PublicationCommentCreateManyArgs<ExtArgs>
             result: BatchPayload
           }
           createManyAndReturn: {
-            args: Prisma.CommentCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CommentPayload>[]
+            args: Prisma.PublicationCommentCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PublicationCommentPayload>[]
           }
           delete: {
-            args: Prisma.CommentDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CommentPayload>
+            args: Prisma.PublicationCommentDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PublicationCommentPayload>
           }
           update: {
-            args: Prisma.CommentUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CommentPayload>
+            args: Prisma.PublicationCommentUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PublicationCommentPayload>
           }
           deleteMany: {
-            args: Prisma.CommentDeleteManyArgs<ExtArgs>
+            args: Prisma.PublicationCommentDeleteManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateMany: {
-            args: Prisma.CommentUpdateManyArgs<ExtArgs>
+            args: Prisma.PublicationCommentUpdateManyArgs<ExtArgs>
             result: BatchPayload
           }
           upsert: {
-            args: Prisma.CommentUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CommentPayload>
+            args: Prisma.PublicationCommentUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PublicationCommentPayload>
           }
           aggregate: {
-            args: Prisma.CommentAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateComment>
+            args: Prisma.PublicationCommentAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePublicationComment>
           }
           groupBy: {
-            args: Prisma.CommentGroupByArgs<ExtArgs>
-            result: $Utils.Optional<CommentGroupByOutputType>[]
+            args: Prisma.PublicationCommentGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PublicationCommentGroupByOutputType>[]
           }
           count: {
-            args: Prisma.CommentCountArgs<ExtArgs>
-            result: $Utils.Optional<CommentCountAggregateOutputType> | number
+            args: Prisma.PublicationCommentCountArgs<ExtArgs>
+            result: $Utils.Optional<PublicationCommentCountAggregateOutputType> | number
           }
         }
       }
@@ -2986,13 +3075,6 @@ export namespace Prisma {
    */
 
   export type UserCountOutputType = {
-    comments: number
-    eventDonations: number
-    notifications: number
-    publicationClaps: number
-    ventures: number
-    ventureSponsorships: number
-    ventureSubscriptions: number
     XUserPreferences: number
     XUserRoles: number
     preferences: number
@@ -3000,13 +3082,6 @@ export namespace Prisma {
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    comments?: boolean | UserCountOutputTypeCountCommentsArgs
-    eventDonations?: boolean | UserCountOutputTypeCountEventDonationsArgs
-    notifications?: boolean | UserCountOutputTypeCountNotificationsArgs
-    publicationClaps?: boolean | UserCountOutputTypeCountPublicationClapsArgs
-    ventures?: boolean | UserCountOutputTypeCountVenturesArgs
-    ventureSponsorships?: boolean | UserCountOutputTypeCountVentureSponsorshipsArgs
-    ventureSubscriptions?: boolean | UserCountOutputTypeCountVentureSubscriptionsArgs
     XUserPreferences?: boolean | UserCountOutputTypeCountXUserPreferencesArgs
     XUserRoles?: boolean | UserCountOutputTypeCountXUserRolesArgs
     preferences?: boolean | UserCountOutputTypeCountPreferencesArgs
@@ -3022,55 +3097,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the UserCountOutputType
      */
     select?: UserCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountCommentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: CommentWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountEventDonationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: EventDonationWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountNotificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: NotificationWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountPublicationClapsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: PublicationClapWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountVenturesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: VentureWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountVentureSponsorshipsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: VentureSponsorshipWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountVentureSubscriptionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: VentureSubscriptionWhereInput
   }
 
   /**
@@ -3099,6 +3125,91 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountRolesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: RoleWhereInput
+  }
+
+
+  /**
+   * Count Type UserDetailCountOutputType
+   */
+
+  export type UserDetailCountOutputType = {
+    ventures: number
+    comments: number
+    donations: number
+    notifications: number
+    claps: number
+    sponsorships: number
+    subscriptions: number
+  }
+
+  export type UserDetailCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    ventures?: boolean | UserDetailCountOutputTypeCountVenturesArgs
+    comments?: boolean | UserDetailCountOutputTypeCountCommentsArgs
+    donations?: boolean | UserDetailCountOutputTypeCountDonationsArgs
+    notifications?: boolean | UserDetailCountOutputTypeCountNotificationsArgs
+    claps?: boolean | UserDetailCountOutputTypeCountClapsArgs
+    sponsorships?: boolean | UserDetailCountOutputTypeCountSponsorshipsArgs
+    subscriptions?: boolean | UserDetailCountOutputTypeCountSubscriptionsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * UserDetailCountOutputType without action
+   */
+  export type UserDetailCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserDetailCountOutputType
+     */
+    select?: UserDetailCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * UserDetailCountOutputType without action
+   */
+  export type UserDetailCountOutputTypeCountVenturesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: VentureWhereInput
+  }
+
+  /**
+   * UserDetailCountOutputType without action
+   */
+  export type UserDetailCountOutputTypeCountCommentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PublicationCommentWhereInput
+  }
+
+  /**
+   * UserDetailCountOutputType without action
+   */
+  export type UserDetailCountOutputTypeCountDonationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EventDonationWhereInput
+  }
+
+  /**
+   * UserDetailCountOutputType without action
+   */
+  export type UserDetailCountOutputTypeCountNotificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: NotificationWhereInput
+  }
+
+  /**
+   * UserDetailCountOutputType without action
+   */
+  export type UserDetailCountOutputTypeCountClapsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PublicationClapWhereInput
+  }
+
+  /**
+   * UserDetailCountOutputType without action
+   */
+  export type UserDetailCountOutputTypeCountSponsorshipsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: VentureSponsorshipWhereInput
+  }
+
+  /**
+   * UserDetailCountOutputType without action
+   */
+  export type UserDetailCountOutputTypeCountSubscriptionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: VentureSubscriptionWhereInput
   }
 
 
@@ -3138,11 +3249,11 @@ export namespace Prisma {
    */
 
   export type MunicipalityCountOutputType = {
-    userDetail: number
+    userDetails: number
   }
 
   export type MunicipalityCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    userDetail?: boolean | MunicipalityCountOutputTypeCountUserDetailArgs
+    userDetails?: boolean | MunicipalityCountOutputTypeCountUserDetailsArgs
   }
 
   // Custom InputTypes
@@ -3159,7 +3270,7 @@ export namespace Prisma {
   /**
    * MunicipalityCountOutputType without action
    */
-  export type MunicipalityCountOutputTypeCountUserDetailArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type MunicipalityCountOutputTypeCountUserDetailsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: UserDetailWhereInput
   }
 
@@ -3249,17 +3360,13 @@ export namespace Prisma {
    */
 
   export type VentureCountOutputType = {
-    XVentureVencureCategory: number
     categories: number
-    locations: number
-    contact: number
+    XVentureVencureCategory: number
   }
 
   export type VentureCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    XVentureVencureCategory?: boolean | VentureCountOutputTypeCountXVentureVencureCategoryArgs
     categories?: boolean | VentureCountOutputTypeCountCategoriesArgs
-    locations?: boolean | VentureCountOutputTypeCountLocationsArgs
-    contact?: boolean | VentureCountOutputTypeCountContactArgs
+    XVentureVencureCategory?: boolean | VentureCountOutputTypeCountXVentureVencureCategoryArgs
   }
 
   // Custom InputTypes
@@ -3276,13 +3383,6 @@ export namespace Prisma {
   /**
    * VentureCountOutputType without action
    */
-  export type VentureCountOutputTypeCountXVentureVencureCategoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: XVentureVencureCategoryWhereInput
-  }
-
-  /**
-   * VentureCountOutputType without action
-   */
   export type VentureCountOutputTypeCountCategoriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: VentureCategoryWhereInput
   }
@@ -3290,15 +3390,8 @@ export namespace Prisma {
   /**
    * VentureCountOutputType without action
    */
-  export type VentureCountOutputTypeCountLocationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: VentureLocationWhereInput
-  }
-
-  /**
-   * VentureCountOutputType without action
-   */
-  export type VentureCountOutputTypeCountContactArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: VentureContactWhereInput
+  export type VentureCountOutputTypeCountXVentureVencureCategoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: XVentureVencureCategoryWhereInput
   }
 
 
@@ -3307,17 +3400,17 @@ export namespace Prisma {
    */
 
   export type VentureCategoryCountOutputType = {
-    XUserPreferences: number
-    XVentureVencureCategory: number
     users: number
     ventures: number
+    XUserPreferences: number
+    XVentureVencureCategory: number
   }
 
   export type VentureCategoryCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    XUserPreferences?: boolean | VentureCategoryCountOutputTypeCountXUserPreferencesArgs
-    XVentureVencureCategory?: boolean | VentureCategoryCountOutputTypeCountXVentureVencureCategoryArgs
     users?: boolean | VentureCategoryCountOutputTypeCountUsersArgs
     ventures?: boolean | VentureCategoryCountOutputTypeCountVenturesArgs
+    XUserPreferences?: boolean | VentureCategoryCountOutputTypeCountXUserPreferencesArgs
+    XVentureVencureCategory?: boolean | VentureCategoryCountOutputTypeCountXVentureVencureCategoryArgs
   }
 
   // Custom InputTypes
@@ -3334,20 +3427,6 @@ export namespace Prisma {
   /**
    * VentureCategoryCountOutputType without action
    */
-  export type VentureCategoryCountOutputTypeCountXUserPreferencesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: XUserPreferencesWhereInput
-  }
-
-  /**
-   * VentureCategoryCountOutputType without action
-   */
-  export type VentureCategoryCountOutputTypeCountXVentureVencureCategoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: XVentureVencureCategoryWhereInput
-  }
-
-  /**
-   * VentureCategoryCountOutputType without action
-   */
   export type VentureCategoryCountOutputTypeCountUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: UserWhereInput
   }
@@ -3357,6 +3436,20 @@ export namespace Prisma {
    */
   export type VentureCategoryCountOutputTypeCountVenturesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: VentureWhereInput
+  }
+
+  /**
+   * VentureCategoryCountOutputType without action
+   */
+  export type VentureCategoryCountOutputTypeCountXUserPreferencesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: XUserPreferencesWhereInput
+  }
+
+  /**
+   * VentureCategoryCountOutputType without action
+   */
+  export type VentureCategoryCountOutputTypeCountXVentureVencureCategoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: XVentureVencureCategoryWhereInput
   }
 
 
@@ -3424,14 +3517,12 @@ export namespace Prisma {
 
   export type VentureEventCountOutputType = {
     donations: number
-    locations: number
     XEventCategory: number
     EventCategory: number
   }
 
   export type VentureEventCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     donations?: boolean | VentureEventCountOutputTypeCountDonationsArgs
-    locations?: boolean | VentureEventCountOutputTypeCountLocationsArgs
     XEventCategory?: boolean | VentureEventCountOutputTypeCountXEventCategoryArgs
     EventCategory?: boolean | VentureEventCountOutputTypeCountEventCategoryArgs
   }
@@ -3452,13 +3543,6 @@ export namespace Prisma {
    */
   export type VentureEventCountOutputTypeCountDonationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: EventDonationWhereInput
-  }
-
-  /**
-   * VentureEventCountOutputType without action
-   */
-  export type VentureEventCountOutputTypeCountLocationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: EventLocationWhereInput
   }
 
   /**
@@ -3507,7 +3591,7 @@ export namespace Prisma {
    * VenturePublicationCountOutputType without action
    */
   export type VenturePublicationCountOutputTypeCountCommentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: CommentWhereInput
+    where?: PublicationCommentWhereInput
   }
 
   /**
@@ -3549,8 +3633,9 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     onboardingCompleted: boolean | null
-    userDetailId: string | null
+    detailId: string | null
     verified: boolean | null
+    contactId: string | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -3563,8 +3648,9 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     onboardingCompleted: boolean | null
-    userDetailId: string | null
+    detailId: string | null
     verified: boolean | null
+    contactId: string | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -3577,8 +3663,9 @@ export namespace Prisma {
     createdAt: number
     updatedAt: number
     onboardingCompleted: number
-    userDetailId: number
+    detailId: number
     verified: number
+    contactId: number
     _all: number
   }
 
@@ -3593,8 +3680,9 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     onboardingCompleted?: true
-    userDetailId?: true
+    detailId?: true
     verified?: true
+    contactId?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -3607,8 +3695,9 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     onboardingCompleted?: true
-    userDetailId?: true
+    detailId?: true
     verified?: true
+    contactId?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -3621,8 +3710,9 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     onboardingCompleted?: true
-    userDetailId?: true
+    detailId?: true
     verified?: true
+    contactId?: true
     _all?: true
   }
 
@@ -3708,8 +3798,9 @@ export namespace Prisma {
     createdAt: Date
     updatedAt: Date
     onboardingCompleted: boolean
-    userDetailId: string | null
+    detailId: string | null
     verified: boolean
+    contactId: string | null
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
@@ -3739,16 +3830,11 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     onboardingCompleted?: boolean
-    userDetailId?: boolean
+    detailId?: boolean
     verified?: boolean
-    comments?: boolean | User$commentsArgs<ExtArgs>
-    eventDonations?: boolean | User$eventDonationsArgs<ExtArgs>
-    notifications?: boolean | User$notificationsArgs<ExtArgs>
-    publicationClaps?: boolean | User$publicationClapsArgs<ExtArgs>
+    contactId?: boolean
     detail?: boolean | User$detailArgs<ExtArgs>
-    ventures?: boolean | User$venturesArgs<ExtArgs>
-    ventureSponsorships?: boolean | User$ventureSponsorshipsArgs<ExtArgs>
-    ventureSubscriptions?: boolean | User$ventureSubscriptionsArgs<ExtArgs>
+    contact?: boolean | User$contactArgs<ExtArgs>
     XUserPreferences?: boolean | User$XUserPreferencesArgs<ExtArgs>
     XUserRoles?: boolean | User$XUserRolesArgs<ExtArgs>
     preferences?: boolean | User$preferencesArgs<ExtArgs>
@@ -3766,9 +3852,11 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     onboardingCompleted?: boolean
-    userDetailId?: boolean
+    detailId?: boolean
     verified?: boolean
+    contactId?: boolean
     detail?: boolean | User$detailArgs<ExtArgs>
+    contact?: boolean | User$contactArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
@@ -3781,19 +3869,14 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     onboardingCompleted?: boolean
-    userDetailId?: boolean
+    detailId?: boolean
     verified?: boolean
+    contactId?: boolean
   }
 
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    comments?: boolean | User$commentsArgs<ExtArgs>
-    eventDonations?: boolean | User$eventDonationsArgs<ExtArgs>
-    notifications?: boolean | User$notificationsArgs<ExtArgs>
-    publicationClaps?: boolean | User$publicationClapsArgs<ExtArgs>
     detail?: boolean | User$detailArgs<ExtArgs>
-    ventures?: boolean | User$venturesArgs<ExtArgs>
-    ventureSponsorships?: boolean | User$ventureSponsorshipsArgs<ExtArgs>
-    ventureSubscriptions?: boolean | User$ventureSubscriptionsArgs<ExtArgs>
+    contact?: boolean | User$contactArgs<ExtArgs>
     XUserPreferences?: boolean | User$XUserPreferencesArgs<ExtArgs>
     XUserRoles?: boolean | User$XUserRolesArgs<ExtArgs>
     preferences?: boolean | User$preferencesArgs<ExtArgs>
@@ -3802,19 +3885,14 @@ export namespace Prisma {
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     detail?: boolean | User$detailArgs<ExtArgs>
+    contact?: boolean | User$contactArgs<ExtArgs>
   }
 
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
     objects: {
-      comments: Prisma.$CommentPayload<ExtArgs>[]
-      eventDonations: Prisma.$EventDonationPayload<ExtArgs>[]
-      notifications: Prisma.$NotificationPayload<ExtArgs>[]
-      publicationClaps: Prisma.$PublicationClapPayload<ExtArgs>[]
       detail: Prisma.$UserDetailPayload<ExtArgs> | null
-      ventures: Prisma.$VenturePayload<ExtArgs>[]
-      ventureSponsorships: Prisma.$VentureSponsorshipPayload<ExtArgs>[]
-      ventureSubscriptions: Prisma.$VentureSubscriptionPayload<ExtArgs>[]
+      contact: Prisma.$UserContactPayload<ExtArgs> | null
       XUserPreferences: Prisma.$XUserPreferencesPayload<ExtArgs>[]
       XUserRoles: Prisma.$XUserRolesPayload<ExtArgs>[]
       preferences: Prisma.$VentureCategoryPayload<ExtArgs>[]
@@ -3830,8 +3908,9 @@ export namespace Prisma {
       createdAt: Date
       updatedAt: Date
       onboardingCompleted: boolean
-      userDetailId: string | null
+      detailId: string | null
       verified: boolean
+      contactId: string | null
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -4196,14 +4275,8 @@ export namespace Prisma {
    */
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    comments<T extends User$commentsArgs<ExtArgs> = {}>(args?: Subset<T, User$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findMany"> | Null>
-    eventDonations<T extends User$eventDonationsArgs<ExtArgs> = {}>(args?: Subset<T, User$eventDonationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventDonationPayload<ExtArgs>, T, "findMany"> | Null>
-    notifications<T extends User$notificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany"> | Null>
-    publicationClaps<T extends User$publicationClapsArgs<ExtArgs> = {}>(args?: Subset<T, User$publicationClapsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PublicationClapPayload<ExtArgs>, T, "findMany"> | Null>
     detail<T extends User$detailArgs<ExtArgs> = {}>(args?: Subset<T, User$detailArgs<ExtArgs>>): Prisma__UserDetailClient<$Result.GetResult<Prisma.$UserDetailPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
-    ventures<T extends User$venturesArgs<ExtArgs> = {}>(args?: Subset<T, User$venturesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VenturePayload<ExtArgs>, T, "findMany"> | Null>
-    ventureSponsorships<T extends User$ventureSponsorshipsArgs<ExtArgs> = {}>(args?: Subset<T, User$ventureSponsorshipsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VentureSponsorshipPayload<ExtArgs>, T, "findMany"> | Null>
-    ventureSubscriptions<T extends User$ventureSubscriptionsArgs<ExtArgs> = {}>(args?: Subset<T, User$ventureSubscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VentureSubscriptionPayload<ExtArgs>, T, "findMany"> | Null>
+    contact<T extends User$contactArgs<ExtArgs> = {}>(args?: Subset<T, User$contactArgs<ExtArgs>>): Prisma__UserContactClient<$Result.GetResult<Prisma.$UserContactPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
     XUserPreferences<T extends User$XUserPreferencesArgs<ExtArgs> = {}>(args?: Subset<T, User$XUserPreferencesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$XUserPreferencesPayload<ExtArgs>, T, "findMany"> | Null>
     XUserRoles<T extends User$XUserRolesArgs<ExtArgs> = {}>(args?: Subset<T, User$XUserRolesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$XUserRolesPayload<ExtArgs>, T, "findMany"> | Null>
     preferences<T extends User$preferencesArgs<ExtArgs> = {}>(args?: Subset<T, User$preferencesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VentureCategoryPayload<ExtArgs>, T, "findMany"> | Null>
@@ -4246,8 +4319,9 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
     readonly onboardingCompleted: FieldRef<"User", 'Boolean'>
-    readonly userDetailId: FieldRef<"User", 'String'>
+    readonly detailId: FieldRef<"User", 'String'>
     readonly verified: FieldRef<"User", 'Boolean'>
+    readonly contactId: FieldRef<"User", 'String'>
   }
     
 
@@ -4566,86 +4640,6 @@ export namespace Prisma {
   }
 
   /**
-   * User.comments
-   */
-  export type User$commentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Comment
-     */
-    select?: CommentSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CommentInclude<ExtArgs> | null
-    where?: CommentWhereInput
-    orderBy?: CommentOrderByWithRelationInput | CommentOrderByWithRelationInput[]
-    cursor?: CommentWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: CommentScalarFieldEnum | CommentScalarFieldEnum[]
-  }
-
-  /**
-   * User.eventDonations
-   */
-  export type User$eventDonationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the EventDonation
-     */
-    select?: EventDonationSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: EventDonationInclude<ExtArgs> | null
-    where?: EventDonationWhereInput
-    orderBy?: EventDonationOrderByWithRelationInput | EventDonationOrderByWithRelationInput[]
-    cursor?: EventDonationWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: EventDonationScalarFieldEnum | EventDonationScalarFieldEnum[]
-  }
-
-  /**
-   * User.notifications
-   */
-  export type User$notificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Notification
-     */
-    select?: NotificationSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: NotificationInclude<ExtArgs> | null
-    where?: NotificationWhereInput
-    orderBy?: NotificationOrderByWithRelationInput | NotificationOrderByWithRelationInput[]
-    cursor?: NotificationWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
-  }
-
-  /**
-   * User.publicationClaps
-   */
-  export type User$publicationClapsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the PublicationClap
-     */
-    select?: PublicationClapSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PublicationClapInclude<ExtArgs> | null
-    where?: PublicationClapWhereInput
-    orderBy?: PublicationClapOrderByWithRelationInput | PublicationClapOrderByWithRelationInput[]
-    cursor?: PublicationClapWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: PublicationClapScalarFieldEnum | PublicationClapScalarFieldEnum[]
-  }
-
-  /**
    * User.detail
    */
   export type User$detailArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4661,63 +4655,18 @@ export namespace Prisma {
   }
 
   /**
-   * User.ventures
+   * User.contact
    */
-  export type User$venturesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$contactArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Venture
+     * Select specific fields to fetch from the UserContact
      */
-    select?: VentureSelect<ExtArgs> | null
+    select?: UserContactSelect<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: VentureInclude<ExtArgs> | null
-    where?: VentureWhereInput
-    orderBy?: VentureOrderByWithRelationInput | VentureOrderByWithRelationInput[]
-    cursor?: VentureWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: VentureScalarFieldEnum | VentureScalarFieldEnum[]
-  }
-
-  /**
-   * User.ventureSponsorships
-   */
-  export type User$ventureSponsorshipsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the VentureSponsorship
-     */
-    select?: VentureSponsorshipSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: VentureSponsorshipInclude<ExtArgs> | null
-    where?: VentureSponsorshipWhereInput
-    orderBy?: VentureSponsorshipOrderByWithRelationInput | VentureSponsorshipOrderByWithRelationInput[]
-    cursor?: VentureSponsorshipWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: VentureSponsorshipScalarFieldEnum | VentureSponsorshipScalarFieldEnum[]
-  }
-
-  /**
-   * User.ventureSubscriptions
-   */
-  export type User$ventureSubscriptionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the VentureSubscription
-     */
-    select?: VentureSubscriptionSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: VentureSubscriptionInclude<ExtArgs> | null
-    where?: VentureSubscriptionWhereInput
-    orderBy?: VentureSubscriptionOrderByWithRelationInput | VentureSubscriptionOrderByWithRelationInput[]
-    cursor?: VentureSubscriptionWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: VentureSubscriptionScalarFieldEnum | VentureSubscriptionScalarFieldEnum[]
+    include?: UserContactInclude<ExtArgs> | null
+    where?: UserContactWhereInput
   }
 
   /**
@@ -4812,6 +4761,2139 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: UserInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model UserDetail
+   */
+
+  export type AggregateUserDetail = {
+    _count: UserDetailCountAggregateOutputType | null
+    _avg: UserDetailAvgAggregateOutputType | null
+    _sum: UserDetailSumAggregateOutputType | null
+    _min: UserDetailMinAggregateOutputType | null
+    _max: UserDetailMaxAggregateOutputType | null
+  }
+
+  export type UserDetailAvgAggregateOutputType = {
+    municipalityId: number | null
+  }
+
+  export type UserDetailSumAggregateOutputType = {
+    municipalityId: number | null
+  }
+
+  export type UserDetailMinAggregateOutputType = {
+    id: string | null
+    gender: string | null
+    birthDate: Date | null
+    municipalityId: number | null
+  }
+
+  export type UserDetailMaxAggregateOutputType = {
+    id: string | null
+    gender: string | null
+    birthDate: Date | null
+    municipalityId: number | null
+  }
+
+  export type UserDetailCountAggregateOutputType = {
+    id: number
+    gender: number
+    birthDate: number
+    municipalityId: number
+    _all: number
+  }
+
+
+  export type UserDetailAvgAggregateInputType = {
+    municipalityId?: true
+  }
+
+  export type UserDetailSumAggregateInputType = {
+    municipalityId?: true
+  }
+
+  export type UserDetailMinAggregateInputType = {
+    id?: true
+    gender?: true
+    birthDate?: true
+    municipalityId?: true
+  }
+
+  export type UserDetailMaxAggregateInputType = {
+    id?: true
+    gender?: true
+    birthDate?: true
+    municipalityId?: true
+  }
+
+  export type UserDetailCountAggregateInputType = {
+    id?: true
+    gender?: true
+    birthDate?: true
+    municipalityId?: true
+    _all?: true
+  }
+
+  export type UserDetailAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which UserDetail to aggregate.
+     */
+    where?: UserDetailWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserDetails to fetch.
+     */
+    orderBy?: UserDetailOrderByWithRelationInput | UserDetailOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: UserDetailWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserDetails from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserDetails.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned UserDetails
+    **/
+    _count?: true | UserDetailCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: UserDetailAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: UserDetailSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: UserDetailMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: UserDetailMaxAggregateInputType
+  }
+
+  export type GetUserDetailAggregateType<T extends UserDetailAggregateArgs> = {
+        [P in keyof T & keyof AggregateUserDetail]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateUserDetail[P]>
+      : GetScalarType<T[P], AggregateUserDetail[P]>
+  }
+
+
+
+
+  export type UserDetailGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserDetailWhereInput
+    orderBy?: UserDetailOrderByWithAggregationInput | UserDetailOrderByWithAggregationInput[]
+    by: UserDetailScalarFieldEnum[] | UserDetailScalarFieldEnum
+    having?: UserDetailScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: UserDetailCountAggregateInputType | true
+    _avg?: UserDetailAvgAggregateInputType
+    _sum?: UserDetailSumAggregateInputType
+    _min?: UserDetailMinAggregateInputType
+    _max?: UserDetailMaxAggregateInputType
+  }
+
+  export type UserDetailGroupByOutputType = {
+    id: string
+    gender: string
+    birthDate: Date
+    municipalityId: number
+    _count: UserDetailCountAggregateOutputType | null
+    _avg: UserDetailAvgAggregateOutputType | null
+    _sum: UserDetailSumAggregateOutputType | null
+    _min: UserDetailMinAggregateOutputType | null
+    _max: UserDetailMaxAggregateOutputType | null
+  }
+
+  type GetUserDetailGroupByPayload<T extends UserDetailGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<UserDetailGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof UserDetailGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], UserDetailGroupByOutputType[P]>
+            : GetScalarType<T[P], UserDetailGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type UserDetailSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    gender?: boolean
+    birthDate?: boolean
+    municipalityId?: boolean
+    user?: boolean | UserDetail$userArgs<ExtArgs>
+    municipality?: boolean | MunicipalityDefaultArgs<ExtArgs>
+    ventures?: boolean | UserDetail$venturesArgs<ExtArgs>
+    comments?: boolean | UserDetail$commentsArgs<ExtArgs>
+    donations?: boolean | UserDetail$donationsArgs<ExtArgs>
+    notifications?: boolean | UserDetail$notificationsArgs<ExtArgs>
+    claps?: boolean | UserDetail$clapsArgs<ExtArgs>
+    sponsorships?: boolean | UserDetail$sponsorshipsArgs<ExtArgs>
+    subscriptions?: boolean | UserDetail$subscriptionsArgs<ExtArgs>
+    _count?: boolean | UserDetailCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["userDetail"]>
+
+  export type UserDetailSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    gender?: boolean
+    birthDate?: boolean
+    municipalityId?: boolean
+    municipality?: boolean | MunicipalityDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["userDetail"]>
+
+  export type UserDetailSelectScalar = {
+    id?: boolean
+    gender?: boolean
+    birthDate?: boolean
+    municipalityId?: boolean
+  }
+
+  export type UserDetailInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDetail$userArgs<ExtArgs>
+    municipality?: boolean | MunicipalityDefaultArgs<ExtArgs>
+    ventures?: boolean | UserDetail$venturesArgs<ExtArgs>
+    comments?: boolean | UserDetail$commentsArgs<ExtArgs>
+    donations?: boolean | UserDetail$donationsArgs<ExtArgs>
+    notifications?: boolean | UserDetail$notificationsArgs<ExtArgs>
+    claps?: boolean | UserDetail$clapsArgs<ExtArgs>
+    sponsorships?: boolean | UserDetail$sponsorshipsArgs<ExtArgs>
+    subscriptions?: boolean | UserDetail$subscriptionsArgs<ExtArgs>
+    _count?: boolean | UserDetailCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type UserDetailIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    municipality?: boolean | MunicipalityDefaultArgs<ExtArgs>
+  }
+
+  export type $UserDetailPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "UserDetail"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs> | null
+      municipality: Prisma.$MunicipalityPayload<ExtArgs>
+      ventures: Prisma.$VenturePayload<ExtArgs>[]
+      comments: Prisma.$PublicationCommentPayload<ExtArgs>[]
+      donations: Prisma.$EventDonationPayload<ExtArgs>[]
+      notifications: Prisma.$NotificationPayload<ExtArgs>[]
+      claps: Prisma.$PublicationClapPayload<ExtArgs>[]
+      sponsorships: Prisma.$VentureSponsorshipPayload<ExtArgs>[]
+      subscriptions: Prisma.$VentureSubscriptionPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      gender: string
+      birthDate: Date
+      municipalityId: number
+    }, ExtArgs["result"]["userDetail"]>
+    composites: {}
+  }
+
+  type UserDetailGetPayload<S extends boolean | null | undefined | UserDetailDefaultArgs> = $Result.GetResult<Prisma.$UserDetailPayload, S>
+
+  type UserDetailCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<UserDetailFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: UserDetailCountAggregateInputType | true
+    }
+
+  export interface UserDetailDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['UserDetail'], meta: { name: 'UserDetail' } }
+    /**
+     * Find zero or one UserDetail that matches the filter.
+     * @param {UserDetailFindUniqueArgs} args - Arguments to find a UserDetail
+     * @example
+     * // Get one UserDetail
+     * const userDetail = await prisma.userDetail.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends UserDetailFindUniqueArgs>(args: SelectSubset<T, UserDetailFindUniqueArgs<ExtArgs>>): Prisma__UserDetailClient<$Result.GetResult<Prisma.$UserDetailPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one UserDetail that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {UserDetailFindUniqueOrThrowArgs} args - Arguments to find a UserDetail
+     * @example
+     * // Get one UserDetail
+     * const userDetail = await prisma.userDetail.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends UserDetailFindUniqueOrThrowArgs>(args: SelectSubset<T, UserDetailFindUniqueOrThrowArgs<ExtArgs>>): Prisma__UserDetailClient<$Result.GetResult<Prisma.$UserDetailPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first UserDetail that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserDetailFindFirstArgs} args - Arguments to find a UserDetail
+     * @example
+     * // Get one UserDetail
+     * const userDetail = await prisma.userDetail.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends UserDetailFindFirstArgs>(args?: SelectSubset<T, UserDetailFindFirstArgs<ExtArgs>>): Prisma__UserDetailClient<$Result.GetResult<Prisma.$UserDetailPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first UserDetail that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserDetailFindFirstOrThrowArgs} args - Arguments to find a UserDetail
+     * @example
+     * // Get one UserDetail
+     * const userDetail = await prisma.userDetail.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends UserDetailFindFirstOrThrowArgs>(args?: SelectSubset<T, UserDetailFindFirstOrThrowArgs<ExtArgs>>): Prisma__UserDetailClient<$Result.GetResult<Prisma.$UserDetailPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more UserDetails that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserDetailFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all UserDetails
+     * const userDetails = await prisma.userDetail.findMany()
+     * 
+     * // Get first 10 UserDetails
+     * const userDetails = await prisma.userDetail.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const userDetailWithIdOnly = await prisma.userDetail.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends UserDetailFindManyArgs>(args?: SelectSubset<T, UserDetailFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserDetailPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a UserDetail.
+     * @param {UserDetailCreateArgs} args - Arguments to create a UserDetail.
+     * @example
+     * // Create one UserDetail
+     * const UserDetail = await prisma.userDetail.create({
+     *   data: {
+     *     // ... data to create a UserDetail
+     *   }
+     * })
+     * 
+     */
+    create<T extends UserDetailCreateArgs>(args: SelectSubset<T, UserDetailCreateArgs<ExtArgs>>): Prisma__UserDetailClient<$Result.GetResult<Prisma.$UserDetailPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many UserDetails.
+     * @param {UserDetailCreateManyArgs} args - Arguments to create many UserDetails.
+     * @example
+     * // Create many UserDetails
+     * const userDetail = await prisma.userDetail.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends UserDetailCreateManyArgs>(args?: SelectSubset<T, UserDetailCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many UserDetails and returns the data saved in the database.
+     * @param {UserDetailCreateManyAndReturnArgs} args - Arguments to create many UserDetails.
+     * @example
+     * // Create many UserDetails
+     * const userDetail = await prisma.userDetail.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many UserDetails and only return the `id`
+     * const userDetailWithIdOnly = await prisma.userDetail.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends UserDetailCreateManyAndReturnArgs>(args?: SelectSubset<T, UserDetailCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserDetailPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a UserDetail.
+     * @param {UserDetailDeleteArgs} args - Arguments to delete one UserDetail.
+     * @example
+     * // Delete one UserDetail
+     * const UserDetail = await prisma.userDetail.delete({
+     *   where: {
+     *     // ... filter to delete one UserDetail
+     *   }
+     * })
+     * 
+     */
+    delete<T extends UserDetailDeleteArgs>(args: SelectSubset<T, UserDetailDeleteArgs<ExtArgs>>): Prisma__UserDetailClient<$Result.GetResult<Prisma.$UserDetailPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one UserDetail.
+     * @param {UserDetailUpdateArgs} args - Arguments to update one UserDetail.
+     * @example
+     * // Update one UserDetail
+     * const userDetail = await prisma.userDetail.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends UserDetailUpdateArgs>(args: SelectSubset<T, UserDetailUpdateArgs<ExtArgs>>): Prisma__UserDetailClient<$Result.GetResult<Prisma.$UserDetailPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more UserDetails.
+     * @param {UserDetailDeleteManyArgs} args - Arguments to filter UserDetails to delete.
+     * @example
+     * // Delete a few UserDetails
+     * const { count } = await prisma.userDetail.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends UserDetailDeleteManyArgs>(args?: SelectSubset<T, UserDetailDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more UserDetails.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserDetailUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many UserDetails
+     * const userDetail = await prisma.userDetail.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends UserDetailUpdateManyArgs>(args: SelectSubset<T, UserDetailUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one UserDetail.
+     * @param {UserDetailUpsertArgs} args - Arguments to update or create a UserDetail.
+     * @example
+     * // Update or create a UserDetail
+     * const userDetail = await prisma.userDetail.upsert({
+     *   create: {
+     *     // ... data to create a UserDetail
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the UserDetail we want to update
+     *   }
+     * })
+     */
+    upsert<T extends UserDetailUpsertArgs>(args: SelectSubset<T, UserDetailUpsertArgs<ExtArgs>>): Prisma__UserDetailClient<$Result.GetResult<Prisma.$UserDetailPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of UserDetails.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserDetailCountArgs} args - Arguments to filter UserDetails to count.
+     * @example
+     * // Count the number of UserDetails
+     * const count = await prisma.userDetail.count({
+     *   where: {
+     *     // ... the filter for the UserDetails we want to count
+     *   }
+     * })
+    **/
+    count<T extends UserDetailCountArgs>(
+      args?: Subset<T, UserDetailCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], UserDetailCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a UserDetail.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserDetailAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends UserDetailAggregateArgs>(args: Subset<T, UserDetailAggregateArgs>): Prisma.PrismaPromise<GetUserDetailAggregateType<T>>
+
+    /**
+     * Group by UserDetail.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserDetailGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends UserDetailGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: UserDetailGroupByArgs['orderBy'] }
+        : { orderBy?: UserDetailGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, UserDetailGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUserDetailGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the UserDetail model
+   */
+  readonly fields: UserDetailFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for UserDetail.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__UserDetailClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDetail$userArgs<ExtArgs> = {}>(args?: Subset<T, UserDetail$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
+    municipality<T extends MunicipalityDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MunicipalityDefaultArgs<ExtArgs>>): Prisma__MunicipalityClient<$Result.GetResult<Prisma.$MunicipalityPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    ventures<T extends UserDetail$venturesArgs<ExtArgs> = {}>(args?: Subset<T, UserDetail$venturesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VenturePayload<ExtArgs>, T, "findMany"> | Null>
+    comments<T extends UserDetail$commentsArgs<ExtArgs> = {}>(args?: Subset<T, UserDetail$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PublicationCommentPayload<ExtArgs>, T, "findMany"> | Null>
+    donations<T extends UserDetail$donationsArgs<ExtArgs> = {}>(args?: Subset<T, UserDetail$donationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventDonationPayload<ExtArgs>, T, "findMany"> | Null>
+    notifications<T extends UserDetail$notificationsArgs<ExtArgs> = {}>(args?: Subset<T, UserDetail$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany"> | Null>
+    claps<T extends UserDetail$clapsArgs<ExtArgs> = {}>(args?: Subset<T, UserDetail$clapsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PublicationClapPayload<ExtArgs>, T, "findMany"> | Null>
+    sponsorships<T extends UserDetail$sponsorshipsArgs<ExtArgs> = {}>(args?: Subset<T, UserDetail$sponsorshipsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VentureSponsorshipPayload<ExtArgs>, T, "findMany"> | Null>
+    subscriptions<T extends UserDetail$subscriptionsArgs<ExtArgs> = {}>(args?: Subset<T, UserDetail$subscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VentureSubscriptionPayload<ExtArgs>, T, "findMany"> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the UserDetail model
+   */ 
+  interface UserDetailFieldRefs {
+    readonly id: FieldRef<"UserDetail", 'String'>
+    readonly gender: FieldRef<"UserDetail", 'String'>
+    readonly birthDate: FieldRef<"UserDetail", 'DateTime'>
+    readonly municipalityId: FieldRef<"UserDetail", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * UserDetail findUnique
+   */
+  export type UserDetailFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserDetail
+     */
+    select?: UserDetailSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserDetailInclude<ExtArgs> | null
+    /**
+     * Filter, which UserDetail to fetch.
+     */
+    where: UserDetailWhereUniqueInput
+  }
+
+  /**
+   * UserDetail findUniqueOrThrow
+   */
+  export type UserDetailFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserDetail
+     */
+    select?: UserDetailSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserDetailInclude<ExtArgs> | null
+    /**
+     * Filter, which UserDetail to fetch.
+     */
+    where: UserDetailWhereUniqueInput
+  }
+
+  /**
+   * UserDetail findFirst
+   */
+  export type UserDetailFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserDetail
+     */
+    select?: UserDetailSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserDetailInclude<ExtArgs> | null
+    /**
+     * Filter, which UserDetail to fetch.
+     */
+    where?: UserDetailWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserDetails to fetch.
+     */
+    orderBy?: UserDetailOrderByWithRelationInput | UserDetailOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UserDetails.
+     */
+    cursor?: UserDetailWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserDetails from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserDetails.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UserDetails.
+     */
+    distinct?: UserDetailScalarFieldEnum | UserDetailScalarFieldEnum[]
+  }
+
+  /**
+   * UserDetail findFirstOrThrow
+   */
+  export type UserDetailFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserDetail
+     */
+    select?: UserDetailSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserDetailInclude<ExtArgs> | null
+    /**
+     * Filter, which UserDetail to fetch.
+     */
+    where?: UserDetailWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserDetails to fetch.
+     */
+    orderBy?: UserDetailOrderByWithRelationInput | UserDetailOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UserDetails.
+     */
+    cursor?: UserDetailWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserDetails from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserDetails.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UserDetails.
+     */
+    distinct?: UserDetailScalarFieldEnum | UserDetailScalarFieldEnum[]
+  }
+
+  /**
+   * UserDetail findMany
+   */
+  export type UserDetailFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserDetail
+     */
+    select?: UserDetailSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserDetailInclude<ExtArgs> | null
+    /**
+     * Filter, which UserDetails to fetch.
+     */
+    where?: UserDetailWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserDetails to fetch.
+     */
+    orderBy?: UserDetailOrderByWithRelationInput | UserDetailOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing UserDetails.
+     */
+    cursor?: UserDetailWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserDetails from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserDetails.
+     */
+    skip?: number
+    distinct?: UserDetailScalarFieldEnum | UserDetailScalarFieldEnum[]
+  }
+
+  /**
+   * UserDetail create
+   */
+  export type UserDetailCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserDetail
+     */
+    select?: UserDetailSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserDetailInclude<ExtArgs> | null
+    /**
+     * The data needed to create a UserDetail.
+     */
+    data: XOR<UserDetailCreateInput, UserDetailUncheckedCreateInput>
+  }
+
+  /**
+   * UserDetail createMany
+   */
+  export type UserDetailCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many UserDetails.
+     */
+    data: UserDetailCreateManyInput | UserDetailCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * UserDetail createManyAndReturn
+   */
+  export type UserDetailCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserDetail
+     */
+    select?: UserDetailSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many UserDetails.
+     */
+    data: UserDetailCreateManyInput | UserDetailCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserDetailIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * UserDetail update
+   */
+  export type UserDetailUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserDetail
+     */
+    select?: UserDetailSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserDetailInclude<ExtArgs> | null
+    /**
+     * The data needed to update a UserDetail.
+     */
+    data: XOR<UserDetailUpdateInput, UserDetailUncheckedUpdateInput>
+    /**
+     * Choose, which UserDetail to update.
+     */
+    where: UserDetailWhereUniqueInput
+  }
+
+  /**
+   * UserDetail updateMany
+   */
+  export type UserDetailUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update UserDetails.
+     */
+    data: XOR<UserDetailUpdateManyMutationInput, UserDetailUncheckedUpdateManyInput>
+    /**
+     * Filter which UserDetails to update
+     */
+    where?: UserDetailWhereInput
+  }
+
+  /**
+   * UserDetail upsert
+   */
+  export type UserDetailUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserDetail
+     */
+    select?: UserDetailSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserDetailInclude<ExtArgs> | null
+    /**
+     * The filter to search for the UserDetail to update in case it exists.
+     */
+    where: UserDetailWhereUniqueInput
+    /**
+     * In case the UserDetail found by the `where` argument doesn't exist, create a new UserDetail with this data.
+     */
+    create: XOR<UserDetailCreateInput, UserDetailUncheckedCreateInput>
+    /**
+     * In case the UserDetail was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<UserDetailUpdateInput, UserDetailUncheckedUpdateInput>
+  }
+
+  /**
+   * UserDetail delete
+   */
+  export type UserDetailDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserDetail
+     */
+    select?: UserDetailSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserDetailInclude<ExtArgs> | null
+    /**
+     * Filter which UserDetail to delete.
+     */
+    where: UserDetailWhereUniqueInput
+  }
+
+  /**
+   * UserDetail deleteMany
+   */
+  export type UserDetailDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which UserDetails to delete
+     */
+    where?: UserDetailWhereInput
+  }
+
+  /**
+   * UserDetail.user
+   */
+  export type UserDetail$userArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * UserDetail.ventures
+   */
+  export type UserDetail$venturesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Venture
+     */
+    select?: VentureSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VentureInclude<ExtArgs> | null
+    where?: VentureWhereInput
+    orderBy?: VentureOrderByWithRelationInput | VentureOrderByWithRelationInput[]
+    cursor?: VentureWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: VentureScalarFieldEnum | VentureScalarFieldEnum[]
+  }
+
+  /**
+   * UserDetail.comments
+   */
+  export type UserDetail$commentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PublicationComment
+     */
+    select?: PublicationCommentSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PublicationCommentInclude<ExtArgs> | null
+    where?: PublicationCommentWhereInput
+    orderBy?: PublicationCommentOrderByWithRelationInput | PublicationCommentOrderByWithRelationInput[]
+    cursor?: PublicationCommentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PublicationCommentScalarFieldEnum | PublicationCommentScalarFieldEnum[]
+  }
+
+  /**
+   * UserDetail.donations
+   */
+  export type UserDetail$donationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventDonation
+     */
+    select?: EventDonationSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventDonationInclude<ExtArgs> | null
+    where?: EventDonationWhereInput
+    orderBy?: EventDonationOrderByWithRelationInput | EventDonationOrderByWithRelationInput[]
+    cursor?: EventDonationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EventDonationScalarFieldEnum | EventDonationScalarFieldEnum[]
+  }
+
+  /**
+   * UserDetail.notifications
+   */
+  export type UserDetail$notificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    where?: NotificationWhereInput
+    orderBy?: NotificationOrderByWithRelationInput | NotificationOrderByWithRelationInput[]
+    cursor?: NotificationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
+  }
+
+  /**
+   * UserDetail.claps
+   */
+  export type UserDetail$clapsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PublicationClap
+     */
+    select?: PublicationClapSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PublicationClapInclude<ExtArgs> | null
+    where?: PublicationClapWhereInput
+    orderBy?: PublicationClapOrderByWithRelationInput | PublicationClapOrderByWithRelationInput[]
+    cursor?: PublicationClapWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PublicationClapScalarFieldEnum | PublicationClapScalarFieldEnum[]
+  }
+
+  /**
+   * UserDetail.sponsorships
+   */
+  export type UserDetail$sponsorshipsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VentureSponsorship
+     */
+    select?: VentureSponsorshipSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VentureSponsorshipInclude<ExtArgs> | null
+    where?: VentureSponsorshipWhereInput
+    orderBy?: VentureSponsorshipOrderByWithRelationInput | VentureSponsorshipOrderByWithRelationInput[]
+    cursor?: VentureSponsorshipWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: VentureSponsorshipScalarFieldEnum | VentureSponsorshipScalarFieldEnum[]
+  }
+
+  /**
+   * UserDetail.subscriptions
+   */
+  export type UserDetail$subscriptionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VentureSubscription
+     */
+    select?: VentureSubscriptionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VentureSubscriptionInclude<ExtArgs> | null
+    where?: VentureSubscriptionWhereInput
+    orderBy?: VentureSubscriptionOrderByWithRelationInput | VentureSubscriptionOrderByWithRelationInput[]
+    cursor?: VentureSubscriptionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: VentureSubscriptionScalarFieldEnum | VentureSubscriptionScalarFieldEnum[]
+  }
+
+  /**
+   * UserDetail without action
+   */
+  export type UserDetailDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserDetail
+     */
+    select?: UserDetailSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserDetailInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model UserContact
+   */
+
+  export type AggregateUserContact = {
+    _count: UserContactCountAggregateOutputType | null
+    _min: UserContactMinAggregateOutputType | null
+    _max: UserContactMaxAggregateOutputType | null
+  }
+
+  export type UserContactMinAggregateOutputType = {
+    id: string | null
+    phoneNumber: string | null
+    address: string | null
+    facebookUrl: string | null
+    linkedinUrl: string | null
+    twitterUrl: string | null
+    instagramUrl: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type UserContactMaxAggregateOutputType = {
+    id: string | null
+    phoneNumber: string | null
+    address: string | null
+    facebookUrl: string | null
+    linkedinUrl: string | null
+    twitterUrl: string | null
+    instagramUrl: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type UserContactCountAggregateOutputType = {
+    id: number
+    phoneNumber: number
+    address: number
+    facebookUrl: number
+    linkedinUrl: number
+    twitterUrl: number
+    instagramUrl: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type UserContactMinAggregateInputType = {
+    id?: true
+    phoneNumber?: true
+    address?: true
+    facebookUrl?: true
+    linkedinUrl?: true
+    twitterUrl?: true
+    instagramUrl?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type UserContactMaxAggregateInputType = {
+    id?: true
+    phoneNumber?: true
+    address?: true
+    facebookUrl?: true
+    linkedinUrl?: true
+    twitterUrl?: true
+    instagramUrl?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type UserContactCountAggregateInputType = {
+    id?: true
+    phoneNumber?: true
+    address?: true
+    facebookUrl?: true
+    linkedinUrl?: true
+    twitterUrl?: true
+    instagramUrl?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type UserContactAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which UserContact to aggregate.
+     */
+    where?: UserContactWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserContacts to fetch.
+     */
+    orderBy?: UserContactOrderByWithRelationInput | UserContactOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: UserContactWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserContacts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserContacts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned UserContacts
+    **/
+    _count?: true | UserContactCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: UserContactMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: UserContactMaxAggregateInputType
+  }
+
+  export type GetUserContactAggregateType<T extends UserContactAggregateArgs> = {
+        [P in keyof T & keyof AggregateUserContact]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateUserContact[P]>
+      : GetScalarType<T[P], AggregateUserContact[P]>
+  }
+
+
+
+
+  export type UserContactGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserContactWhereInput
+    orderBy?: UserContactOrderByWithAggregationInput | UserContactOrderByWithAggregationInput[]
+    by: UserContactScalarFieldEnum[] | UserContactScalarFieldEnum
+    having?: UserContactScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: UserContactCountAggregateInputType | true
+    _min?: UserContactMinAggregateInputType
+    _max?: UserContactMaxAggregateInputType
+  }
+
+  export type UserContactGroupByOutputType = {
+    id: string
+    phoneNumber: string
+    address: string
+    facebookUrl: string
+    linkedinUrl: string
+    twitterUrl: string
+    instagramUrl: string
+    createdAt: Date
+    updatedAt: Date
+    _count: UserContactCountAggregateOutputType | null
+    _min: UserContactMinAggregateOutputType | null
+    _max: UserContactMaxAggregateOutputType | null
+  }
+
+  type GetUserContactGroupByPayload<T extends UserContactGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<UserContactGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof UserContactGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], UserContactGroupByOutputType[P]>
+            : GetScalarType<T[P], UserContactGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type UserContactSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    phoneNumber?: boolean
+    address?: boolean
+    facebookUrl?: boolean
+    linkedinUrl?: boolean
+    twitterUrl?: boolean
+    instagramUrl?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserContact$userArgs<ExtArgs>
+  }, ExtArgs["result"]["userContact"]>
+
+  export type UserContactSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    phoneNumber?: boolean
+    address?: boolean
+    facebookUrl?: boolean
+    linkedinUrl?: boolean
+    twitterUrl?: boolean
+    instagramUrl?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["userContact"]>
+
+  export type UserContactSelectScalar = {
+    id?: boolean
+    phoneNumber?: boolean
+    address?: boolean
+    facebookUrl?: boolean
+    linkedinUrl?: boolean
+    twitterUrl?: boolean
+    instagramUrl?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type UserContactInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserContact$userArgs<ExtArgs>
+  }
+  export type UserContactIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $UserContactPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "UserContact"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      phoneNumber: string
+      address: string
+      facebookUrl: string
+      linkedinUrl: string
+      twitterUrl: string
+      instagramUrl: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["userContact"]>
+    composites: {}
+  }
+
+  type UserContactGetPayload<S extends boolean | null | undefined | UserContactDefaultArgs> = $Result.GetResult<Prisma.$UserContactPayload, S>
+
+  type UserContactCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<UserContactFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: UserContactCountAggregateInputType | true
+    }
+
+  export interface UserContactDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['UserContact'], meta: { name: 'UserContact' } }
+    /**
+     * Find zero or one UserContact that matches the filter.
+     * @param {UserContactFindUniqueArgs} args - Arguments to find a UserContact
+     * @example
+     * // Get one UserContact
+     * const userContact = await prisma.userContact.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends UserContactFindUniqueArgs>(args: SelectSubset<T, UserContactFindUniqueArgs<ExtArgs>>): Prisma__UserContactClient<$Result.GetResult<Prisma.$UserContactPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one UserContact that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {UserContactFindUniqueOrThrowArgs} args - Arguments to find a UserContact
+     * @example
+     * // Get one UserContact
+     * const userContact = await prisma.userContact.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends UserContactFindUniqueOrThrowArgs>(args: SelectSubset<T, UserContactFindUniqueOrThrowArgs<ExtArgs>>): Prisma__UserContactClient<$Result.GetResult<Prisma.$UserContactPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first UserContact that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserContactFindFirstArgs} args - Arguments to find a UserContact
+     * @example
+     * // Get one UserContact
+     * const userContact = await prisma.userContact.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends UserContactFindFirstArgs>(args?: SelectSubset<T, UserContactFindFirstArgs<ExtArgs>>): Prisma__UserContactClient<$Result.GetResult<Prisma.$UserContactPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first UserContact that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserContactFindFirstOrThrowArgs} args - Arguments to find a UserContact
+     * @example
+     * // Get one UserContact
+     * const userContact = await prisma.userContact.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends UserContactFindFirstOrThrowArgs>(args?: SelectSubset<T, UserContactFindFirstOrThrowArgs<ExtArgs>>): Prisma__UserContactClient<$Result.GetResult<Prisma.$UserContactPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more UserContacts that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserContactFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all UserContacts
+     * const userContacts = await prisma.userContact.findMany()
+     * 
+     * // Get first 10 UserContacts
+     * const userContacts = await prisma.userContact.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const userContactWithIdOnly = await prisma.userContact.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends UserContactFindManyArgs>(args?: SelectSubset<T, UserContactFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserContactPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a UserContact.
+     * @param {UserContactCreateArgs} args - Arguments to create a UserContact.
+     * @example
+     * // Create one UserContact
+     * const UserContact = await prisma.userContact.create({
+     *   data: {
+     *     // ... data to create a UserContact
+     *   }
+     * })
+     * 
+     */
+    create<T extends UserContactCreateArgs>(args: SelectSubset<T, UserContactCreateArgs<ExtArgs>>): Prisma__UserContactClient<$Result.GetResult<Prisma.$UserContactPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many UserContacts.
+     * @param {UserContactCreateManyArgs} args - Arguments to create many UserContacts.
+     * @example
+     * // Create many UserContacts
+     * const userContact = await prisma.userContact.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends UserContactCreateManyArgs>(args?: SelectSubset<T, UserContactCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many UserContacts and returns the data saved in the database.
+     * @param {UserContactCreateManyAndReturnArgs} args - Arguments to create many UserContacts.
+     * @example
+     * // Create many UserContacts
+     * const userContact = await prisma.userContact.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many UserContacts and only return the `id`
+     * const userContactWithIdOnly = await prisma.userContact.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends UserContactCreateManyAndReturnArgs>(args?: SelectSubset<T, UserContactCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserContactPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a UserContact.
+     * @param {UserContactDeleteArgs} args - Arguments to delete one UserContact.
+     * @example
+     * // Delete one UserContact
+     * const UserContact = await prisma.userContact.delete({
+     *   where: {
+     *     // ... filter to delete one UserContact
+     *   }
+     * })
+     * 
+     */
+    delete<T extends UserContactDeleteArgs>(args: SelectSubset<T, UserContactDeleteArgs<ExtArgs>>): Prisma__UserContactClient<$Result.GetResult<Prisma.$UserContactPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one UserContact.
+     * @param {UserContactUpdateArgs} args - Arguments to update one UserContact.
+     * @example
+     * // Update one UserContact
+     * const userContact = await prisma.userContact.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends UserContactUpdateArgs>(args: SelectSubset<T, UserContactUpdateArgs<ExtArgs>>): Prisma__UserContactClient<$Result.GetResult<Prisma.$UserContactPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more UserContacts.
+     * @param {UserContactDeleteManyArgs} args - Arguments to filter UserContacts to delete.
+     * @example
+     * // Delete a few UserContacts
+     * const { count } = await prisma.userContact.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends UserContactDeleteManyArgs>(args?: SelectSubset<T, UserContactDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more UserContacts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserContactUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many UserContacts
+     * const userContact = await prisma.userContact.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends UserContactUpdateManyArgs>(args: SelectSubset<T, UserContactUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one UserContact.
+     * @param {UserContactUpsertArgs} args - Arguments to update or create a UserContact.
+     * @example
+     * // Update or create a UserContact
+     * const userContact = await prisma.userContact.upsert({
+     *   create: {
+     *     // ... data to create a UserContact
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the UserContact we want to update
+     *   }
+     * })
+     */
+    upsert<T extends UserContactUpsertArgs>(args: SelectSubset<T, UserContactUpsertArgs<ExtArgs>>): Prisma__UserContactClient<$Result.GetResult<Prisma.$UserContactPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of UserContacts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserContactCountArgs} args - Arguments to filter UserContacts to count.
+     * @example
+     * // Count the number of UserContacts
+     * const count = await prisma.userContact.count({
+     *   where: {
+     *     // ... the filter for the UserContacts we want to count
+     *   }
+     * })
+    **/
+    count<T extends UserContactCountArgs>(
+      args?: Subset<T, UserContactCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], UserContactCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a UserContact.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserContactAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends UserContactAggregateArgs>(args: Subset<T, UserContactAggregateArgs>): Prisma.PrismaPromise<GetUserContactAggregateType<T>>
+
+    /**
+     * Group by UserContact.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserContactGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends UserContactGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: UserContactGroupByArgs['orderBy'] }
+        : { orderBy?: UserContactGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, UserContactGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUserContactGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the UserContact model
+   */
+  readonly fields: UserContactFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for UserContact.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__UserContactClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserContact$userArgs<ExtArgs> = {}>(args?: Subset<T, UserContact$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the UserContact model
+   */ 
+  interface UserContactFieldRefs {
+    readonly id: FieldRef<"UserContact", 'String'>
+    readonly phoneNumber: FieldRef<"UserContact", 'String'>
+    readonly address: FieldRef<"UserContact", 'String'>
+    readonly facebookUrl: FieldRef<"UserContact", 'String'>
+    readonly linkedinUrl: FieldRef<"UserContact", 'String'>
+    readonly twitterUrl: FieldRef<"UserContact", 'String'>
+    readonly instagramUrl: FieldRef<"UserContact", 'String'>
+    readonly createdAt: FieldRef<"UserContact", 'DateTime'>
+    readonly updatedAt: FieldRef<"UserContact", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * UserContact findUnique
+   */
+  export type UserContactFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserContact
+     */
+    select?: UserContactSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserContactInclude<ExtArgs> | null
+    /**
+     * Filter, which UserContact to fetch.
+     */
+    where: UserContactWhereUniqueInput
+  }
+
+  /**
+   * UserContact findUniqueOrThrow
+   */
+  export type UserContactFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserContact
+     */
+    select?: UserContactSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserContactInclude<ExtArgs> | null
+    /**
+     * Filter, which UserContact to fetch.
+     */
+    where: UserContactWhereUniqueInput
+  }
+
+  /**
+   * UserContact findFirst
+   */
+  export type UserContactFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserContact
+     */
+    select?: UserContactSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserContactInclude<ExtArgs> | null
+    /**
+     * Filter, which UserContact to fetch.
+     */
+    where?: UserContactWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserContacts to fetch.
+     */
+    orderBy?: UserContactOrderByWithRelationInput | UserContactOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UserContacts.
+     */
+    cursor?: UserContactWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserContacts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserContacts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UserContacts.
+     */
+    distinct?: UserContactScalarFieldEnum | UserContactScalarFieldEnum[]
+  }
+
+  /**
+   * UserContact findFirstOrThrow
+   */
+  export type UserContactFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserContact
+     */
+    select?: UserContactSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserContactInclude<ExtArgs> | null
+    /**
+     * Filter, which UserContact to fetch.
+     */
+    where?: UserContactWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserContacts to fetch.
+     */
+    orderBy?: UserContactOrderByWithRelationInput | UserContactOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UserContacts.
+     */
+    cursor?: UserContactWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserContacts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserContacts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UserContacts.
+     */
+    distinct?: UserContactScalarFieldEnum | UserContactScalarFieldEnum[]
+  }
+
+  /**
+   * UserContact findMany
+   */
+  export type UserContactFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserContact
+     */
+    select?: UserContactSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserContactInclude<ExtArgs> | null
+    /**
+     * Filter, which UserContacts to fetch.
+     */
+    where?: UserContactWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserContacts to fetch.
+     */
+    orderBy?: UserContactOrderByWithRelationInput | UserContactOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing UserContacts.
+     */
+    cursor?: UserContactWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserContacts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserContacts.
+     */
+    skip?: number
+    distinct?: UserContactScalarFieldEnum | UserContactScalarFieldEnum[]
+  }
+
+  /**
+   * UserContact create
+   */
+  export type UserContactCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserContact
+     */
+    select?: UserContactSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserContactInclude<ExtArgs> | null
+    /**
+     * The data needed to create a UserContact.
+     */
+    data: XOR<UserContactCreateInput, UserContactUncheckedCreateInput>
+  }
+
+  /**
+   * UserContact createMany
+   */
+  export type UserContactCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many UserContacts.
+     */
+    data: UserContactCreateManyInput | UserContactCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * UserContact createManyAndReturn
+   */
+  export type UserContactCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserContact
+     */
+    select?: UserContactSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many UserContacts.
+     */
+    data: UserContactCreateManyInput | UserContactCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * UserContact update
+   */
+  export type UserContactUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserContact
+     */
+    select?: UserContactSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserContactInclude<ExtArgs> | null
+    /**
+     * The data needed to update a UserContact.
+     */
+    data: XOR<UserContactUpdateInput, UserContactUncheckedUpdateInput>
+    /**
+     * Choose, which UserContact to update.
+     */
+    where: UserContactWhereUniqueInput
+  }
+
+  /**
+   * UserContact updateMany
+   */
+  export type UserContactUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update UserContacts.
+     */
+    data: XOR<UserContactUpdateManyMutationInput, UserContactUncheckedUpdateManyInput>
+    /**
+     * Filter which UserContacts to update
+     */
+    where?: UserContactWhereInput
+  }
+
+  /**
+   * UserContact upsert
+   */
+  export type UserContactUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserContact
+     */
+    select?: UserContactSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserContactInclude<ExtArgs> | null
+    /**
+     * The filter to search for the UserContact to update in case it exists.
+     */
+    where: UserContactWhereUniqueInput
+    /**
+     * In case the UserContact found by the `where` argument doesn't exist, create a new UserContact with this data.
+     */
+    create: XOR<UserContactCreateInput, UserContactUncheckedCreateInput>
+    /**
+     * In case the UserContact was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<UserContactUpdateInput, UserContactUncheckedUpdateInput>
+  }
+
+  /**
+   * UserContact delete
+   */
+  export type UserContactDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserContact
+     */
+    select?: UserContactSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserContactInclude<ExtArgs> | null
+    /**
+     * Filter which UserContact to delete.
+     */
+    where: UserContactWhereUniqueInput
+  }
+
+  /**
+   * UserContact deleteMany
+   */
+  export type UserContactDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which UserContacts to delete
+     */
+    where?: UserContactWhereInput
+  }
+
+  /**
+   * UserContact.user
+   */
+  export type UserContact$userArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * UserContact without action
+   */
+  export type UserContactDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserContact
+     */
+    select?: UserContactSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserContactInclude<ExtArgs> | null
   }
 
 
@@ -5715,980 +7797,6 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: XUserPreferencesInclude<ExtArgs> | null
-  }
-
-
-  /**
-   * Model UserDetail
-   */
-
-  export type AggregateUserDetail = {
-    _count: UserDetailCountAggregateOutputType | null
-    _avg: UserDetailAvgAggregateOutputType | null
-    _sum: UserDetailSumAggregateOutputType | null
-    _min: UserDetailMinAggregateOutputType | null
-    _max: UserDetailMaxAggregateOutputType | null
-  }
-
-  export type UserDetailAvgAggregateOutputType = {
-    municipalityId: number | null
-  }
-
-  export type UserDetailSumAggregateOutputType = {
-    municipalityId: number | null
-  }
-
-  export type UserDetailMinAggregateOutputType = {
-    id: string | null
-    gender: string | null
-    birthDate: Date | null
-    municipalityId: number | null
-  }
-
-  export type UserDetailMaxAggregateOutputType = {
-    id: string | null
-    gender: string | null
-    birthDate: Date | null
-    municipalityId: number | null
-  }
-
-  export type UserDetailCountAggregateOutputType = {
-    id: number
-    gender: number
-    birthDate: number
-    municipalityId: number
-    _all: number
-  }
-
-
-  export type UserDetailAvgAggregateInputType = {
-    municipalityId?: true
-  }
-
-  export type UserDetailSumAggregateInputType = {
-    municipalityId?: true
-  }
-
-  export type UserDetailMinAggregateInputType = {
-    id?: true
-    gender?: true
-    birthDate?: true
-    municipalityId?: true
-  }
-
-  export type UserDetailMaxAggregateInputType = {
-    id?: true
-    gender?: true
-    birthDate?: true
-    municipalityId?: true
-  }
-
-  export type UserDetailCountAggregateInputType = {
-    id?: true
-    gender?: true
-    birthDate?: true
-    municipalityId?: true
-    _all?: true
-  }
-
-  export type UserDetailAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which UserDetail to aggregate.
-     */
-    where?: UserDetailWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of UserDetails to fetch.
-     */
-    orderBy?: UserDetailOrderByWithRelationInput | UserDetailOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: UserDetailWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` UserDetails from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` UserDetails.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned UserDetails
-    **/
-    _count?: true | UserDetailCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: UserDetailAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: UserDetailSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: UserDetailMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: UserDetailMaxAggregateInputType
-  }
-
-  export type GetUserDetailAggregateType<T extends UserDetailAggregateArgs> = {
-        [P in keyof T & keyof AggregateUserDetail]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateUserDetail[P]>
-      : GetScalarType<T[P], AggregateUserDetail[P]>
-  }
-
-
-
-
-  export type UserDetailGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: UserDetailWhereInput
-    orderBy?: UserDetailOrderByWithAggregationInput | UserDetailOrderByWithAggregationInput[]
-    by: UserDetailScalarFieldEnum[] | UserDetailScalarFieldEnum
-    having?: UserDetailScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: UserDetailCountAggregateInputType | true
-    _avg?: UserDetailAvgAggregateInputType
-    _sum?: UserDetailSumAggregateInputType
-    _min?: UserDetailMinAggregateInputType
-    _max?: UserDetailMaxAggregateInputType
-  }
-
-  export type UserDetailGroupByOutputType = {
-    id: string
-    gender: string
-    birthDate: Date
-    municipalityId: number
-    _count: UserDetailCountAggregateOutputType | null
-    _avg: UserDetailAvgAggregateOutputType | null
-    _sum: UserDetailSumAggregateOutputType | null
-    _min: UserDetailMinAggregateOutputType | null
-    _max: UserDetailMaxAggregateOutputType | null
-  }
-
-  type GetUserDetailGroupByPayload<T extends UserDetailGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<UserDetailGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof UserDetailGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], UserDetailGroupByOutputType[P]>
-            : GetScalarType<T[P], UserDetailGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type UserDetailSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    gender?: boolean
-    birthDate?: boolean
-    municipalityId?: boolean
-    user?: boolean | UserDetail$userArgs<ExtArgs>
-    municipality?: boolean | MunicipalityDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["userDetail"]>
-
-  export type UserDetailSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    gender?: boolean
-    birthDate?: boolean
-    municipalityId?: boolean
-    municipality?: boolean | MunicipalityDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["userDetail"]>
-
-  export type UserDetailSelectScalar = {
-    id?: boolean
-    gender?: boolean
-    birthDate?: boolean
-    municipalityId?: boolean
-  }
-
-  export type UserDetailInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDetail$userArgs<ExtArgs>
-    municipality?: boolean | MunicipalityDefaultArgs<ExtArgs>
-  }
-  export type UserDetailIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    municipality?: boolean | MunicipalityDefaultArgs<ExtArgs>
-  }
-
-  export type $UserDetailPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "UserDetail"
-    objects: {
-      user: Prisma.$UserPayload<ExtArgs> | null
-      municipality: Prisma.$MunicipalityPayload<ExtArgs>
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      gender: string
-      birthDate: Date
-      municipalityId: number
-    }, ExtArgs["result"]["userDetail"]>
-    composites: {}
-  }
-
-  type UserDetailGetPayload<S extends boolean | null | undefined | UserDetailDefaultArgs> = $Result.GetResult<Prisma.$UserDetailPayload, S>
-
-  type UserDetailCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
-    Omit<UserDetailFindManyArgs, 'select' | 'include' | 'distinct'> & {
-      select?: UserDetailCountAggregateInputType | true
-    }
-
-  export interface UserDetailDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['UserDetail'], meta: { name: 'UserDetail' } }
-    /**
-     * Find zero or one UserDetail that matches the filter.
-     * @param {UserDetailFindUniqueArgs} args - Arguments to find a UserDetail
-     * @example
-     * // Get one UserDetail
-     * const userDetail = await prisma.userDetail.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends UserDetailFindUniqueArgs>(args: SelectSubset<T, UserDetailFindUniqueArgs<ExtArgs>>): Prisma__UserDetailClient<$Result.GetResult<Prisma.$UserDetailPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
-
-    /**
-     * Find one UserDetail that matches the filter or throw an error with `error.code='P2025'` 
-     * if no matches were found.
-     * @param {UserDetailFindUniqueOrThrowArgs} args - Arguments to find a UserDetail
-     * @example
-     * // Get one UserDetail
-     * const userDetail = await prisma.userDetail.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends UserDetailFindUniqueOrThrowArgs>(args: SelectSubset<T, UserDetailFindUniqueOrThrowArgs<ExtArgs>>): Prisma__UserDetailClient<$Result.GetResult<Prisma.$UserDetailPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
-
-    /**
-     * Find the first UserDetail that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserDetailFindFirstArgs} args - Arguments to find a UserDetail
-     * @example
-     * // Get one UserDetail
-     * const userDetail = await prisma.userDetail.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends UserDetailFindFirstArgs>(args?: SelectSubset<T, UserDetailFindFirstArgs<ExtArgs>>): Prisma__UserDetailClient<$Result.GetResult<Prisma.$UserDetailPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
-
-    /**
-     * Find the first UserDetail that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserDetailFindFirstOrThrowArgs} args - Arguments to find a UserDetail
-     * @example
-     * // Get one UserDetail
-     * const userDetail = await prisma.userDetail.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends UserDetailFindFirstOrThrowArgs>(args?: SelectSubset<T, UserDetailFindFirstOrThrowArgs<ExtArgs>>): Prisma__UserDetailClient<$Result.GetResult<Prisma.$UserDetailPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
-
-    /**
-     * Find zero or more UserDetails that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserDetailFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all UserDetails
-     * const userDetails = await prisma.userDetail.findMany()
-     * 
-     * // Get first 10 UserDetails
-     * const userDetails = await prisma.userDetail.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const userDetailWithIdOnly = await prisma.userDetail.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends UserDetailFindManyArgs>(args?: SelectSubset<T, UserDetailFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserDetailPayload<ExtArgs>, T, "findMany">>
-
-    /**
-     * Create a UserDetail.
-     * @param {UserDetailCreateArgs} args - Arguments to create a UserDetail.
-     * @example
-     * // Create one UserDetail
-     * const UserDetail = await prisma.userDetail.create({
-     *   data: {
-     *     // ... data to create a UserDetail
-     *   }
-     * })
-     * 
-     */
-    create<T extends UserDetailCreateArgs>(args: SelectSubset<T, UserDetailCreateArgs<ExtArgs>>): Prisma__UserDetailClient<$Result.GetResult<Prisma.$UserDetailPayload<ExtArgs>, T, "create">, never, ExtArgs>
-
-    /**
-     * Create many UserDetails.
-     * @param {UserDetailCreateManyArgs} args - Arguments to create many UserDetails.
-     * @example
-     * // Create many UserDetails
-     * const userDetail = await prisma.userDetail.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends UserDetailCreateManyArgs>(args?: SelectSubset<T, UserDetailCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many UserDetails and returns the data saved in the database.
-     * @param {UserDetailCreateManyAndReturnArgs} args - Arguments to create many UserDetails.
-     * @example
-     * // Create many UserDetails
-     * const userDetail = await prisma.userDetail.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many UserDetails and only return the `id`
-     * const userDetailWithIdOnly = await prisma.userDetail.createManyAndReturn({ 
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends UserDetailCreateManyAndReturnArgs>(args?: SelectSubset<T, UserDetailCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserDetailPayload<ExtArgs>, T, "createManyAndReturn">>
-
-    /**
-     * Delete a UserDetail.
-     * @param {UserDetailDeleteArgs} args - Arguments to delete one UserDetail.
-     * @example
-     * // Delete one UserDetail
-     * const UserDetail = await prisma.userDetail.delete({
-     *   where: {
-     *     // ... filter to delete one UserDetail
-     *   }
-     * })
-     * 
-     */
-    delete<T extends UserDetailDeleteArgs>(args: SelectSubset<T, UserDetailDeleteArgs<ExtArgs>>): Prisma__UserDetailClient<$Result.GetResult<Prisma.$UserDetailPayload<ExtArgs>, T, "delete">, never, ExtArgs>
-
-    /**
-     * Update one UserDetail.
-     * @param {UserDetailUpdateArgs} args - Arguments to update one UserDetail.
-     * @example
-     * // Update one UserDetail
-     * const userDetail = await prisma.userDetail.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends UserDetailUpdateArgs>(args: SelectSubset<T, UserDetailUpdateArgs<ExtArgs>>): Prisma__UserDetailClient<$Result.GetResult<Prisma.$UserDetailPayload<ExtArgs>, T, "update">, never, ExtArgs>
-
-    /**
-     * Delete zero or more UserDetails.
-     * @param {UserDetailDeleteManyArgs} args - Arguments to filter UserDetails to delete.
-     * @example
-     * // Delete a few UserDetails
-     * const { count } = await prisma.userDetail.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends UserDetailDeleteManyArgs>(args?: SelectSubset<T, UserDetailDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more UserDetails.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserDetailUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many UserDetails
-     * const userDetail = await prisma.userDetail.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends UserDetailUpdateManyArgs>(args: SelectSubset<T, UserDetailUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create or update one UserDetail.
-     * @param {UserDetailUpsertArgs} args - Arguments to update or create a UserDetail.
-     * @example
-     * // Update or create a UserDetail
-     * const userDetail = await prisma.userDetail.upsert({
-     *   create: {
-     *     // ... data to create a UserDetail
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the UserDetail we want to update
-     *   }
-     * })
-     */
-    upsert<T extends UserDetailUpsertArgs>(args: SelectSubset<T, UserDetailUpsertArgs<ExtArgs>>): Prisma__UserDetailClient<$Result.GetResult<Prisma.$UserDetailPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
-
-
-    /**
-     * Count the number of UserDetails.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserDetailCountArgs} args - Arguments to filter UserDetails to count.
-     * @example
-     * // Count the number of UserDetails
-     * const count = await prisma.userDetail.count({
-     *   where: {
-     *     // ... the filter for the UserDetails we want to count
-     *   }
-     * })
-    **/
-    count<T extends UserDetailCountArgs>(
-      args?: Subset<T, UserDetailCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], UserDetailCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a UserDetail.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserDetailAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends UserDetailAggregateArgs>(args: Subset<T, UserDetailAggregateArgs>): Prisma.PrismaPromise<GetUserDetailAggregateType<T>>
-
-    /**
-     * Group by UserDetail.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserDetailGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends UserDetailGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: UserDetailGroupByArgs['orderBy'] }
-        : { orderBy?: UserDetailGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, UserDetailGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUserDetailGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the UserDetail model
-   */
-  readonly fields: UserDetailFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for UserDetail.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__UserDetailClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDetail$userArgs<ExtArgs> = {}>(args?: Subset<T, UserDetail$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
-    municipality<T extends MunicipalityDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MunicipalityDefaultArgs<ExtArgs>>): Prisma__MunicipalityClient<$Result.GetResult<Prisma.$MunicipalityPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the UserDetail model
-   */ 
-  interface UserDetailFieldRefs {
-    readonly id: FieldRef<"UserDetail", 'String'>
-    readonly gender: FieldRef<"UserDetail", 'String'>
-    readonly birthDate: FieldRef<"UserDetail", 'DateTime'>
-    readonly municipalityId: FieldRef<"UserDetail", 'Int'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * UserDetail findUnique
-   */
-  export type UserDetailFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserDetail
-     */
-    select?: UserDetailSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserDetailInclude<ExtArgs> | null
-    /**
-     * Filter, which UserDetail to fetch.
-     */
-    where: UserDetailWhereUniqueInput
-  }
-
-  /**
-   * UserDetail findUniqueOrThrow
-   */
-  export type UserDetailFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserDetail
-     */
-    select?: UserDetailSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserDetailInclude<ExtArgs> | null
-    /**
-     * Filter, which UserDetail to fetch.
-     */
-    where: UserDetailWhereUniqueInput
-  }
-
-  /**
-   * UserDetail findFirst
-   */
-  export type UserDetailFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserDetail
-     */
-    select?: UserDetailSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserDetailInclude<ExtArgs> | null
-    /**
-     * Filter, which UserDetail to fetch.
-     */
-    where?: UserDetailWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of UserDetails to fetch.
-     */
-    orderBy?: UserDetailOrderByWithRelationInput | UserDetailOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for UserDetails.
-     */
-    cursor?: UserDetailWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` UserDetails from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` UserDetails.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of UserDetails.
-     */
-    distinct?: UserDetailScalarFieldEnum | UserDetailScalarFieldEnum[]
-  }
-
-  /**
-   * UserDetail findFirstOrThrow
-   */
-  export type UserDetailFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserDetail
-     */
-    select?: UserDetailSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserDetailInclude<ExtArgs> | null
-    /**
-     * Filter, which UserDetail to fetch.
-     */
-    where?: UserDetailWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of UserDetails to fetch.
-     */
-    orderBy?: UserDetailOrderByWithRelationInput | UserDetailOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for UserDetails.
-     */
-    cursor?: UserDetailWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` UserDetails from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` UserDetails.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of UserDetails.
-     */
-    distinct?: UserDetailScalarFieldEnum | UserDetailScalarFieldEnum[]
-  }
-
-  /**
-   * UserDetail findMany
-   */
-  export type UserDetailFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserDetail
-     */
-    select?: UserDetailSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserDetailInclude<ExtArgs> | null
-    /**
-     * Filter, which UserDetails to fetch.
-     */
-    where?: UserDetailWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of UserDetails to fetch.
-     */
-    orderBy?: UserDetailOrderByWithRelationInput | UserDetailOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing UserDetails.
-     */
-    cursor?: UserDetailWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` UserDetails from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` UserDetails.
-     */
-    skip?: number
-    distinct?: UserDetailScalarFieldEnum | UserDetailScalarFieldEnum[]
-  }
-
-  /**
-   * UserDetail create
-   */
-  export type UserDetailCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserDetail
-     */
-    select?: UserDetailSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserDetailInclude<ExtArgs> | null
-    /**
-     * The data needed to create a UserDetail.
-     */
-    data: XOR<UserDetailCreateInput, UserDetailUncheckedCreateInput>
-  }
-
-  /**
-   * UserDetail createMany
-   */
-  export type UserDetailCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many UserDetails.
-     */
-    data: UserDetailCreateManyInput | UserDetailCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * UserDetail createManyAndReturn
-   */
-  export type UserDetailCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserDetail
-     */
-    select?: UserDetailSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * The data used to create many UserDetails.
-     */
-    data: UserDetailCreateManyInput | UserDetailCreateManyInput[]
-    skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserDetailIncludeCreateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * UserDetail update
-   */
-  export type UserDetailUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserDetail
-     */
-    select?: UserDetailSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserDetailInclude<ExtArgs> | null
-    /**
-     * The data needed to update a UserDetail.
-     */
-    data: XOR<UserDetailUpdateInput, UserDetailUncheckedUpdateInput>
-    /**
-     * Choose, which UserDetail to update.
-     */
-    where: UserDetailWhereUniqueInput
-  }
-
-  /**
-   * UserDetail updateMany
-   */
-  export type UserDetailUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update UserDetails.
-     */
-    data: XOR<UserDetailUpdateManyMutationInput, UserDetailUncheckedUpdateManyInput>
-    /**
-     * Filter which UserDetails to update
-     */
-    where?: UserDetailWhereInput
-  }
-
-  /**
-   * UserDetail upsert
-   */
-  export type UserDetailUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserDetail
-     */
-    select?: UserDetailSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserDetailInclude<ExtArgs> | null
-    /**
-     * The filter to search for the UserDetail to update in case it exists.
-     */
-    where: UserDetailWhereUniqueInput
-    /**
-     * In case the UserDetail found by the `where` argument doesn't exist, create a new UserDetail with this data.
-     */
-    create: XOR<UserDetailCreateInput, UserDetailUncheckedCreateInput>
-    /**
-     * In case the UserDetail was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<UserDetailUpdateInput, UserDetailUncheckedUpdateInput>
-  }
-
-  /**
-   * UserDetail delete
-   */
-  export type UserDetailDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserDetail
-     */
-    select?: UserDetailSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserDetailInclude<ExtArgs> | null
-    /**
-     * Filter which UserDetail to delete.
-     */
-    where: UserDetailWhereUniqueInput
-  }
-
-  /**
-   * UserDetail deleteMany
-   */
-  export type UserDetailDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which UserDetails to delete
-     */
-    where?: UserDetailWhereInput
-  }
-
-  /**
-   * UserDetail.user
-   */
-  export type UserDetail$userArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the User
-     */
-    select?: UserSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserInclude<ExtArgs> | null
-    where?: UserWhereInput
-  }
-
-  /**
-   * UserDetail without action
-   */
-  export type UserDetailDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserDetail
-     */
-    select?: UserDetailSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserDetailInclude<ExtArgs> | null
   }
 
 
@@ -7865,7 +8973,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     department?: boolean | DepartmentDefaultArgs<ExtArgs>
-    userDetail?: boolean | Municipality$userDetailArgs<ExtArgs>
+    userDetails?: boolean | Municipality$userDetailsArgs<ExtArgs>
     _count?: boolean | MunicipalityCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["municipality"]>
 
@@ -7888,7 +8996,7 @@ export namespace Prisma {
 
   export type MunicipalityInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     department?: boolean | DepartmentDefaultArgs<ExtArgs>
-    userDetail?: boolean | Municipality$userDetailArgs<ExtArgs>
+    userDetails?: boolean | Municipality$userDetailsArgs<ExtArgs>
     _count?: boolean | MunicipalityCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type MunicipalityIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7899,7 +9007,7 @@ export namespace Prisma {
     name: "Municipality"
     objects: {
       department: Prisma.$DepartmentPayload<ExtArgs>
-      userDetail: Prisma.$UserDetailPayload<ExtArgs>[]
+      userDetails: Prisma.$UserDetailPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -8272,7 +9380,7 @@ export namespace Prisma {
   export interface Prisma__MunicipalityClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     department<T extends DepartmentDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DepartmentDefaultArgs<ExtArgs>>): Prisma__DepartmentClient<$Result.GetResult<Prisma.$DepartmentPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
-    userDetail<T extends Municipality$userDetailArgs<ExtArgs> = {}>(args?: Subset<T, Municipality$userDetailArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserDetailPayload<ExtArgs>, T, "findMany"> | Null>
+    userDetails<T extends Municipality$userDetailsArgs<ExtArgs> = {}>(args?: Subset<T, Municipality$userDetailsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserDetailPayload<ExtArgs>, T, "findMany"> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8625,9 +9733,9 @@ export namespace Prisma {
   }
 
   /**
-   * Municipality.userDetail
+   * Municipality.userDetails
    */
-  export type Municipality$userDetailArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Municipality$userDetailsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the UserDetail
      */
@@ -8660,36 +9768,36 @@ export namespace Prisma {
 
 
   /**
-   * Model Comment
+   * Model PublicationComment
    */
 
-  export type AggregateComment = {
-    _count: CommentCountAggregateOutputType | null
-    _min: CommentMinAggregateOutputType | null
-    _max: CommentMaxAggregateOutputType | null
+  export type AggregatePublicationComment = {
+    _count: PublicationCommentCountAggregateOutputType | null
+    _min: PublicationCommentMinAggregateOutputType | null
+    _max: PublicationCommentMaxAggregateOutputType | null
   }
 
-  export type CommentMinAggregateOutputType = {
+  export type PublicationCommentMinAggregateOutputType = {
     id: string | null
-    userId: string | null
+    authorDetailId: string | null
     publicationId: string | null
     body: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
 
-  export type CommentMaxAggregateOutputType = {
+  export type PublicationCommentMaxAggregateOutputType = {
     id: string | null
-    userId: string | null
+    authorDetailId: string | null
     publicationId: string | null
     body: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
 
-  export type CommentCountAggregateOutputType = {
+  export type PublicationCommentCountAggregateOutputType = {
     id: number
-    userId: number
+    authorDetailId: number
     publicationId: number
     body: number
     createdAt: number
@@ -8698,27 +9806,27 @@ export namespace Prisma {
   }
 
 
-  export type CommentMinAggregateInputType = {
+  export type PublicationCommentMinAggregateInputType = {
     id?: true
-    userId?: true
+    authorDetailId?: true
     publicationId?: true
     body?: true
     createdAt?: true
     updatedAt?: true
   }
 
-  export type CommentMaxAggregateInputType = {
+  export type PublicationCommentMaxAggregateInputType = {
     id?: true
-    userId?: true
+    authorDetailId?: true
     publicationId?: true
     body?: true
     createdAt?: true
     updatedAt?: true
   }
 
-  export type CommentCountAggregateInputType = {
+  export type PublicationCommentCountAggregateInputType = {
     id?: true
-    userId?: true
+    authorDetailId?: true
     publicationId?: true
     body?: true
     createdAt?: true
@@ -8726,287 +9834,287 @@ export namespace Prisma {
     _all?: true
   }
 
-  export type CommentAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PublicationCommentAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which Comment to aggregate.
+     * Filter which PublicationComment to aggregate.
      */
-    where?: CommentWhereInput
+    where?: PublicationCommentWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Comments to fetch.
+     * Determine the order of PublicationComments to fetch.
      */
-    orderBy?: CommentOrderByWithRelationInput | CommentOrderByWithRelationInput[]
+    orderBy?: PublicationCommentOrderByWithRelationInput | PublicationCommentOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
      */
-    cursor?: CommentWhereUniqueInput
+    cursor?: PublicationCommentWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Comments from the position of the cursor.
+     * Take `±n` PublicationComments from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Comments.
+     * Skip the first `n` PublicationComments.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Count returned Comments
+     * Count returned PublicationComments
     **/
-    _count?: true | CommentCountAggregateInputType
+    _count?: true | PublicationCommentCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the minimum value
     **/
-    _min?: CommentMinAggregateInputType
+    _min?: PublicationCommentMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the maximum value
     **/
-    _max?: CommentMaxAggregateInputType
+    _max?: PublicationCommentMaxAggregateInputType
   }
 
-  export type GetCommentAggregateType<T extends CommentAggregateArgs> = {
-        [P in keyof T & keyof AggregateComment]: P extends '_count' | 'count'
+  export type GetPublicationCommentAggregateType<T extends PublicationCommentAggregateArgs> = {
+        [P in keyof T & keyof AggregatePublicationComment]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
-        : GetScalarType<T[P], AggregateComment[P]>
-      : GetScalarType<T[P], AggregateComment[P]>
+        : GetScalarType<T[P], AggregatePublicationComment[P]>
+      : GetScalarType<T[P], AggregatePublicationComment[P]>
   }
 
 
 
 
-  export type CommentGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: CommentWhereInput
-    orderBy?: CommentOrderByWithAggregationInput | CommentOrderByWithAggregationInput[]
-    by: CommentScalarFieldEnum[] | CommentScalarFieldEnum
-    having?: CommentScalarWhereWithAggregatesInput
+  export type PublicationCommentGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PublicationCommentWhereInput
+    orderBy?: PublicationCommentOrderByWithAggregationInput | PublicationCommentOrderByWithAggregationInput[]
+    by: PublicationCommentScalarFieldEnum[] | PublicationCommentScalarFieldEnum
+    having?: PublicationCommentScalarWhereWithAggregatesInput
     take?: number
     skip?: number
-    _count?: CommentCountAggregateInputType | true
-    _min?: CommentMinAggregateInputType
-    _max?: CommentMaxAggregateInputType
+    _count?: PublicationCommentCountAggregateInputType | true
+    _min?: PublicationCommentMinAggregateInputType
+    _max?: PublicationCommentMaxAggregateInputType
   }
 
-  export type CommentGroupByOutputType = {
+  export type PublicationCommentGroupByOutputType = {
     id: string
-    userId: string
+    authorDetailId: string
     publicationId: string
     body: string
     createdAt: Date
     updatedAt: Date
-    _count: CommentCountAggregateOutputType | null
-    _min: CommentMinAggregateOutputType | null
-    _max: CommentMaxAggregateOutputType | null
+    _count: PublicationCommentCountAggregateOutputType | null
+    _min: PublicationCommentMinAggregateOutputType | null
+    _max: PublicationCommentMaxAggregateOutputType | null
   }
 
-  type GetCommentGroupByPayload<T extends CommentGroupByArgs> = Prisma.PrismaPromise<
+  type GetPublicationCommentGroupByPayload<T extends PublicationCommentGroupByArgs> = Prisma.PrismaPromise<
     Array<
-      PickEnumerable<CommentGroupByOutputType, T['by']> &
+      PickEnumerable<PublicationCommentGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof CommentGroupByOutputType))]: P extends '_count'
+          [P in ((keyof T) & (keyof PublicationCommentGroupByOutputType))]: P extends '_count'
             ? T[P] extends boolean
               ? number
-              : GetScalarType<T[P], CommentGroupByOutputType[P]>
-            : GetScalarType<T[P], CommentGroupByOutputType[P]>
+              : GetScalarType<T[P], PublicationCommentGroupByOutputType[P]>
+            : GetScalarType<T[P], PublicationCommentGroupByOutputType[P]>
         }
       >
     >
 
 
-  export type CommentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type PublicationCommentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    userId?: boolean
+    authorDetailId?: boolean
     publicationId?: boolean
     body?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     venturePublication?: boolean | VenturePublicationDefaultArgs<ExtArgs>
-    User?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["comment"]>
+    User?: boolean | UserDetailDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["publicationComment"]>
 
-  export type CommentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type PublicationCommentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    userId?: boolean
+    authorDetailId?: boolean
     publicationId?: boolean
     body?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     venturePublication?: boolean | VenturePublicationDefaultArgs<ExtArgs>
-    User?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["comment"]>
+    User?: boolean | UserDetailDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["publicationComment"]>
 
-  export type CommentSelectScalar = {
+  export type PublicationCommentSelectScalar = {
     id?: boolean
-    userId?: boolean
+    authorDetailId?: boolean
     publicationId?: boolean
     body?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type CommentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PublicationCommentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     venturePublication?: boolean | VenturePublicationDefaultArgs<ExtArgs>
-    User?: boolean | UserDefaultArgs<ExtArgs>
+    User?: boolean | UserDetailDefaultArgs<ExtArgs>
   }
-  export type CommentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PublicationCommentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     venturePublication?: boolean | VenturePublicationDefaultArgs<ExtArgs>
-    User?: boolean | UserDefaultArgs<ExtArgs>
+    User?: boolean | UserDetailDefaultArgs<ExtArgs>
   }
 
-  export type $CommentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "Comment"
+  export type $PublicationCommentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PublicationComment"
     objects: {
       venturePublication: Prisma.$VenturePublicationPayload<ExtArgs>
-      User: Prisma.$UserPayload<ExtArgs>
+      User: Prisma.$UserDetailPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      userId: string
+      authorDetailId: string
       publicationId: string
       body: string
       createdAt: Date
       updatedAt: Date
-    }, ExtArgs["result"]["comment"]>
+    }, ExtArgs["result"]["publicationComment"]>
     composites: {}
   }
 
-  type CommentGetPayload<S extends boolean | null | undefined | CommentDefaultArgs> = $Result.GetResult<Prisma.$CommentPayload, S>
+  type PublicationCommentGetPayload<S extends boolean | null | undefined | PublicationCommentDefaultArgs> = $Result.GetResult<Prisma.$PublicationCommentPayload, S>
 
-  type CommentCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
-    Omit<CommentFindManyArgs, 'select' | 'include' | 'distinct'> & {
-      select?: CommentCountAggregateInputType | true
+  type PublicationCommentCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<PublicationCommentFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: PublicationCommentCountAggregateInputType | true
     }
 
-  export interface CommentDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Comment'], meta: { name: 'Comment' } }
+  export interface PublicationCommentDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PublicationComment'], meta: { name: 'PublicationComment' } }
     /**
-     * Find zero or one Comment that matches the filter.
-     * @param {CommentFindUniqueArgs} args - Arguments to find a Comment
+     * Find zero or one PublicationComment that matches the filter.
+     * @param {PublicationCommentFindUniqueArgs} args - Arguments to find a PublicationComment
      * @example
-     * // Get one Comment
-     * const comment = await prisma.comment.findUnique({
+     * // Get one PublicationComment
+     * const publicationComment = await prisma.publicationComment.findUnique({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUnique<T extends CommentFindUniqueArgs>(args: SelectSubset<T, CommentFindUniqueArgs<ExtArgs>>): Prisma__CommentClient<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+    findUnique<T extends PublicationCommentFindUniqueArgs>(args: SelectSubset<T, PublicationCommentFindUniqueArgs<ExtArgs>>): Prisma__PublicationCommentClient<$Result.GetResult<Prisma.$PublicationCommentPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
 
     /**
-     * Find one Comment that matches the filter or throw an error with `error.code='P2025'` 
+     * Find one PublicationComment that matches the filter or throw an error with `error.code='P2025'` 
      * if no matches were found.
-     * @param {CommentFindUniqueOrThrowArgs} args - Arguments to find a Comment
+     * @param {PublicationCommentFindUniqueOrThrowArgs} args - Arguments to find a PublicationComment
      * @example
-     * // Get one Comment
-     * const comment = await prisma.comment.findUniqueOrThrow({
+     * // Get one PublicationComment
+     * const publicationComment = await prisma.publicationComment.findUniqueOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUniqueOrThrow<T extends CommentFindUniqueOrThrowArgs>(args: SelectSubset<T, CommentFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CommentClient<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+    findUniqueOrThrow<T extends PublicationCommentFindUniqueOrThrowArgs>(args: SelectSubset<T, PublicationCommentFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PublicationCommentClient<$Result.GetResult<Prisma.$PublicationCommentPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
 
     /**
-     * Find the first Comment that matches the filter.
+     * Find the first PublicationComment that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {CommentFindFirstArgs} args - Arguments to find a Comment
+     * @param {PublicationCommentFindFirstArgs} args - Arguments to find a PublicationComment
      * @example
-     * // Get one Comment
-     * const comment = await prisma.comment.findFirst({
+     * // Get one PublicationComment
+     * const publicationComment = await prisma.publicationComment.findFirst({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirst<T extends CommentFindFirstArgs>(args?: SelectSubset<T, CommentFindFirstArgs<ExtArgs>>): Prisma__CommentClient<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+    findFirst<T extends PublicationCommentFindFirstArgs>(args?: SelectSubset<T, PublicationCommentFindFirstArgs<ExtArgs>>): Prisma__PublicationCommentClient<$Result.GetResult<Prisma.$PublicationCommentPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
 
     /**
-     * Find the first Comment that matches the filter or
+     * Find the first PublicationComment that matches the filter or
      * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {CommentFindFirstOrThrowArgs} args - Arguments to find a Comment
+     * @param {PublicationCommentFindFirstOrThrowArgs} args - Arguments to find a PublicationComment
      * @example
-     * // Get one Comment
-     * const comment = await prisma.comment.findFirstOrThrow({
+     * // Get one PublicationComment
+     * const publicationComment = await prisma.publicationComment.findFirstOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirstOrThrow<T extends CommentFindFirstOrThrowArgs>(args?: SelectSubset<T, CommentFindFirstOrThrowArgs<ExtArgs>>): Prisma__CommentClient<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+    findFirstOrThrow<T extends PublicationCommentFindFirstOrThrowArgs>(args?: SelectSubset<T, PublicationCommentFindFirstOrThrowArgs<ExtArgs>>): Prisma__PublicationCommentClient<$Result.GetResult<Prisma.$PublicationCommentPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
 
     /**
-     * Find zero or more Comments that matches the filter.
+     * Find zero or more PublicationComments that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {CommentFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @param {PublicationCommentFindManyArgs} args - Arguments to filter and select certain fields only.
      * @example
-     * // Get all Comments
-     * const comments = await prisma.comment.findMany()
+     * // Get all PublicationComments
+     * const publicationComments = await prisma.publicationComment.findMany()
      * 
-     * // Get first 10 Comments
-     * const comments = await prisma.comment.findMany({ take: 10 })
+     * // Get first 10 PublicationComments
+     * const publicationComments = await prisma.publicationComment.findMany({ take: 10 })
      * 
      * // Only select the `id`
-     * const commentWithIdOnly = await prisma.comment.findMany({ select: { id: true } })
+     * const publicationCommentWithIdOnly = await prisma.publicationComment.findMany({ select: { id: true } })
      * 
      */
-    findMany<T extends CommentFindManyArgs>(args?: SelectSubset<T, CommentFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findMany">>
+    findMany<T extends PublicationCommentFindManyArgs>(args?: SelectSubset<T, PublicationCommentFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PublicationCommentPayload<ExtArgs>, T, "findMany">>
 
     /**
-     * Create a Comment.
-     * @param {CommentCreateArgs} args - Arguments to create a Comment.
+     * Create a PublicationComment.
+     * @param {PublicationCommentCreateArgs} args - Arguments to create a PublicationComment.
      * @example
-     * // Create one Comment
-     * const Comment = await prisma.comment.create({
+     * // Create one PublicationComment
+     * const PublicationComment = await prisma.publicationComment.create({
      *   data: {
-     *     // ... data to create a Comment
+     *     // ... data to create a PublicationComment
      *   }
      * })
      * 
      */
-    create<T extends CommentCreateArgs>(args: SelectSubset<T, CommentCreateArgs<ExtArgs>>): Prisma__CommentClient<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "create">, never, ExtArgs>
+    create<T extends PublicationCommentCreateArgs>(args: SelectSubset<T, PublicationCommentCreateArgs<ExtArgs>>): Prisma__PublicationCommentClient<$Result.GetResult<Prisma.$PublicationCommentPayload<ExtArgs>, T, "create">, never, ExtArgs>
 
     /**
-     * Create many Comments.
-     * @param {CommentCreateManyArgs} args - Arguments to create many Comments.
+     * Create many PublicationComments.
+     * @param {PublicationCommentCreateManyArgs} args - Arguments to create many PublicationComments.
      * @example
-     * // Create many Comments
-     * const comment = await prisma.comment.createMany({
+     * // Create many PublicationComments
+     * const publicationComment = await prisma.publicationComment.createMany({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      *     
      */
-    createMany<T extends CommentCreateManyArgs>(args?: SelectSubset<T, CommentCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    createMany<T extends PublicationCommentCreateManyArgs>(args?: SelectSubset<T, PublicationCommentCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Create many Comments and returns the data saved in the database.
-     * @param {CommentCreateManyAndReturnArgs} args - Arguments to create many Comments.
+     * Create many PublicationComments and returns the data saved in the database.
+     * @param {PublicationCommentCreateManyAndReturnArgs} args - Arguments to create many PublicationComments.
      * @example
-     * // Create many Comments
-     * const comment = await prisma.comment.createManyAndReturn({
+     * // Create many PublicationComments
+     * const publicationComment = await prisma.publicationComment.createManyAndReturn({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      * 
-     * // Create many Comments and only return the `id`
-     * const commentWithIdOnly = await prisma.comment.createManyAndReturn({ 
+     * // Create many PublicationComments and only return the `id`
+     * const publicationCommentWithIdOnly = await prisma.publicationComment.createManyAndReturn({ 
      *   select: { id: true },
      *   data: [
      *     // ... provide data here
@@ -9016,28 +10124,28 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    createManyAndReturn<T extends CommentCreateManyAndReturnArgs>(args?: SelectSubset<T, CommentCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "createManyAndReturn">>
+    createManyAndReturn<T extends PublicationCommentCreateManyAndReturnArgs>(args?: SelectSubset<T, PublicationCommentCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PublicationCommentPayload<ExtArgs>, T, "createManyAndReturn">>
 
     /**
-     * Delete a Comment.
-     * @param {CommentDeleteArgs} args - Arguments to delete one Comment.
+     * Delete a PublicationComment.
+     * @param {PublicationCommentDeleteArgs} args - Arguments to delete one PublicationComment.
      * @example
-     * // Delete one Comment
-     * const Comment = await prisma.comment.delete({
+     * // Delete one PublicationComment
+     * const PublicationComment = await prisma.publicationComment.delete({
      *   where: {
-     *     // ... filter to delete one Comment
+     *     // ... filter to delete one PublicationComment
      *   }
      * })
      * 
      */
-    delete<T extends CommentDeleteArgs>(args: SelectSubset<T, CommentDeleteArgs<ExtArgs>>): Prisma__CommentClient<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+    delete<T extends PublicationCommentDeleteArgs>(args: SelectSubset<T, PublicationCommentDeleteArgs<ExtArgs>>): Prisma__PublicationCommentClient<$Result.GetResult<Prisma.$PublicationCommentPayload<ExtArgs>, T, "delete">, never, ExtArgs>
 
     /**
-     * Update one Comment.
-     * @param {CommentUpdateArgs} args - Arguments to update one Comment.
+     * Update one PublicationComment.
+     * @param {PublicationCommentUpdateArgs} args - Arguments to update one PublicationComment.
      * @example
-     * // Update one Comment
-     * const comment = await prisma.comment.update({
+     * // Update one PublicationComment
+     * const publicationComment = await prisma.publicationComment.update({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -9047,30 +10155,30 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends CommentUpdateArgs>(args: SelectSubset<T, CommentUpdateArgs<ExtArgs>>): Prisma__CommentClient<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "update">, never, ExtArgs>
+    update<T extends PublicationCommentUpdateArgs>(args: SelectSubset<T, PublicationCommentUpdateArgs<ExtArgs>>): Prisma__PublicationCommentClient<$Result.GetResult<Prisma.$PublicationCommentPayload<ExtArgs>, T, "update">, never, ExtArgs>
 
     /**
-     * Delete zero or more Comments.
-     * @param {CommentDeleteManyArgs} args - Arguments to filter Comments to delete.
+     * Delete zero or more PublicationComments.
+     * @param {PublicationCommentDeleteManyArgs} args - Arguments to filter PublicationComments to delete.
      * @example
-     * // Delete a few Comments
-     * const { count } = await prisma.comment.deleteMany({
+     * // Delete a few PublicationComments
+     * const { count } = await prisma.publicationComment.deleteMany({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      * 
      */
-    deleteMany<T extends CommentDeleteManyArgs>(args?: SelectSubset<T, CommentDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    deleteMany<T extends PublicationCommentDeleteManyArgs>(args?: SelectSubset<T, PublicationCommentDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more Comments.
+     * Update zero or more PublicationComments.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {CommentUpdateManyArgs} args - Arguments to update one or more rows.
+     * @param {PublicationCommentUpdateManyArgs} args - Arguments to update one or more rows.
      * @example
-     * // Update many Comments
-     * const comment = await prisma.comment.updateMany({
+     * // Update many PublicationComments
+     * const publicationComment = await prisma.publicationComment.updateMany({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -9080,56 +10188,56 @@ export namespace Prisma {
      * })
      * 
      */
-    updateMany<T extends CommentUpdateManyArgs>(args: SelectSubset<T, CommentUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    updateMany<T extends PublicationCommentUpdateManyArgs>(args: SelectSubset<T, PublicationCommentUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Create or update one Comment.
-     * @param {CommentUpsertArgs} args - Arguments to update or create a Comment.
+     * Create or update one PublicationComment.
+     * @param {PublicationCommentUpsertArgs} args - Arguments to update or create a PublicationComment.
      * @example
-     * // Update or create a Comment
-     * const comment = await prisma.comment.upsert({
+     * // Update or create a PublicationComment
+     * const publicationComment = await prisma.publicationComment.upsert({
      *   create: {
-     *     // ... data to create a Comment
+     *     // ... data to create a PublicationComment
      *   },
      *   update: {
      *     // ... in case it already exists, update
      *   },
      *   where: {
-     *     // ... the filter for the Comment we want to update
+     *     // ... the filter for the PublicationComment we want to update
      *   }
      * })
      */
-    upsert<T extends CommentUpsertArgs>(args: SelectSubset<T, CommentUpsertArgs<ExtArgs>>): Prisma__CommentClient<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+    upsert<T extends PublicationCommentUpsertArgs>(args: SelectSubset<T, PublicationCommentUpsertArgs<ExtArgs>>): Prisma__PublicationCommentClient<$Result.GetResult<Prisma.$PublicationCommentPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
 
 
     /**
-     * Count the number of Comments.
+     * Count the number of PublicationComments.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {CommentCountArgs} args - Arguments to filter Comments to count.
+     * @param {PublicationCommentCountArgs} args - Arguments to filter PublicationComments to count.
      * @example
-     * // Count the number of Comments
-     * const count = await prisma.comment.count({
+     * // Count the number of PublicationComments
+     * const count = await prisma.publicationComment.count({
      *   where: {
-     *     // ... the filter for the Comments we want to count
+     *     // ... the filter for the PublicationComments we want to count
      *   }
      * })
     **/
-    count<T extends CommentCountArgs>(
-      args?: Subset<T, CommentCountArgs>,
+    count<T extends PublicationCommentCountArgs>(
+      args?: Subset<T, PublicationCommentCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
         ? T['select'] extends true
           ? number
-          : GetScalarType<T['select'], CommentCountAggregateOutputType>
+          : GetScalarType<T['select'], PublicationCommentCountAggregateOutputType>
         : number
     >
 
     /**
-     * Allows you to perform aggregations operations on a Comment.
+     * Allows you to perform aggregations operations on a PublicationComment.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {CommentAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @param {PublicationCommentAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
      * @example
      * // Ordered by age ascending
      * // Where email contains prisma.io
@@ -9149,13 +10257,13 @@ export namespace Prisma {
      *   take: 10,
      * })
     **/
-    aggregate<T extends CommentAggregateArgs>(args: Subset<T, CommentAggregateArgs>): Prisma.PrismaPromise<GetCommentAggregateType<T>>
+    aggregate<T extends PublicationCommentAggregateArgs>(args: Subset<T, PublicationCommentAggregateArgs>): Prisma.PrismaPromise<GetPublicationCommentAggregateType<T>>
 
     /**
-     * Group by Comment.
+     * Group by PublicationComment.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {CommentGroupByArgs} args - Group by arguments.
+     * @param {PublicationCommentGroupByArgs} args - Group by arguments.
      * @example
      * // Group by city, order by createdAt, get count
      * const result = await prisma.user.groupBy({
@@ -9170,14 +10278,14 @@ export namespace Prisma {
      * 
     **/
     groupBy<
-      T extends CommentGroupByArgs,
+      T extends PublicationCommentGroupByArgs,
       HasSelectOrTake extends Or<
         Extends<'skip', Keys<T>>,
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: CommentGroupByArgs['orderBy'] }
-        : { orderBy?: CommentGroupByArgs['orderBy'] },
+        ? { orderBy: PublicationCommentGroupByArgs['orderBy'] }
+        : { orderBy?: PublicationCommentGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -9226,23 +10334,23 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, CommentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCommentGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+    >(args: SubsetIntersection<T, PublicationCommentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPublicationCommentGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
   /**
-   * Fields of the Comment model
+   * Fields of the PublicationComment model
    */
-  readonly fields: CommentFieldRefs;
+  readonly fields: PublicationCommentFieldRefs;
   }
 
   /**
-   * The delegate class that acts as a "Promise-like" for Comment.
+   * The delegate class that acts as a "Promise-like" for PublicationComment.
    * Why is this prefixed with `Prisma__`?
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__CommentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__PublicationCommentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     venturePublication<T extends VenturePublicationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, VenturePublicationDefaultArgs<ExtArgs>>): Prisma__VenturePublicationClient<$Result.GetResult<Prisma.$VenturePublicationPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
-    User<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    User<T extends UserDetailDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDetailDefaultArgs<ExtArgs>>): Prisma__UserDetailClient<$Result.GetResult<Prisma.$UserDetailPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -9269,344 +10377,344 @@ export namespace Prisma {
 
 
   /**
-   * Fields of the Comment model
+   * Fields of the PublicationComment model
    */ 
-  interface CommentFieldRefs {
-    readonly id: FieldRef<"Comment", 'String'>
-    readonly userId: FieldRef<"Comment", 'String'>
-    readonly publicationId: FieldRef<"Comment", 'String'>
-    readonly body: FieldRef<"Comment", 'String'>
-    readonly createdAt: FieldRef<"Comment", 'DateTime'>
-    readonly updatedAt: FieldRef<"Comment", 'DateTime'>
+  interface PublicationCommentFieldRefs {
+    readonly id: FieldRef<"PublicationComment", 'String'>
+    readonly authorDetailId: FieldRef<"PublicationComment", 'String'>
+    readonly publicationId: FieldRef<"PublicationComment", 'String'>
+    readonly body: FieldRef<"PublicationComment", 'String'>
+    readonly createdAt: FieldRef<"PublicationComment", 'DateTime'>
+    readonly updatedAt: FieldRef<"PublicationComment", 'DateTime'>
   }
     
 
   // Custom InputTypes
   /**
-   * Comment findUnique
+   * PublicationComment findUnique
    */
-  export type CommentFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PublicationCommentFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Comment
+     * Select specific fields to fetch from the PublicationComment
      */
-    select?: CommentSelect<ExtArgs> | null
+    select?: PublicationCommentSelect<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CommentInclude<ExtArgs> | null
+    include?: PublicationCommentInclude<ExtArgs> | null
     /**
-     * Filter, which Comment to fetch.
+     * Filter, which PublicationComment to fetch.
      */
-    where: CommentWhereUniqueInput
+    where: PublicationCommentWhereUniqueInput
   }
 
   /**
-   * Comment findUniqueOrThrow
+   * PublicationComment findUniqueOrThrow
    */
-  export type CommentFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PublicationCommentFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Comment
+     * Select specific fields to fetch from the PublicationComment
      */
-    select?: CommentSelect<ExtArgs> | null
+    select?: PublicationCommentSelect<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CommentInclude<ExtArgs> | null
+    include?: PublicationCommentInclude<ExtArgs> | null
     /**
-     * Filter, which Comment to fetch.
+     * Filter, which PublicationComment to fetch.
      */
-    where: CommentWhereUniqueInput
+    where: PublicationCommentWhereUniqueInput
   }
 
   /**
-   * Comment findFirst
+   * PublicationComment findFirst
    */
-  export type CommentFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PublicationCommentFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Comment
+     * Select specific fields to fetch from the PublicationComment
      */
-    select?: CommentSelect<ExtArgs> | null
+    select?: PublicationCommentSelect<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CommentInclude<ExtArgs> | null
+    include?: PublicationCommentInclude<ExtArgs> | null
     /**
-     * Filter, which Comment to fetch.
+     * Filter, which PublicationComment to fetch.
      */
-    where?: CommentWhereInput
+    where?: PublicationCommentWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Comments to fetch.
+     * Determine the order of PublicationComments to fetch.
      */
-    orderBy?: CommentOrderByWithRelationInput | CommentOrderByWithRelationInput[]
+    orderBy?: PublicationCommentOrderByWithRelationInput | PublicationCommentOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for Comments.
+     * Sets the position for searching for PublicationComments.
      */
-    cursor?: CommentWhereUniqueInput
+    cursor?: PublicationCommentWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Comments from the position of the cursor.
+     * Take `±n` PublicationComments from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Comments.
+     * Skip the first `n` PublicationComments.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of Comments.
+     * Filter by unique combinations of PublicationComments.
      */
-    distinct?: CommentScalarFieldEnum | CommentScalarFieldEnum[]
+    distinct?: PublicationCommentScalarFieldEnum | PublicationCommentScalarFieldEnum[]
   }
 
   /**
-   * Comment findFirstOrThrow
+   * PublicationComment findFirstOrThrow
    */
-  export type CommentFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PublicationCommentFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Comment
+     * Select specific fields to fetch from the PublicationComment
      */
-    select?: CommentSelect<ExtArgs> | null
+    select?: PublicationCommentSelect<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CommentInclude<ExtArgs> | null
+    include?: PublicationCommentInclude<ExtArgs> | null
     /**
-     * Filter, which Comment to fetch.
+     * Filter, which PublicationComment to fetch.
      */
-    where?: CommentWhereInput
+    where?: PublicationCommentWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Comments to fetch.
+     * Determine the order of PublicationComments to fetch.
      */
-    orderBy?: CommentOrderByWithRelationInput | CommentOrderByWithRelationInput[]
+    orderBy?: PublicationCommentOrderByWithRelationInput | PublicationCommentOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for Comments.
+     * Sets the position for searching for PublicationComments.
      */
-    cursor?: CommentWhereUniqueInput
+    cursor?: PublicationCommentWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Comments from the position of the cursor.
+     * Take `±n` PublicationComments from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Comments.
+     * Skip the first `n` PublicationComments.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of Comments.
+     * Filter by unique combinations of PublicationComments.
      */
-    distinct?: CommentScalarFieldEnum | CommentScalarFieldEnum[]
+    distinct?: PublicationCommentScalarFieldEnum | PublicationCommentScalarFieldEnum[]
   }
 
   /**
-   * Comment findMany
+   * PublicationComment findMany
    */
-  export type CommentFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PublicationCommentFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Comment
+     * Select specific fields to fetch from the PublicationComment
      */
-    select?: CommentSelect<ExtArgs> | null
+    select?: PublicationCommentSelect<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CommentInclude<ExtArgs> | null
+    include?: PublicationCommentInclude<ExtArgs> | null
     /**
-     * Filter, which Comments to fetch.
+     * Filter, which PublicationComments to fetch.
      */
-    where?: CommentWhereInput
+    where?: PublicationCommentWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Comments to fetch.
+     * Determine the order of PublicationComments to fetch.
      */
-    orderBy?: CommentOrderByWithRelationInput | CommentOrderByWithRelationInput[]
+    orderBy?: PublicationCommentOrderByWithRelationInput | PublicationCommentOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for listing Comments.
+     * Sets the position for listing PublicationComments.
      */
-    cursor?: CommentWhereUniqueInput
+    cursor?: PublicationCommentWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Comments from the position of the cursor.
+     * Take `±n` PublicationComments from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Comments.
+     * Skip the first `n` PublicationComments.
      */
     skip?: number
-    distinct?: CommentScalarFieldEnum | CommentScalarFieldEnum[]
+    distinct?: PublicationCommentScalarFieldEnum | PublicationCommentScalarFieldEnum[]
   }
 
   /**
-   * Comment create
+   * PublicationComment create
    */
-  export type CommentCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PublicationCommentCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Comment
+     * Select specific fields to fetch from the PublicationComment
      */
-    select?: CommentSelect<ExtArgs> | null
+    select?: PublicationCommentSelect<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CommentInclude<ExtArgs> | null
+    include?: PublicationCommentInclude<ExtArgs> | null
     /**
-     * The data needed to create a Comment.
+     * The data needed to create a PublicationComment.
      */
-    data: XOR<CommentCreateInput, CommentUncheckedCreateInput>
+    data: XOR<PublicationCommentCreateInput, PublicationCommentUncheckedCreateInput>
   }
 
   /**
-   * Comment createMany
+   * PublicationComment createMany
    */
-  export type CommentCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PublicationCommentCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to create many Comments.
+     * The data used to create many PublicationComments.
      */
-    data: CommentCreateManyInput | CommentCreateManyInput[]
+    data: PublicationCommentCreateManyInput | PublicationCommentCreateManyInput[]
     skipDuplicates?: boolean
   }
 
   /**
-   * Comment createManyAndReturn
+   * PublicationComment createManyAndReturn
    */
-  export type CommentCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PublicationCommentCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Comment
+     * Select specific fields to fetch from the PublicationComment
      */
-    select?: CommentSelectCreateManyAndReturn<ExtArgs> | null
+    select?: PublicationCommentSelectCreateManyAndReturn<ExtArgs> | null
     /**
-     * The data used to create many Comments.
+     * The data used to create many PublicationComments.
      */
-    data: CommentCreateManyInput | CommentCreateManyInput[]
+    data: PublicationCommentCreateManyInput | PublicationCommentCreateManyInput[]
     skipDuplicates?: boolean
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CommentIncludeCreateManyAndReturn<ExtArgs> | null
+    include?: PublicationCommentIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
-   * Comment update
+   * PublicationComment update
    */
-  export type CommentUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PublicationCommentUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Comment
+     * Select specific fields to fetch from the PublicationComment
      */
-    select?: CommentSelect<ExtArgs> | null
+    select?: PublicationCommentSelect<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CommentInclude<ExtArgs> | null
+    include?: PublicationCommentInclude<ExtArgs> | null
     /**
-     * The data needed to update a Comment.
+     * The data needed to update a PublicationComment.
      */
-    data: XOR<CommentUpdateInput, CommentUncheckedUpdateInput>
+    data: XOR<PublicationCommentUpdateInput, PublicationCommentUncheckedUpdateInput>
     /**
-     * Choose, which Comment to update.
+     * Choose, which PublicationComment to update.
      */
-    where: CommentWhereUniqueInput
+    where: PublicationCommentWhereUniqueInput
   }
 
   /**
-   * Comment updateMany
+   * PublicationComment updateMany
    */
-  export type CommentUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PublicationCommentUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to update Comments.
+     * The data used to update PublicationComments.
      */
-    data: XOR<CommentUpdateManyMutationInput, CommentUncheckedUpdateManyInput>
+    data: XOR<PublicationCommentUpdateManyMutationInput, PublicationCommentUncheckedUpdateManyInput>
     /**
-     * Filter which Comments to update
+     * Filter which PublicationComments to update
      */
-    where?: CommentWhereInput
+    where?: PublicationCommentWhereInput
   }
 
   /**
-   * Comment upsert
+   * PublicationComment upsert
    */
-  export type CommentUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PublicationCommentUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Comment
+     * Select specific fields to fetch from the PublicationComment
      */
-    select?: CommentSelect<ExtArgs> | null
+    select?: PublicationCommentSelect<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CommentInclude<ExtArgs> | null
+    include?: PublicationCommentInclude<ExtArgs> | null
     /**
-     * The filter to search for the Comment to update in case it exists.
+     * The filter to search for the PublicationComment to update in case it exists.
      */
-    where: CommentWhereUniqueInput
+    where: PublicationCommentWhereUniqueInput
     /**
-     * In case the Comment found by the `where` argument doesn't exist, create a new Comment with this data.
+     * In case the PublicationComment found by the `where` argument doesn't exist, create a new PublicationComment with this data.
      */
-    create: XOR<CommentCreateInput, CommentUncheckedCreateInput>
+    create: XOR<PublicationCommentCreateInput, PublicationCommentUncheckedCreateInput>
     /**
-     * In case the Comment was found with the provided `where` argument, update it with this data.
+     * In case the PublicationComment was found with the provided `where` argument, update it with this data.
      */
-    update: XOR<CommentUpdateInput, CommentUncheckedUpdateInput>
+    update: XOR<PublicationCommentUpdateInput, PublicationCommentUncheckedUpdateInput>
   }
 
   /**
-   * Comment delete
+   * PublicationComment delete
    */
-  export type CommentDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PublicationCommentDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Comment
+     * Select specific fields to fetch from the PublicationComment
      */
-    select?: CommentSelect<ExtArgs> | null
+    select?: PublicationCommentSelect<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CommentInclude<ExtArgs> | null
+    include?: PublicationCommentInclude<ExtArgs> | null
     /**
-     * Filter which Comment to delete.
+     * Filter which PublicationComment to delete.
      */
-    where: CommentWhereUniqueInput
+    where: PublicationCommentWhereUniqueInput
   }
 
   /**
-   * Comment deleteMany
+   * PublicationComment deleteMany
    */
-  export type CommentDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PublicationCommentDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which Comments to delete
+     * Filter which PublicationComments to delete
      */
-    where?: CommentWhereInput
+    where?: PublicationCommentWhereInput
   }
 
   /**
-   * Comment without action
+   * PublicationComment without action
    */
-  export type CommentDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PublicationCommentDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Comment
+     * Select specific fields to fetch from the PublicationComment
      */
-    select?: CommentSelect<ExtArgs> | null
+    select?: PublicationCommentSelect<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CommentInclude<ExtArgs> | null
+    include?: PublicationCommentInclude<ExtArgs> | null
   }
 
 
@@ -10616,7 +11724,7 @@ export namespace Prisma {
 
   export type EventDonationMinAggregateOutputType = {
     id: string | null
-    userId: string | null
+    donorDetailId: string | null
     eventId: string | null
     amount: number | null
     currency: string | null
@@ -10625,7 +11733,7 @@ export namespace Prisma {
 
   export type EventDonationMaxAggregateOutputType = {
     id: string | null
-    userId: string | null
+    donorDetailId: string | null
     eventId: string | null
     amount: number | null
     currency: string | null
@@ -10634,7 +11742,7 @@ export namespace Prisma {
 
   export type EventDonationCountAggregateOutputType = {
     id: number
-    userId: number
+    donorDetailId: number
     eventId: number
     amount: number
     currency: number
@@ -10653,7 +11761,7 @@ export namespace Prisma {
 
   export type EventDonationMinAggregateInputType = {
     id?: true
-    userId?: true
+    donorDetailId?: true
     eventId?: true
     amount?: true
     currency?: true
@@ -10662,7 +11770,7 @@ export namespace Prisma {
 
   export type EventDonationMaxAggregateInputType = {
     id?: true
-    userId?: true
+    donorDetailId?: true
     eventId?: true
     amount?: true
     currency?: true
@@ -10671,7 +11779,7 @@ export namespace Prisma {
 
   export type EventDonationCountAggregateInputType = {
     id?: true
-    userId?: true
+    donorDetailId?: true
     eventId?: true
     amount?: true
     currency?: true
@@ -10767,7 +11875,7 @@ export namespace Prisma {
 
   export type EventDonationGroupByOutputType = {
     id: string
-    userId: string
+    donorDetailId: string
     eventId: string
     amount: number
     currency: string
@@ -10795,29 +11903,29 @@ export namespace Prisma {
 
   export type EventDonationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    userId?: boolean
+    donorDetailId?: boolean
     eventId?: boolean
     amount?: boolean
     currency?: boolean
     createdAt?: boolean
     event?: boolean | VentureEventDefaultArgs<ExtArgs>
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    donor?: boolean | UserDetailDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["eventDonation"]>
 
   export type EventDonationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    userId?: boolean
+    donorDetailId?: boolean
     eventId?: boolean
     amount?: boolean
     currency?: boolean
     createdAt?: boolean
     event?: boolean | VentureEventDefaultArgs<ExtArgs>
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    donor?: boolean | UserDetailDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["eventDonation"]>
 
   export type EventDonationSelectScalar = {
     id?: boolean
-    userId?: boolean
+    donorDetailId?: boolean
     eventId?: boolean
     amount?: boolean
     currency?: boolean
@@ -10826,22 +11934,22 @@ export namespace Prisma {
 
   export type EventDonationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     event?: boolean | VentureEventDefaultArgs<ExtArgs>
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    donor?: boolean | UserDetailDefaultArgs<ExtArgs>
   }
   export type EventDonationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     event?: boolean | VentureEventDefaultArgs<ExtArgs>
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    donor?: boolean | UserDetailDefaultArgs<ExtArgs>
   }
 
   export type $EventDonationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "EventDonation"
     objects: {
       event: Prisma.$VentureEventPayload<ExtArgs>
-      user: Prisma.$UserPayload<ExtArgs>
+      donor: Prisma.$UserDetailPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      userId: string
+      donorDetailId: string
       eventId: string
       amount: number
       currency: string
@@ -11211,7 +12319,7 @@ export namespace Prisma {
   export interface Prisma__EventDonationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     event<T extends VentureEventDefaultArgs<ExtArgs> = {}>(args?: Subset<T, VentureEventDefaultArgs<ExtArgs>>): Prisma__VentureEventClient<$Result.GetResult<Prisma.$VentureEventPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    donor<T extends UserDetailDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDetailDefaultArgs<ExtArgs>>): Prisma__UserDetailClient<$Result.GetResult<Prisma.$UserDetailPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -11242,7 +12350,7 @@ export namespace Prisma {
    */ 
   interface EventDonationFieldRefs {
     readonly id: FieldRef<"EventDonation", 'String'>
-    readonly userId: FieldRef<"EventDonation", 'String'>
+    readonly donorDetailId: FieldRef<"EventDonation", 'String'>
     readonly eventId: FieldRef<"EventDonation", 'String'>
     readonly amount: FieldRef<"EventDonation", 'Float'>
     readonly currency: FieldRef<"EventDonation", 'String'>
@@ -11603,32 +12711,23 @@ export namespace Prisma {
 
   export type EventLocationMinAggregateOutputType = {
     id: string | null
-    ventureEventId: string | null
     lat: number | null
     lng: number | null
     description: string | null
-    createdAt: Date | null
-    updatedAt: Date | null
   }
 
   export type EventLocationMaxAggregateOutputType = {
     id: string | null
-    ventureEventId: string | null
     lat: number | null
     lng: number | null
     description: string | null
-    createdAt: Date | null
-    updatedAt: Date | null
   }
 
   export type EventLocationCountAggregateOutputType = {
     id: number
-    ventureEventId: number
     lat: number
     lng: number
     description: number
-    createdAt: number
-    updatedAt: number
     _all: number
   }
 
@@ -11645,32 +12744,23 @@ export namespace Prisma {
 
   export type EventLocationMinAggregateInputType = {
     id?: true
-    ventureEventId?: true
     lat?: true
     lng?: true
     description?: true
-    createdAt?: true
-    updatedAt?: true
   }
 
   export type EventLocationMaxAggregateInputType = {
     id?: true
-    ventureEventId?: true
     lat?: true
     lng?: true
     description?: true
-    createdAt?: true
-    updatedAt?: true
   }
 
   export type EventLocationCountAggregateInputType = {
     id?: true
-    ventureEventId?: true
     lat?: true
     lng?: true
     description?: true
-    createdAt?: true
-    updatedAt?: true
     _all?: true
   }
 
@@ -11762,12 +12852,9 @@ export namespace Prisma {
 
   export type EventLocationGroupByOutputType = {
     id: string
-    ventureEventId: string
     lat: number | null
     lng: number | null
     description: string | null
-    createdAt: Date
-    updatedAt: Date
     _count: EventLocationCountAggregateOutputType | null
     _avg: EventLocationAvgAggregateOutputType | null
     _sum: EventLocationSumAggregateOutputType | null
@@ -11791,56 +12878,41 @@ export namespace Prisma {
 
   export type EventLocationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    ventureEventId?: boolean
     lat?: boolean
     lng?: boolean
     description?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    event?: boolean | VentureEventDefaultArgs<ExtArgs>
+    event?: boolean | EventLocation$eventArgs<ExtArgs>
   }, ExtArgs["result"]["eventLocation"]>
 
   export type EventLocationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    ventureEventId?: boolean
     lat?: boolean
     lng?: boolean
     description?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    event?: boolean | VentureEventDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["eventLocation"]>
 
   export type EventLocationSelectScalar = {
     id?: boolean
-    ventureEventId?: boolean
     lat?: boolean
     lng?: boolean
     description?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
   }
 
   export type EventLocationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    event?: boolean | VentureEventDefaultArgs<ExtArgs>
+    event?: boolean | EventLocation$eventArgs<ExtArgs>
   }
-  export type EventLocationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    event?: boolean | VentureEventDefaultArgs<ExtArgs>
-  }
+  export type EventLocationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
 
   export type $EventLocationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "EventLocation"
     objects: {
-      event: Prisma.$VentureEventPayload<ExtArgs>
+      event: Prisma.$VentureEventPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      ventureEventId: string
       lat: number | null
       lng: number | null
       description: string | null
-      createdAt: Date
-      updatedAt: Date
     }, ExtArgs["result"]["eventLocation"]>
     composites: {}
   }
@@ -12205,7 +13277,7 @@ export namespace Prisma {
    */
   export interface Prisma__EventLocationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    event<T extends VentureEventDefaultArgs<ExtArgs> = {}>(args?: Subset<T, VentureEventDefaultArgs<ExtArgs>>): Prisma__VentureEventClient<$Result.GetResult<Prisma.$VentureEventPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    event<T extends EventLocation$eventArgs<ExtArgs> = {}>(args?: Subset<T, EventLocation$eventArgs<ExtArgs>>): Prisma__VentureEventClient<$Result.GetResult<Prisma.$VentureEventPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -12236,12 +13308,9 @@ export namespace Prisma {
    */ 
   interface EventLocationFieldRefs {
     readonly id: FieldRef<"EventLocation", 'String'>
-    readonly ventureEventId: FieldRef<"EventLocation", 'String'>
     readonly lat: FieldRef<"EventLocation", 'Float'>
     readonly lng: FieldRef<"EventLocation", 'Float'>
     readonly description: FieldRef<"EventLocation", 'String'>
-    readonly createdAt: FieldRef<"EventLocation", 'DateTime'>
-    readonly updatedAt: FieldRef<"EventLocation", 'DateTime'>
   }
     
 
@@ -12436,7 +13505,7 @@ export namespace Prisma {
     /**
      * The data needed to create a EventLocation.
      */
-    data: XOR<EventLocationCreateInput, EventLocationUncheckedCreateInput>
+    data?: XOR<EventLocationCreateInput, EventLocationUncheckedCreateInput>
   }
 
   /**
@@ -12463,10 +13532,6 @@ export namespace Prisma {
      */
     data: EventLocationCreateManyInput | EventLocationCreateManyInput[]
     skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: EventLocationIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -12557,6 +13622,21 @@ export namespace Prisma {
      * Filter which EventLocations to delete
      */
     where?: EventLocationWhereInput
+  }
+
+  /**
+   * EventLocation.event
+   */
+  export type EventLocation$eventArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VentureEvent
+     */
+    select?: VentureEventSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VentureEventInclude<ExtArgs> | null
+    where?: VentureEventWhereInput
   }
 
   /**
@@ -12792,7 +13872,7 @@ export namespace Prisma {
     description?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    venture?: boolean | VentureDefaultArgs<ExtArgs>
+    venture?: boolean | VentureLocation$ventureArgs<ExtArgs>
   }, ExtArgs["result"]["ventureLocation"]>
 
   export type VentureLocationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -12803,7 +13883,6 @@ export namespace Prisma {
     description?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    venture?: boolean | VentureDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["ventureLocation"]>
 
   export type VentureLocationSelectScalar = {
@@ -12817,16 +13896,14 @@ export namespace Prisma {
   }
 
   export type VentureLocationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    venture?: boolean | VentureDefaultArgs<ExtArgs>
+    venture?: boolean | VentureLocation$ventureArgs<ExtArgs>
   }
-  export type VentureLocationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    venture?: boolean | VentureDefaultArgs<ExtArgs>
-  }
+  export type VentureLocationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
 
   export type $VentureLocationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "VentureLocation"
     objects: {
-      venture: Prisma.$VenturePayload<ExtArgs>
+      venture: Prisma.$VenturePayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -13200,7 +14277,7 @@ export namespace Prisma {
    */
   export interface Prisma__VentureLocationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    venture<T extends VentureDefaultArgs<ExtArgs> = {}>(args?: Subset<T, VentureDefaultArgs<ExtArgs>>): Prisma__VentureClient<$Result.GetResult<Prisma.$VenturePayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    venture<T extends VentureLocation$ventureArgs<ExtArgs> = {}>(args?: Subset<T, VentureLocation$ventureArgs<ExtArgs>>): Prisma__VentureClient<$Result.GetResult<Prisma.$VenturePayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -13458,10 +14535,6 @@ export namespace Prisma {
      */
     data: VentureLocationCreateManyInput | VentureLocationCreateManyInput[]
     skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: VentureLocationIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -13555,6 +14628,21 @@ export namespace Prisma {
   }
 
   /**
+   * VentureLocation.venture
+   */
+  export type VentureLocation$ventureArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Venture
+     */
+    select?: VentureSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VentureInclude<ExtArgs> | null
+    where?: VentureWhereInput
+  }
+
+  /**
    * VentureLocation without action
    */
   export type VentureLocationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -13582,7 +14670,7 @@ export namespace Prisma {
   export type NotificationMinAggregateOutputType = {
     id: string | null
     title: string | null
-    userId: string | null
+    userDetailId: string | null
     type: $Enums.NotificationType | null
     status: $Enums.NotificationStatus | null
     description: string | null
@@ -13593,7 +14681,7 @@ export namespace Prisma {
   export type NotificationMaxAggregateOutputType = {
     id: string | null
     title: string | null
-    userId: string | null
+    userDetailId: string | null
     type: $Enums.NotificationType | null
     status: $Enums.NotificationStatus | null
     description: string | null
@@ -13604,7 +14692,7 @@ export namespace Prisma {
   export type NotificationCountAggregateOutputType = {
     id: number
     title: number
-    userId: number
+    userDetailId: number
     type: number
     status: number
     description: number
@@ -13617,7 +14705,7 @@ export namespace Prisma {
   export type NotificationMinAggregateInputType = {
     id?: true
     title?: true
-    userId?: true
+    userDetailId?: true
     type?: true
     status?: true
     description?: true
@@ -13628,7 +14716,7 @@ export namespace Prisma {
   export type NotificationMaxAggregateInputType = {
     id?: true
     title?: true
-    userId?: true
+    userDetailId?: true
     type?: true
     status?: true
     description?: true
@@ -13639,7 +14727,7 @@ export namespace Prisma {
   export type NotificationCountAggregateInputType = {
     id?: true
     title?: true
-    userId?: true
+    userDetailId?: true
     type?: true
     status?: true
     description?: true
@@ -13723,7 +14811,7 @@ export namespace Prisma {
   export type NotificationGroupByOutputType = {
     id: string
     title: string
-    userId: string
+    userDetailId: string
     type: $Enums.NotificationType
     status: $Enums.NotificationStatus
     description: string
@@ -13751,31 +14839,31 @@ export namespace Prisma {
   export type NotificationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     title?: boolean
-    userId?: boolean
+    userDetailId?: boolean
     type?: boolean
     status?: boolean
     description?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | UserDetailDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["notification"]>
 
   export type NotificationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     title?: boolean
-    userId?: boolean
+    userDetailId?: boolean
     type?: boolean
     status?: boolean
     description?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | UserDetailDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["notification"]>
 
   export type NotificationSelectScalar = {
     id?: boolean
     title?: boolean
-    userId?: boolean
+    userDetailId?: boolean
     type?: boolean
     status?: boolean
     description?: boolean
@@ -13784,21 +14872,21 @@ export namespace Prisma {
   }
 
   export type NotificationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | UserDetailDefaultArgs<ExtArgs>
   }
   export type NotificationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | UserDetailDefaultArgs<ExtArgs>
   }
 
   export type $NotificationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Notification"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs>
+      user: Prisma.$UserDetailPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       title: string
-      userId: string
+      userDetailId: string
       type: $Enums.NotificationType
       status: $Enums.NotificationStatus
       description: string
@@ -14168,7 +15256,7 @@ export namespace Prisma {
    */
   export interface Prisma__NotificationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    user<T extends UserDetailDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDetailDefaultArgs<ExtArgs>>): Prisma__UserDetailClient<$Result.GetResult<Prisma.$UserDetailPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -14200,7 +15288,7 @@ export namespace Prisma {
   interface NotificationFieldRefs {
     readonly id: FieldRef<"Notification", 'String'>
     readonly title: FieldRef<"Notification", 'String'>
-    readonly userId: FieldRef<"Notification", 'String'>
+    readonly userDetailId: FieldRef<"Notification", 'String'>
     readonly type: FieldRef<"Notification", 'NotificationType'>
     readonly status: FieldRef<"Notification", 'NotificationStatus'>
     readonly description: FieldRef<"Notification", 'String'>
@@ -14550,21 +15638,21 @@ export namespace Prisma {
 
   export type PublicationClapMinAggregateOutputType = {
     id: string | null
-    userId: string | null
+    userDetailId: string | null
     publicationId: string | null
     createdAt: Date | null
   }
 
   export type PublicationClapMaxAggregateOutputType = {
     id: string | null
-    userId: string | null
+    userDetailId: string | null
     publicationId: string | null
     createdAt: Date | null
   }
 
   export type PublicationClapCountAggregateOutputType = {
     id: number
-    userId: number
+    userDetailId: number
     publicationId: number
     createdAt: number
     _all: number
@@ -14573,21 +15661,21 @@ export namespace Prisma {
 
   export type PublicationClapMinAggregateInputType = {
     id?: true
-    userId?: true
+    userDetailId?: true
     publicationId?: true
     createdAt?: true
   }
 
   export type PublicationClapMaxAggregateInputType = {
     id?: true
-    userId?: true
+    userDetailId?: true
     publicationId?: true
     createdAt?: true
   }
 
   export type PublicationClapCountAggregateInputType = {
     id?: true
-    userId?: true
+    userDetailId?: true
     publicationId?: true
     createdAt?: true
     _all?: true
@@ -14667,7 +15755,7 @@ export namespace Prisma {
 
   export type PublicationClapGroupByOutputType = {
     id: string
-    userId: string
+    userDetailId: string
     publicationId: string
     createdAt: Date
     _count: PublicationClapCountAggregateOutputType | null
@@ -14691,47 +15779,47 @@ export namespace Prisma {
 
   export type PublicationClapSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    userId?: boolean
+    userDetailId?: boolean
     publicationId?: boolean
     createdAt?: boolean
     venturePublication?: boolean | VenturePublicationDefaultArgs<ExtArgs>
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | UserDetailDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["publicationClap"]>
 
   export type PublicationClapSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    userId?: boolean
+    userDetailId?: boolean
     publicationId?: boolean
     createdAt?: boolean
     venturePublication?: boolean | VenturePublicationDefaultArgs<ExtArgs>
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | UserDetailDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["publicationClap"]>
 
   export type PublicationClapSelectScalar = {
     id?: boolean
-    userId?: boolean
+    userDetailId?: boolean
     publicationId?: boolean
     createdAt?: boolean
   }
 
   export type PublicationClapInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     venturePublication?: boolean | VenturePublicationDefaultArgs<ExtArgs>
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | UserDetailDefaultArgs<ExtArgs>
   }
   export type PublicationClapIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     venturePublication?: boolean | VenturePublicationDefaultArgs<ExtArgs>
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | UserDetailDefaultArgs<ExtArgs>
   }
 
   export type $PublicationClapPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "PublicationClap"
     objects: {
       venturePublication: Prisma.$VenturePublicationPayload<ExtArgs>
-      user: Prisma.$UserPayload<ExtArgs>
+      user: Prisma.$UserDetailPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      userId: string
+      userDetailId: string
       publicationId: string
       createdAt: Date
     }, ExtArgs["result"]["publicationClap"]>
@@ -15099,7 +16187,7 @@ export namespace Prisma {
   export interface Prisma__PublicationClapClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     venturePublication<T extends VenturePublicationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, VenturePublicationDefaultArgs<ExtArgs>>): Prisma__VenturePublicationClient<$Result.GetResult<Prisma.$VenturePublicationPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    user<T extends UserDetailDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDetailDefaultArgs<ExtArgs>>): Prisma__UserDetailClient<$Result.GetResult<Prisma.$UserDetailPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -15130,7 +16218,7 @@ export namespace Prisma {
    */ 
   interface PublicationClapFieldRefs {
     readonly id: FieldRef<"PublicationClap", 'String'>
-    readonly userId: FieldRef<"PublicationClap", 'String'>
+    readonly userDetailId: FieldRef<"PublicationClap", 'String'>
     readonly publicationId: FieldRef<"PublicationClap", 'String'>
     readonly createdAt: FieldRef<"PublicationClap", 'DateTime'>
   }
@@ -17398,12 +18486,14 @@ export namespace Prisma {
     slug: string | null
     coverPhoto: string | null
     description: string | null
-    ownerId: string | null
     active: boolean | null
     verified: boolean | null
     detailId: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    ownerDetailId: string | null
+    locationId: string | null
+    ventureId: string | null
   }
 
   export type VentureMaxAggregateOutputType = {
@@ -17412,12 +18502,14 @@ export namespace Prisma {
     slug: string | null
     coverPhoto: string | null
     description: string | null
-    ownerId: string | null
     active: boolean | null
     verified: boolean | null
     detailId: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    ownerDetailId: string | null
+    locationId: string | null
+    ventureId: string | null
   }
 
   export type VentureCountAggregateOutputType = {
@@ -17426,12 +18518,14 @@ export namespace Prisma {
     slug: number
     coverPhoto: number
     description: number
-    ownerId: number
     active: number
     verified: number
     detailId: number
     createdAt: number
     updatedAt: number
+    ownerDetailId: number
+    locationId: number
+    ventureId: number
     _all: number
   }
 
@@ -17442,12 +18536,14 @@ export namespace Prisma {
     slug?: true
     coverPhoto?: true
     description?: true
-    ownerId?: true
     active?: true
     verified?: true
     detailId?: true
     createdAt?: true
     updatedAt?: true
+    ownerDetailId?: true
+    locationId?: true
+    ventureId?: true
   }
 
   export type VentureMaxAggregateInputType = {
@@ -17456,12 +18552,14 @@ export namespace Prisma {
     slug?: true
     coverPhoto?: true
     description?: true
-    ownerId?: true
     active?: true
     verified?: true
     detailId?: true
     createdAt?: true
     updatedAt?: true
+    ownerDetailId?: true
+    locationId?: true
+    ventureId?: true
   }
 
   export type VentureCountAggregateInputType = {
@@ -17470,12 +18568,14 @@ export namespace Prisma {
     slug?: true
     coverPhoto?: true
     description?: true
-    ownerId?: true
     active?: true
     verified?: true
     detailId?: true
     createdAt?: true
     updatedAt?: true
+    ownerDetailId?: true
+    locationId?: true
+    ventureId?: true
     _all?: true
   }
 
@@ -17557,12 +18657,14 @@ export namespace Prisma {
     slug: string
     coverPhoto: string
     description: string
-    ownerId: string
     active: boolean
     verified: boolean
     detailId: string
     createdAt: Date
     updatedAt: Date
+    ownerDetailId: string
+    locationId: string
+    ventureId: string
     _count: VentureCountAggregateOutputType | null
     _min: VentureMinAggregateOutputType | null
     _max: VentureMaxAggregateOutputType | null
@@ -17588,18 +18690,20 @@ export namespace Prisma {
     slug?: boolean
     coverPhoto?: boolean
     description?: boolean
-    ownerId?: boolean
     active?: boolean
     verified?: boolean
     detailId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    ownerDetailId?: boolean
+    locationId?: boolean
+    ventureId?: boolean
     detail?: boolean | VentureDetailDefaultArgs<ExtArgs>
-    owner?: boolean | UserDefaultArgs<ExtArgs>
-    XVentureVencureCategory?: boolean | Venture$XVentureVencureCategoryArgs<ExtArgs>
+    ownerDetail?: boolean | UserDetailDefaultArgs<ExtArgs>
     categories?: boolean | Venture$categoriesArgs<ExtArgs>
-    locations?: boolean | Venture$locationsArgs<ExtArgs>
-    contact?: boolean | Venture$contactArgs<ExtArgs>
+    location?: boolean | VentureLocationDefaultArgs<ExtArgs>
+    contact?: boolean | VentureContactDefaultArgs<ExtArgs>
+    XVentureVencureCategory?: boolean | Venture$XVentureVencureCategoryArgs<ExtArgs>
     _count?: boolean | VentureCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["venture"]>
 
@@ -17609,14 +18713,18 @@ export namespace Prisma {
     slug?: boolean
     coverPhoto?: boolean
     description?: boolean
-    ownerId?: boolean
     active?: boolean
     verified?: boolean
     detailId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    ownerDetailId?: boolean
+    locationId?: boolean
+    ventureId?: boolean
     detail?: boolean | VentureDetailDefaultArgs<ExtArgs>
-    owner?: boolean | UserDefaultArgs<ExtArgs>
+    ownerDetail?: boolean | UserDetailDefaultArgs<ExtArgs>
+    location?: boolean | VentureLocationDefaultArgs<ExtArgs>
+    contact?: boolean | VentureContactDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["venture"]>
 
   export type VentureSelectScalar = {
@@ -17625,37 +18733,41 @@ export namespace Prisma {
     slug?: boolean
     coverPhoto?: boolean
     description?: boolean
-    ownerId?: boolean
     active?: boolean
     verified?: boolean
     detailId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    ownerDetailId?: boolean
+    locationId?: boolean
+    ventureId?: boolean
   }
 
   export type VentureInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     detail?: boolean | VentureDetailDefaultArgs<ExtArgs>
-    owner?: boolean | UserDefaultArgs<ExtArgs>
-    XVentureVencureCategory?: boolean | Venture$XVentureVencureCategoryArgs<ExtArgs>
+    ownerDetail?: boolean | UserDetailDefaultArgs<ExtArgs>
     categories?: boolean | Venture$categoriesArgs<ExtArgs>
-    locations?: boolean | Venture$locationsArgs<ExtArgs>
-    contact?: boolean | Venture$contactArgs<ExtArgs>
+    location?: boolean | VentureLocationDefaultArgs<ExtArgs>
+    contact?: boolean | VentureContactDefaultArgs<ExtArgs>
+    XVentureVencureCategory?: boolean | Venture$XVentureVencureCategoryArgs<ExtArgs>
     _count?: boolean | VentureCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type VentureIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     detail?: boolean | VentureDetailDefaultArgs<ExtArgs>
-    owner?: boolean | UserDefaultArgs<ExtArgs>
+    ownerDetail?: boolean | UserDetailDefaultArgs<ExtArgs>
+    location?: boolean | VentureLocationDefaultArgs<ExtArgs>
+    contact?: boolean | VentureContactDefaultArgs<ExtArgs>
   }
 
   export type $VenturePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Venture"
     objects: {
       detail: Prisma.$VentureDetailPayload<ExtArgs>
-      owner: Prisma.$UserPayload<ExtArgs>
-      XVentureVencureCategory: Prisma.$XVentureVencureCategoryPayload<ExtArgs>[]
+      ownerDetail: Prisma.$UserDetailPayload<ExtArgs>
       categories: Prisma.$VentureCategoryPayload<ExtArgs>[]
-      locations: Prisma.$VentureLocationPayload<ExtArgs>[]
-      contact: Prisma.$VentureContactPayload<ExtArgs>[]
+      location: Prisma.$VentureLocationPayload<ExtArgs>
+      contact: Prisma.$VentureContactPayload<ExtArgs>
+      XVentureVencureCategory: Prisma.$XVentureVencureCategoryPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -17663,12 +18775,14 @@ export namespace Prisma {
       slug: string
       coverPhoto: string
       description: string
-      ownerId: string
       active: boolean
       verified: boolean
       detailId: string
       createdAt: Date
       updatedAt: Date
+      ownerDetailId: string
+      locationId: string
+      ventureId: string
     }, ExtArgs["result"]["venture"]>
     composites: {}
   }
@@ -18034,11 +19148,11 @@ export namespace Prisma {
   export interface Prisma__VentureClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     detail<T extends VentureDetailDefaultArgs<ExtArgs> = {}>(args?: Subset<T, VentureDetailDefaultArgs<ExtArgs>>): Prisma__VentureDetailClient<$Result.GetResult<Prisma.$VentureDetailPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
-    owner<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
-    XVentureVencureCategory<T extends Venture$XVentureVencureCategoryArgs<ExtArgs> = {}>(args?: Subset<T, Venture$XVentureVencureCategoryArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$XVentureVencureCategoryPayload<ExtArgs>, T, "findMany"> | Null>
+    ownerDetail<T extends UserDetailDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDetailDefaultArgs<ExtArgs>>): Prisma__UserDetailClient<$Result.GetResult<Prisma.$UserDetailPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
     categories<T extends Venture$categoriesArgs<ExtArgs> = {}>(args?: Subset<T, Venture$categoriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VentureCategoryPayload<ExtArgs>, T, "findMany"> | Null>
-    locations<T extends Venture$locationsArgs<ExtArgs> = {}>(args?: Subset<T, Venture$locationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VentureLocationPayload<ExtArgs>, T, "findMany"> | Null>
-    contact<T extends Venture$contactArgs<ExtArgs> = {}>(args?: Subset<T, Venture$contactArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VentureContactPayload<ExtArgs>, T, "findMany"> | Null>
+    location<T extends VentureLocationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, VentureLocationDefaultArgs<ExtArgs>>): Prisma__VentureLocationClient<$Result.GetResult<Prisma.$VentureLocationPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    contact<T extends VentureContactDefaultArgs<ExtArgs> = {}>(args?: Subset<T, VentureContactDefaultArgs<ExtArgs>>): Prisma__VentureContactClient<$Result.GetResult<Prisma.$VentureContactPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    XVentureVencureCategory<T extends Venture$XVentureVencureCategoryArgs<ExtArgs> = {}>(args?: Subset<T, Venture$XVentureVencureCategoryArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$XVentureVencureCategoryPayload<ExtArgs>, T, "findMany"> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -18073,12 +19187,14 @@ export namespace Prisma {
     readonly slug: FieldRef<"Venture", 'String'>
     readonly coverPhoto: FieldRef<"Venture", 'String'>
     readonly description: FieldRef<"Venture", 'String'>
-    readonly ownerId: FieldRef<"Venture", 'String'>
     readonly active: FieldRef<"Venture", 'Boolean'>
     readonly verified: FieldRef<"Venture", 'Boolean'>
     readonly detailId: FieldRef<"Venture", 'String'>
     readonly createdAt: FieldRef<"Venture", 'DateTime'>
     readonly updatedAt: FieldRef<"Venture", 'DateTime'>
+    readonly ownerDetailId: FieldRef<"Venture", 'String'>
+    readonly locationId: FieldRef<"Venture", 'String'>
+    readonly ventureId: FieldRef<"Venture", 'String'>
   }
     
 
@@ -18397,26 +19513,6 @@ export namespace Prisma {
   }
 
   /**
-   * Venture.XVentureVencureCategory
-   */
-  export type Venture$XVentureVencureCategoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the XVentureVencureCategory
-     */
-    select?: XVentureVencureCategorySelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: XVentureVencureCategoryInclude<ExtArgs> | null
-    where?: XVentureVencureCategoryWhereInput
-    orderBy?: XVentureVencureCategoryOrderByWithRelationInput | XVentureVencureCategoryOrderByWithRelationInput[]
-    cursor?: XVentureVencureCategoryWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: XVentureVencureCategoryScalarFieldEnum | XVentureVencureCategoryScalarFieldEnum[]
-  }
-
-  /**
    * Venture.categories
    */
   export type Venture$categoriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -18437,43 +19533,23 @@ export namespace Prisma {
   }
 
   /**
-   * Venture.locations
+   * Venture.XVentureVencureCategory
    */
-  export type Venture$locationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Venture$XVentureVencureCategoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the VentureLocation
+     * Select specific fields to fetch from the XVentureVencureCategory
      */
-    select?: VentureLocationSelect<ExtArgs> | null
+    select?: XVentureVencureCategorySelect<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: VentureLocationInclude<ExtArgs> | null
-    where?: VentureLocationWhereInput
-    orderBy?: VentureLocationOrderByWithRelationInput | VentureLocationOrderByWithRelationInput[]
-    cursor?: VentureLocationWhereUniqueInput
+    include?: XVentureVencureCategoryInclude<ExtArgs> | null
+    where?: XVentureVencureCategoryWhereInput
+    orderBy?: XVentureVencureCategoryOrderByWithRelationInput | XVentureVencureCategoryOrderByWithRelationInput[]
+    cursor?: XVentureVencureCategoryWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: VentureLocationScalarFieldEnum | VentureLocationScalarFieldEnum[]
-  }
-
-  /**
-   * Venture.contact
-   */
-  export type Venture$contactArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the VentureContact
-     */
-    select?: VentureContactSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: VentureContactInclude<ExtArgs> | null
-    where?: VentureContactWhereInput
-    orderBy?: VentureContactOrderByWithRelationInput | VentureContactOrderByWithRelationInput[]
-    cursor?: VentureContactWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: VentureContactScalarFieldEnum | VentureContactScalarFieldEnum[]
+    distinct?: XVentureVencureCategoryScalarFieldEnum | XVentureVencureCategoryScalarFieldEnum[]
   }
 
   /**
@@ -18503,9 +19579,7 @@ export namespace Prisma {
 
   export type VentureContactMinAggregateOutputType = {
     id: string | null
-    ventureId: string | null
     email: string | null
-    phoneCode: string | null
     phoneNumber: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -18513,9 +19587,7 @@ export namespace Prisma {
 
   export type VentureContactMaxAggregateOutputType = {
     id: string | null
-    ventureId: string | null
     email: string | null
-    phoneCode: string | null
     phoneNumber: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -18523,9 +19595,7 @@ export namespace Prisma {
 
   export type VentureContactCountAggregateOutputType = {
     id: number
-    ventureId: number
     email: number
-    phoneCode: number
     phoneNumber: number
     createdAt: number
     updatedAt: number
@@ -18535,9 +19605,7 @@ export namespace Prisma {
 
   export type VentureContactMinAggregateInputType = {
     id?: true
-    ventureId?: true
     email?: true
-    phoneCode?: true
     phoneNumber?: true
     createdAt?: true
     updatedAt?: true
@@ -18545,9 +19613,7 @@ export namespace Prisma {
 
   export type VentureContactMaxAggregateInputType = {
     id?: true
-    ventureId?: true
     email?: true
-    phoneCode?: true
     phoneNumber?: true
     createdAt?: true
     updatedAt?: true
@@ -18555,9 +19621,7 @@ export namespace Prisma {
 
   export type VentureContactCountAggregateInputType = {
     id?: true
-    ventureId?: true
     email?: true
-    phoneCode?: true
     phoneNumber?: true
     createdAt?: true
     updatedAt?: true
@@ -18638,9 +19702,7 @@ export namespace Prisma {
 
   export type VentureContactGroupByOutputType = {
     id: string
-    ventureId: string
     email: string
-    phoneCode: string
     phoneNumber: string
     createdAt: Date
     updatedAt: Date
@@ -18665,53 +19727,42 @@ export namespace Prisma {
 
   export type VentureContactSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    ventureId?: boolean
     email?: boolean
-    phoneCode?: boolean
     phoneNumber?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    venture?: boolean | VentureDefaultArgs<ExtArgs>
+    venture?: boolean | VentureContact$ventureArgs<ExtArgs>
   }, ExtArgs["result"]["ventureContact"]>
 
   export type VentureContactSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    ventureId?: boolean
     email?: boolean
-    phoneCode?: boolean
     phoneNumber?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    venture?: boolean | VentureDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["ventureContact"]>
 
   export type VentureContactSelectScalar = {
     id?: boolean
-    ventureId?: boolean
     email?: boolean
-    phoneCode?: boolean
     phoneNumber?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
   export type VentureContactInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    venture?: boolean | VentureDefaultArgs<ExtArgs>
+    venture?: boolean | VentureContact$ventureArgs<ExtArgs>
   }
-  export type VentureContactIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    venture?: boolean | VentureDefaultArgs<ExtArgs>
-  }
+  export type VentureContactIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
 
   export type $VentureContactPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "VentureContact"
     objects: {
-      venture: Prisma.$VenturePayload<ExtArgs>
+      venture: Prisma.$VenturePayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      ventureId: string
       email: string
-      phoneCode: string
       phoneNumber: string
       createdAt: Date
       updatedAt: Date
@@ -19079,7 +20130,7 @@ export namespace Prisma {
    */
   export interface Prisma__VentureContactClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    venture<T extends VentureDefaultArgs<ExtArgs> = {}>(args?: Subset<T, VentureDefaultArgs<ExtArgs>>): Prisma__VentureClient<$Result.GetResult<Prisma.$VenturePayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    venture<T extends VentureContact$ventureArgs<ExtArgs> = {}>(args?: Subset<T, VentureContact$ventureArgs<ExtArgs>>): Prisma__VentureClient<$Result.GetResult<Prisma.$VenturePayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -19110,9 +20161,7 @@ export namespace Prisma {
    */ 
   interface VentureContactFieldRefs {
     readonly id: FieldRef<"VentureContact", 'String'>
-    readonly ventureId: FieldRef<"VentureContact", 'String'>
     readonly email: FieldRef<"VentureContact", 'String'>
-    readonly phoneCode: FieldRef<"VentureContact", 'String'>
     readonly phoneNumber: FieldRef<"VentureContact", 'String'>
     readonly createdAt: FieldRef<"VentureContact", 'DateTime'>
     readonly updatedAt: FieldRef<"VentureContact", 'DateTime'>
@@ -19337,10 +20386,6 @@ export namespace Prisma {
      */
     data: VentureContactCreateManyInput | VentureContactCreateManyInput[]
     skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: VentureContactIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -19431,6 +20476,21 @@ export namespace Prisma {
      * Filter which VentureContacts to delete
      */
     where?: VentureContactWhereInput
+  }
+
+  /**
+   * VentureContact.venture
+   */
+  export type VentureContact$ventureArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Venture
+     */
+    select?: VentureSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VentureInclude<ExtArgs> | null
+    where?: VentureWhereInput
   }
 
   /**
@@ -20523,10 +21583,10 @@ export namespace Prisma {
     description?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    XUserPreferences?: boolean | VentureCategory$XUserPreferencesArgs<ExtArgs>
-    XVentureVencureCategory?: boolean | VentureCategory$XVentureVencureCategoryArgs<ExtArgs>
     users?: boolean | VentureCategory$usersArgs<ExtArgs>
     ventures?: boolean | VentureCategory$venturesArgs<ExtArgs>
+    XUserPreferences?: boolean | VentureCategory$XUserPreferencesArgs<ExtArgs>
+    XVentureVencureCategory?: boolean | VentureCategory$XVentureVencureCategoryArgs<ExtArgs>
     _count?: boolean | VentureCategoryCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["ventureCategory"]>
 
@@ -20549,10 +21609,10 @@ export namespace Prisma {
   }
 
   export type VentureCategoryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    XUserPreferences?: boolean | VentureCategory$XUserPreferencesArgs<ExtArgs>
-    XVentureVencureCategory?: boolean | VentureCategory$XVentureVencureCategoryArgs<ExtArgs>
     users?: boolean | VentureCategory$usersArgs<ExtArgs>
     ventures?: boolean | VentureCategory$venturesArgs<ExtArgs>
+    XUserPreferences?: boolean | VentureCategory$XUserPreferencesArgs<ExtArgs>
+    XVentureVencureCategory?: boolean | VentureCategory$XVentureVencureCategoryArgs<ExtArgs>
     _count?: boolean | VentureCategoryCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type VentureCategoryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -20560,10 +21620,10 @@ export namespace Prisma {
   export type $VentureCategoryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "VentureCategory"
     objects: {
-      XUserPreferences: Prisma.$XUserPreferencesPayload<ExtArgs>[]
-      XVentureVencureCategory: Prisma.$XVentureVencureCategoryPayload<ExtArgs>[]
       users: Prisma.$UserPayload<ExtArgs>[]
       ventures: Prisma.$VenturePayload<ExtArgs>[]
+      XUserPreferences: Prisma.$XUserPreferencesPayload<ExtArgs>[]
+      XVentureVencureCategory: Prisma.$XVentureVencureCategoryPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -20936,10 +21996,10 @@ export namespace Prisma {
    */
   export interface Prisma__VentureCategoryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    XUserPreferences<T extends VentureCategory$XUserPreferencesArgs<ExtArgs> = {}>(args?: Subset<T, VentureCategory$XUserPreferencesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$XUserPreferencesPayload<ExtArgs>, T, "findMany"> | Null>
-    XVentureVencureCategory<T extends VentureCategory$XVentureVencureCategoryArgs<ExtArgs> = {}>(args?: Subset<T, VentureCategory$XVentureVencureCategoryArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$XVentureVencureCategoryPayload<ExtArgs>, T, "findMany"> | Null>
     users<T extends VentureCategory$usersArgs<ExtArgs> = {}>(args?: Subset<T, VentureCategory$usersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany"> | Null>
     ventures<T extends VentureCategory$venturesArgs<ExtArgs> = {}>(args?: Subset<T, VentureCategory$venturesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VenturePayload<ExtArgs>, T, "findMany"> | Null>
+    XUserPreferences<T extends VentureCategory$XUserPreferencesArgs<ExtArgs> = {}>(args?: Subset<T, VentureCategory$XUserPreferencesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$XUserPreferencesPayload<ExtArgs>, T, "findMany"> | Null>
+    XVentureVencureCategory<T extends VentureCategory$XVentureVencureCategoryArgs<ExtArgs> = {}>(args?: Subset<T, VentureCategory$XVentureVencureCategoryArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$XVentureVencureCategoryPayload<ExtArgs>, T, "findMany"> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -21289,46 +22349,6 @@ export namespace Prisma {
   }
 
   /**
-   * VentureCategory.XUserPreferences
-   */
-  export type VentureCategory$XUserPreferencesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the XUserPreferences
-     */
-    select?: XUserPreferencesSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: XUserPreferencesInclude<ExtArgs> | null
-    where?: XUserPreferencesWhereInput
-    orderBy?: XUserPreferencesOrderByWithRelationInput | XUserPreferencesOrderByWithRelationInput[]
-    cursor?: XUserPreferencesWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: XUserPreferencesScalarFieldEnum | XUserPreferencesScalarFieldEnum[]
-  }
-
-  /**
-   * VentureCategory.XVentureVencureCategory
-   */
-  export type VentureCategory$XVentureVencureCategoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the XVentureVencureCategory
-     */
-    select?: XVentureVencureCategorySelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: XVentureVencureCategoryInclude<ExtArgs> | null
-    where?: XVentureVencureCategoryWhereInput
-    orderBy?: XVentureVencureCategoryOrderByWithRelationInput | XVentureVencureCategoryOrderByWithRelationInput[]
-    cursor?: XVentureVencureCategoryWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: XVentureVencureCategoryScalarFieldEnum | XVentureVencureCategoryScalarFieldEnum[]
-  }
-
-  /**
    * VentureCategory.users
    */
   export type VentureCategory$usersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -21366,6 +22386,46 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: VentureScalarFieldEnum | VentureScalarFieldEnum[]
+  }
+
+  /**
+   * VentureCategory.XUserPreferences
+   */
+  export type VentureCategory$XUserPreferencesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the XUserPreferences
+     */
+    select?: XUserPreferencesSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: XUserPreferencesInclude<ExtArgs> | null
+    where?: XUserPreferencesWhereInput
+    orderBy?: XUserPreferencesOrderByWithRelationInput | XUserPreferencesOrderByWithRelationInput[]
+    cursor?: XUserPreferencesWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: XUserPreferencesScalarFieldEnum | XUserPreferencesScalarFieldEnum[]
+  }
+
+  /**
+   * VentureCategory.XVentureVencureCategory
+   */
+  export type VentureCategory$XVentureVencureCategoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the XVentureVencureCategory
+     */
+    select?: XVentureVencureCategorySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: XVentureVencureCategoryInclude<ExtArgs> | null
+    where?: XVentureVencureCategoryWhereInput
+    orderBy?: XVentureVencureCategoryOrderByWithRelationInput | XVentureVencureCategoryOrderByWithRelationInput[]
+    cursor?: XVentureVencureCategoryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: XVentureVencureCategoryScalarFieldEnum | XVentureVencureCategoryScalarFieldEnum[]
   }
 
   /**
@@ -22418,6 +23478,7 @@ export namespace Prisma {
     endDate: Date | null
     createdAt: Date | null
     updatedAt: Date | null
+    locationId: string | null
   }
 
   export type VentureEventMaxAggregateOutputType = {
@@ -22430,6 +23491,7 @@ export namespace Prisma {
     endDate: Date | null
     createdAt: Date | null
     updatedAt: Date | null
+    locationId: string | null
   }
 
   export type VentureEventCountAggregateOutputType = {
@@ -22442,6 +23504,7 @@ export namespace Prisma {
     endDate: number
     createdAt: number
     updatedAt: number
+    locationId: number
     _all: number
   }
 
@@ -22456,6 +23519,7 @@ export namespace Prisma {
     endDate?: true
     createdAt?: true
     updatedAt?: true
+    locationId?: true
   }
 
   export type VentureEventMaxAggregateInputType = {
@@ -22468,6 +23532,7 @@ export namespace Prisma {
     endDate?: true
     createdAt?: true
     updatedAt?: true
+    locationId?: true
   }
 
   export type VentureEventCountAggregateInputType = {
@@ -22480,6 +23545,7 @@ export namespace Prisma {
     endDate?: true
     createdAt?: true
     updatedAt?: true
+    locationId?: true
     _all?: true
   }
 
@@ -22565,6 +23631,7 @@ export namespace Prisma {
     endDate: Date
     createdAt: Date
     updatedAt: Date
+    locationId: string
     _count: VentureEventCountAggregateOutputType | null
     _min: VentureEventMinAggregateOutputType | null
     _max: VentureEventMaxAggregateOutputType | null
@@ -22594,8 +23661,9 @@ export namespace Prisma {
     endDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    locationId?: boolean
     donations?: boolean | VentureEvent$donationsArgs<ExtArgs>
-    locations?: boolean | VentureEvent$locationsArgs<ExtArgs>
+    location?: boolean | EventLocationDefaultArgs<ExtArgs>
     ventureDetail?: boolean | VentureDetailDefaultArgs<ExtArgs>
     XEventCategory?: boolean | VentureEvent$XEventCategoryArgs<ExtArgs>
     EventCategory?: boolean | VentureEvent$EventCategoryArgs<ExtArgs>
@@ -22612,6 +23680,8 @@ export namespace Prisma {
     endDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    locationId?: boolean
+    location?: boolean | EventLocationDefaultArgs<ExtArgs>
     ventureDetail?: boolean | VentureDetailDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["ventureEvent"]>
 
@@ -22625,17 +23695,19 @@ export namespace Prisma {
     endDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    locationId?: boolean
   }
 
   export type VentureEventInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     donations?: boolean | VentureEvent$donationsArgs<ExtArgs>
-    locations?: boolean | VentureEvent$locationsArgs<ExtArgs>
+    location?: boolean | EventLocationDefaultArgs<ExtArgs>
     ventureDetail?: boolean | VentureDetailDefaultArgs<ExtArgs>
     XEventCategory?: boolean | VentureEvent$XEventCategoryArgs<ExtArgs>
     EventCategory?: boolean | VentureEvent$EventCategoryArgs<ExtArgs>
     _count?: boolean | VentureEventCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type VentureEventIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    location?: boolean | EventLocationDefaultArgs<ExtArgs>
     ventureDetail?: boolean | VentureDetailDefaultArgs<ExtArgs>
   }
 
@@ -22643,7 +23715,7 @@ export namespace Prisma {
     name: "VentureEvent"
     objects: {
       donations: Prisma.$EventDonationPayload<ExtArgs>[]
-      locations: Prisma.$EventLocationPayload<ExtArgs>[]
+      location: Prisma.$EventLocationPayload<ExtArgs>
       ventureDetail: Prisma.$VentureDetailPayload<ExtArgs>
       XEventCategory: Prisma.$XEventCategoryPayload<ExtArgs>[]
       EventCategory: Prisma.$EventCategoryPayload<ExtArgs>[]
@@ -22658,6 +23730,7 @@ export namespace Prisma {
       endDate: Date
       createdAt: Date
       updatedAt: Date
+      locationId: string
     }, ExtArgs["result"]["ventureEvent"]>
     composites: {}
   }
@@ -23023,7 +24096,7 @@ export namespace Prisma {
   export interface Prisma__VentureEventClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     donations<T extends VentureEvent$donationsArgs<ExtArgs> = {}>(args?: Subset<T, VentureEvent$donationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventDonationPayload<ExtArgs>, T, "findMany"> | Null>
-    locations<T extends VentureEvent$locationsArgs<ExtArgs> = {}>(args?: Subset<T, VentureEvent$locationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventLocationPayload<ExtArgs>, T, "findMany"> | Null>
+    location<T extends EventLocationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EventLocationDefaultArgs<ExtArgs>>): Prisma__EventLocationClient<$Result.GetResult<Prisma.$EventLocationPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
     ventureDetail<T extends VentureDetailDefaultArgs<ExtArgs> = {}>(args?: Subset<T, VentureDetailDefaultArgs<ExtArgs>>): Prisma__VentureDetailClient<$Result.GetResult<Prisma.$VentureDetailPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
     XEventCategory<T extends VentureEvent$XEventCategoryArgs<ExtArgs> = {}>(args?: Subset<T, VentureEvent$XEventCategoryArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$XEventCategoryPayload<ExtArgs>, T, "findMany"> | Null>
     EventCategory<T extends VentureEvent$EventCategoryArgs<ExtArgs> = {}>(args?: Subset<T, VentureEvent$EventCategoryArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventCategoryPayload<ExtArgs>, T, "findMany"> | Null>
@@ -23065,6 +24138,7 @@ export namespace Prisma {
     readonly endDate: FieldRef<"VentureEvent", 'DateTime'>
     readonly createdAt: FieldRef<"VentureEvent", 'DateTime'>
     readonly updatedAt: FieldRef<"VentureEvent", 'DateTime'>
+    readonly locationId: FieldRef<"VentureEvent", 'String'>
   }
     
 
@@ -23403,26 +24477,6 @@ export namespace Prisma {
   }
 
   /**
-   * VentureEvent.locations
-   */
-  export type VentureEvent$locationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the EventLocation
-     */
-    select?: EventLocationSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: EventLocationInclude<ExtArgs> | null
-    where?: EventLocationWhereInput
-    orderBy?: EventLocationOrderByWithRelationInput | EventLocationOrderByWithRelationInput[]
-    cursor?: EventLocationWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: EventLocationScalarFieldEnum | EventLocationScalarFieldEnum[]
-  }
-
-  /**
    * VentureEvent.XEventCategory
    */
   export type VentureEvent$XEventCategoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -23733,7 +24787,7 @@ export namespace Prisma {
   export type $VenturePublicationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "VenturePublication"
     objects: {
-      comments: Prisma.$CommentPayload<ExtArgs>[]
+      comments: Prisma.$PublicationCommentPayload<ExtArgs>[]
       claps: Prisma.$PublicationClapPayload<ExtArgs>[]
       contents: Prisma.$PublicationContentPayload<ExtArgs>[]
       detail: Prisma.$VentureDetailPayload<ExtArgs>
@@ -24110,7 +25164,7 @@ export namespace Prisma {
    */
   export interface Prisma__VenturePublicationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    comments<T extends VenturePublication$commentsArgs<ExtArgs> = {}>(args?: Subset<T, VenturePublication$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findMany"> | Null>
+    comments<T extends VenturePublication$commentsArgs<ExtArgs> = {}>(args?: Subset<T, VenturePublication$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PublicationCommentPayload<ExtArgs>, T, "findMany"> | Null>
     claps<T extends VenturePublication$clapsArgs<ExtArgs> = {}>(args?: Subset<T, VenturePublication$clapsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PublicationClapPayload<ExtArgs>, T, "findMany"> | Null>
     contents<T extends VenturePublication$contentsArgs<ExtArgs> = {}>(args?: Subset<T, VenturePublication$contentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PublicationContentPayload<ExtArgs>, T, "findMany"> | Null>
     detail<T extends VentureDetailDefaultArgs<ExtArgs> = {}>(args?: Subset<T, VentureDetailDefaultArgs<ExtArgs>>): Prisma__VentureDetailClient<$Result.GetResult<Prisma.$VentureDetailPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
@@ -24472,19 +25526,19 @@ export namespace Prisma {
    */
   export type VenturePublication$commentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Comment
+     * Select specific fields to fetch from the PublicationComment
      */
-    select?: CommentSelect<ExtArgs> | null
+    select?: PublicationCommentSelect<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CommentInclude<ExtArgs> | null
-    where?: CommentWhereInput
-    orderBy?: CommentOrderByWithRelationInput | CommentOrderByWithRelationInput[]
-    cursor?: CommentWhereUniqueInput
+    include?: PublicationCommentInclude<ExtArgs> | null
+    where?: PublicationCommentWhereInput
+    orderBy?: PublicationCommentOrderByWithRelationInput | PublicationCommentOrderByWithRelationInput[]
+    cursor?: PublicationCommentWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: CommentScalarFieldEnum | CommentScalarFieldEnum[]
+    distinct?: PublicationCommentScalarFieldEnum | PublicationCommentScalarFieldEnum[]
   }
 
   /**
@@ -24564,7 +25618,7 @@ export namespace Prisma {
 
   export type VentureSponsorshipMinAggregateOutputType = {
     id: string | null
-    sponsorId: string | null
+    sponsorDetailId: string | null
     ventureDetailId: string | null
     monthlyAmount: number | null
     createdAt: Date | null
@@ -24573,7 +25627,7 @@ export namespace Prisma {
 
   export type VentureSponsorshipMaxAggregateOutputType = {
     id: string | null
-    sponsorId: string | null
+    sponsorDetailId: string | null
     ventureDetailId: string | null
     monthlyAmount: number | null
     createdAt: Date | null
@@ -24582,7 +25636,7 @@ export namespace Prisma {
 
   export type VentureSponsorshipCountAggregateOutputType = {
     id: number
-    sponsorId: number
+    sponsorDetailId: number
     ventureDetailId: number
     monthlyAmount: number
     createdAt: number
@@ -24601,7 +25655,7 @@ export namespace Prisma {
 
   export type VentureSponsorshipMinAggregateInputType = {
     id?: true
-    sponsorId?: true
+    sponsorDetailId?: true
     ventureDetailId?: true
     monthlyAmount?: true
     createdAt?: true
@@ -24610,7 +25664,7 @@ export namespace Prisma {
 
   export type VentureSponsorshipMaxAggregateInputType = {
     id?: true
-    sponsorId?: true
+    sponsorDetailId?: true
     ventureDetailId?: true
     monthlyAmount?: true
     createdAt?: true
@@ -24619,7 +25673,7 @@ export namespace Prisma {
 
   export type VentureSponsorshipCountAggregateInputType = {
     id?: true
-    sponsorId?: true
+    sponsorDetailId?: true
     ventureDetailId?: true
     monthlyAmount?: true
     createdAt?: true
@@ -24715,7 +25769,7 @@ export namespace Prisma {
 
   export type VentureSponsorshipGroupByOutputType = {
     id: string
-    sponsorId: string
+    sponsorDetailId: string
     ventureDetailId: string
     monthlyAmount: number
     createdAt: Date
@@ -24743,29 +25797,29 @@ export namespace Prisma {
 
   export type VentureSponsorshipSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    sponsorId?: boolean
+    sponsorDetailId?: boolean
     ventureDetailId?: boolean
     monthlyAmount?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | UserDetailDefaultArgs<ExtArgs>
     detail?: boolean | VentureDetailDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["ventureSponsorship"]>
 
   export type VentureSponsorshipSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    sponsorId?: boolean
+    sponsorDetailId?: boolean
     ventureDetailId?: boolean
     monthlyAmount?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | UserDetailDefaultArgs<ExtArgs>
     detail?: boolean | VentureDetailDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["ventureSponsorship"]>
 
   export type VentureSponsorshipSelectScalar = {
     id?: boolean
-    sponsorId?: boolean
+    sponsorDetailId?: boolean
     ventureDetailId?: boolean
     monthlyAmount?: boolean
     createdAt?: boolean
@@ -24773,23 +25827,23 @@ export namespace Prisma {
   }
 
   export type VentureSponsorshipInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | UserDetailDefaultArgs<ExtArgs>
     detail?: boolean | VentureDetailDefaultArgs<ExtArgs>
   }
   export type VentureSponsorshipIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | UserDetailDefaultArgs<ExtArgs>
     detail?: boolean | VentureDetailDefaultArgs<ExtArgs>
   }
 
   export type $VentureSponsorshipPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "VentureSponsorship"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs>
+      user: Prisma.$UserDetailPayload<ExtArgs>
       detail: Prisma.$VentureDetailPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      sponsorId: string
+      sponsorDetailId: string
       ventureDetailId: string
       monthlyAmount: number
       createdAt: Date
@@ -25158,7 +26212,7 @@ export namespace Prisma {
    */
   export interface Prisma__VentureSponsorshipClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    user<T extends UserDetailDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDetailDefaultArgs<ExtArgs>>): Prisma__UserDetailClient<$Result.GetResult<Prisma.$UserDetailPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
     detail<T extends VentureDetailDefaultArgs<ExtArgs> = {}>(args?: Subset<T, VentureDetailDefaultArgs<ExtArgs>>): Prisma__VentureDetailClient<$Result.GetResult<Prisma.$VentureDetailPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -25190,7 +26244,7 @@ export namespace Prisma {
    */ 
   interface VentureSponsorshipFieldRefs {
     readonly id: FieldRef<"VentureSponsorship", 'String'>
-    readonly sponsorId: FieldRef<"VentureSponsorship", 'String'>
+    readonly sponsorDetailId: FieldRef<"VentureSponsorship", 'String'>
     readonly ventureDetailId: FieldRef<"VentureSponsorship", 'String'>
     readonly monthlyAmount: FieldRef<"VentureSponsorship", 'Float'>
     readonly createdAt: FieldRef<"VentureSponsorship", 'DateTime'>
@@ -25539,21 +26593,21 @@ export namespace Prisma {
 
   export type VentureSubscriptionMinAggregateOutputType = {
     id: string | null
-    subscriberId: string | null
+    subscriberDetailId: string | null
     ventureId: string | null
     createdAt: Date | null
   }
 
   export type VentureSubscriptionMaxAggregateOutputType = {
     id: string | null
-    subscriberId: string | null
+    subscriberDetailId: string | null
     ventureId: string | null
     createdAt: Date | null
   }
 
   export type VentureSubscriptionCountAggregateOutputType = {
     id: number
-    subscriberId: number
+    subscriberDetailId: number
     ventureId: number
     createdAt: number
     _all: number
@@ -25562,21 +26616,21 @@ export namespace Prisma {
 
   export type VentureSubscriptionMinAggregateInputType = {
     id?: true
-    subscriberId?: true
+    subscriberDetailId?: true
     ventureId?: true
     createdAt?: true
   }
 
   export type VentureSubscriptionMaxAggregateInputType = {
     id?: true
-    subscriberId?: true
+    subscriberDetailId?: true
     ventureId?: true
     createdAt?: true
   }
 
   export type VentureSubscriptionCountAggregateInputType = {
     id?: true
-    subscriberId?: true
+    subscriberDetailId?: true
     ventureId?: true
     createdAt?: true
     _all?: true
@@ -25656,7 +26710,7 @@ export namespace Prisma {
 
   export type VentureSubscriptionGroupByOutputType = {
     id: string
-    subscriberId: string
+    subscriberDetailId: string
     ventureId: string
     createdAt: Date
     _count: VentureSubscriptionCountAggregateOutputType | null
@@ -25680,47 +26734,47 @@ export namespace Prisma {
 
   export type VentureSubscriptionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    subscriberId?: boolean
+    subscriberDetailId?: boolean
     ventureId?: boolean
     createdAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | UserDetailDefaultArgs<ExtArgs>
     detail?: boolean | VentureDetailDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["ventureSubscription"]>
 
   export type VentureSubscriptionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    subscriberId?: boolean
+    subscriberDetailId?: boolean
     ventureId?: boolean
     createdAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | UserDetailDefaultArgs<ExtArgs>
     detail?: boolean | VentureDetailDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["ventureSubscription"]>
 
   export type VentureSubscriptionSelectScalar = {
     id?: boolean
-    subscriberId?: boolean
+    subscriberDetailId?: boolean
     ventureId?: boolean
     createdAt?: boolean
   }
 
   export type VentureSubscriptionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | UserDetailDefaultArgs<ExtArgs>
     detail?: boolean | VentureDetailDefaultArgs<ExtArgs>
   }
   export type VentureSubscriptionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | UserDetailDefaultArgs<ExtArgs>
     detail?: boolean | VentureDetailDefaultArgs<ExtArgs>
   }
 
   export type $VentureSubscriptionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "VentureSubscription"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs>
+      user: Prisma.$UserDetailPayload<ExtArgs>
       detail: Prisma.$VentureDetailPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      subscriberId: string
+      subscriberDetailId: string
       ventureId: string
       createdAt: Date
     }, ExtArgs["result"]["ventureSubscription"]>
@@ -26087,7 +27141,7 @@ export namespace Prisma {
    */
   export interface Prisma__VentureSubscriptionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    user<T extends UserDetailDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDetailDefaultArgs<ExtArgs>>): Prisma__UserDetailClient<$Result.GetResult<Prisma.$UserDetailPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
     detail<T extends VentureDetailDefaultArgs<ExtArgs> = {}>(args?: Subset<T, VentureDetailDefaultArgs<ExtArgs>>): Prisma__VentureDetailClient<$Result.GetResult<Prisma.$VentureDetailPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -26119,7 +27173,7 @@ export namespace Prisma {
    */ 
   interface VentureSubscriptionFieldRefs {
     readonly id: FieldRef<"VentureSubscription", 'String'>
-    readonly subscriberId: FieldRef<"VentureSubscription", 'String'>
+    readonly subscriberDetailId: FieldRef<"VentureSubscription", 'String'>
     readonly ventureId: FieldRef<"VentureSubscription", 'String'>
     readonly createdAt: FieldRef<"VentureSubscription", 'DateTime'>
   }
@@ -28308,19 +29362,12 @@ export namespace Prisma {
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     onboardingCompleted: 'onboardingCompleted',
-    userDetailId: 'userDetailId',
-    verified: 'verified'
+    detailId: 'detailId',
+    verified: 'verified',
+    contactId: 'contactId'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
-
-
-  export const XUserPreferencesScalarFieldEnum: {
-    userId: 'userId',
-    categoryId: 'categoryId'
-  };
-
-  export type XUserPreferencesScalarFieldEnum = (typeof XUserPreferencesScalarFieldEnum)[keyof typeof XUserPreferencesScalarFieldEnum]
 
 
   export const UserDetailScalarFieldEnum: {
@@ -28331,6 +29378,29 @@ export namespace Prisma {
   };
 
   export type UserDetailScalarFieldEnum = (typeof UserDetailScalarFieldEnum)[keyof typeof UserDetailScalarFieldEnum]
+
+
+  export const UserContactScalarFieldEnum: {
+    id: 'id',
+    phoneNumber: 'phoneNumber',
+    address: 'address',
+    facebookUrl: 'facebookUrl',
+    linkedinUrl: 'linkedinUrl',
+    twitterUrl: 'twitterUrl',
+    instagramUrl: 'instagramUrl',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type UserContactScalarFieldEnum = (typeof UserContactScalarFieldEnum)[keyof typeof UserContactScalarFieldEnum]
+
+
+  export const XUserPreferencesScalarFieldEnum: {
+    userId: 'userId',
+    categoryId: 'categoryId'
+  };
+
+  export type XUserPreferencesScalarFieldEnum = (typeof XUserPreferencesScalarFieldEnum)[keyof typeof XUserPreferencesScalarFieldEnum]
 
 
   export const DepartmentScalarFieldEnum: {
@@ -28354,16 +29424,16 @@ export namespace Prisma {
   export type MunicipalityScalarFieldEnum = (typeof MunicipalityScalarFieldEnum)[keyof typeof MunicipalityScalarFieldEnum]
 
 
-  export const CommentScalarFieldEnum: {
+  export const PublicationCommentScalarFieldEnum: {
     id: 'id',
-    userId: 'userId',
+    authorDetailId: 'authorDetailId',
     publicationId: 'publicationId',
     body: 'body',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
 
-  export type CommentScalarFieldEnum = (typeof CommentScalarFieldEnum)[keyof typeof CommentScalarFieldEnum]
+  export type PublicationCommentScalarFieldEnum = (typeof PublicationCommentScalarFieldEnum)[keyof typeof PublicationCommentScalarFieldEnum]
 
 
   export const EventCategoryScalarFieldEnum: {
@@ -28380,7 +29450,7 @@ export namespace Prisma {
 
   export const EventDonationScalarFieldEnum: {
     id: 'id',
-    userId: 'userId',
+    donorDetailId: 'donorDetailId',
     eventId: 'eventId',
     amount: 'amount',
     currency: 'currency',
@@ -28392,12 +29462,9 @@ export namespace Prisma {
 
   export const EventLocationScalarFieldEnum: {
     id: 'id',
-    ventureEventId: 'ventureEventId',
     lat: 'lat',
     lng: 'lng',
-    description: 'description',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    description: 'description'
   };
 
   export type EventLocationScalarFieldEnum = (typeof EventLocationScalarFieldEnum)[keyof typeof EventLocationScalarFieldEnum]
@@ -28419,7 +29486,7 @@ export namespace Prisma {
   export const NotificationScalarFieldEnum: {
     id: 'id',
     title: 'title',
-    userId: 'userId',
+    userDetailId: 'userDetailId',
     type: 'type',
     status: 'status',
     description: 'description',
@@ -28432,7 +29499,7 @@ export namespace Prisma {
 
   export const PublicationClapScalarFieldEnum: {
     id: 'id',
-    userId: 'userId',
+    userDetailId: 'userDetailId',
     publicationId: 'publicationId',
     createdAt: 'createdAt'
   };
@@ -28469,12 +29536,14 @@ export namespace Prisma {
     slug: 'slug',
     coverPhoto: 'coverPhoto',
     description: 'description',
-    ownerId: 'ownerId',
     active: 'active',
     verified: 'verified',
     detailId: 'detailId',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    ownerDetailId: 'ownerDetailId',
+    locationId: 'locationId',
+    ventureId: 'ventureId'
   };
 
   export type VentureScalarFieldEnum = (typeof VentureScalarFieldEnum)[keyof typeof VentureScalarFieldEnum]
@@ -28482,9 +29551,7 @@ export namespace Prisma {
 
   export const VentureContactScalarFieldEnum: {
     id: 'id',
-    ventureId: 'ventureId',
     email: 'email',
-    phoneCode: 'phoneCode',
     phoneNumber: 'phoneNumber',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -28531,7 +29598,8 @@ export namespace Prisma {
     startDate: 'startDate',
     endDate: 'endDate',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    locationId: 'locationId'
   };
 
   export type VentureEventScalarFieldEnum = (typeof VentureEventScalarFieldEnum)[keyof typeof VentureEventScalarFieldEnum]
@@ -28552,7 +29620,7 @@ export namespace Prisma {
 
   export const VentureSponsorshipScalarFieldEnum: {
     id: 'id',
-    sponsorId: 'sponsorId',
+    sponsorDetailId: 'sponsorDetailId',
     ventureDetailId: 'ventureDetailId',
     monthlyAmount: 'monthlyAmount',
     createdAt: 'createdAt',
@@ -28564,7 +29632,7 @@ export namespace Prisma {
 
   export const VentureSubscriptionScalarFieldEnum: {
     id: 'id',
-    subscriberId: 'subscriberId',
+    subscriberDetailId: 'subscriberDetailId',
     ventureId: 'ventureId',
     createdAt: 'createdAt'
   };
@@ -28768,16 +29836,11 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     onboardingCompleted?: BoolFilter<"User"> | boolean
-    userDetailId?: StringNullableFilter<"User"> | string | null
+    detailId?: StringNullableFilter<"User"> | string | null
     verified?: BoolFilter<"User"> | boolean
-    comments?: CommentListRelationFilter
-    eventDonations?: EventDonationListRelationFilter
-    notifications?: NotificationListRelationFilter
-    publicationClaps?: PublicationClapListRelationFilter
+    contactId?: StringNullableFilter<"User"> | string | null
     detail?: XOR<UserDetailNullableRelationFilter, UserDetailWhereInput> | null
-    ventures?: VentureListRelationFilter
-    ventureSponsorships?: VentureSponsorshipListRelationFilter
-    ventureSubscriptions?: VentureSubscriptionListRelationFilter
+    contact?: XOR<UserContactNullableRelationFilter, UserContactWhereInput> | null
     XUserPreferences?: XUserPreferencesListRelationFilter
     XUserRoles?: XUserRolesListRelationFilter
     preferences?: VentureCategoryListRelationFilter
@@ -28794,16 +29857,11 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     onboardingCompleted?: SortOrder
-    userDetailId?: SortOrderInput | SortOrder
+    detailId?: SortOrderInput | SortOrder
     verified?: SortOrder
-    comments?: CommentOrderByRelationAggregateInput
-    eventDonations?: EventDonationOrderByRelationAggregateInput
-    notifications?: NotificationOrderByRelationAggregateInput
-    publicationClaps?: PublicationClapOrderByRelationAggregateInput
+    contactId?: SortOrderInput | SortOrder
     detail?: UserDetailOrderByWithRelationInput
-    ventures?: VentureOrderByRelationAggregateInput
-    ventureSponsorships?: VentureSponsorshipOrderByRelationAggregateInput
-    ventureSubscriptions?: VentureSubscriptionOrderByRelationAggregateInput
+    contact?: UserContactOrderByWithRelationInput
     XUserPreferences?: XUserPreferencesOrderByRelationAggregateInput
     XUserRoles?: XUserRolesOrderByRelationAggregateInput
     preferences?: VentureCategoryOrderByRelationAggregateInput
@@ -28813,7 +29871,8 @@ export namespace Prisma {
   export type UserWhereUniqueInput = Prisma.AtLeast<{
     id?: string
     email?: string
-    userDetailId?: string
+    detailId?: string
+    contactId?: string
     AND?: UserWhereInput | UserWhereInput[]
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
@@ -28825,19 +29884,13 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"User"> | Date | string
     onboardingCompleted?: BoolFilter<"User"> | boolean
     verified?: BoolFilter<"User"> | boolean
-    comments?: CommentListRelationFilter
-    eventDonations?: EventDonationListRelationFilter
-    notifications?: NotificationListRelationFilter
-    publicationClaps?: PublicationClapListRelationFilter
     detail?: XOR<UserDetailNullableRelationFilter, UserDetailWhereInput> | null
-    ventures?: VentureListRelationFilter
-    ventureSponsorships?: VentureSponsorshipListRelationFilter
-    ventureSubscriptions?: VentureSubscriptionListRelationFilter
+    contact?: XOR<UserContactNullableRelationFilter, UserContactWhereInput> | null
     XUserPreferences?: XUserPreferencesListRelationFilter
     XUserRoles?: XUserRolesListRelationFilter
     preferences?: VentureCategoryListRelationFilter
     roles?: RoleListRelationFilter
-  }, "id" | "email" | "userDetailId">
+  }, "id" | "email" | "detailId" | "contactId">
 
   export type UserOrderByWithAggregationInput = {
     id?: SortOrder
@@ -28849,8 +29902,9 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     onboardingCompleted?: SortOrder
-    userDetailId?: SortOrderInput | SortOrder
+    detailId?: SortOrderInput | SortOrder
     verified?: SortOrder
+    contactId?: SortOrderInput | SortOrder
     _count?: UserCountOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
@@ -28869,8 +29923,160 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     onboardingCompleted?: BoolWithAggregatesFilter<"User"> | boolean
-    userDetailId?: StringNullableWithAggregatesFilter<"User"> | string | null
+    detailId?: StringNullableWithAggregatesFilter<"User"> | string | null
     verified?: BoolWithAggregatesFilter<"User"> | boolean
+    contactId?: StringNullableWithAggregatesFilter<"User"> | string | null
+  }
+
+  export type UserDetailWhereInput = {
+    AND?: UserDetailWhereInput | UserDetailWhereInput[]
+    OR?: UserDetailWhereInput[]
+    NOT?: UserDetailWhereInput | UserDetailWhereInput[]
+    id?: StringFilter<"UserDetail"> | string
+    gender?: StringFilter<"UserDetail"> | string
+    birthDate?: DateTimeFilter<"UserDetail"> | Date | string
+    municipalityId?: IntFilter<"UserDetail"> | number
+    user?: XOR<UserNullableRelationFilter, UserWhereInput> | null
+    municipality?: XOR<MunicipalityRelationFilter, MunicipalityWhereInput>
+    ventures?: VentureListRelationFilter
+    comments?: PublicationCommentListRelationFilter
+    donations?: EventDonationListRelationFilter
+    notifications?: NotificationListRelationFilter
+    claps?: PublicationClapListRelationFilter
+    sponsorships?: VentureSponsorshipListRelationFilter
+    subscriptions?: VentureSubscriptionListRelationFilter
+  }
+
+  export type UserDetailOrderByWithRelationInput = {
+    id?: SortOrder
+    gender?: SortOrder
+    birthDate?: SortOrder
+    municipalityId?: SortOrder
+    user?: UserOrderByWithRelationInput
+    municipality?: MunicipalityOrderByWithRelationInput
+    ventures?: VentureOrderByRelationAggregateInput
+    comments?: PublicationCommentOrderByRelationAggregateInput
+    donations?: EventDonationOrderByRelationAggregateInput
+    notifications?: NotificationOrderByRelationAggregateInput
+    claps?: PublicationClapOrderByRelationAggregateInput
+    sponsorships?: VentureSponsorshipOrderByRelationAggregateInput
+    subscriptions?: VentureSubscriptionOrderByRelationAggregateInput
+  }
+
+  export type UserDetailWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: UserDetailWhereInput | UserDetailWhereInput[]
+    OR?: UserDetailWhereInput[]
+    NOT?: UserDetailWhereInput | UserDetailWhereInput[]
+    gender?: StringFilter<"UserDetail"> | string
+    birthDate?: DateTimeFilter<"UserDetail"> | Date | string
+    municipalityId?: IntFilter<"UserDetail"> | number
+    user?: XOR<UserNullableRelationFilter, UserWhereInput> | null
+    municipality?: XOR<MunicipalityRelationFilter, MunicipalityWhereInput>
+    ventures?: VentureListRelationFilter
+    comments?: PublicationCommentListRelationFilter
+    donations?: EventDonationListRelationFilter
+    notifications?: NotificationListRelationFilter
+    claps?: PublicationClapListRelationFilter
+    sponsorships?: VentureSponsorshipListRelationFilter
+    subscriptions?: VentureSubscriptionListRelationFilter
+  }, "id">
+
+  export type UserDetailOrderByWithAggregationInput = {
+    id?: SortOrder
+    gender?: SortOrder
+    birthDate?: SortOrder
+    municipalityId?: SortOrder
+    _count?: UserDetailCountOrderByAggregateInput
+    _avg?: UserDetailAvgOrderByAggregateInput
+    _max?: UserDetailMaxOrderByAggregateInput
+    _min?: UserDetailMinOrderByAggregateInput
+    _sum?: UserDetailSumOrderByAggregateInput
+  }
+
+  export type UserDetailScalarWhereWithAggregatesInput = {
+    AND?: UserDetailScalarWhereWithAggregatesInput | UserDetailScalarWhereWithAggregatesInput[]
+    OR?: UserDetailScalarWhereWithAggregatesInput[]
+    NOT?: UserDetailScalarWhereWithAggregatesInput | UserDetailScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"UserDetail"> | string
+    gender?: StringWithAggregatesFilter<"UserDetail"> | string
+    birthDate?: DateTimeWithAggregatesFilter<"UserDetail"> | Date | string
+    municipalityId?: IntWithAggregatesFilter<"UserDetail"> | number
+  }
+
+  export type UserContactWhereInput = {
+    AND?: UserContactWhereInput | UserContactWhereInput[]
+    OR?: UserContactWhereInput[]
+    NOT?: UserContactWhereInput | UserContactWhereInput[]
+    id?: StringFilter<"UserContact"> | string
+    phoneNumber?: StringFilter<"UserContact"> | string
+    address?: StringFilter<"UserContact"> | string
+    facebookUrl?: StringFilter<"UserContact"> | string
+    linkedinUrl?: StringFilter<"UserContact"> | string
+    twitterUrl?: StringFilter<"UserContact"> | string
+    instagramUrl?: StringFilter<"UserContact"> | string
+    createdAt?: DateTimeFilter<"UserContact"> | Date | string
+    updatedAt?: DateTimeFilter<"UserContact"> | Date | string
+    user?: XOR<UserNullableRelationFilter, UserWhereInput> | null
+  }
+
+  export type UserContactOrderByWithRelationInput = {
+    id?: SortOrder
+    phoneNumber?: SortOrder
+    address?: SortOrder
+    facebookUrl?: SortOrder
+    linkedinUrl?: SortOrder
+    twitterUrl?: SortOrder
+    instagramUrl?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type UserContactWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: UserContactWhereInput | UserContactWhereInput[]
+    OR?: UserContactWhereInput[]
+    NOT?: UserContactWhereInput | UserContactWhereInput[]
+    phoneNumber?: StringFilter<"UserContact"> | string
+    address?: StringFilter<"UserContact"> | string
+    facebookUrl?: StringFilter<"UserContact"> | string
+    linkedinUrl?: StringFilter<"UserContact"> | string
+    twitterUrl?: StringFilter<"UserContact"> | string
+    instagramUrl?: StringFilter<"UserContact"> | string
+    createdAt?: DateTimeFilter<"UserContact"> | Date | string
+    updatedAt?: DateTimeFilter<"UserContact"> | Date | string
+    user?: XOR<UserNullableRelationFilter, UserWhereInput> | null
+  }, "id">
+
+  export type UserContactOrderByWithAggregationInput = {
+    id?: SortOrder
+    phoneNumber?: SortOrder
+    address?: SortOrder
+    facebookUrl?: SortOrder
+    linkedinUrl?: SortOrder
+    twitterUrl?: SortOrder
+    instagramUrl?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: UserContactCountOrderByAggregateInput
+    _max?: UserContactMaxOrderByAggregateInput
+    _min?: UserContactMinOrderByAggregateInput
+  }
+
+  export type UserContactScalarWhereWithAggregatesInput = {
+    AND?: UserContactScalarWhereWithAggregatesInput | UserContactScalarWhereWithAggregatesInput[]
+    OR?: UserContactScalarWhereWithAggregatesInput[]
+    NOT?: UserContactScalarWhereWithAggregatesInput | UserContactScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"UserContact"> | string
+    phoneNumber?: StringWithAggregatesFilter<"UserContact"> | string
+    address?: StringWithAggregatesFilter<"UserContact"> | string
+    facebookUrl?: StringWithAggregatesFilter<"UserContact"> | string
+    linkedinUrl?: StringWithAggregatesFilter<"UserContact"> | string
+    twitterUrl?: StringWithAggregatesFilter<"UserContact"> | string
+    instagramUrl?: StringWithAggregatesFilter<"UserContact"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"UserContact"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"UserContact"> | Date | string
   }
 
   export type XUserPreferencesWhereInput = {
@@ -28915,61 +30121,6 @@ export namespace Prisma {
     NOT?: XUserPreferencesScalarWhereWithAggregatesInput | XUserPreferencesScalarWhereWithAggregatesInput[]
     userId?: StringWithAggregatesFilter<"XUserPreferences"> | string
     categoryId?: StringWithAggregatesFilter<"XUserPreferences"> | string
-  }
-
-  export type UserDetailWhereInput = {
-    AND?: UserDetailWhereInput | UserDetailWhereInput[]
-    OR?: UserDetailWhereInput[]
-    NOT?: UserDetailWhereInput | UserDetailWhereInput[]
-    id?: StringFilter<"UserDetail"> | string
-    gender?: StringFilter<"UserDetail"> | string
-    birthDate?: DateTimeFilter<"UserDetail"> | Date | string
-    municipalityId?: IntFilter<"UserDetail"> | number
-    user?: XOR<UserNullableRelationFilter, UserWhereInput> | null
-    municipality?: XOR<MunicipalityRelationFilter, MunicipalityWhereInput>
-  }
-
-  export type UserDetailOrderByWithRelationInput = {
-    id?: SortOrder
-    gender?: SortOrder
-    birthDate?: SortOrder
-    municipalityId?: SortOrder
-    user?: UserOrderByWithRelationInput
-    municipality?: MunicipalityOrderByWithRelationInput
-  }
-
-  export type UserDetailWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    AND?: UserDetailWhereInput | UserDetailWhereInput[]
-    OR?: UserDetailWhereInput[]
-    NOT?: UserDetailWhereInput | UserDetailWhereInput[]
-    gender?: StringFilter<"UserDetail"> | string
-    birthDate?: DateTimeFilter<"UserDetail"> | Date | string
-    municipalityId?: IntFilter<"UserDetail"> | number
-    user?: XOR<UserNullableRelationFilter, UserWhereInput> | null
-    municipality?: XOR<MunicipalityRelationFilter, MunicipalityWhereInput>
-  }, "id">
-
-  export type UserDetailOrderByWithAggregationInput = {
-    id?: SortOrder
-    gender?: SortOrder
-    birthDate?: SortOrder
-    municipalityId?: SortOrder
-    _count?: UserDetailCountOrderByAggregateInput
-    _avg?: UserDetailAvgOrderByAggregateInput
-    _max?: UserDetailMaxOrderByAggregateInput
-    _min?: UserDetailMinOrderByAggregateInput
-    _sum?: UserDetailSumOrderByAggregateInput
-  }
-
-  export type UserDetailScalarWhereWithAggregatesInput = {
-    AND?: UserDetailScalarWhereWithAggregatesInput | UserDetailScalarWhereWithAggregatesInput[]
-    OR?: UserDetailScalarWhereWithAggregatesInput[]
-    NOT?: UserDetailScalarWhereWithAggregatesInput | UserDetailScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"UserDetail"> | string
-    gender?: StringWithAggregatesFilter<"UserDetail"> | string
-    birthDate?: DateTimeWithAggregatesFilter<"UserDetail"> | Date | string
-    municipalityId?: IntWithAggregatesFilter<"UserDetail"> | number
   }
 
   export type DepartmentWhereInput = {
@@ -29034,7 +30185,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Municipality"> | Date | string
     updatedAt?: DateTimeFilter<"Municipality"> | Date | string
     department?: XOR<DepartmentRelationFilter, DepartmentWhereInput>
-    userDetail?: UserDetailListRelationFilter
+    userDetails?: UserDetailListRelationFilter
   }
 
   export type MunicipalityOrderByWithRelationInput = {
@@ -29044,7 +30195,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     department?: DepartmentOrderByWithRelationInput
-    userDetail?: UserDetailOrderByRelationAggregateInput
+    userDetails?: UserDetailOrderByRelationAggregateInput
   }
 
   export type MunicipalityWhereUniqueInput = Prisma.AtLeast<{
@@ -29057,7 +30208,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Municipality"> | Date | string
     updatedAt?: DateTimeFilter<"Municipality"> | Date | string
     department?: XOR<DepartmentRelationFilter, DepartmentWhereInput>
-    userDetail?: UserDetailListRelationFilter
+    userDetails?: UserDetailListRelationFilter
   }, "id">
 
   export type MunicipalityOrderByWithAggregationInput = {
@@ -29084,67 +30235,67 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Municipality"> | Date | string
   }
 
-  export type CommentWhereInput = {
-    AND?: CommentWhereInput | CommentWhereInput[]
-    OR?: CommentWhereInput[]
-    NOT?: CommentWhereInput | CommentWhereInput[]
-    id?: StringFilter<"Comment"> | string
-    userId?: StringFilter<"Comment"> | string
-    publicationId?: StringFilter<"Comment"> | string
-    body?: StringFilter<"Comment"> | string
-    createdAt?: DateTimeFilter<"Comment"> | Date | string
-    updatedAt?: DateTimeFilter<"Comment"> | Date | string
+  export type PublicationCommentWhereInput = {
+    AND?: PublicationCommentWhereInput | PublicationCommentWhereInput[]
+    OR?: PublicationCommentWhereInput[]
+    NOT?: PublicationCommentWhereInput | PublicationCommentWhereInput[]
+    id?: StringFilter<"PublicationComment"> | string
+    authorDetailId?: StringFilter<"PublicationComment"> | string
+    publicationId?: StringFilter<"PublicationComment"> | string
+    body?: StringFilter<"PublicationComment"> | string
+    createdAt?: DateTimeFilter<"PublicationComment"> | Date | string
+    updatedAt?: DateTimeFilter<"PublicationComment"> | Date | string
     venturePublication?: XOR<VenturePublicationRelationFilter, VenturePublicationWhereInput>
-    User?: XOR<UserRelationFilter, UserWhereInput>
+    User?: XOR<UserDetailRelationFilter, UserDetailWhereInput>
   }
 
-  export type CommentOrderByWithRelationInput = {
+  export type PublicationCommentOrderByWithRelationInput = {
     id?: SortOrder
-    userId?: SortOrder
+    authorDetailId?: SortOrder
     publicationId?: SortOrder
     body?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     venturePublication?: VenturePublicationOrderByWithRelationInput
-    User?: UserOrderByWithRelationInput
+    User?: UserDetailOrderByWithRelationInput
   }
 
-  export type CommentWhereUniqueInput = Prisma.AtLeast<{
+  export type PublicationCommentWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    AND?: CommentWhereInput | CommentWhereInput[]
-    OR?: CommentWhereInput[]
-    NOT?: CommentWhereInput | CommentWhereInput[]
-    userId?: StringFilter<"Comment"> | string
-    publicationId?: StringFilter<"Comment"> | string
-    body?: StringFilter<"Comment"> | string
-    createdAt?: DateTimeFilter<"Comment"> | Date | string
-    updatedAt?: DateTimeFilter<"Comment"> | Date | string
+    AND?: PublicationCommentWhereInput | PublicationCommentWhereInput[]
+    OR?: PublicationCommentWhereInput[]
+    NOT?: PublicationCommentWhereInput | PublicationCommentWhereInput[]
+    authorDetailId?: StringFilter<"PublicationComment"> | string
+    publicationId?: StringFilter<"PublicationComment"> | string
+    body?: StringFilter<"PublicationComment"> | string
+    createdAt?: DateTimeFilter<"PublicationComment"> | Date | string
+    updatedAt?: DateTimeFilter<"PublicationComment"> | Date | string
     venturePublication?: XOR<VenturePublicationRelationFilter, VenturePublicationWhereInput>
-    User?: XOR<UserRelationFilter, UserWhereInput>
+    User?: XOR<UserDetailRelationFilter, UserDetailWhereInput>
   }, "id">
 
-  export type CommentOrderByWithAggregationInput = {
+  export type PublicationCommentOrderByWithAggregationInput = {
     id?: SortOrder
-    userId?: SortOrder
+    authorDetailId?: SortOrder
     publicationId?: SortOrder
     body?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    _count?: CommentCountOrderByAggregateInput
-    _max?: CommentMaxOrderByAggregateInput
-    _min?: CommentMinOrderByAggregateInput
+    _count?: PublicationCommentCountOrderByAggregateInput
+    _max?: PublicationCommentMaxOrderByAggregateInput
+    _min?: PublicationCommentMinOrderByAggregateInput
   }
 
-  export type CommentScalarWhereWithAggregatesInput = {
-    AND?: CommentScalarWhereWithAggregatesInput | CommentScalarWhereWithAggregatesInput[]
-    OR?: CommentScalarWhereWithAggregatesInput[]
-    NOT?: CommentScalarWhereWithAggregatesInput | CommentScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"Comment"> | string
-    userId?: StringWithAggregatesFilter<"Comment"> | string
-    publicationId?: StringWithAggregatesFilter<"Comment"> | string
-    body?: StringWithAggregatesFilter<"Comment"> | string
-    createdAt?: DateTimeWithAggregatesFilter<"Comment"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"Comment"> | Date | string
+  export type PublicationCommentScalarWhereWithAggregatesInput = {
+    AND?: PublicationCommentScalarWhereWithAggregatesInput | PublicationCommentScalarWhereWithAggregatesInput[]
+    OR?: PublicationCommentScalarWhereWithAggregatesInput[]
+    NOT?: PublicationCommentScalarWhereWithAggregatesInput | PublicationCommentScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PublicationComment"> | string
+    authorDetailId?: StringWithAggregatesFilter<"PublicationComment"> | string
+    publicationId?: StringWithAggregatesFilter<"PublicationComment"> | string
+    body?: StringWithAggregatesFilter<"PublicationComment"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"PublicationComment"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"PublicationComment"> | Date | string
   }
 
   export type EventCategoryWhereInput = {
@@ -29215,24 +30366,24 @@ export namespace Prisma {
     OR?: EventDonationWhereInput[]
     NOT?: EventDonationWhereInput | EventDonationWhereInput[]
     id?: StringFilter<"EventDonation"> | string
-    userId?: StringFilter<"EventDonation"> | string
+    donorDetailId?: StringFilter<"EventDonation"> | string
     eventId?: StringFilter<"EventDonation"> | string
     amount?: FloatFilter<"EventDonation"> | number
     currency?: StringFilter<"EventDonation"> | string
     createdAt?: DateTimeFilter<"EventDonation"> | Date | string
     event?: XOR<VentureEventRelationFilter, VentureEventWhereInput>
-    user?: XOR<UserRelationFilter, UserWhereInput>
+    donor?: XOR<UserDetailRelationFilter, UserDetailWhereInput>
   }
 
   export type EventDonationOrderByWithRelationInput = {
     id?: SortOrder
-    userId?: SortOrder
+    donorDetailId?: SortOrder
     eventId?: SortOrder
     amount?: SortOrder
     currency?: SortOrder
     createdAt?: SortOrder
     event?: VentureEventOrderByWithRelationInput
-    user?: UserOrderByWithRelationInput
+    donor?: UserDetailOrderByWithRelationInput
   }
 
   export type EventDonationWhereUniqueInput = Prisma.AtLeast<{
@@ -29240,18 +30391,18 @@ export namespace Prisma {
     AND?: EventDonationWhereInput | EventDonationWhereInput[]
     OR?: EventDonationWhereInput[]
     NOT?: EventDonationWhereInput | EventDonationWhereInput[]
-    userId?: StringFilter<"EventDonation"> | string
+    donorDetailId?: StringFilter<"EventDonation"> | string
     eventId?: StringFilter<"EventDonation"> | string
     amount?: FloatFilter<"EventDonation"> | number
     currency?: StringFilter<"EventDonation"> | string
     createdAt?: DateTimeFilter<"EventDonation"> | Date | string
     event?: XOR<VentureEventRelationFilter, VentureEventWhereInput>
-    user?: XOR<UserRelationFilter, UserWhereInput>
+    donor?: XOR<UserDetailRelationFilter, UserDetailWhereInput>
   }, "id">
 
   export type EventDonationOrderByWithAggregationInput = {
     id?: SortOrder
-    userId?: SortOrder
+    donorDetailId?: SortOrder
     eventId?: SortOrder
     amount?: SortOrder
     currency?: SortOrder
@@ -29268,7 +30419,7 @@ export namespace Prisma {
     OR?: EventDonationScalarWhereWithAggregatesInput[]
     NOT?: EventDonationScalarWhereWithAggregatesInput | EventDonationScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"EventDonation"> | string
-    userId?: StringWithAggregatesFilter<"EventDonation"> | string
+    donorDetailId?: StringWithAggregatesFilter<"EventDonation"> | string
     eventId?: StringWithAggregatesFilter<"EventDonation"> | string
     amount?: FloatWithAggregatesFilter<"EventDonation"> | number
     currency?: StringWithAggregatesFilter<"EventDonation"> | string
@@ -29280,23 +30431,17 @@ export namespace Prisma {
     OR?: EventLocationWhereInput[]
     NOT?: EventLocationWhereInput | EventLocationWhereInput[]
     id?: StringFilter<"EventLocation"> | string
-    ventureEventId?: StringFilter<"EventLocation"> | string
     lat?: FloatNullableFilter<"EventLocation"> | number | null
     lng?: FloatNullableFilter<"EventLocation"> | number | null
     description?: StringNullableFilter<"EventLocation"> | string | null
-    createdAt?: DateTimeFilter<"EventLocation"> | Date | string
-    updatedAt?: DateTimeFilter<"EventLocation"> | Date | string
-    event?: XOR<VentureEventRelationFilter, VentureEventWhereInput>
+    event?: XOR<VentureEventNullableRelationFilter, VentureEventWhereInput> | null
   }
 
   export type EventLocationOrderByWithRelationInput = {
     id?: SortOrder
-    ventureEventId?: SortOrder
     lat?: SortOrderInput | SortOrder
     lng?: SortOrderInput | SortOrder
     description?: SortOrderInput | SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
     event?: VentureEventOrderByWithRelationInput
   }
 
@@ -29305,23 +30450,17 @@ export namespace Prisma {
     AND?: EventLocationWhereInput | EventLocationWhereInput[]
     OR?: EventLocationWhereInput[]
     NOT?: EventLocationWhereInput | EventLocationWhereInput[]
-    ventureEventId?: StringFilter<"EventLocation"> | string
     lat?: FloatNullableFilter<"EventLocation"> | number | null
     lng?: FloatNullableFilter<"EventLocation"> | number | null
     description?: StringNullableFilter<"EventLocation"> | string | null
-    createdAt?: DateTimeFilter<"EventLocation"> | Date | string
-    updatedAt?: DateTimeFilter<"EventLocation"> | Date | string
-    event?: XOR<VentureEventRelationFilter, VentureEventWhereInput>
+    event?: XOR<VentureEventNullableRelationFilter, VentureEventWhereInput> | null
   }, "id">
 
   export type EventLocationOrderByWithAggregationInput = {
     id?: SortOrder
-    ventureEventId?: SortOrder
     lat?: SortOrderInput | SortOrder
     lng?: SortOrderInput | SortOrder
     description?: SortOrderInput | SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
     _count?: EventLocationCountOrderByAggregateInput
     _avg?: EventLocationAvgOrderByAggregateInput
     _max?: EventLocationMaxOrderByAggregateInput
@@ -29334,12 +30473,9 @@ export namespace Prisma {
     OR?: EventLocationScalarWhereWithAggregatesInput[]
     NOT?: EventLocationScalarWhereWithAggregatesInput | EventLocationScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"EventLocation"> | string
-    ventureEventId?: StringWithAggregatesFilter<"EventLocation"> | string
     lat?: FloatNullableWithAggregatesFilter<"EventLocation"> | number | null
     lng?: FloatNullableWithAggregatesFilter<"EventLocation"> | number | null
     description?: StringNullableWithAggregatesFilter<"EventLocation"> | string | null
-    createdAt?: DateTimeWithAggregatesFilter<"EventLocation"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"EventLocation"> | Date | string
   }
 
   export type VentureLocationWhereInput = {
@@ -29353,7 +30489,7 @@ export namespace Prisma {
     description?: StringNullableFilter<"VentureLocation"> | string | null
     createdAt?: DateTimeFilter<"VentureLocation"> | Date | string
     updatedAt?: DateTimeFilter<"VentureLocation"> | Date | string
-    venture?: XOR<VentureRelationFilter, VentureWhereInput>
+    venture?: XOR<VentureNullableRelationFilter, VentureWhereInput> | null
   }
 
   export type VentureLocationOrderByWithRelationInput = {
@@ -29378,7 +30514,7 @@ export namespace Prisma {
     description?: StringNullableFilter<"VentureLocation"> | string | null
     createdAt?: DateTimeFilter<"VentureLocation"> | Date | string
     updatedAt?: DateTimeFilter<"VentureLocation"> | Date | string
-    venture?: XOR<VentureRelationFilter, VentureWhereInput>
+    venture?: XOR<VentureNullableRelationFilter, VentureWhereInput> | null
   }, "id">
 
   export type VentureLocationOrderByWithAggregationInput = {
@@ -29415,25 +30551,25 @@ export namespace Prisma {
     NOT?: NotificationWhereInput | NotificationWhereInput[]
     id?: StringFilter<"Notification"> | string
     title?: StringFilter<"Notification"> | string
-    userId?: StringFilter<"Notification"> | string
+    userDetailId?: StringFilter<"Notification"> | string
     type?: EnumNotificationTypeFilter<"Notification"> | $Enums.NotificationType
     status?: EnumNotificationStatusFilter<"Notification"> | $Enums.NotificationStatus
     description?: StringFilter<"Notification"> | string
     createdAt?: DateTimeFilter<"Notification"> | Date | string
     updatedAt?: DateTimeFilter<"Notification"> | Date | string
-    user?: XOR<UserRelationFilter, UserWhereInput>
+    user?: XOR<UserDetailRelationFilter, UserDetailWhereInput>
   }
 
   export type NotificationOrderByWithRelationInput = {
     id?: SortOrder
     title?: SortOrder
-    userId?: SortOrder
+    userDetailId?: SortOrder
     type?: SortOrder
     status?: SortOrder
     description?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    user?: UserOrderByWithRelationInput
+    user?: UserDetailOrderByWithRelationInput
   }
 
   export type NotificationWhereUniqueInput = Prisma.AtLeast<{
@@ -29442,19 +30578,19 @@ export namespace Prisma {
     OR?: NotificationWhereInput[]
     NOT?: NotificationWhereInput | NotificationWhereInput[]
     title?: StringFilter<"Notification"> | string
-    userId?: StringFilter<"Notification"> | string
+    userDetailId?: StringFilter<"Notification"> | string
     type?: EnumNotificationTypeFilter<"Notification"> | $Enums.NotificationType
     status?: EnumNotificationStatusFilter<"Notification"> | $Enums.NotificationStatus
     description?: StringFilter<"Notification"> | string
     createdAt?: DateTimeFilter<"Notification"> | Date | string
     updatedAt?: DateTimeFilter<"Notification"> | Date | string
-    user?: XOR<UserRelationFilter, UserWhereInput>
+    user?: XOR<UserDetailRelationFilter, UserDetailWhereInput>
   }, "id">
 
   export type NotificationOrderByWithAggregationInput = {
     id?: SortOrder
     title?: SortOrder
-    userId?: SortOrder
+    userDetailId?: SortOrder
     type?: SortOrder
     status?: SortOrder
     description?: SortOrder
@@ -29471,7 +30607,7 @@ export namespace Prisma {
     NOT?: NotificationScalarWhereWithAggregatesInput | NotificationScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Notification"> | string
     title?: StringWithAggregatesFilter<"Notification"> | string
-    userId?: StringWithAggregatesFilter<"Notification"> | string
+    userDetailId?: StringWithAggregatesFilter<"Notification"> | string
     type?: EnumNotificationTypeWithAggregatesFilter<"Notification"> | $Enums.NotificationType
     status?: EnumNotificationStatusWithAggregatesFilter<"Notification"> | $Enums.NotificationStatus
     description?: StringWithAggregatesFilter<"Notification"> | string
@@ -29484,20 +30620,20 @@ export namespace Prisma {
     OR?: PublicationClapWhereInput[]
     NOT?: PublicationClapWhereInput | PublicationClapWhereInput[]
     id?: StringFilter<"PublicationClap"> | string
-    userId?: StringFilter<"PublicationClap"> | string
+    userDetailId?: StringFilter<"PublicationClap"> | string
     publicationId?: StringFilter<"PublicationClap"> | string
     createdAt?: DateTimeFilter<"PublicationClap"> | Date | string
     venturePublication?: XOR<VenturePublicationRelationFilter, VenturePublicationWhereInput>
-    user?: XOR<UserRelationFilter, UserWhereInput>
+    user?: XOR<UserDetailRelationFilter, UserDetailWhereInput>
   }
 
   export type PublicationClapOrderByWithRelationInput = {
     id?: SortOrder
-    userId?: SortOrder
+    userDetailId?: SortOrder
     publicationId?: SortOrder
     createdAt?: SortOrder
     venturePublication?: VenturePublicationOrderByWithRelationInput
-    user?: UserOrderByWithRelationInput
+    user?: UserDetailOrderByWithRelationInput
   }
 
   export type PublicationClapWhereUniqueInput = Prisma.AtLeast<{
@@ -29505,16 +30641,16 @@ export namespace Prisma {
     AND?: PublicationClapWhereInput | PublicationClapWhereInput[]
     OR?: PublicationClapWhereInput[]
     NOT?: PublicationClapWhereInput | PublicationClapWhereInput[]
-    userId?: StringFilter<"PublicationClap"> | string
+    userDetailId?: StringFilter<"PublicationClap"> | string
     publicationId?: StringFilter<"PublicationClap"> | string
     createdAt?: DateTimeFilter<"PublicationClap"> | Date | string
     venturePublication?: XOR<VenturePublicationRelationFilter, VenturePublicationWhereInput>
-    user?: XOR<UserRelationFilter, UserWhereInput>
+    user?: XOR<UserDetailRelationFilter, UserDetailWhereInput>
   }, "id">
 
   export type PublicationClapOrderByWithAggregationInput = {
     id?: SortOrder
-    userId?: SortOrder
+    userDetailId?: SortOrder
     publicationId?: SortOrder
     createdAt?: SortOrder
     _count?: PublicationClapCountOrderByAggregateInput
@@ -29527,7 +30663,7 @@ export namespace Prisma {
     OR?: PublicationClapScalarWhereWithAggregatesInput[]
     NOT?: PublicationClapScalarWhereWithAggregatesInput | PublicationClapScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"PublicationClap"> | string
-    userId?: StringWithAggregatesFilter<"PublicationClap"> | string
+    userDetailId?: StringWithAggregatesFilter<"PublicationClap"> | string
     publicationId?: StringWithAggregatesFilter<"PublicationClap"> | string
     createdAt?: DateTimeWithAggregatesFilter<"PublicationClap"> | Date | string
   }
@@ -29659,18 +30795,20 @@ export namespace Prisma {
     slug?: StringFilter<"Venture"> | string
     coverPhoto?: StringFilter<"Venture"> | string
     description?: StringFilter<"Venture"> | string
-    ownerId?: StringFilter<"Venture"> | string
     active?: BoolFilter<"Venture"> | boolean
     verified?: BoolFilter<"Venture"> | boolean
     detailId?: StringFilter<"Venture"> | string
     createdAt?: DateTimeFilter<"Venture"> | Date | string
     updatedAt?: DateTimeFilter<"Venture"> | Date | string
+    ownerDetailId?: StringFilter<"Venture"> | string
+    locationId?: StringFilter<"Venture"> | string
+    ventureId?: StringFilter<"Venture"> | string
     detail?: XOR<VentureDetailRelationFilter, VentureDetailWhereInput>
-    owner?: XOR<UserRelationFilter, UserWhereInput>
-    XVentureVencureCategory?: XVentureVencureCategoryListRelationFilter
+    ownerDetail?: XOR<UserDetailRelationFilter, UserDetailWhereInput>
     categories?: VentureCategoryListRelationFilter
-    locations?: VentureLocationListRelationFilter
-    contact?: VentureContactListRelationFilter
+    location?: XOR<VentureLocationRelationFilter, VentureLocationWhereInput>
+    contact?: XOR<VentureContactRelationFilter, VentureContactWhereInput>
+    XVentureVencureCategory?: XVentureVencureCategoryListRelationFilter
   }
 
   export type VentureOrderByWithRelationInput = {
@@ -29679,42 +30817,46 @@ export namespace Prisma {
     slug?: SortOrder
     coverPhoto?: SortOrder
     description?: SortOrder
-    ownerId?: SortOrder
     active?: SortOrder
     verified?: SortOrder
     detailId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    ownerDetailId?: SortOrder
+    locationId?: SortOrder
+    ventureId?: SortOrder
     detail?: VentureDetailOrderByWithRelationInput
-    owner?: UserOrderByWithRelationInput
-    XVentureVencureCategory?: XVentureVencureCategoryOrderByRelationAggregateInput
+    ownerDetail?: UserDetailOrderByWithRelationInput
     categories?: VentureCategoryOrderByRelationAggregateInput
-    locations?: VentureLocationOrderByRelationAggregateInput
-    contact?: VentureContactOrderByRelationAggregateInput
+    location?: VentureLocationOrderByWithRelationInput
+    contact?: VentureContactOrderByWithRelationInput
+    XVentureVencureCategory?: XVentureVencureCategoryOrderByRelationAggregateInput
   }
 
   export type VentureWhereUniqueInput = Prisma.AtLeast<{
     id?: string
     slug?: string
     detailId?: string
+    locationId?: string
+    ventureId?: string
     AND?: VentureWhereInput | VentureWhereInput[]
     OR?: VentureWhereInput[]
     NOT?: VentureWhereInput | VentureWhereInput[]
     name?: StringFilter<"Venture"> | string
     coverPhoto?: StringFilter<"Venture"> | string
     description?: StringFilter<"Venture"> | string
-    ownerId?: StringFilter<"Venture"> | string
     active?: BoolFilter<"Venture"> | boolean
     verified?: BoolFilter<"Venture"> | boolean
     createdAt?: DateTimeFilter<"Venture"> | Date | string
     updatedAt?: DateTimeFilter<"Venture"> | Date | string
+    ownerDetailId?: StringFilter<"Venture"> | string
     detail?: XOR<VentureDetailRelationFilter, VentureDetailWhereInput>
-    owner?: XOR<UserRelationFilter, UserWhereInput>
-    XVentureVencureCategory?: XVentureVencureCategoryListRelationFilter
+    ownerDetail?: XOR<UserDetailRelationFilter, UserDetailWhereInput>
     categories?: VentureCategoryListRelationFilter
-    locations?: VentureLocationListRelationFilter
-    contact?: VentureContactListRelationFilter
-  }, "id" | "slug" | "detailId">
+    location?: XOR<VentureLocationRelationFilter, VentureLocationWhereInput>
+    contact?: XOR<VentureContactRelationFilter, VentureContactWhereInput>
+    XVentureVencureCategory?: XVentureVencureCategoryListRelationFilter
+  }, "id" | "slug" | "detailId" | "locationId" | "ventureId">
 
   export type VentureOrderByWithAggregationInput = {
     id?: SortOrder
@@ -29722,12 +30864,14 @@ export namespace Prisma {
     slug?: SortOrder
     coverPhoto?: SortOrder
     description?: SortOrder
-    ownerId?: SortOrder
     active?: SortOrder
     verified?: SortOrder
     detailId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    ownerDetailId?: SortOrder
+    locationId?: SortOrder
+    ventureId?: SortOrder
     _count?: VentureCountOrderByAggregateInput
     _max?: VentureMaxOrderByAggregateInput
     _min?: VentureMinOrderByAggregateInput
@@ -29742,12 +30886,14 @@ export namespace Prisma {
     slug?: StringWithAggregatesFilter<"Venture"> | string
     coverPhoto?: StringWithAggregatesFilter<"Venture"> | string
     description?: StringWithAggregatesFilter<"Venture"> | string
-    ownerId?: StringWithAggregatesFilter<"Venture"> | string
     active?: BoolWithAggregatesFilter<"Venture"> | boolean
     verified?: BoolWithAggregatesFilter<"Venture"> | boolean
     detailId?: StringWithAggregatesFilter<"Venture"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Venture"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Venture"> | Date | string
+    ownerDetailId?: StringWithAggregatesFilter<"Venture"> | string
+    locationId?: StringWithAggregatesFilter<"Venture"> | string
+    ventureId?: StringWithAggregatesFilter<"Venture"> | string
   }
 
   export type VentureContactWhereInput = {
@@ -29755,20 +30901,16 @@ export namespace Prisma {
     OR?: VentureContactWhereInput[]
     NOT?: VentureContactWhereInput | VentureContactWhereInput[]
     id?: StringFilter<"VentureContact"> | string
-    ventureId?: StringFilter<"VentureContact"> | string
     email?: StringFilter<"VentureContact"> | string
-    phoneCode?: StringFilter<"VentureContact"> | string
     phoneNumber?: StringFilter<"VentureContact"> | string
     createdAt?: DateTimeFilter<"VentureContact"> | Date | string
     updatedAt?: DateTimeFilter<"VentureContact"> | Date | string
-    venture?: XOR<VentureRelationFilter, VentureWhereInput>
+    venture?: XOR<VentureNullableRelationFilter, VentureWhereInput> | null
   }
 
   export type VentureContactOrderByWithRelationInput = {
     id?: SortOrder
-    ventureId?: SortOrder
     email?: SortOrder
-    phoneCode?: SortOrder
     phoneNumber?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -29780,20 +30922,16 @@ export namespace Prisma {
     AND?: VentureContactWhereInput | VentureContactWhereInput[]
     OR?: VentureContactWhereInput[]
     NOT?: VentureContactWhereInput | VentureContactWhereInput[]
-    ventureId?: StringFilter<"VentureContact"> | string
     email?: StringFilter<"VentureContact"> | string
-    phoneCode?: StringFilter<"VentureContact"> | string
     phoneNumber?: StringFilter<"VentureContact"> | string
     createdAt?: DateTimeFilter<"VentureContact"> | Date | string
     updatedAt?: DateTimeFilter<"VentureContact"> | Date | string
-    venture?: XOR<VentureRelationFilter, VentureWhereInput>
+    venture?: XOR<VentureNullableRelationFilter, VentureWhereInput> | null
   }, "id">
 
   export type VentureContactOrderByWithAggregationInput = {
     id?: SortOrder
-    ventureId?: SortOrder
     email?: SortOrder
-    phoneCode?: SortOrder
     phoneNumber?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -29807,9 +30945,7 @@ export namespace Prisma {
     OR?: VentureContactScalarWhereWithAggregatesInput[]
     NOT?: VentureContactScalarWhereWithAggregatesInput | VentureContactScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"VentureContact"> | string
-    ventureId?: StringWithAggregatesFilter<"VentureContact"> | string
     email?: StringWithAggregatesFilter<"VentureContact"> | string
-    phoneCode?: StringWithAggregatesFilter<"VentureContact"> | string
     phoneNumber?: StringWithAggregatesFilter<"VentureContact"> | string
     createdAt?: DateTimeWithAggregatesFilter<"VentureContact"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"VentureContact"> | Date | string
@@ -29869,10 +31005,10 @@ export namespace Prisma {
     description?: StringFilter<"VentureCategory"> | string
     createdAt?: DateTimeFilter<"VentureCategory"> | Date | string
     updatedAt?: DateTimeFilter<"VentureCategory"> | Date | string
-    XUserPreferences?: XUserPreferencesListRelationFilter
-    XVentureVencureCategory?: XVentureVencureCategoryListRelationFilter
     users?: UserListRelationFilter
     ventures?: VentureListRelationFilter
+    XUserPreferences?: XUserPreferencesListRelationFilter
+    XVentureVencureCategory?: XVentureVencureCategoryListRelationFilter
   }
 
   export type VentureCategoryOrderByWithRelationInput = {
@@ -29882,10 +31018,10 @@ export namespace Prisma {
     description?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    XUserPreferences?: XUserPreferencesOrderByRelationAggregateInput
-    XVentureVencureCategory?: XVentureVencureCategoryOrderByRelationAggregateInput
     users?: UserOrderByRelationAggregateInput
     ventures?: VentureOrderByRelationAggregateInput
+    XUserPreferences?: XUserPreferencesOrderByRelationAggregateInput
+    XVentureVencureCategory?: XVentureVencureCategoryOrderByRelationAggregateInput
   }
 
   export type VentureCategoryWhereUniqueInput = Prisma.AtLeast<{
@@ -29898,10 +31034,10 @@ export namespace Prisma {
     description?: StringFilter<"VentureCategory"> | string
     createdAt?: DateTimeFilter<"VentureCategory"> | Date | string
     updatedAt?: DateTimeFilter<"VentureCategory"> | Date | string
-    XUserPreferences?: XUserPreferencesListRelationFilter
-    XVentureVencureCategory?: XVentureVencureCategoryListRelationFilter
     users?: UserListRelationFilter
     ventures?: VentureListRelationFilter
+    XUserPreferences?: XUserPreferencesListRelationFilter
+    XVentureVencureCategory?: XVentureVencureCategoryListRelationFilter
   }, "id" | "slug">
 
   export type VentureCategoryOrderByWithAggregationInput = {
@@ -29998,8 +31134,9 @@ export namespace Prisma {
     endDate?: DateTimeFilter<"VentureEvent"> | Date | string
     createdAt?: DateTimeFilter<"VentureEvent"> | Date | string
     updatedAt?: DateTimeFilter<"VentureEvent"> | Date | string
+    locationId?: StringFilter<"VentureEvent"> | string
     donations?: EventDonationListRelationFilter
-    locations?: EventLocationListRelationFilter
+    location?: XOR<EventLocationRelationFilter, EventLocationWhereInput>
     ventureDetail?: XOR<VentureDetailRelationFilter, VentureDetailWhereInput>
     XEventCategory?: XEventCategoryListRelationFilter
     EventCategory?: EventCategoryListRelationFilter
@@ -30015,8 +31152,9 @@ export namespace Prisma {
     endDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    locationId?: SortOrder
     donations?: EventDonationOrderByRelationAggregateInput
-    locations?: EventLocationOrderByRelationAggregateInput
+    location?: EventLocationOrderByWithRelationInput
     ventureDetail?: VentureDetailOrderByWithRelationInput
     XEventCategory?: XEventCategoryOrderByRelationAggregateInput
     EventCategory?: EventCategoryOrderByRelationAggregateInput
@@ -30024,6 +31162,7 @@ export namespace Prisma {
 
   export type VentureEventWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    locationId?: string
     AND?: VentureEventWhereInput | VentureEventWhereInput[]
     OR?: VentureEventWhereInput[]
     NOT?: VentureEventWhereInput | VentureEventWhereInput[]
@@ -30036,11 +31175,11 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"VentureEvent"> | Date | string
     updatedAt?: DateTimeFilter<"VentureEvent"> | Date | string
     donations?: EventDonationListRelationFilter
-    locations?: EventLocationListRelationFilter
+    location?: XOR<EventLocationRelationFilter, EventLocationWhereInput>
     ventureDetail?: XOR<VentureDetailRelationFilter, VentureDetailWhereInput>
     XEventCategory?: XEventCategoryListRelationFilter
     EventCategory?: EventCategoryListRelationFilter
-  }, "id">
+  }, "id" | "locationId">
 
   export type VentureEventOrderByWithAggregationInput = {
     id?: SortOrder
@@ -30052,6 +31191,7 @@ export namespace Prisma {
     endDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    locationId?: SortOrder
     _count?: VentureEventCountOrderByAggregateInput
     _max?: VentureEventMaxOrderByAggregateInput
     _min?: VentureEventMinOrderByAggregateInput
@@ -30070,6 +31210,7 @@ export namespace Prisma {
     endDate?: DateTimeWithAggregatesFilter<"VentureEvent"> | Date | string
     createdAt?: DateTimeWithAggregatesFilter<"VentureEvent"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"VentureEvent"> | Date | string
+    locationId?: StringWithAggregatesFilter<"VentureEvent"> | string
   }
 
   export type VenturePublicationWhereInput = {
@@ -30083,7 +31224,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"VenturePublication"> | Date | string
     updatedAt?: DateTimeFilter<"VenturePublication"> | Date | string
     detailId?: StringFilter<"VenturePublication"> | string
-    comments?: CommentListRelationFilter
+    comments?: PublicationCommentListRelationFilter
     claps?: PublicationClapListRelationFilter
     contents?: PublicationContentListRelationFilter
     detail?: XOR<VentureDetailRelationFilter, VentureDetailWhereInput>
@@ -30097,7 +31238,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     detailId?: SortOrder
-    comments?: CommentOrderByRelationAggregateInput
+    comments?: PublicationCommentOrderByRelationAggregateInput
     claps?: PublicationClapOrderByRelationAggregateInput
     contents?: PublicationContentOrderByRelationAggregateInput
     detail?: VentureDetailOrderByWithRelationInput
@@ -30114,7 +31255,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"VenturePublication"> | Date | string
     updatedAt?: DateTimeFilter<"VenturePublication"> | Date | string
     detailId?: StringFilter<"VenturePublication"> | string
-    comments?: CommentListRelationFilter
+    comments?: PublicationCommentListRelationFilter
     claps?: PublicationClapListRelationFilter
     contents?: PublicationContentListRelationFilter
     detail?: XOR<VentureDetailRelationFilter, VentureDetailWhereInput>
@@ -30153,23 +31294,23 @@ export namespace Prisma {
     OR?: VentureSponsorshipWhereInput[]
     NOT?: VentureSponsorshipWhereInput | VentureSponsorshipWhereInput[]
     id?: StringFilter<"VentureSponsorship"> | string
-    sponsorId?: StringFilter<"VentureSponsorship"> | string
+    sponsorDetailId?: StringFilter<"VentureSponsorship"> | string
     ventureDetailId?: StringFilter<"VentureSponsorship"> | string
     monthlyAmount?: FloatFilter<"VentureSponsorship"> | number
     createdAt?: DateTimeFilter<"VentureSponsorship"> | Date | string
     updatedAt?: DateTimeFilter<"VentureSponsorship"> | Date | string
-    user?: XOR<UserRelationFilter, UserWhereInput>
+    user?: XOR<UserDetailRelationFilter, UserDetailWhereInput>
     detail?: XOR<VentureDetailRelationFilter, VentureDetailWhereInput>
   }
 
   export type VentureSponsorshipOrderByWithRelationInput = {
     id?: SortOrder
-    sponsorId?: SortOrder
+    sponsorDetailId?: SortOrder
     ventureDetailId?: SortOrder
     monthlyAmount?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    user?: UserOrderByWithRelationInput
+    user?: UserDetailOrderByWithRelationInput
     detail?: VentureDetailOrderByWithRelationInput
   }
 
@@ -30178,18 +31319,18 @@ export namespace Prisma {
     AND?: VentureSponsorshipWhereInput | VentureSponsorshipWhereInput[]
     OR?: VentureSponsorshipWhereInput[]
     NOT?: VentureSponsorshipWhereInput | VentureSponsorshipWhereInput[]
-    sponsorId?: StringFilter<"VentureSponsorship"> | string
+    sponsorDetailId?: StringFilter<"VentureSponsorship"> | string
     ventureDetailId?: StringFilter<"VentureSponsorship"> | string
     monthlyAmount?: FloatFilter<"VentureSponsorship"> | number
     createdAt?: DateTimeFilter<"VentureSponsorship"> | Date | string
     updatedAt?: DateTimeFilter<"VentureSponsorship"> | Date | string
-    user?: XOR<UserRelationFilter, UserWhereInput>
+    user?: XOR<UserDetailRelationFilter, UserDetailWhereInput>
     detail?: XOR<VentureDetailRelationFilter, VentureDetailWhereInput>
   }, "id">
 
   export type VentureSponsorshipOrderByWithAggregationInput = {
     id?: SortOrder
-    sponsorId?: SortOrder
+    sponsorDetailId?: SortOrder
     ventureDetailId?: SortOrder
     monthlyAmount?: SortOrder
     createdAt?: SortOrder
@@ -30206,7 +31347,7 @@ export namespace Prisma {
     OR?: VentureSponsorshipScalarWhereWithAggregatesInput[]
     NOT?: VentureSponsorshipScalarWhereWithAggregatesInput | VentureSponsorshipScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"VentureSponsorship"> | string
-    sponsorId?: StringWithAggregatesFilter<"VentureSponsorship"> | string
+    sponsorDetailId?: StringWithAggregatesFilter<"VentureSponsorship"> | string
     ventureDetailId?: StringWithAggregatesFilter<"VentureSponsorship"> | string
     monthlyAmount?: FloatWithAggregatesFilter<"VentureSponsorship"> | number
     createdAt?: DateTimeWithAggregatesFilter<"VentureSponsorship"> | Date | string
@@ -30218,19 +31359,19 @@ export namespace Prisma {
     OR?: VentureSubscriptionWhereInput[]
     NOT?: VentureSubscriptionWhereInput | VentureSubscriptionWhereInput[]
     id?: StringFilter<"VentureSubscription"> | string
-    subscriberId?: StringFilter<"VentureSubscription"> | string
+    subscriberDetailId?: StringFilter<"VentureSubscription"> | string
     ventureId?: StringFilter<"VentureSubscription"> | string
     createdAt?: DateTimeFilter<"VentureSubscription"> | Date | string
-    user?: XOR<UserRelationFilter, UserWhereInput>
+    user?: XOR<UserDetailRelationFilter, UserDetailWhereInput>
     detail?: XOR<VentureDetailRelationFilter, VentureDetailWhereInput>
   }
 
   export type VentureSubscriptionOrderByWithRelationInput = {
     id?: SortOrder
-    subscriberId?: SortOrder
+    subscriberDetailId?: SortOrder
     ventureId?: SortOrder
     createdAt?: SortOrder
-    user?: UserOrderByWithRelationInput
+    user?: UserDetailOrderByWithRelationInput
     detail?: VentureDetailOrderByWithRelationInput
   }
 
@@ -30239,16 +31380,16 @@ export namespace Prisma {
     AND?: VentureSubscriptionWhereInput | VentureSubscriptionWhereInput[]
     OR?: VentureSubscriptionWhereInput[]
     NOT?: VentureSubscriptionWhereInput | VentureSubscriptionWhereInput[]
-    subscriberId?: StringFilter<"VentureSubscription"> | string
+    subscriberDetailId?: StringFilter<"VentureSubscription"> | string
     ventureId?: StringFilter<"VentureSubscription"> | string
     createdAt?: DateTimeFilter<"VentureSubscription"> | Date | string
-    user?: XOR<UserRelationFilter, UserWhereInput>
+    user?: XOR<UserDetailRelationFilter, UserDetailWhereInput>
     detail?: XOR<VentureDetailRelationFilter, VentureDetailWhereInput>
   }, "id">
 
   export type VentureSubscriptionOrderByWithAggregationInput = {
     id?: SortOrder
-    subscriberId?: SortOrder
+    subscriberDetailId?: SortOrder
     ventureId?: SortOrder
     createdAt?: SortOrder
     _count?: VentureSubscriptionCountOrderByAggregateInput
@@ -30261,7 +31402,7 @@ export namespace Prisma {
     OR?: VentureSubscriptionScalarWhereWithAggregatesInput[]
     NOT?: VentureSubscriptionScalarWhereWithAggregatesInput | VentureSubscriptionScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"VentureSubscription"> | string
-    subscriberId?: StringWithAggregatesFilter<"VentureSubscription"> | string
+    subscriberDetailId?: StringWithAggregatesFilter<"VentureSubscription"> | string
     ventureId?: StringWithAggregatesFilter<"VentureSubscription"> | string
     createdAt?: DateTimeWithAggregatesFilter<"VentureSubscription"> | Date | string
   }
@@ -30374,14 +31515,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     onboardingCompleted?: boolean
     verified?: boolean
-    comments?: CommentCreateNestedManyWithoutUserInput
-    eventDonations?: EventDonationCreateNestedManyWithoutUserInput
-    notifications?: NotificationCreateNestedManyWithoutUserInput
-    publicationClaps?: PublicationClapCreateNestedManyWithoutUserInput
     detail?: UserDetailCreateNestedOneWithoutUserInput
-    ventures?: VentureCreateNestedManyWithoutOwnerInput
-    ventureSponsorships?: VentureSponsorshipCreateNestedManyWithoutUserInput
-    ventureSubscriptions?: VentureSubscriptionCreateNestedManyWithoutUserInput
+    contact?: UserContactCreateNestedOneWithoutUserInput
     XUserPreferences?: XUserPreferencesCreateNestedManyWithoutUserInput
     XUserRoles?: XUserRolesCreateNestedManyWithoutUserInput
     preferences?: VentureCategoryCreateNestedManyWithoutUsersInput
@@ -30398,15 +31533,9 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     onboardingCompleted?: boolean
-    userDetailId?: string | null
+    detailId?: string | null
     verified?: boolean
-    comments?: CommentUncheckedCreateNestedManyWithoutUserInput
-    eventDonations?: EventDonationUncheckedCreateNestedManyWithoutUserInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
-    publicationClaps?: PublicationClapUncheckedCreateNestedManyWithoutUserInput
-    ventures?: VentureUncheckedCreateNestedManyWithoutOwnerInput
-    ventureSponsorships?: VentureSponsorshipUncheckedCreateNestedManyWithoutUserInput
-    ventureSubscriptions?: VentureSubscriptionUncheckedCreateNestedManyWithoutUserInput
+    contactId?: string | null
     XUserPreferences?: XUserPreferencesUncheckedCreateNestedManyWithoutUserInput
     XUserRoles?: XUserRolesUncheckedCreateNestedManyWithoutUserInput
     preferences?: VentureCategoryUncheckedCreateNestedManyWithoutUsersInput
@@ -30424,14 +31553,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     verified?: BoolFieldUpdateOperationsInput | boolean
-    comments?: CommentUpdateManyWithoutUserNestedInput
-    eventDonations?: EventDonationUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUpdateManyWithoutUserNestedInput
-    publicationClaps?: PublicationClapUpdateManyWithoutUserNestedInput
     detail?: UserDetailUpdateOneWithoutUserNestedInput
-    ventures?: VentureUpdateManyWithoutOwnerNestedInput
-    ventureSponsorships?: VentureSponsorshipUpdateManyWithoutUserNestedInput
-    ventureSubscriptions?: VentureSubscriptionUpdateManyWithoutUserNestedInput
+    contact?: UserContactUpdateOneWithoutUserNestedInput
     XUserPreferences?: XUserPreferencesUpdateManyWithoutUserNestedInput
     XUserRoles?: XUserRolesUpdateManyWithoutUserNestedInput
     preferences?: VentureCategoryUpdateManyWithoutUsersNestedInput
@@ -30448,15 +31571,9 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
-    userDetailId?: NullableStringFieldUpdateOperationsInput | string | null
+    detailId?: NullableStringFieldUpdateOperationsInput | string | null
     verified?: BoolFieldUpdateOperationsInput | boolean
-    comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
-    eventDonations?: EventDonationUncheckedUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
-    publicationClaps?: PublicationClapUncheckedUpdateManyWithoutUserNestedInput
-    ventures?: VentureUncheckedUpdateManyWithoutOwnerNestedInput
-    ventureSponsorships?: VentureSponsorshipUncheckedUpdateManyWithoutUserNestedInput
-    ventureSubscriptions?: VentureSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    contactId?: NullableStringFieldUpdateOperationsInput | string | null
     XUserPreferences?: XUserPreferencesUncheckedUpdateManyWithoutUserNestedInput
     XUserRoles?: XUserRolesUncheckedUpdateManyWithoutUserNestedInput
     preferences?: VentureCategoryUncheckedUpdateManyWithoutUsersNestedInput
@@ -30473,8 +31590,9 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     onboardingCompleted?: boolean
-    userDetailId?: string | null
+    detailId?: string | null
     verified?: boolean
+    contactId?: string | null
   }
 
   export type UserUpdateManyMutationInput = {
@@ -30500,8 +31618,177 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
-    userDetailId?: NullableStringFieldUpdateOperationsInput | string | null
+    detailId?: NullableStringFieldUpdateOperationsInput | string | null
     verified?: BoolFieldUpdateOperationsInput | boolean
+    contactId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type UserDetailCreateInput = {
+    id?: string
+    gender: string
+    birthDate: Date | string
+    user?: UserCreateNestedOneWithoutDetailInput
+    municipality: MunicipalityCreateNestedOneWithoutUserDetailsInput
+    ventures?: VentureCreateNestedManyWithoutOwnerDetailInput
+    comments?: PublicationCommentCreateNestedManyWithoutUserInput
+    donations?: EventDonationCreateNestedManyWithoutDonorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    claps?: PublicationClapCreateNestedManyWithoutUserInput
+    sponsorships?: VentureSponsorshipCreateNestedManyWithoutUserInput
+    subscriptions?: VentureSubscriptionCreateNestedManyWithoutUserInput
+  }
+
+  export type UserDetailUncheckedCreateInput = {
+    id?: string
+    gender: string
+    birthDate: Date | string
+    municipalityId: number
+    user?: UserUncheckedCreateNestedOneWithoutDetailInput
+    ventures?: VentureUncheckedCreateNestedManyWithoutOwnerDetailInput
+    comments?: PublicationCommentUncheckedCreateNestedManyWithoutUserInput
+    donations?: EventDonationUncheckedCreateNestedManyWithoutDonorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    claps?: PublicationClapUncheckedCreateNestedManyWithoutUserInput
+    sponsorships?: VentureSponsorshipUncheckedCreateNestedManyWithoutUserInput
+    subscriptions?: VentureSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserDetailUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    gender?: StringFieldUpdateOperationsInput | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneWithoutDetailNestedInput
+    municipality?: MunicipalityUpdateOneRequiredWithoutUserDetailsNestedInput
+    ventures?: VentureUpdateManyWithoutOwnerDetailNestedInput
+    comments?: PublicationCommentUpdateManyWithoutUserNestedInput
+    donations?: EventDonationUpdateManyWithoutDonorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    claps?: PublicationClapUpdateManyWithoutUserNestedInput
+    sponsorships?: VentureSponsorshipUpdateManyWithoutUserNestedInput
+    subscriptions?: VentureSubscriptionUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserDetailUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    gender?: StringFieldUpdateOperationsInput | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    municipalityId?: IntFieldUpdateOperationsInput | number
+    user?: UserUncheckedUpdateOneWithoutDetailNestedInput
+    ventures?: VentureUncheckedUpdateManyWithoutOwnerDetailNestedInput
+    comments?: PublicationCommentUncheckedUpdateManyWithoutUserNestedInput
+    donations?: EventDonationUncheckedUpdateManyWithoutDonorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    claps?: PublicationClapUncheckedUpdateManyWithoutUserNestedInput
+    sponsorships?: VentureSponsorshipUncheckedUpdateManyWithoutUserNestedInput
+    subscriptions?: VentureSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserDetailCreateManyInput = {
+    id?: string
+    gender: string
+    birthDate: Date | string
+    municipalityId: number
+  }
+
+  export type UserDetailUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    gender?: StringFieldUpdateOperationsInput | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserDetailUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    gender?: StringFieldUpdateOperationsInput | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    municipalityId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type UserContactCreateInput = {
+    id?: string
+    phoneNumber: string
+    address: string
+    facebookUrl: string
+    linkedinUrl: string
+    twitterUrl: string
+    instagramUrl: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user?: UserCreateNestedOneWithoutContactInput
+  }
+
+  export type UserContactUncheckedCreateInput = {
+    id?: string
+    phoneNumber: string
+    address: string
+    facebookUrl: string
+    linkedinUrl: string
+    twitterUrl: string
+    instagramUrl: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user?: UserUncheckedCreateNestedOneWithoutContactInput
+  }
+
+  export type UserContactUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    facebookUrl?: StringFieldUpdateOperationsInput | string
+    linkedinUrl?: StringFieldUpdateOperationsInput | string
+    twitterUrl?: StringFieldUpdateOperationsInput | string
+    instagramUrl?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneWithoutContactNestedInput
+  }
+
+  export type UserContactUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    facebookUrl?: StringFieldUpdateOperationsInput | string
+    linkedinUrl?: StringFieldUpdateOperationsInput | string
+    twitterUrl?: StringFieldUpdateOperationsInput | string
+    instagramUrl?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUncheckedUpdateOneWithoutContactNestedInput
+  }
+
+  export type UserContactCreateManyInput = {
+    id?: string
+    phoneNumber: string
+    address: string
+    facebookUrl: string
+    linkedinUrl: string
+    twitterUrl: string
+    instagramUrl: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type UserContactUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    facebookUrl?: StringFieldUpdateOperationsInput | string
+    linkedinUrl?: StringFieldUpdateOperationsInput | string
+    twitterUrl?: StringFieldUpdateOperationsInput | string
+    instagramUrl?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserContactUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    facebookUrl?: StringFieldUpdateOperationsInput | string
+    linkedinUrl?: StringFieldUpdateOperationsInput | string
+    twitterUrl?: StringFieldUpdateOperationsInput | string
+    instagramUrl?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type XUserPreferencesCreateInput = {
@@ -30536,58 +31823,6 @@ export namespace Prisma {
   export type XUserPreferencesUncheckedUpdateManyInput = {
     userId?: StringFieldUpdateOperationsInput | string
     categoryId?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type UserDetailCreateInput = {
-    id?: string
-    gender: string
-    birthDate: Date | string
-    user?: UserCreateNestedOneWithoutDetailInput
-    municipality: MunicipalityCreateNestedOneWithoutUserDetailInput
-  }
-
-  export type UserDetailUncheckedCreateInput = {
-    id?: string
-    gender: string
-    birthDate: Date | string
-    municipalityId: number
-    user?: UserUncheckedCreateNestedOneWithoutDetailInput
-  }
-
-  export type UserDetailUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    gender?: StringFieldUpdateOperationsInput | string
-    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneWithoutDetailNestedInput
-    municipality?: MunicipalityUpdateOneRequiredWithoutUserDetailNestedInput
-  }
-
-  export type UserDetailUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    gender?: StringFieldUpdateOperationsInput | string
-    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    municipalityId?: IntFieldUpdateOperationsInput | number
-    user?: UserUncheckedUpdateOneWithoutDetailNestedInput
-  }
-
-  export type UserDetailCreateManyInput = {
-    id?: string
-    gender: string
-    birthDate: Date | string
-    municipalityId: number
-  }
-
-  export type UserDetailUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    gender?: StringFieldUpdateOperationsInput | string
-    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type UserDetailUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    gender?: StringFieldUpdateOperationsInput | string
-    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    municipalityId?: IntFieldUpdateOperationsInput | number
   }
 
   export type DepartmentCreateInput = {
@@ -30645,7 +31880,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     department: DepartmentCreateNestedOneWithoutMunicipalitiesInput
-    userDetail?: UserDetailCreateNestedManyWithoutMunicipalityInput
+    userDetails?: UserDetailCreateNestedManyWithoutMunicipalityInput
   }
 
   export type MunicipalityUncheckedCreateInput = {
@@ -30654,7 +31889,7 @@ export namespace Prisma {
     departmentId: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    userDetail?: UserDetailUncheckedCreateNestedManyWithoutMunicipalityInput
+    userDetails?: UserDetailUncheckedCreateNestedManyWithoutMunicipalityInput
   }
 
   export type MunicipalityUpdateInput = {
@@ -30662,7 +31897,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     department?: DepartmentUpdateOneRequiredWithoutMunicipalitiesNestedInput
-    userDetail?: UserDetailUpdateManyWithoutMunicipalityNestedInput
+    userDetails?: UserDetailUpdateManyWithoutMunicipalityNestedInput
   }
 
   export type MunicipalityUncheckedUpdateInput = {
@@ -30671,7 +31906,7 @@ export namespace Prisma {
     departmentId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userDetail?: UserDetailUncheckedUpdateManyWithoutMunicipalityNestedInput
+    userDetails?: UserDetailUncheckedUpdateManyWithoutMunicipalityNestedInput
   }
 
   export type MunicipalityCreateManyInput = {
@@ -30696,61 +31931,61 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type CommentCreateInput = {
+  export type PublicationCommentCreateInput = {
     id?: string
     body: string
     createdAt?: Date | string
     updatedAt?: Date | string
     venturePublication: VenturePublicationCreateNestedOneWithoutCommentsInput
-    User: UserCreateNestedOneWithoutCommentsInput
+    User: UserDetailCreateNestedOneWithoutCommentsInput
   }
 
-  export type CommentUncheckedCreateInput = {
+  export type PublicationCommentUncheckedCreateInput = {
     id?: string
-    userId: string
+    authorDetailId: string
     publicationId: string
     body: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
-  export type CommentUpdateInput = {
+  export type PublicationCommentUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     body?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     venturePublication?: VenturePublicationUpdateOneRequiredWithoutCommentsNestedInput
-    User?: UserUpdateOneRequiredWithoutCommentsNestedInput
+    User?: UserDetailUpdateOneRequiredWithoutCommentsNestedInput
   }
 
-  export type CommentUncheckedUpdateInput = {
+  export type PublicationCommentUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
+    authorDetailId?: StringFieldUpdateOperationsInput | string
     publicationId?: StringFieldUpdateOperationsInput | string
     body?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type CommentCreateManyInput = {
+  export type PublicationCommentCreateManyInput = {
     id?: string
-    userId: string
+    authorDetailId: string
     publicationId: string
     body: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
-  export type CommentUpdateManyMutationInput = {
+  export type PublicationCommentUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     body?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type CommentUncheckedUpdateManyInput = {
+  export type PublicationCommentUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
+    authorDetailId?: StringFieldUpdateOperationsInput | string
     publicationId?: StringFieldUpdateOperationsInput | string
     body?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -30834,12 +32069,12 @@ export namespace Prisma {
     currency: string
     createdAt?: Date | string
     event: VentureEventCreateNestedOneWithoutDonationsInput
-    user: UserCreateNestedOneWithoutEventDonationsInput
+    donor: UserDetailCreateNestedOneWithoutDonationsInput
   }
 
   export type EventDonationUncheckedCreateInput = {
     id?: string
-    userId: string
+    donorDetailId: string
     eventId: string
     amount: number
     currency: string
@@ -30852,12 +32087,12 @@ export namespace Prisma {
     currency?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     event?: VentureEventUpdateOneRequiredWithoutDonationsNestedInput
-    user?: UserUpdateOneRequiredWithoutEventDonationsNestedInput
+    donor?: UserDetailUpdateOneRequiredWithoutDonationsNestedInput
   }
 
   export type EventDonationUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
+    donorDetailId?: StringFieldUpdateOperationsInput | string
     eventId?: StringFieldUpdateOperationsInput | string
     amount?: FloatFieldUpdateOperationsInput | number
     currency?: StringFieldUpdateOperationsInput | string
@@ -30866,7 +32101,7 @@ export namespace Prisma {
 
   export type EventDonationCreateManyInput = {
     id?: string
-    userId: string
+    donorDetailId: string
     eventId: string
     amount: number
     currency: string
@@ -30882,7 +32117,7 @@ export namespace Prisma {
 
   export type EventDonationUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
+    donorDetailId?: StringFieldUpdateOperationsInput | string
     eventId?: StringFieldUpdateOperationsInput | string
     amount?: FloatFieldUpdateOperationsInput | number
     currency?: StringFieldUpdateOperationsInput | string
@@ -30894,19 +32129,15 @@ export namespace Prisma {
     lat?: number | null
     lng?: number | null
     description?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    event: VentureEventCreateNestedOneWithoutLocationsInput
+    event?: VentureEventCreateNestedOneWithoutLocationInput
   }
 
   export type EventLocationUncheckedCreateInput = {
     id?: string
-    ventureEventId: string
     lat?: number | null
     lng?: number | null
     description?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
+    event?: VentureEventUncheckedCreateNestedOneWithoutLocationInput
   }
 
   export type EventLocationUpdateInput = {
@@ -30914,29 +32145,22 @@ export namespace Prisma {
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
     lng?: NullableFloatFieldUpdateOperationsInput | number | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    event?: VentureEventUpdateOneRequiredWithoutLocationsNestedInput
+    event?: VentureEventUpdateOneWithoutLocationNestedInput
   }
 
   export type EventLocationUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    ventureEventId?: StringFieldUpdateOperationsInput | string
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
     lng?: NullableFloatFieldUpdateOperationsInput | number | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    event?: VentureEventUncheckedUpdateOneWithoutLocationNestedInput
   }
 
   export type EventLocationCreateManyInput = {
     id?: string
-    ventureEventId: string
     lat?: number | null
     lng?: number | null
     description?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
   }
 
   export type EventLocationUpdateManyMutationInput = {
@@ -30944,28 +32168,24 @@ export namespace Prisma {
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
     lng?: NullableFloatFieldUpdateOperationsInput | number | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type EventLocationUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    ventureEventId?: StringFieldUpdateOperationsInput | string
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
     lng?: NullableFloatFieldUpdateOperationsInput | number | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type VentureLocationCreateInput = {
     id?: string
+    ventureId: string
     lat?: number | null
     lng?: number | null
     description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    venture: VentureCreateNestedOneWithoutLocationsInput
+    venture?: VentureCreateNestedOneWithoutLocationInput
   }
 
   export type VentureLocationUncheckedCreateInput = {
@@ -30976,16 +32196,18 @@ export namespace Prisma {
     description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    venture?: VentureUncheckedCreateNestedOneWithoutLocationInput
   }
 
   export type VentureLocationUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    ventureId?: StringFieldUpdateOperationsInput | string
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
     lng?: NullableFloatFieldUpdateOperationsInput | number | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    venture?: VentureUpdateOneRequiredWithoutLocationsNestedInput
+    venture?: VentureUpdateOneWithoutLocationNestedInput
   }
 
   export type VentureLocationUncheckedUpdateInput = {
@@ -30996,6 +32218,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    venture?: VentureUncheckedUpdateOneWithoutLocationNestedInput
   }
 
   export type VentureLocationCreateManyInput = {
@@ -31010,6 +32233,7 @@ export namespace Prisma {
 
   export type VentureLocationUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    ventureId?: StringFieldUpdateOperationsInput | string
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
     lng?: NullableFloatFieldUpdateOperationsInput | number | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -31035,13 +32259,13 @@ export namespace Prisma {
     description: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutNotificationsInput
+    user: UserDetailCreateNestedOneWithoutNotificationsInput
   }
 
   export type NotificationUncheckedCreateInput = {
     id?: string
     title: string
-    userId: string
+    userDetailId: string
     type: $Enums.NotificationType
     status: $Enums.NotificationStatus
     description: string
@@ -31057,13 +32281,13 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutNotificationsNestedInput
+    user?: UserDetailUpdateOneRequiredWithoutNotificationsNestedInput
   }
 
   export type NotificationUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
+    userDetailId?: StringFieldUpdateOperationsInput | string
     type?: EnumNotificationTypeFieldUpdateOperationsInput | $Enums.NotificationType
     status?: EnumNotificationStatusFieldUpdateOperationsInput | $Enums.NotificationStatus
     description?: StringFieldUpdateOperationsInput | string
@@ -31074,7 +32298,7 @@ export namespace Prisma {
   export type NotificationCreateManyInput = {
     id?: string
     title: string
-    userId: string
+    userDetailId: string
     type: $Enums.NotificationType
     status: $Enums.NotificationStatus
     description: string
@@ -31095,7 +32319,7 @@ export namespace Prisma {
   export type NotificationUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
+    userDetailId?: StringFieldUpdateOperationsInput | string
     type?: EnumNotificationTypeFieldUpdateOperationsInput | $Enums.NotificationType
     status?: EnumNotificationStatusFieldUpdateOperationsInput | $Enums.NotificationStatus
     description?: StringFieldUpdateOperationsInput | string
@@ -31107,12 +32331,12 @@ export namespace Prisma {
     id?: string
     createdAt?: Date | string
     venturePublication: VenturePublicationCreateNestedOneWithoutClapsInput
-    user: UserCreateNestedOneWithoutPublicationClapsInput
+    user: UserDetailCreateNestedOneWithoutClapsInput
   }
 
   export type PublicationClapUncheckedCreateInput = {
     id?: string
-    userId: string
+    userDetailId: string
     publicationId: string
     createdAt?: Date | string
   }
@@ -31121,19 +32345,19 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     venturePublication?: VenturePublicationUpdateOneRequiredWithoutClapsNestedInput
-    user?: UserUpdateOneRequiredWithoutPublicationClapsNestedInput
+    user?: UserDetailUpdateOneRequiredWithoutClapsNestedInput
   }
 
   export type PublicationClapUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
+    userDetailId?: StringFieldUpdateOperationsInput | string
     publicationId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type PublicationClapCreateManyInput = {
     id?: string
-    userId: string
+    userDetailId: string
     publicationId: string
     createdAt?: Date | string
   }
@@ -31145,7 +32369,7 @@ export namespace Prisma {
 
   export type PublicationClapUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
+    userDetailId?: StringFieldUpdateOperationsInput | string
     publicationId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -31287,11 +32511,11 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     detail: VentureDetailCreateNestedOneWithoutVentureInput
-    owner: UserCreateNestedOneWithoutVenturesInput
-    XVentureVencureCategory?: XVentureVencureCategoryCreateNestedManyWithoutVentureInput
+    ownerDetail: UserDetailCreateNestedOneWithoutVenturesInput
     categories?: VentureCategoryCreateNestedManyWithoutVenturesInput
-    locations?: VentureLocationCreateNestedManyWithoutVentureInput
-    contact?: VentureContactCreateNestedManyWithoutVentureInput
+    location: VentureLocationCreateNestedOneWithoutVentureInput
+    contact: VentureContactCreateNestedOneWithoutVentureInput
+    XVentureVencureCategory?: XVentureVencureCategoryCreateNestedManyWithoutVentureInput
   }
 
   export type VentureUncheckedCreateInput = {
@@ -31300,16 +32524,16 @@ export namespace Prisma {
     slug: string
     coverPhoto: string
     description: string
-    ownerId: string
     active?: boolean
     verified?: boolean
     detailId: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    XVentureVencureCategory?: XVentureVencureCategoryUncheckedCreateNestedManyWithoutVentureInput
+    ownerDetailId: string
+    locationId: string
+    ventureId: string
     categories?: VentureCategoryUncheckedCreateNestedManyWithoutVenturesInput
-    locations?: VentureLocationUncheckedCreateNestedManyWithoutVentureInput
-    contact?: VentureContactUncheckedCreateNestedManyWithoutVentureInput
+    XVentureVencureCategory?: XVentureVencureCategoryUncheckedCreateNestedManyWithoutVentureInput
   }
 
   export type VentureUpdateInput = {
@@ -31323,11 +32547,11 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     detail?: VentureDetailUpdateOneRequiredWithoutVentureNestedInput
-    owner?: UserUpdateOneRequiredWithoutVenturesNestedInput
-    XVentureVencureCategory?: XVentureVencureCategoryUpdateManyWithoutVentureNestedInput
+    ownerDetail?: UserDetailUpdateOneRequiredWithoutVenturesNestedInput
     categories?: VentureCategoryUpdateManyWithoutVenturesNestedInput
-    locations?: VentureLocationUpdateManyWithoutVentureNestedInput
-    contact?: VentureContactUpdateManyWithoutVentureNestedInput
+    location?: VentureLocationUpdateOneRequiredWithoutVentureNestedInput
+    contact?: VentureContactUpdateOneRequiredWithoutVentureNestedInput
+    XVentureVencureCategory?: XVentureVencureCategoryUpdateManyWithoutVentureNestedInput
   }
 
   export type VentureUncheckedUpdateInput = {
@@ -31336,16 +32560,16 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     coverPhoto?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    ownerId?: StringFieldUpdateOperationsInput | string
     active?: BoolFieldUpdateOperationsInput | boolean
     verified?: BoolFieldUpdateOperationsInput | boolean
     detailId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    XVentureVencureCategory?: XVentureVencureCategoryUncheckedUpdateManyWithoutVentureNestedInput
+    ownerDetailId?: StringFieldUpdateOperationsInput | string
+    locationId?: StringFieldUpdateOperationsInput | string
+    ventureId?: StringFieldUpdateOperationsInput | string
     categories?: VentureCategoryUncheckedUpdateManyWithoutVenturesNestedInput
-    locations?: VentureLocationUncheckedUpdateManyWithoutVentureNestedInput
-    contact?: VentureContactUncheckedUpdateManyWithoutVentureNestedInput
+    XVentureVencureCategory?: XVentureVencureCategoryUncheckedUpdateManyWithoutVentureNestedInput
   }
 
   export type VentureCreateManyInput = {
@@ -31354,12 +32578,14 @@ export namespace Prisma {
     slug: string
     coverPhoto: string
     description: string
-    ownerId: string
     active?: boolean
     verified?: boolean
     detailId: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    ownerDetailId: string
+    locationId: string
+    ventureId: string
   }
 
   export type VentureUpdateManyMutationInput = {
@@ -31380,59 +32606,55 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     coverPhoto?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    ownerId?: StringFieldUpdateOperationsInput | string
     active?: BoolFieldUpdateOperationsInput | boolean
     verified?: BoolFieldUpdateOperationsInput | boolean
     detailId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ownerDetailId?: StringFieldUpdateOperationsInput | string
+    locationId?: StringFieldUpdateOperationsInput | string
+    ventureId?: StringFieldUpdateOperationsInput | string
   }
 
   export type VentureContactCreateInput = {
     id?: string
     email: string
-    phoneCode: string
     phoneNumber: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    venture: VentureCreateNestedOneWithoutContactInput
+    venture?: VentureCreateNestedOneWithoutContactInput
   }
 
   export type VentureContactUncheckedCreateInput = {
     id?: string
-    ventureId: string
     email: string
-    phoneCode: string
     phoneNumber: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    venture?: VentureUncheckedCreateNestedOneWithoutContactInput
   }
 
   export type VentureContactUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    phoneCode?: StringFieldUpdateOperationsInput | string
     phoneNumber?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    venture?: VentureUpdateOneRequiredWithoutContactNestedInput
+    venture?: VentureUpdateOneWithoutContactNestedInput
   }
 
   export type VentureContactUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    ventureId?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    phoneCode?: StringFieldUpdateOperationsInput | string
     phoneNumber?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    venture?: VentureUncheckedUpdateOneWithoutContactNestedInput
   }
 
   export type VentureContactCreateManyInput = {
     id?: string
-    ventureId: string
     email: string
-    phoneCode: string
     phoneNumber: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -31441,7 +32663,6 @@ export namespace Prisma {
   export type VentureContactUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    phoneCode?: StringFieldUpdateOperationsInput | string
     phoneNumber?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -31449,9 +32670,7 @@ export namespace Prisma {
 
   export type VentureContactUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    ventureId?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    phoneCode?: StringFieldUpdateOperationsInput | string
     phoneNumber?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -31498,10 +32717,10 @@ export namespace Prisma {
     description: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    XUserPreferences?: XUserPreferencesCreateNestedManyWithoutVentureCategoryInput
-    XVentureVencureCategory?: XVentureVencureCategoryCreateNestedManyWithoutCategoryInput
     users?: UserCreateNestedManyWithoutPreferencesInput
     ventures?: VentureCreateNestedManyWithoutCategoriesInput
+    XUserPreferences?: XUserPreferencesCreateNestedManyWithoutVentureCategoryInput
+    XVentureVencureCategory?: XVentureVencureCategoryCreateNestedManyWithoutCategoryInput
   }
 
   export type VentureCategoryUncheckedCreateInput = {
@@ -31511,10 +32730,10 @@ export namespace Prisma {
     description: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    XUserPreferences?: XUserPreferencesUncheckedCreateNestedManyWithoutVentureCategoryInput
-    XVentureVencureCategory?: XVentureVencureCategoryUncheckedCreateNestedManyWithoutCategoryInput
     users?: UserUncheckedCreateNestedManyWithoutPreferencesInput
     ventures?: VentureUncheckedCreateNestedManyWithoutCategoriesInput
+    XUserPreferences?: XUserPreferencesUncheckedCreateNestedManyWithoutVentureCategoryInput
+    XVentureVencureCategory?: XVentureVencureCategoryUncheckedCreateNestedManyWithoutCategoryInput
   }
 
   export type VentureCategoryUpdateInput = {
@@ -31524,10 +32743,10 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    XUserPreferences?: XUserPreferencesUpdateManyWithoutVentureCategoryNestedInput
-    XVentureVencureCategory?: XVentureVencureCategoryUpdateManyWithoutCategoryNestedInput
     users?: UserUpdateManyWithoutPreferencesNestedInput
     ventures?: VentureUpdateManyWithoutCategoriesNestedInput
+    XUserPreferences?: XUserPreferencesUpdateManyWithoutVentureCategoryNestedInput
+    XVentureVencureCategory?: XVentureVencureCategoryUpdateManyWithoutCategoryNestedInput
   }
 
   export type VentureCategoryUncheckedUpdateInput = {
@@ -31537,10 +32756,10 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    XUserPreferences?: XUserPreferencesUncheckedUpdateManyWithoutVentureCategoryNestedInput
-    XVentureVencureCategory?: XVentureVencureCategoryUncheckedUpdateManyWithoutCategoryNestedInput
     users?: UserUncheckedUpdateManyWithoutPreferencesNestedInput
     ventures?: VentureUncheckedUpdateManyWithoutCategoriesNestedInput
+    XUserPreferences?: XUserPreferencesUncheckedUpdateManyWithoutVentureCategoryNestedInput
+    XVentureVencureCategory?: XVentureVencureCategoryUncheckedUpdateManyWithoutCategoryNestedInput
   }
 
   export type VentureCategoryCreateManyInput = {
@@ -31642,7 +32861,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     donations?: EventDonationCreateNestedManyWithoutEventInput
-    locations?: EventLocationCreateNestedManyWithoutEventInput
+    location: EventLocationCreateNestedOneWithoutEventInput
     ventureDetail: VentureDetailCreateNestedOneWithoutEventsInput
     XEventCategory?: XEventCategoryCreateNestedManyWithoutEventInput
     EventCategory?: EventCategoryCreateNestedManyWithoutVentureEventInput
@@ -31658,8 +32877,8 @@ export namespace Prisma {
     endDate: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
+    locationId: string
     donations?: EventDonationUncheckedCreateNestedManyWithoutEventInput
-    locations?: EventLocationUncheckedCreateNestedManyWithoutEventInput
     XEventCategory?: XEventCategoryUncheckedCreateNestedManyWithoutEventInput
     EventCategory?: EventCategoryUncheckedCreateNestedManyWithoutVentureEventInput
   }
@@ -31674,7 +32893,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     donations?: EventDonationUpdateManyWithoutEventNestedInput
-    locations?: EventLocationUpdateManyWithoutEventNestedInput
+    location?: EventLocationUpdateOneRequiredWithoutEventNestedInput
     ventureDetail?: VentureDetailUpdateOneRequiredWithoutEventsNestedInput
     XEventCategory?: XEventCategoryUpdateManyWithoutEventNestedInput
     EventCategory?: EventCategoryUpdateManyWithoutVentureEventNestedInput
@@ -31690,8 +32909,8 @@ export namespace Prisma {
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    locationId?: StringFieldUpdateOperationsInput | string
     donations?: EventDonationUncheckedUpdateManyWithoutEventNestedInput
-    locations?: EventLocationUncheckedUpdateManyWithoutEventNestedInput
     XEventCategory?: XEventCategoryUncheckedUpdateManyWithoutEventNestedInput
     EventCategory?: EventCategoryUncheckedUpdateManyWithoutVentureEventNestedInput
   }
@@ -31706,6 +32925,7 @@ export namespace Prisma {
     endDate: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
+    locationId: string
   }
 
   export type VentureEventUpdateManyMutationInput = {
@@ -31729,6 +32949,7 @@ export namespace Prisma {
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    locationId?: StringFieldUpdateOperationsInput | string
   }
 
   export type VenturePublicationCreateInput = {
@@ -31738,7 +32959,7 @@ export namespace Prisma {
     clapsCount: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    comments?: CommentCreateNestedManyWithoutVenturePublicationInput
+    comments?: PublicationCommentCreateNestedManyWithoutVenturePublicationInput
     claps?: PublicationClapCreateNestedManyWithoutVenturePublicationInput
     contents?: PublicationContentCreateNestedManyWithoutVenturePublicationInput
     detail: VentureDetailCreateNestedOneWithoutPublicationsInput
@@ -31752,7 +32973,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     detailId: string
-    comments?: CommentUncheckedCreateNestedManyWithoutVenturePublicationInput
+    comments?: PublicationCommentUncheckedCreateNestedManyWithoutVenturePublicationInput
     claps?: PublicationClapUncheckedCreateNestedManyWithoutVenturePublicationInput
     contents?: PublicationContentUncheckedCreateNestedManyWithoutVenturePublicationInput
   }
@@ -31764,7 +32985,7 @@ export namespace Prisma {
     clapsCount?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    comments?: CommentUpdateManyWithoutVenturePublicationNestedInput
+    comments?: PublicationCommentUpdateManyWithoutVenturePublicationNestedInput
     claps?: PublicationClapUpdateManyWithoutVenturePublicationNestedInput
     contents?: PublicationContentUpdateManyWithoutVenturePublicationNestedInput
     detail?: VentureDetailUpdateOneRequiredWithoutPublicationsNestedInput
@@ -31778,7 +32999,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     detailId?: StringFieldUpdateOperationsInput | string
-    comments?: CommentUncheckedUpdateManyWithoutVenturePublicationNestedInput
+    comments?: PublicationCommentUncheckedUpdateManyWithoutVenturePublicationNestedInput
     claps?: PublicationClapUncheckedUpdateManyWithoutVenturePublicationNestedInput
     contents?: PublicationContentUncheckedUpdateManyWithoutVenturePublicationNestedInput
   }
@@ -31817,13 +33038,13 @@ export namespace Prisma {
     monthlyAmount: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutVentureSponsorshipsInput
+    user: UserDetailCreateNestedOneWithoutSponsorshipsInput
     detail: VentureDetailCreateNestedOneWithoutSponsorshipsInput
   }
 
   export type VentureSponsorshipUncheckedCreateInput = {
     id: string
-    sponsorId: string
+    sponsorDetailId: string
     ventureDetailId: string
     monthlyAmount: number
     createdAt?: Date | string
@@ -31835,13 +33056,13 @@ export namespace Prisma {
     monthlyAmount?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutVentureSponsorshipsNestedInput
+    user?: UserDetailUpdateOneRequiredWithoutSponsorshipsNestedInput
     detail?: VentureDetailUpdateOneRequiredWithoutSponsorshipsNestedInput
   }
 
   export type VentureSponsorshipUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    sponsorId?: StringFieldUpdateOperationsInput | string
+    sponsorDetailId?: StringFieldUpdateOperationsInput | string
     ventureDetailId?: StringFieldUpdateOperationsInput | string
     monthlyAmount?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -31850,7 +33071,7 @@ export namespace Prisma {
 
   export type VentureSponsorshipCreateManyInput = {
     id: string
-    sponsorId: string
+    sponsorDetailId: string
     ventureDetailId: string
     monthlyAmount: number
     createdAt?: Date | string
@@ -31866,7 +33087,7 @@ export namespace Prisma {
 
   export type VentureSponsorshipUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    sponsorId?: StringFieldUpdateOperationsInput | string
+    sponsorDetailId?: StringFieldUpdateOperationsInput | string
     ventureDetailId?: StringFieldUpdateOperationsInput | string
     monthlyAmount?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -31876,13 +33097,13 @@ export namespace Prisma {
   export type VentureSubscriptionCreateInput = {
     id: string
     createdAt?: Date | string
-    user: UserCreateNestedOneWithoutVentureSubscriptionsInput
+    user: UserDetailCreateNestedOneWithoutSubscriptionsInput
     detail: VentureDetailCreateNestedOneWithoutSubscriptionsInput
   }
 
   export type VentureSubscriptionUncheckedCreateInput = {
     id: string
-    subscriberId: string
+    subscriberDetailId: string
     ventureId: string
     createdAt?: Date | string
   }
@@ -31890,20 +33111,20 @@ export namespace Prisma {
   export type VentureSubscriptionUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutVentureSubscriptionsNestedInput
+    user?: UserDetailUpdateOneRequiredWithoutSubscriptionsNestedInput
     detail?: VentureDetailUpdateOneRequiredWithoutSubscriptionsNestedInput
   }
 
   export type VentureSubscriptionUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    subscriberId?: StringFieldUpdateOperationsInput | string
+    subscriberDetailId?: StringFieldUpdateOperationsInput | string
     ventureId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type VentureSubscriptionCreateManyInput = {
     id: string
-    subscriberId: string
+    subscriberDetailId: string
     ventureId: string
     createdAt?: Date | string
   }
@@ -31915,7 +33136,7 @@ export namespace Prisma {
 
   export type VentureSubscriptionUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    subscriberId?: StringFieldUpdateOperationsInput | string
+    subscriberDetailId?: StringFieldUpdateOperationsInput | string
     ventureId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -32047,51 +33268,14 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
-  export type CommentListRelationFilter = {
-    every?: CommentWhereInput
-    some?: CommentWhereInput
-    none?: CommentWhereInput
-  }
-
-  export type EventDonationListRelationFilter = {
-    every?: EventDonationWhereInput
-    some?: EventDonationWhereInput
-    none?: EventDonationWhereInput
-  }
-
-  export type NotificationListRelationFilter = {
-    every?: NotificationWhereInput
-    some?: NotificationWhereInput
-    none?: NotificationWhereInput
-  }
-
-  export type PublicationClapListRelationFilter = {
-    every?: PublicationClapWhereInput
-    some?: PublicationClapWhereInput
-    none?: PublicationClapWhereInput
-  }
-
   export type UserDetailNullableRelationFilter = {
     is?: UserDetailWhereInput | null
     isNot?: UserDetailWhereInput | null
   }
 
-  export type VentureListRelationFilter = {
-    every?: VentureWhereInput
-    some?: VentureWhereInput
-    none?: VentureWhereInput
-  }
-
-  export type VentureSponsorshipListRelationFilter = {
-    every?: VentureSponsorshipWhereInput
-    some?: VentureSponsorshipWhereInput
-    none?: VentureSponsorshipWhereInput
-  }
-
-  export type VentureSubscriptionListRelationFilter = {
-    every?: VentureSubscriptionWhereInput
-    some?: VentureSubscriptionWhereInput
-    none?: VentureSubscriptionWhereInput
+  export type UserContactNullableRelationFilter = {
+    is?: UserContactWhereInput | null
+    isNot?: UserContactWhereInput | null
   }
 
   export type XUserPreferencesListRelationFilter = {
@@ -32123,34 +33307,6 @@ export namespace Prisma {
     nulls?: NullsOrder
   }
 
-  export type CommentOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type EventDonationOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type NotificationOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type PublicationClapOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type VentureOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type VentureSponsorshipOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type VentureSubscriptionOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
   export type XUserPreferencesOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -32177,8 +33333,9 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     onboardingCompleted?: SortOrder
-    userDetailId?: SortOrder
+    detailId?: SortOrder
     verified?: SortOrder
+    contactId?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
@@ -32191,8 +33348,9 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     onboardingCompleted?: SortOrder
-    userDetailId?: SortOrder
+    detailId?: SortOrder
     verified?: SortOrder
+    contactId?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -32205,8 +33363,9 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     onboardingCompleted?: SortOrder
-    userDetailId?: SortOrder
+    detailId?: SortOrder
     verified?: SortOrder
+    contactId?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -32267,36 +33426,6 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
-  export type VentureCategoryRelationFilter = {
-    is?: VentureCategoryWhereInput
-    isNot?: VentureCategoryWhereInput
-  }
-
-  export type UserRelationFilter = {
-    is?: UserWhereInput
-    isNot?: UserWhereInput
-  }
-
-  export type XUserPreferencesUserIdCategoryIdCompoundUniqueInput = {
-    userId: string
-    categoryId: string
-  }
-
-  export type XUserPreferencesCountOrderByAggregateInput = {
-    userId?: SortOrder
-    categoryId?: SortOrder
-  }
-
-  export type XUserPreferencesMaxOrderByAggregateInput = {
-    userId?: SortOrder
-    categoryId?: SortOrder
-  }
-
-  export type XUserPreferencesMinOrderByAggregateInput = {
-    userId?: SortOrder
-    categoryId?: SortOrder
-  }
-
   export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -32316,6 +33445,76 @@ export namespace Prisma {
   export type MunicipalityRelationFilter = {
     is?: MunicipalityWhereInput
     isNot?: MunicipalityWhereInput
+  }
+
+  export type VentureListRelationFilter = {
+    every?: VentureWhereInput
+    some?: VentureWhereInput
+    none?: VentureWhereInput
+  }
+
+  export type PublicationCommentListRelationFilter = {
+    every?: PublicationCommentWhereInput
+    some?: PublicationCommentWhereInput
+    none?: PublicationCommentWhereInput
+  }
+
+  export type EventDonationListRelationFilter = {
+    every?: EventDonationWhereInput
+    some?: EventDonationWhereInput
+    none?: EventDonationWhereInput
+  }
+
+  export type NotificationListRelationFilter = {
+    every?: NotificationWhereInput
+    some?: NotificationWhereInput
+    none?: NotificationWhereInput
+  }
+
+  export type PublicationClapListRelationFilter = {
+    every?: PublicationClapWhereInput
+    some?: PublicationClapWhereInput
+    none?: PublicationClapWhereInput
+  }
+
+  export type VentureSponsorshipListRelationFilter = {
+    every?: VentureSponsorshipWhereInput
+    some?: VentureSponsorshipWhereInput
+    none?: VentureSponsorshipWhereInput
+  }
+
+  export type VentureSubscriptionListRelationFilter = {
+    every?: VentureSubscriptionWhereInput
+    some?: VentureSubscriptionWhereInput
+    none?: VentureSubscriptionWhereInput
+  }
+
+  export type VentureOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type PublicationCommentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type EventDonationOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type NotificationOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type PublicationClapOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type VentureSponsorshipOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type VentureSubscriptionOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type UserDetailCountOrderByAggregateInput = {
@@ -32361,6 +33560,72 @@ export namespace Prisma {
     _sum?: NestedIntFilter<$PrismaModel>
     _min?: NestedIntFilter<$PrismaModel>
     _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type UserContactCountOrderByAggregateInput = {
+    id?: SortOrder
+    phoneNumber?: SortOrder
+    address?: SortOrder
+    facebookUrl?: SortOrder
+    linkedinUrl?: SortOrder
+    twitterUrl?: SortOrder
+    instagramUrl?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type UserContactMaxOrderByAggregateInput = {
+    id?: SortOrder
+    phoneNumber?: SortOrder
+    address?: SortOrder
+    facebookUrl?: SortOrder
+    linkedinUrl?: SortOrder
+    twitterUrl?: SortOrder
+    instagramUrl?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type UserContactMinOrderByAggregateInput = {
+    id?: SortOrder
+    phoneNumber?: SortOrder
+    address?: SortOrder
+    facebookUrl?: SortOrder
+    linkedinUrl?: SortOrder
+    twitterUrl?: SortOrder
+    instagramUrl?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type VentureCategoryRelationFilter = {
+    is?: VentureCategoryWhereInput
+    isNot?: VentureCategoryWhereInput
+  }
+
+  export type UserRelationFilter = {
+    is?: UserWhereInput
+    isNot?: UserWhereInput
+  }
+
+  export type XUserPreferencesUserIdCategoryIdCompoundUniqueInput = {
+    userId: string
+    categoryId: string
+  }
+
+  export type XUserPreferencesCountOrderByAggregateInput = {
+    userId?: SortOrder
+    categoryId?: SortOrder
+  }
+
+  export type XUserPreferencesMaxOrderByAggregateInput = {
+    userId?: SortOrder
+    categoryId?: SortOrder
+  }
+
+  export type XUserPreferencesMinOrderByAggregateInput = {
+    userId?: SortOrder
+    categoryId?: SortOrder
   }
 
   export type MunicipalityListRelationFilter = {
@@ -32456,27 +33721,32 @@ export namespace Prisma {
     isNot?: VenturePublicationWhereInput
   }
 
-  export type CommentCountOrderByAggregateInput = {
+  export type UserDetailRelationFilter = {
+    is?: UserDetailWhereInput
+    isNot?: UserDetailWhereInput
+  }
+
+  export type PublicationCommentCountOrderByAggregateInput = {
     id?: SortOrder
-    userId?: SortOrder
+    authorDetailId?: SortOrder
     publicationId?: SortOrder
     body?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
-  export type CommentMaxOrderByAggregateInput = {
+  export type PublicationCommentMaxOrderByAggregateInput = {
     id?: SortOrder
-    userId?: SortOrder
+    authorDetailId?: SortOrder
     publicationId?: SortOrder
     body?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
-  export type CommentMinOrderByAggregateInput = {
+  export type PublicationCommentMinOrderByAggregateInput = {
     id?: SortOrder
-    userId?: SortOrder
+    authorDetailId?: SortOrder
     publicationId?: SortOrder
     body?: SortOrder
     createdAt?: SortOrder
@@ -32548,7 +33818,7 @@ export namespace Prisma {
 
   export type EventDonationCountOrderByAggregateInput = {
     id?: SortOrder
-    userId?: SortOrder
+    donorDetailId?: SortOrder
     eventId?: SortOrder
     amount?: SortOrder
     currency?: SortOrder
@@ -32561,7 +33831,7 @@ export namespace Prisma {
 
   export type EventDonationMaxOrderByAggregateInput = {
     id?: SortOrder
-    userId?: SortOrder
+    donorDetailId?: SortOrder
     eventId?: SortOrder
     amount?: SortOrder
     currency?: SortOrder
@@ -32570,7 +33840,7 @@ export namespace Prisma {
 
   export type EventDonationMinOrderByAggregateInput = {
     id?: SortOrder
-    userId?: SortOrder
+    donorDetailId?: SortOrder
     eventId?: SortOrder
     amount?: SortOrder
     currency?: SortOrder
@@ -32608,14 +33878,16 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
+  export type VentureEventNullableRelationFilter = {
+    is?: VentureEventWhereInput | null
+    isNot?: VentureEventWhereInput | null
+  }
+
   export type EventLocationCountOrderByAggregateInput = {
     id?: SortOrder
-    ventureEventId?: SortOrder
     lat?: SortOrder
     lng?: SortOrder
     description?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
   }
 
   export type EventLocationAvgOrderByAggregateInput = {
@@ -32625,22 +33897,16 @@ export namespace Prisma {
 
   export type EventLocationMaxOrderByAggregateInput = {
     id?: SortOrder
-    ventureEventId?: SortOrder
     lat?: SortOrder
     lng?: SortOrder
     description?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
   }
 
   export type EventLocationMinOrderByAggregateInput = {
     id?: SortOrder
-    ventureEventId?: SortOrder
     lat?: SortOrder
     lng?: SortOrder
     description?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
   }
 
   export type EventLocationSumOrderByAggregateInput = {
@@ -32664,9 +33930,9 @@ export namespace Prisma {
     _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
-  export type VentureRelationFilter = {
-    is?: VentureWhereInput
-    isNot?: VentureWhereInput
+  export type VentureNullableRelationFilter = {
+    is?: VentureWhereInput | null
+    isNot?: VentureWhereInput | null
   }
 
   export type VentureLocationCountOrderByAggregateInput = {
@@ -32726,7 +33992,7 @@ export namespace Prisma {
   export type NotificationCountOrderByAggregateInput = {
     id?: SortOrder
     title?: SortOrder
-    userId?: SortOrder
+    userDetailId?: SortOrder
     type?: SortOrder
     status?: SortOrder
     description?: SortOrder
@@ -32737,7 +34003,7 @@ export namespace Prisma {
   export type NotificationMaxOrderByAggregateInput = {
     id?: SortOrder
     title?: SortOrder
-    userId?: SortOrder
+    userDetailId?: SortOrder
     type?: SortOrder
     status?: SortOrder
     description?: SortOrder
@@ -32748,7 +34014,7 @@ export namespace Prisma {
   export type NotificationMinOrderByAggregateInput = {
     id?: SortOrder
     title?: SortOrder
-    userId?: SortOrder
+    userDetailId?: SortOrder
     type?: SortOrder
     status?: SortOrder
     description?: SortOrder
@@ -32778,21 +34044,21 @@ export namespace Prisma {
 
   export type PublicationClapCountOrderByAggregateInput = {
     id?: SortOrder
-    userId?: SortOrder
+    userDetailId?: SortOrder
     publicationId?: SortOrder
     createdAt?: SortOrder
   }
 
   export type PublicationClapMaxOrderByAggregateInput = {
     id?: SortOrder
-    userId?: SortOrder
+    userDetailId?: SortOrder
     publicationId?: SortOrder
     createdAt?: SortOrder
   }
 
   export type PublicationClapMinOrderByAggregateInput = {
     id?: SortOrder
-    userId?: SortOrder
+    userDetailId?: SortOrder
     publicationId?: SortOrder
     createdAt?: SortOrder
   }
@@ -32897,33 +34163,23 @@ export namespace Prisma {
     isNot?: VentureDetailWhereInput
   }
 
+  export type VentureLocationRelationFilter = {
+    is?: VentureLocationWhereInput
+    isNot?: VentureLocationWhereInput
+  }
+
+  export type VentureContactRelationFilter = {
+    is?: VentureContactWhereInput
+    isNot?: VentureContactWhereInput
+  }
+
   export type XVentureVencureCategoryListRelationFilter = {
     every?: XVentureVencureCategoryWhereInput
     some?: XVentureVencureCategoryWhereInput
     none?: XVentureVencureCategoryWhereInput
   }
 
-  export type VentureLocationListRelationFilter = {
-    every?: VentureLocationWhereInput
-    some?: VentureLocationWhereInput
-    none?: VentureLocationWhereInput
-  }
-
-  export type VentureContactListRelationFilter = {
-    every?: VentureContactWhereInput
-    some?: VentureContactWhereInput
-    none?: VentureContactWhereInput
-  }
-
   export type XVentureVencureCategoryOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type VentureLocationOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type VentureContactOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -32933,12 +34189,14 @@ export namespace Prisma {
     slug?: SortOrder
     coverPhoto?: SortOrder
     description?: SortOrder
-    ownerId?: SortOrder
     active?: SortOrder
     verified?: SortOrder
     detailId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    ownerDetailId?: SortOrder
+    locationId?: SortOrder
+    ventureId?: SortOrder
   }
 
   export type VentureMaxOrderByAggregateInput = {
@@ -32947,12 +34205,14 @@ export namespace Prisma {
     slug?: SortOrder
     coverPhoto?: SortOrder
     description?: SortOrder
-    ownerId?: SortOrder
     active?: SortOrder
     verified?: SortOrder
     detailId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    ownerDetailId?: SortOrder
+    locationId?: SortOrder
+    ventureId?: SortOrder
   }
 
   export type VentureMinOrderByAggregateInput = {
@@ -32961,19 +34221,19 @@ export namespace Prisma {
     slug?: SortOrder
     coverPhoto?: SortOrder
     description?: SortOrder
-    ownerId?: SortOrder
     active?: SortOrder
     verified?: SortOrder
     detailId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    ownerDetailId?: SortOrder
+    locationId?: SortOrder
+    ventureId?: SortOrder
   }
 
   export type VentureContactCountOrderByAggregateInput = {
     id?: SortOrder
-    ventureId?: SortOrder
     email?: SortOrder
-    phoneCode?: SortOrder
     phoneNumber?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -32981,9 +34241,7 @@ export namespace Prisma {
 
   export type VentureContactMaxOrderByAggregateInput = {
     id?: SortOrder
-    ventureId?: SortOrder
     email?: SortOrder
-    phoneCode?: SortOrder
     phoneNumber?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -32991,12 +34249,15 @@ export namespace Prisma {
 
   export type VentureContactMinOrderByAggregateInput = {
     id?: SortOrder
-    ventureId?: SortOrder
     email?: SortOrder
-    phoneCode?: SortOrder
     phoneNumber?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type VentureRelationFilter = {
+    is?: VentureWhereInput
+    isNot?: VentureWhereInput
   }
 
   export type XVentureVencureCategoryVentureIdCategoryIdCompoundUniqueInput = {
@@ -33046,11 +34307,6 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type VentureNullableRelationFilter = {
-    is?: VentureWhereInput | null
-    isNot?: VentureWhereInput | null
-  }
-
   export type VenturePublicationListRelationFilter = {
     every?: VenturePublicationWhereInput
     some?: VenturePublicationWhereInput
@@ -33079,20 +34335,15 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type EventLocationListRelationFilter = {
-    every?: EventLocationWhereInput
-    some?: EventLocationWhereInput
-    none?: EventLocationWhereInput
+  export type EventLocationRelationFilter = {
+    is?: EventLocationWhereInput
+    isNot?: EventLocationWhereInput
   }
 
   export type EventCategoryListRelationFilter = {
     every?: EventCategoryWhereInput
     some?: EventCategoryWhereInput
     none?: EventCategoryWhereInput
-  }
-
-  export type EventLocationOrderByRelationAggregateInput = {
-    _count?: SortOrder
   }
 
   export type EventCategoryOrderByRelationAggregateInput = {
@@ -33109,6 +34360,7 @@ export namespace Prisma {
     endDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    locationId?: SortOrder
   }
 
   export type VentureEventMaxOrderByAggregateInput = {
@@ -33121,6 +34373,7 @@ export namespace Prisma {
     endDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    locationId?: SortOrder
   }
 
   export type VentureEventMinOrderByAggregateInput = {
@@ -33133,6 +34386,7 @@ export namespace Prisma {
     endDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    locationId?: SortOrder
   }
 
   export type EnumPublicationTypeFilter<$PrismaModel = never> = {
@@ -33202,7 +34456,7 @@ export namespace Prisma {
 
   export type VentureSponsorshipCountOrderByAggregateInput = {
     id?: SortOrder
-    sponsorId?: SortOrder
+    sponsorDetailId?: SortOrder
     ventureDetailId?: SortOrder
     monthlyAmount?: SortOrder
     createdAt?: SortOrder
@@ -33215,7 +34469,7 @@ export namespace Prisma {
 
   export type VentureSponsorshipMaxOrderByAggregateInput = {
     id?: SortOrder
-    sponsorId?: SortOrder
+    sponsorDetailId?: SortOrder
     ventureDetailId?: SortOrder
     monthlyAmount?: SortOrder
     createdAt?: SortOrder
@@ -33224,7 +34478,7 @@ export namespace Prisma {
 
   export type VentureSponsorshipMinOrderByAggregateInput = {
     id?: SortOrder
-    sponsorId?: SortOrder
+    sponsorDetailId?: SortOrder
     ventureDetailId?: SortOrder
     monthlyAmount?: SortOrder
     createdAt?: SortOrder
@@ -33237,21 +34491,21 @@ export namespace Prisma {
 
   export type VentureSubscriptionCountOrderByAggregateInput = {
     id?: SortOrder
-    subscriberId?: SortOrder
+    subscriberDetailId?: SortOrder
     ventureId?: SortOrder
     createdAt?: SortOrder
   }
 
   export type VentureSubscriptionMaxOrderByAggregateInput = {
     id?: SortOrder
-    subscriberId?: SortOrder
+    subscriberDetailId?: SortOrder
     ventureId?: SortOrder
     createdAt?: SortOrder
   }
 
   export type VentureSubscriptionMinOrderByAggregateInput = {
     id?: SortOrder
-    subscriberId?: SortOrder
+    subscriberDetailId?: SortOrder
     ventureId?: SortOrder
     createdAt?: SortOrder
   }
@@ -33307,59 +34561,16 @@ export namespace Prisma {
     createdAt?: SortOrder
   }
 
-  export type CommentCreateNestedManyWithoutUserInput = {
-    create?: XOR<CommentCreateWithoutUserInput, CommentUncheckedCreateWithoutUserInput> | CommentCreateWithoutUserInput[] | CommentUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: CommentCreateOrConnectWithoutUserInput | CommentCreateOrConnectWithoutUserInput[]
-    createMany?: CommentCreateManyUserInputEnvelope
-    connect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
-  }
-
-  export type EventDonationCreateNestedManyWithoutUserInput = {
-    create?: XOR<EventDonationCreateWithoutUserInput, EventDonationUncheckedCreateWithoutUserInput> | EventDonationCreateWithoutUserInput[] | EventDonationUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: EventDonationCreateOrConnectWithoutUserInput | EventDonationCreateOrConnectWithoutUserInput[]
-    createMany?: EventDonationCreateManyUserInputEnvelope
-    connect?: EventDonationWhereUniqueInput | EventDonationWhereUniqueInput[]
-  }
-
-  export type NotificationCreateNestedManyWithoutUserInput = {
-    create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
-    createMany?: NotificationCreateManyUserInputEnvelope
-    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
-  }
-
-  export type PublicationClapCreateNestedManyWithoutUserInput = {
-    create?: XOR<PublicationClapCreateWithoutUserInput, PublicationClapUncheckedCreateWithoutUserInput> | PublicationClapCreateWithoutUserInput[] | PublicationClapUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: PublicationClapCreateOrConnectWithoutUserInput | PublicationClapCreateOrConnectWithoutUserInput[]
-    createMany?: PublicationClapCreateManyUserInputEnvelope
-    connect?: PublicationClapWhereUniqueInput | PublicationClapWhereUniqueInput[]
-  }
-
   export type UserDetailCreateNestedOneWithoutUserInput = {
     create?: XOR<UserDetailCreateWithoutUserInput, UserDetailUncheckedCreateWithoutUserInput>
     connectOrCreate?: UserDetailCreateOrConnectWithoutUserInput
     connect?: UserDetailWhereUniqueInput
   }
 
-  export type VentureCreateNestedManyWithoutOwnerInput = {
-    create?: XOR<VentureCreateWithoutOwnerInput, VentureUncheckedCreateWithoutOwnerInput> | VentureCreateWithoutOwnerInput[] | VentureUncheckedCreateWithoutOwnerInput[]
-    connectOrCreate?: VentureCreateOrConnectWithoutOwnerInput | VentureCreateOrConnectWithoutOwnerInput[]
-    createMany?: VentureCreateManyOwnerInputEnvelope
-    connect?: VentureWhereUniqueInput | VentureWhereUniqueInput[]
-  }
-
-  export type VentureSponsorshipCreateNestedManyWithoutUserInput = {
-    create?: XOR<VentureSponsorshipCreateWithoutUserInput, VentureSponsorshipUncheckedCreateWithoutUserInput> | VentureSponsorshipCreateWithoutUserInput[] | VentureSponsorshipUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: VentureSponsorshipCreateOrConnectWithoutUserInput | VentureSponsorshipCreateOrConnectWithoutUserInput[]
-    createMany?: VentureSponsorshipCreateManyUserInputEnvelope
-    connect?: VentureSponsorshipWhereUniqueInput | VentureSponsorshipWhereUniqueInput[]
-  }
-
-  export type VentureSubscriptionCreateNestedManyWithoutUserInput = {
-    create?: XOR<VentureSubscriptionCreateWithoutUserInput, VentureSubscriptionUncheckedCreateWithoutUserInput> | VentureSubscriptionCreateWithoutUserInput[] | VentureSubscriptionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: VentureSubscriptionCreateOrConnectWithoutUserInput | VentureSubscriptionCreateOrConnectWithoutUserInput[]
-    createMany?: VentureSubscriptionCreateManyUserInputEnvelope
-    connect?: VentureSubscriptionWhereUniqueInput | VentureSubscriptionWhereUniqueInput[]
+  export type UserContactCreateNestedOneWithoutUserInput = {
+    create?: XOR<UserContactCreateWithoutUserInput, UserContactUncheckedCreateWithoutUserInput>
+    connectOrCreate?: UserContactCreateOrConnectWithoutUserInput
+    connect?: UserContactWhereUniqueInput
   }
 
   export type XUserPreferencesCreateNestedManyWithoutUserInput = {
@@ -33386,55 +34597,6 @@ export namespace Prisma {
     create?: XOR<RoleCreateWithoutUsersInput, RoleUncheckedCreateWithoutUsersInput> | RoleCreateWithoutUsersInput[] | RoleUncheckedCreateWithoutUsersInput[]
     connectOrCreate?: RoleCreateOrConnectWithoutUsersInput | RoleCreateOrConnectWithoutUsersInput[]
     connect?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
-  }
-
-  export type CommentUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<CommentCreateWithoutUserInput, CommentUncheckedCreateWithoutUserInput> | CommentCreateWithoutUserInput[] | CommentUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: CommentCreateOrConnectWithoutUserInput | CommentCreateOrConnectWithoutUserInput[]
-    createMany?: CommentCreateManyUserInputEnvelope
-    connect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
-  }
-
-  export type EventDonationUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<EventDonationCreateWithoutUserInput, EventDonationUncheckedCreateWithoutUserInput> | EventDonationCreateWithoutUserInput[] | EventDonationUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: EventDonationCreateOrConnectWithoutUserInput | EventDonationCreateOrConnectWithoutUserInput[]
-    createMany?: EventDonationCreateManyUserInputEnvelope
-    connect?: EventDonationWhereUniqueInput | EventDonationWhereUniqueInput[]
-  }
-
-  export type NotificationUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
-    createMany?: NotificationCreateManyUserInputEnvelope
-    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
-  }
-
-  export type PublicationClapUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<PublicationClapCreateWithoutUserInput, PublicationClapUncheckedCreateWithoutUserInput> | PublicationClapCreateWithoutUserInput[] | PublicationClapUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: PublicationClapCreateOrConnectWithoutUserInput | PublicationClapCreateOrConnectWithoutUserInput[]
-    createMany?: PublicationClapCreateManyUserInputEnvelope
-    connect?: PublicationClapWhereUniqueInput | PublicationClapWhereUniqueInput[]
-  }
-
-  export type VentureUncheckedCreateNestedManyWithoutOwnerInput = {
-    create?: XOR<VentureCreateWithoutOwnerInput, VentureUncheckedCreateWithoutOwnerInput> | VentureCreateWithoutOwnerInput[] | VentureUncheckedCreateWithoutOwnerInput[]
-    connectOrCreate?: VentureCreateOrConnectWithoutOwnerInput | VentureCreateOrConnectWithoutOwnerInput[]
-    createMany?: VentureCreateManyOwnerInputEnvelope
-    connect?: VentureWhereUniqueInput | VentureWhereUniqueInput[]
-  }
-
-  export type VentureSponsorshipUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<VentureSponsorshipCreateWithoutUserInput, VentureSponsorshipUncheckedCreateWithoutUserInput> | VentureSponsorshipCreateWithoutUserInput[] | VentureSponsorshipUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: VentureSponsorshipCreateOrConnectWithoutUserInput | VentureSponsorshipCreateOrConnectWithoutUserInput[]
-    createMany?: VentureSponsorshipCreateManyUserInputEnvelope
-    connect?: VentureSponsorshipWhereUniqueInput | VentureSponsorshipWhereUniqueInput[]
-  }
-
-  export type VentureSubscriptionUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<VentureSubscriptionCreateWithoutUserInput, VentureSubscriptionUncheckedCreateWithoutUserInput> | VentureSubscriptionCreateWithoutUserInput[] | VentureSubscriptionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: VentureSubscriptionCreateOrConnectWithoutUserInput | VentureSubscriptionCreateOrConnectWithoutUserInput[]
-    createMany?: VentureSubscriptionCreateManyUserInputEnvelope
-    connect?: VentureSubscriptionWhereUniqueInput | VentureSubscriptionWhereUniqueInput[]
   }
 
   export type XUserPreferencesUncheckedCreateNestedManyWithoutUserInput = {
@@ -33475,62 +34637,6 @@ export namespace Prisma {
     set?: Date | string
   }
 
-  export type CommentUpdateManyWithoutUserNestedInput = {
-    create?: XOR<CommentCreateWithoutUserInput, CommentUncheckedCreateWithoutUserInput> | CommentCreateWithoutUserInput[] | CommentUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: CommentCreateOrConnectWithoutUserInput | CommentCreateOrConnectWithoutUserInput[]
-    upsert?: CommentUpsertWithWhereUniqueWithoutUserInput | CommentUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: CommentCreateManyUserInputEnvelope
-    set?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
-    disconnect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
-    delete?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
-    connect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
-    update?: CommentUpdateWithWhereUniqueWithoutUserInput | CommentUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: CommentUpdateManyWithWhereWithoutUserInput | CommentUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: CommentScalarWhereInput | CommentScalarWhereInput[]
-  }
-
-  export type EventDonationUpdateManyWithoutUserNestedInput = {
-    create?: XOR<EventDonationCreateWithoutUserInput, EventDonationUncheckedCreateWithoutUserInput> | EventDonationCreateWithoutUserInput[] | EventDonationUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: EventDonationCreateOrConnectWithoutUserInput | EventDonationCreateOrConnectWithoutUserInput[]
-    upsert?: EventDonationUpsertWithWhereUniqueWithoutUserInput | EventDonationUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: EventDonationCreateManyUserInputEnvelope
-    set?: EventDonationWhereUniqueInput | EventDonationWhereUniqueInput[]
-    disconnect?: EventDonationWhereUniqueInput | EventDonationWhereUniqueInput[]
-    delete?: EventDonationWhereUniqueInput | EventDonationWhereUniqueInput[]
-    connect?: EventDonationWhereUniqueInput | EventDonationWhereUniqueInput[]
-    update?: EventDonationUpdateWithWhereUniqueWithoutUserInput | EventDonationUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: EventDonationUpdateManyWithWhereWithoutUserInput | EventDonationUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: EventDonationScalarWhereInput | EventDonationScalarWhereInput[]
-  }
-
-  export type NotificationUpdateManyWithoutUserNestedInput = {
-    create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
-    upsert?: NotificationUpsertWithWhereUniqueWithoutUserInput | NotificationUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: NotificationCreateManyUserInputEnvelope
-    set?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
-    disconnect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
-    delete?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
-    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
-    update?: NotificationUpdateWithWhereUniqueWithoutUserInput | NotificationUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: NotificationUpdateManyWithWhereWithoutUserInput | NotificationUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
-  }
-
-  export type PublicationClapUpdateManyWithoutUserNestedInput = {
-    create?: XOR<PublicationClapCreateWithoutUserInput, PublicationClapUncheckedCreateWithoutUserInput> | PublicationClapCreateWithoutUserInput[] | PublicationClapUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: PublicationClapCreateOrConnectWithoutUserInput | PublicationClapCreateOrConnectWithoutUserInput[]
-    upsert?: PublicationClapUpsertWithWhereUniqueWithoutUserInput | PublicationClapUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: PublicationClapCreateManyUserInputEnvelope
-    set?: PublicationClapWhereUniqueInput | PublicationClapWhereUniqueInput[]
-    disconnect?: PublicationClapWhereUniqueInput | PublicationClapWhereUniqueInput[]
-    delete?: PublicationClapWhereUniqueInput | PublicationClapWhereUniqueInput[]
-    connect?: PublicationClapWhereUniqueInput | PublicationClapWhereUniqueInput[]
-    update?: PublicationClapUpdateWithWhereUniqueWithoutUserInput | PublicationClapUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: PublicationClapUpdateManyWithWhereWithoutUserInput | PublicationClapUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: PublicationClapScalarWhereInput | PublicationClapScalarWhereInput[]
-  }
-
   export type UserDetailUpdateOneWithoutUserNestedInput = {
     create?: XOR<UserDetailCreateWithoutUserInput, UserDetailUncheckedCreateWithoutUserInput>
     connectOrCreate?: UserDetailCreateOrConnectWithoutUserInput
@@ -33541,46 +34647,14 @@ export namespace Prisma {
     update?: XOR<XOR<UserDetailUpdateToOneWithWhereWithoutUserInput, UserDetailUpdateWithoutUserInput>, UserDetailUncheckedUpdateWithoutUserInput>
   }
 
-  export type VentureUpdateManyWithoutOwnerNestedInput = {
-    create?: XOR<VentureCreateWithoutOwnerInput, VentureUncheckedCreateWithoutOwnerInput> | VentureCreateWithoutOwnerInput[] | VentureUncheckedCreateWithoutOwnerInput[]
-    connectOrCreate?: VentureCreateOrConnectWithoutOwnerInput | VentureCreateOrConnectWithoutOwnerInput[]
-    upsert?: VentureUpsertWithWhereUniqueWithoutOwnerInput | VentureUpsertWithWhereUniqueWithoutOwnerInput[]
-    createMany?: VentureCreateManyOwnerInputEnvelope
-    set?: VentureWhereUniqueInput | VentureWhereUniqueInput[]
-    disconnect?: VentureWhereUniqueInput | VentureWhereUniqueInput[]
-    delete?: VentureWhereUniqueInput | VentureWhereUniqueInput[]
-    connect?: VentureWhereUniqueInput | VentureWhereUniqueInput[]
-    update?: VentureUpdateWithWhereUniqueWithoutOwnerInput | VentureUpdateWithWhereUniqueWithoutOwnerInput[]
-    updateMany?: VentureUpdateManyWithWhereWithoutOwnerInput | VentureUpdateManyWithWhereWithoutOwnerInput[]
-    deleteMany?: VentureScalarWhereInput | VentureScalarWhereInput[]
-  }
-
-  export type VentureSponsorshipUpdateManyWithoutUserNestedInput = {
-    create?: XOR<VentureSponsorshipCreateWithoutUserInput, VentureSponsorshipUncheckedCreateWithoutUserInput> | VentureSponsorshipCreateWithoutUserInput[] | VentureSponsorshipUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: VentureSponsorshipCreateOrConnectWithoutUserInput | VentureSponsorshipCreateOrConnectWithoutUserInput[]
-    upsert?: VentureSponsorshipUpsertWithWhereUniqueWithoutUserInput | VentureSponsorshipUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: VentureSponsorshipCreateManyUserInputEnvelope
-    set?: VentureSponsorshipWhereUniqueInput | VentureSponsorshipWhereUniqueInput[]
-    disconnect?: VentureSponsorshipWhereUniqueInput | VentureSponsorshipWhereUniqueInput[]
-    delete?: VentureSponsorshipWhereUniqueInput | VentureSponsorshipWhereUniqueInput[]
-    connect?: VentureSponsorshipWhereUniqueInput | VentureSponsorshipWhereUniqueInput[]
-    update?: VentureSponsorshipUpdateWithWhereUniqueWithoutUserInput | VentureSponsorshipUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: VentureSponsorshipUpdateManyWithWhereWithoutUserInput | VentureSponsorshipUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: VentureSponsorshipScalarWhereInput | VentureSponsorshipScalarWhereInput[]
-  }
-
-  export type VentureSubscriptionUpdateManyWithoutUserNestedInput = {
-    create?: XOR<VentureSubscriptionCreateWithoutUserInput, VentureSubscriptionUncheckedCreateWithoutUserInput> | VentureSubscriptionCreateWithoutUserInput[] | VentureSubscriptionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: VentureSubscriptionCreateOrConnectWithoutUserInput | VentureSubscriptionCreateOrConnectWithoutUserInput[]
-    upsert?: VentureSubscriptionUpsertWithWhereUniqueWithoutUserInput | VentureSubscriptionUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: VentureSubscriptionCreateManyUserInputEnvelope
-    set?: VentureSubscriptionWhereUniqueInput | VentureSubscriptionWhereUniqueInput[]
-    disconnect?: VentureSubscriptionWhereUniqueInput | VentureSubscriptionWhereUniqueInput[]
-    delete?: VentureSubscriptionWhereUniqueInput | VentureSubscriptionWhereUniqueInput[]
-    connect?: VentureSubscriptionWhereUniqueInput | VentureSubscriptionWhereUniqueInput[]
-    update?: VentureSubscriptionUpdateWithWhereUniqueWithoutUserInput | VentureSubscriptionUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: VentureSubscriptionUpdateManyWithWhereWithoutUserInput | VentureSubscriptionUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: VentureSubscriptionScalarWhereInput | VentureSubscriptionScalarWhereInput[]
+  export type UserContactUpdateOneWithoutUserNestedInput = {
+    create?: XOR<UserContactCreateWithoutUserInput, UserContactUncheckedCreateWithoutUserInput>
+    connectOrCreate?: UserContactCreateOrConnectWithoutUserInput
+    upsert?: UserContactUpsertWithoutUserInput
+    disconnect?: UserContactWhereInput | boolean
+    delete?: UserContactWhereInput | boolean
+    connect?: UserContactWhereUniqueInput
+    update?: XOR<XOR<UserContactUpdateToOneWithWhereWithoutUserInput, UserContactUpdateWithoutUserInput>, UserContactUncheckedUpdateWithoutUserInput>
   }
 
   export type XUserPreferencesUpdateManyWithoutUserNestedInput = {
@@ -33641,104 +34715,6 @@ export namespace Prisma {
     set?: string | null
   }
 
-  export type CommentUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<CommentCreateWithoutUserInput, CommentUncheckedCreateWithoutUserInput> | CommentCreateWithoutUserInput[] | CommentUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: CommentCreateOrConnectWithoutUserInput | CommentCreateOrConnectWithoutUserInput[]
-    upsert?: CommentUpsertWithWhereUniqueWithoutUserInput | CommentUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: CommentCreateManyUserInputEnvelope
-    set?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
-    disconnect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
-    delete?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
-    connect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
-    update?: CommentUpdateWithWhereUniqueWithoutUserInput | CommentUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: CommentUpdateManyWithWhereWithoutUserInput | CommentUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: CommentScalarWhereInput | CommentScalarWhereInput[]
-  }
-
-  export type EventDonationUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<EventDonationCreateWithoutUserInput, EventDonationUncheckedCreateWithoutUserInput> | EventDonationCreateWithoutUserInput[] | EventDonationUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: EventDonationCreateOrConnectWithoutUserInput | EventDonationCreateOrConnectWithoutUserInput[]
-    upsert?: EventDonationUpsertWithWhereUniqueWithoutUserInput | EventDonationUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: EventDonationCreateManyUserInputEnvelope
-    set?: EventDonationWhereUniqueInput | EventDonationWhereUniqueInput[]
-    disconnect?: EventDonationWhereUniqueInput | EventDonationWhereUniqueInput[]
-    delete?: EventDonationWhereUniqueInput | EventDonationWhereUniqueInput[]
-    connect?: EventDonationWhereUniqueInput | EventDonationWhereUniqueInput[]
-    update?: EventDonationUpdateWithWhereUniqueWithoutUserInput | EventDonationUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: EventDonationUpdateManyWithWhereWithoutUserInput | EventDonationUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: EventDonationScalarWhereInput | EventDonationScalarWhereInput[]
-  }
-
-  export type NotificationUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
-    upsert?: NotificationUpsertWithWhereUniqueWithoutUserInput | NotificationUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: NotificationCreateManyUserInputEnvelope
-    set?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
-    disconnect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
-    delete?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
-    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
-    update?: NotificationUpdateWithWhereUniqueWithoutUserInput | NotificationUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: NotificationUpdateManyWithWhereWithoutUserInput | NotificationUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
-  }
-
-  export type PublicationClapUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<PublicationClapCreateWithoutUserInput, PublicationClapUncheckedCreateWithoutUserInput> | PublicationClapCreateWithoutUserInput[] | PublicationClapUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: PublicationClapCreateOrConnectWithoutUserInput | PublicationClapCreateOrConnectWithoutUserInput[]
-    upsert?: PublicationClapUpsertWithWhereUniqueWithoutUserInput | PublicationClapUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: PublicationClapCreateManyUserInputEnvelope
-    set?: PublicationClapWhereUniqueInput | PublicationClapWhereUniqueInput[]
-    disconnect?: PublicationClapWhereUniqueInput | PublicationClapWhereUniqueInput[]
-    delete?: PublicationClapWhereUniqueInput | PublicationClapWhereUniqueInput[]
-    connect?: PublicationClapWhereUniqueInput | PublicationClapWhereUniqueInput[]
-    update?: PublicationClapUpdateWithWhereUniqueWithoutUserInput | PublicationClapUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: PublicationClapUpdateManyWithWhereWithoutUserInput | PublicationClapUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: PublicationClapScalarWhereInput | PublicationClapScalarWhereInput[]
-  }
-
-  export type VentureUncheckedUpdateManyWithoutOwnerNestedInput = {
-    create?: XOR<VentureCreateWithoutOwnerInput, VentureUncheckedCreateWithoutOwnerInput> | VentureCreateWithoutOwnerInput[] | VentureUncheckedCreateWithoutOwnerInput[]
-    connectOrCreate?: VentureCreateOrConnectWithoutOwnerInput | VentureCreateOrConnectWithoutOwnerInput[]
-    upsert?: VentureUpsertWithWhereUniqueWithoutOwnerInput | VentureUpsertWithWhereUniqueWithoutOwnerInput[]
-    createMany?: VentureCreateManyOwnerInputEnvelope
-    set?: VentureWhereUniqueInput | VentureWhereUniqueInput[]
-    disconnect?: VentureWhereUniqueInput | VentureWhereUniqueInput[]
-    delete?: VentureWhereUniqueInput | VentureWhereUniqueInput[]
-    connect?: VentureWhereUniqueInput | VentureWhereUniqueInput[]
-    update?: VentureUpdateWithWhereUniqueWithoutOwnerInput | VentureUpdateWithWhereUniqueWithoutOwnerInput[]
-    updateMany?: VentureUpdateManyWithWhereWithoutOwnerInput | VentureUpdateManyWithWhereWithoutOwnerInput[]
-    deleteMany?: VentureScalarWhereInput | VentureScalarWhereInput[]
-  }
-
-  export type VentureSponsorshipUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<VentureSponsorshipCreateWithoutUserInput, VentureSponsorshipUncheckedCreateWithoutUserInput> | VentureSponsorshipCreateWithoutUserInput[] | VentureSponsorshipUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: VentureSponsorshipCreateOrConnectWithoutUserInput | VentureSponsorshipCreateOrConnectWithoutUserInput[]
-    upsert?: VentureSponsorshipUpsertWithWhereUniqueWithoutUserInput | VentureSponsorshipUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: VentureSponsorshipCreateManyUserInputEnvelope
-    set?: VentureSponsorshipWhereUniqueInput | VentureSponsorshipWhereUniqueInput[]
-    disconnect?: VentureSponsorshipWhereUniqueInput | VentureSponsorshipWhereUniqueInput[]
-    delete?: VentureSponsorshipWhereUniqueInput | VentureSponsorshipWhereUniqueInput[]
-    connect?: VentureSponsorshipWhereUniqueInput | VentureSponsorshipWhereUniqueInput[]
-    update?: VentureSponsorshipUpdateWithWhereUniqueWithoutUserInput | VentureSponsorshipUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: VentureSponsorshipUpdateManyWithWhereWithoutUserInput | VentureSponsorshipUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: VentureSponsorshipScalarWhereInput | VentureSponsorshipScalarWhereInput[]
-  }
-
-  export type VentureSubscriptionUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<VentureSubscriptionCreateWithoutUserInput, VentureSubscriptionUncheckedCreateWithoutUserInput> | VentureSubscriptionCreateWithoutUserInput[] | VentureSubscriptionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: VentureSubscriptionCreateOrConnectWithoutUserInput | VentureSubscriptionCreateOrConnectWithoutUserInput[]
-    upsert?: VentureSubscriptionUpsertWithWhereUniqueWithoutUserInput | VentureSubscriptionUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: VentureSubscriptionCreateManyUserInputEnvelope
-    set?: VentureSubscriptionWhereUniqueInput | VentureSubscriptionWhereUniqueInput[]
-    disconnect?: VentureSubscriptionWhereUniqueInput | VentureSubscriptionWhereUniqueInput[]
-    delete?: VentureSubscriptionWhereUniqueInput | VentureSubscriptionWhereUniqueInput[]
-    connect?: VentureSubscriptionWhereUniqueInput | VentureSubscriptionWhereUniqueInput[]
-    update?: VentureSubscriptionUpdateWithWhereUniqueWithoutUserInput | VentureSubscriptionUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: VentureSubscriptionUpdateManyWithWhereWithoutUserInput | VentureSubscriptionUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: VentureSubscriptionScalarWhereInput | VentureSubscriptionScalarWhereInput[]
-  }
-
   export type XUserPreferencesUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<XUserPreferencesCreateWithoutUserInput, XUserPreferencesUncheckedCreateWithoutUserInput> | XUserPreferencesCreateWithoutUserInput[] | XUserPreferencesUncheckedCreateWithoutUserInput[]
     connectOrCreate?: XUserPreferencesCreateOrConnectWithoutUserInput | XUserPreferencesCreateOrConnectWithoutUserInput[]
@@ -33793,6 +34769,386 @@ export namespace Prisma {
     deleteMany?: RoleScalarWhereInput | RoleScalarWhereInput[]
   }
 
+  export type UserCreateNestedOneWithoutDetailInput = {
+    create?: XOR<UserCreateWithoutDetailInput, UserUncheckedCreateWithoutDetailInput>
+    connectOrCreate?: UserCreateOrConnectWithoutDetailInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type MunicipalityCreateNestedOneWithoutUserDetailsInput = {
+    create?: XOR<MunicipalityCreateWithoutUserDetailsInput, MunicipalityUncheckedCreateWithoutUserDetailsInput>
+    connectOrCreate?: MunicipalityCreateOrConnectWithoutUserDetailsInput
+    connect?: MunicipalityWhereUniqueInput
+  }
+
+  export type VentureCreateNestedManyWithoutOwnerDetailInput = {
+    create?: XOR<VentureCreateWithoutOwnerDetailInput, VentureUncheckedCreateWithoutOwnerDetailInput> | VentureCreateWithoutOwnerDetailInput[] | VentureUncheckedCreateWithoutOwnerDetailInput[]
+    connectOrCreate?: VentureCreateOrConnectWithoutOwnerDetailInput | VentureCreateOrConnectWithoutOwnerDetailInput[]
+    createMany?: VentureCreateManyOwnerDetailInputEnvelope
+    connect?: VentureWhereUniqueInput | VentureWhereUniqueInput[]
+  }
+
+  export type PublicationCommentCreateNestedManyWithoutUserInput = {
+    create?: XOR<PublicationCommentCreateWithoutUserInput, PublicationCommentUncheckedCreateWithoutUserInput> | PublicationCommentCreateWithoutUserInput[] | PublicationCommentUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PublicationCommentCreateOrConnectWithoutUserInput | PublicationCommentCreateOrConnectWithoutUserInput[]
+    createMany?: PublicationCommentCreateManyUserInputEnvelope
+    connect?: PublicationCommentWhereUniqueInput | PublicationCommentWhereUniqueInput[]
+  }
+
+  export type EventDonationCreateNestedManyWithoutDonorInput = {
+    create?: XOR<EventDonationCreateWithoutDonorInput, EventDonationUncheckedCreateWithoutDonorInput> | EventDonationCreateWithoutDonorInput[] | EventDonationUncheckedCreateWithoutDonorInput[]
+    connectOrCreate?: EventDonationCreateOrConnectWithoutDonorInput | EventDonationCreateOrConnectWithoutDonorInput[]
+    createMany?: EventDonationCreateManyDonorInputEnvelope
+    connect?: EventDonationWhereUniqueInput | EventDonationWhereUniqueInput[]
+  }
+
+  export type NotificationCreateNestedManyWithoutUserInput = {
+    create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
+    createMany?: NotificationCreateManyUserInputEnvelope
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+  }
+
+  export type PublicationClapCreateNestedManyWithoutUserInput = {
+    create?: XOR<PublicationClapCreateWithoutUserInput, PublicationClapUncheckedCreateWithoutUserInput> | PublicationClapCreateWithoutUserInput[] | PublicationClapUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PublicationClapCreateOrConnectWithoutUserInput | PublicationClapCreateOrConnectWithoutUserInput[]
+    createMany?: PublicationClapCreateManyUserInputEnvelope
+    connect?: PublicationClapWhereUniqueInput | PublicationClapWhereUniqueInput[]
+  }
+
+  export type VentureSponsorshipCreateNestedManyWithoutUserInput = {
+    create?: XOR<VentureSponsorshipCreateWithoutUserInput, VentureSponsorshipUncheckedCreateWithoutUserInput> | VentureSponsorshipCreateWithoutUserInput[] | VentureSponsorshipUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: VentureSponsorshipCreateOrConnectWithoutUserInput | VentureSponsorshipCreateOrConnectWithoutUserInput[]
+    createMany?: VentureSponsorshipCreateManyUserInputEnvelope
+    connect?: VentureSponsorshipWhereUniqueInput | VentureSponsorshipWhereUniqueInput[]
+  }
+
+  export type VentureSubscriptionCreateNestedManyWithoutUserInput = {
+    create?: XOR<VentureSubscriptionCreateWithoutUserInput, VentureSubscriptionUncheckedCreateWithoutUserInput> | VentureSubscriptionCreateWithoutUserInput[] | VentureSubscriptionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: VentureSubscriptionCreateOrConnectWithoutUserInput | VentureSubscriptionCreateOrConnectWithoutUserInput[]
+    createMany?: VentureSubscriptionCreateManyUserInputEnvelope
+    connect?: VentureSubscriptionWhereUniqueInput | VentureSubscriptionWhereUniqueInput[]
+  }
+
+  export type UserUncheckedCreateNestedOneWithoutDetailInput = {
+    create?: XOR<UserCreateWithoutDetailInput, UserUncheckedCreateWithoutDetailInput>
+    connectOrCreate?: UserCreateOrConnectWithoutDetailInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type VentureUncheckedCreateNestedManyWithoutOwnerDetailInput = {
+    create?: XOR<VentureCreateWithoutOwnerDetailInput, VentureUncheckedCreateWithoutOwnerDetailInput> | VentureCreateWithoutOwnerDetailInput[] | VentureUncheckedCreateWithoutOwnerDetailInput[]
+    connectOrCreate?: VentureCreateOrConnectWithoutOwnerDetailInput | VentureCreateOrConnectWithoutOwnerDetailInput[]
+    createMany?: VentureCreateManyOwnerDetailInputEnvelope
+    connect?: VentureWhereUniqueInput | VentureWhereUniqueInput[]
+  }
+
+  export type PublicationCommentUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<PublicationCommentCreateWithoutUserInput, PublicationCommentUncheckedCreateWithoutUserInput> | PublicationCommentCreateWithoutUserInput[] | PublicationCommentUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PublicationCommentCreateOrConnectWithoutUserInput | PublicationCommentCreateOrConnectWithoutUserInput[]
+    createMany?: PublicationCommentCreateManyUserInputEnvelope
+    connect?: PublicationCommentWhereUniqueInput | PublicationCommentWhereUniqueInput[]
+  }
+
+  export type EventDonationUncheckedCreateNestedManyWithoutDonorInput = {
+    create?: XOR<EventDonationCreateWithoutDonorInput, EventDonationUncheckedCreateWithoutDonorInput> | EventDonationCreateWithoutDonorInput[] | EventDonationUncheckedCreateWithoutDonorInput[]
+    connectOrCreate?: EventDonationCreateOrConnectWithoutDonorInput | EventDonationCreateOrConnectWithoutDonorInput[]
+    createMany?: EventDonationCreateManyDonorInputEnvelope
+    connect?: EventDonationWhereUniqueInput | EventDonationWhereUniqueInput[]
+  }
+
+  export type NotificationUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
+    createMany?: NotificationCreateManyUserInputEnvelope
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+  }
+
+  export type PublicationClapUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<PublicationClapCreateWithoutUserInput, PublicationClapUncheckedCreateWithoutUserInput> | PublicationClapCreateWithoutUserInput[] | PublicationClapUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PublicationClapCreateOrConnectWithoutUserInput | PublicationClapCreateOrConnectWithoutUserInput[]
+    createMany?: PublicationClapCreateManyUserInputEnvelope
+    connect?: PublicationClapWhereUniqueInput | PublicationClapWhereUniqueInput[]
+  }
+
+  export type VentureSponsorshipUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<VentureSponsorshipCreateWithoutUserInput, VentureSponsorshipUncheckedCreateWithoutUserInput> | VentureSponsorshipCreateWithoutUserInput[] | VentureSponsorshipUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: VentureSponsorshipCreateOrConnectWithoutUserInput | VentureSponsorshipCreateOrConnectWithoutUserInput[]
+    createMany?: VentureSponsorshipCreateManyUserInputEnvelope
+    connect?: VentureSponsorshipWhereUniqueInput | VentureSponsorshipWhereUniqueInput[]
+  }
+
+  export type VentureSubscriptionUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<VentureSubscriptionCreateWithoutUserInput, VentureSubscriptionUncheckedCreateWithoutUserInput> | VentureSubscriptionCreateWithoutUserInput[] | VentureSubscriptionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: VentureSubscriptionCreateOrConnectWithoutUserInput | VentureSubscriptionCreateOrConnectWithoutUserInput[]
+    createMany?: VentureSubscriptionCreateManyUserInputEnvelope
+    connect?: VentureSubscriptionWhereUniqueInput | VentureSubscriptionWhereUniqueInput[]
+  }
+
+  export type UserUpdateOneWithoutDetailNestedInput = {
+    create?: XOR<UserCreateWithoutDetailInput, UserUncheckedCreateWithoutDetailInput>
+    connectOrCreate?: UserCreateOrConnectWithoutDetailInput
+    upsert?: UserUpsertWithoutDetailInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutDetailInput, UserUpdateWithoutDetailInput>, UserUncheckedUpdateWithoutDetailInput>
+  }
+
+  export type MunicipalityUpdateOneRequiredWithoutUserDetailsNestedInput = {
+    create?: XOR<MunicipalityCreateWithoutUserDetailsInput, MunicipalityUncheckedCreateWithoutUserDetailsInput>
+    connectOrCreate?: MunicipalityCreateOrConnectWithoutUserDetailsInput
+    upsert?: MunicipalityUpsertWithoutUserDetailsInput
+    connect?: MunicipalityWhereUniqueInput
+    update?: XOR<XOR<MunicipalityUpdateToOneWithWhereWithoutUserDetailsInput, MunicipalityUpdateWithoutUserDetailsInput>, MunicipalityUncheckedUpdateWithoutUserDetailsInput>
+  }
+
+  export type VentureUpdateManyWithoutOwnerDetailNestedInput = {
+    create?: XOR<VentureCreateWithoutOwnerDetailInput, VentureUncheckedCreateWithoutOwnerDetailInput> | VentureCreateWithoutOwnerDetailInput[] | VentureUncheckedCreateWithoutOwnerDetailInput[]
+    connectOrCreate?: VentureCreateOrConnectWithoutOwnerDetailInput | VentureCreateOrConnectWithoutOwnerDetailInput[]
+    upsert?: VentureUpsertWithWhereUniqueWithoutOwnerDetailInput | VentureUpsertWithWhereUniqueWithoutOwnerDetailInput[]
+    createMany?: VentureCreateManyOwnerDetailInputEnvelope
+    set?: VentureWhereUniqueInput | VentureWhereUniqueInput[]
+    disconnect?: VentureWhereUniqueInput | VentureWhereUniqueInput[]
+    delete?: VentureWhereUniqueInput | VentureWhereUniqueInput[]
+    connect?: VentureWhereUniqueInput | VentureWhereUniqueInput[]
+    update?: VentureUpdateWithWhereUniqueWithoutOwnerDetailInput | VentureUpdateWithWhereUniqueWithoutOwnerDetailInput[]
+    updateMany?: VentureUpdateManyWithWhereWithoutOwnerDetailInput | VentureUpdateManyWithWhereWithoutOwnerDetailInput[]
+    deleteMany?: VentureScalarWhereInput | VentureScalarWhereInput[]
+  }
+
+  export type PublicationCommentUpdateManyWithoutUserNestedInput = {
+    create?: XOR<PublicationCommentCreateWithoutUserInput, PublicationCommentUncheckedCreateWithoutUserInput> | PublicationCommentCreateWithoutUserInput[] | PublicationCommentUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PublicationCommentCreateOrConnectWithoutUserInput | PublicationCommentCreateOrConnectWithoutUserInput[]
+    upsert?: PublicationCommentUpsertWithWhereUniqueWithoutUserInput | PublicationCommentUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: PublicationCommentCreateManyUserInputEnvelope
+    set?: PublicationCommentWhereUniqueInput | PublicationCommentWhereUniqueInput[]
+    disconnect?: PublicationCommentWhereUniqueInput | PublicationCommentWhereUniqueInput[]
+    delete?: PublicationCommentWhereUniqueInput | PublicationCommentWhereUniqueInput[]
+    connect?: PublicationCommentWhereUniqueInput | PublicationCommentWhereUniqueInput[]
+    update?: PublicationCommentUpdateWithWhereUniqueWithoutUserInput | PublicationCommentUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: PublicationCommentUpdateManyWithWhereWithoutUserInput | PublicationCommentUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: PublicationCommentScalarWhereInput | PublicationCommentScalarWhereInput[]
+  }
+
+  export type EventDonationUpdateManyWithoutDonorNestedInput = {
+    create?: XOR<EventDonationCreateWithoutDonorInput, EventDonationUncheckedCreateWithoutDonorInput> | EventDonationCreateWithoutDonorInput[] | EventDonationUncheckedCreateWithoutDonorInput[]
+    connectOrCreate?: EventDonationCreateOrConnectWithoutDonorInput | EventDonationCreateOrConnectWithoutDonorInput[]
+    upsert?: EventDonationUpsertWithWhereUniqueWithoutDonorInput | EventDonationUpsertWithWhereUniqueWithoutDonorInput[]
+    createMany?: EventDonationCreateManyDonorInputEnvelope
+    set?: EventDonationWhereUniqueInput | EventDonationWhereUniqueInput[]
+    disconnect?: EventDonationWhereUniqueInput | EventDonationWhereUniqueInput[]
+    delete?: EventDonationWhereUniqueInput | EventDonationWhereUniqueInput[]
+    connect?: EventDonationWhereUniqueInput | EventDonationWhereUniqueInput[]
+    update?: EventDonationUpdateWithWhereUniqueWithoutDonorInput | EventDonationUpdateWithWhereUniqueWithoutDonorInput[]
+    updateMany?: EventDonationUpdateManyWithWhereWithoutDonorInput | EventDonationUpdateManyWithWhereWithoutDonorInput[]
+    deleteMany?: EventDonationScalarWhereInput | EventDonationScalarWhereInput[]
+  }
+
+  export type NotificationUpdateManyWithoutUserNestedInput = {
+    create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
+    upsert?: NotificationUpsertWithWhereUniqueWithoutUserInput | NotificationUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: NotificationCreateManyUserInputEnvelope
+    set?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    disconnect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    delete?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    update?: NotificationUpdateWithWhereUniqueWithoutUserInput | NotificationUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: NotificationUpdateManyWithWhereWithoutUserInput | NotificationUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+  }
+
+  export type PublicationClapUpdateManyWithoutUserNestedInput = {
+    create?: XOR<PublicationClapCreateWithoutUserInput, PublicationClapUncheckedCreateWithoutUserInput> | PublicationClapCreateWithoutUserInput[] | PublicationClapUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PublicationClapCreateOrConnectWithoutUserInput | PublicationClapCreateOrConnectWithoutUserInput[]
+    upsert?: PublicationClapUpsertWithWhereUniqueWithoutUserInput | PublicationClapUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: PublicationClapCreateManyUserInputEnvelope
+    set?: PublicationClapWhereUniqueInput | PublicationClapWhereUniqueInput[]
+    disconnect?: PublicationClapWhereUniqueInput | PublicationClapWhereUniqueInput[]
+    delete?: PublicationClapWhereUniqueInput | PublicationClapWhereUniqueInput[]
+    connect?: PublicationClapWhereUniqueInput | PublicationClapWhereUniqueInput[]
+    update?: PublicationClapUpdateWithWhereUniqueWithoutUserInput | PublicationClapUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: PublicationClapUpdateManyWithWhereWithoutUserInput | PublicationClapUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: PublicationClapScalarWhereInput | PublicationClapScalarWhereInput[]
+  }
+
+  export type VentureSponsorshipUpdateManyWithoutUserNestedInput = {
+    create?: XOR<VentureSponsorshipCreateWithoutUserInput, VentureSponsorshipUncheckedCreateWithoutUserInput> | VentureSponsorshipCreateWithoutUserInput[] | VentureSponsorshipUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: VentureSponsorshipCreateOrConnectWithoutUserInput | VentureSponsorshipCreateOrConnectWithoutUserInput[]
+    upsert?: VentureSponsorshipUpsertWithWhereUniqueWithoutUserInput | VentureSponsorshipUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: VentureSponsorshipCreateManyUserInputEnvelope
+    set?: VentureSponsorshipWhereUniqueInput | VentureSponsorshipWhereUniqueInput[]
+    disconnect?: VentureSponsorshipWhereUniqueInput | VentureSponsorshipWhereUniqueInput[]
+    delete?: VentureSponsorshipWhereUniqueInput | VentureSponsorshipWhereUniqueInput[]
+    connect?: VentureSponsorshipWhereUniqueInput | VentureSponsorshipWhereUniqueInput[]
+    update?: VentureSponsorshipUpdateWithWhereUniqueWithoutUserInput | VentureSponsorshipUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: VentureSponsorshipUpdateManyWithWhereWithoutUserInput | VentureSponsorshipUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: VentureSponsorshipScalarWhereInput | VentureSponsorshipScalarWhereInput[]
+  }
+
+  export type VentureSubscriptionUpdateManyWithoutUserNestedInput = {
+    create?: XOR<VentureSubscriptionCreateWithoutUserInput, VentureSubscriptionUncheckedCreateWithoutUserInput> | VentureSubscriptionCreateWithoutUserInput[] | VentureSubscriptionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: VentureSubscriptionCreateOrConnectWithoutUserInput | VentureSubscriptionCreateOrConnectWithoutUserInput[]
+    upsert?: VentureSubscriptionUpsertWithWhereUniqueWithoutUserInput | VentureSubscriptionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: VentureSubscriptionCreateManyUserInputEnvelope
+    set?: VentureSubscriptionWhereUniqueInput | VentureSubscriptionWhereUniqueInput[]
+    disconnect?: VentureSubscriptionWhereUniqueInput | VentureSubscriptionWhereUniqueInput[]
+    delete?: VentureSubscriptionWhereUniqueInput | VentureSubscriptionWhereUniqueInput[]
+    connect?: VentureSubscriptionWhereUniqueInput | VentureSubscriptionWhereUniqueInput[]
+    update?: VentureSubscriptionUpdateWithWhereUniqueWithoutUserInput | VentureSubscriptionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: VentureSubscriptionUpdateManyWithWhereWithoutUserInput | VentureSubscriptionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: VentureSubscriptionScalarWhereInput | VentureSubscriptionScalarWhereInput[]
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type UserUncheckedUpdateOneWithoutDetailNestedInput = {
+    create?: XOR<UserCreateWithoutDetailInput, UserUncheckedCreateWithoutDetailInput>
+    connectOrCreate?: UserCreateOrConnectWithoutDetailInput
+    upsert?: UserUpsertWithoutDetailInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutDetailInput, UserUpdateWithoutDetailInput>, UserUncheckedUpdateWithoutDetailInput>
+  }
+
+  export type VentureUncheckedUpdateManyWithoutOwnerDetailNestedInput = {
+    create?: XOR<VentureCreateWithoutOwnerDetailInput, VentureUncheckedCreateWithoutOwnerDetailInput> | VentureCreateWithoutOwnerDetailInput[] | VentureUncheckedCreateWithoutOwnerDetailInput[]
+    connectOrCreate?: VentureCreateOrConnectWithoutOwnerDetailInput | VentureCreateOrConnectWithoutOwnerDetailInput[]
+    upsert?: VentureUpsertWithWhereUniqueWithoutOwnerDetailInput | VentureUpsertWithWhereUniqueWithoutOwnerDetailInput[]
+    createMany?: VentureCreateManyOwnerDetailInputEnvelope
+    set?: VentureWhereUniqueInput | VentureWhereUniqueInput[]
+    disconnect?: VentureWhereUniqueInput | VentureWhereUniqueInput[]
+    delete?: VentureWhereUniqueInput | VentureWhereUniqueInput[]
+    connect?: VentureWhereUniqueInput | VentureWhereUniqueInput[]
+    update?: VentureUpdateWithWhereUniqueWithoutOwnerDetailInput | VentureUpdateWithWhereUniqueWithoutOwnerDetailInput[]
+    updateMany?: VentureUpdateManyWithWhereWithoutOwnerDetailInput | VentureUpdateManyWithWhereWithoutOwnerDetailInput[]
+    deleteMany?: VentureScalarWhereInput | VentureScalarWhereInput[]
+  }
+
+  export type PublicationCommentUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<PublicationCommentCreateWithoutUserInput, PublicationCommentUncheckedCreateWithoutUserInput> | PublicationCommentCreateWithoutUserInput[] | PublicationCommentUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PublicationCommentCreateOrConnectWithoutUserInput | PublicationCommentCreateOrConnectWithoutUserInput[]
+    upsert?: PublicationCommentUpsertWithWhereUniqueWithoutUserInput | PublicationCommentUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: PublicationCommentCreateManyUserInputEnvelope
+    set?: PublicationCommentWhereUniqueInput | PublicationCommentWhereUniqueInput[]
+    disconnect?: PublicationCommentWhereUniqueInput | PublicationCommentWhereUniqueInput[]
+    delete?: PublicationCommentWhereUniqueInput | PublicationCommentWhereUniqueInput[]
+    connect?: PublicationCommentWhereUniqueInput | PublicationCommentWhereUniqueInput[]
+    update?: PublicationCommentUpdateWithWhereUniqueWithoutUserInput | PublicationCommentUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: PublicationCommentUpdateManyWithWhereWithoutUserInput | PublicationCommentUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: PublicationCommentScalarWhereInput | PublicationCommentScalarWhereInput[]
+  }
+
+  export type EventDonationUncheckedUpdateManyWithoutDonorNestedInput = {
+    create?: XOR<EventDonationCreateWithoutDonorInput, EventDonationUncheckedCreateWithoutDonorInput> | EventDonationCreateWithoutDonorInput[] | EventDonationUncheckedCreateWithoutDonorInput[]
+    connectOrCreate?: EventDonationCreateOrConnectWithoutDonorInput | EventDonationCreateOrConnectWithoutDonorInput[]
+    upsert?: EventDonationUpsertWithWhereUniqueWithoutDonorInput | EventDonationUpsertWithWhereUniqueWithoutDonorInput[]
+    createMany?: EventDonationCreateManyDonorInputEnvelope
+    set?: EventDonationWhereUniqueInput | EventDonationWhereUniqueInput[]
+    disconnect?: EventDonationWhereUniqueInput | EventDonationWhereUniqueInput[]
+    delete?: EventDonationWhereUniqueInput | EventDonationWhereUniqueInput[]
+    connect?: EventDonationWhereUniqueInput | EventDonationWhereUniqueInput[]
+    update?: EventDonationUpdateWithWhereUniqueWithoutDonorInput | EventDonationUpdateWithWhereUniqueWithoutDonorInput[]
+    updateMany?: EventDonationUpdateManyWithWhereWithoutDonorInput | EventDonationUpdateManyWithWhereWithoutDonorInput[]
+    deleteMany?: EventDonationScalarWhereInput | EventDonationScalarWhereInput[]
+  }
+
+  export type NotificationUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
+    upsert?: NotificationUpsertWithWhereUniqueWithoutUserInput | NotificationUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: NotificationCreateManyUserInputEnvelope
+    set?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    disconnect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    delete?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    update?: NotificationUpdateWithWhereUniqueWithoutUserInput | NotificationUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: NotificationUpdateManyWithWhereWithoutUserInput | NotificationUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+  }
+
+  export type PublicationClapUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<PublicationClapCreateWithoutUserInput, PublicationClapUncheckedCreateWithoutUserInput> | PublicationClapCreateWithoutUserInput[] | PublicationClapUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PublicationClapCreateOrConnectWithoutUserInput | PublicationClapCreateOrConnectWithoutUserInput[]
+    upsert?: PublicationClapUpsertWithWhereUniqueWithoutUserInput | PublicationClapUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: PublicationClapCreateManyUserInputEnvelope
+    set?: PublicationClapWhereUniqueInput | PublicationClapWhereUniqueInput[]
+    disconnect?: PublicationClapWhereUniqueInput | PublicationClapWhereUniqueInput[]
+    delete?: PublicationClapWhereUniqueInput | PublicationClapWhereUniqueInput[]
+    connect?: PublicationClapWhereUniqueInput | PublicationClapWhereUniqueInput[]
+    update?: PublicationClapUpdateWithWhereUniqueWithoutUserInput | PublicationClapUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: PublicationClapUpdateManyWithWhereWithoutUserInput | PublicationClapUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: PublicationClapScalarWhereInput | PublicationClapScalarWhereInput[]
+  }
+
+  export type VentureSponsorshipUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<VentureSponsorshipCreateWithoutUserInput, VentureSponsorshipUncheckedCreateWithoutUserInput> | VentureSponsorshipCreateWithoutUserInput[] | VentureSponsorshipUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: VentureSponsorshipCreateOrConnectWithoutUserInput | VentureSponsorshipCreateOrConnectWithoutUserInput[]
+    upsert?: VentureSponsorshipUpsertWithWhereUniqueWithoutUserInput | VentureSponsorshipUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: VentureSponsorshipCreateManyUserInputEnvelope
+    set?: VentureSponsorshipWhereUniqueInput | VentureSponsorshipWhereUniqueInput[]
+    disconnect?: VentureSponsorshipWhereUniqueInput | VentureSponsorshipWhereUniqueInput[]
+    delete?: VentureSponsorshipWhereUniqueInput | VentureSponsorshipWhereUniqueInput[]
+    connect?: VentureSponsorshipWhereUniqueInput | VentureSponsorshipWhereUniqueInput[]
+    update?: VentureSponsorshipUpdateWithWhereUniqueWithoutUserInput | VentureSponsorshipUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: VentureSponsorshipUpdateManyWithWhereWithoutUserInput | VentureSponsorshipUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: VentureSponsorshipScalarWhereInput | VentureSponsorshipScalarWhereInput[]
+  }
+
+  export type VentureSubscriptionUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<VentureSubscriptionCreateWithoutUserInput, VentureSubscriptionUncheckedCreateWithoutUserInput> | VentureSubscriptionCreateWithoutUserInput[] | VentureSubscriptionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: VentureSubscriptionCreateOrConnectWithoutUserInput | VentureSubscriptionCreateOrConnectWithoutUserInput[]
+    upsert?: VentureSubscriptionUpsertWithWhereUniqueWithoutUserInput | VentureSubscriptionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: VentureSubscriptionCreateManyUserInputEnvelope
+    set?: VentureSubscriptionWhereUniqueInput | VentureSubscriptionWhereUniqueInput[]
+    disconnect?: VentureSubscriptionWhereUniqueInput | VentureSubscriptionWhereUniqueInput[]
+    delete?: VentureSubscriptionWhereUniqueInput | VentureSubscriptionWhereUniqueInput[]
+    connect?: VentureSubscriptionWhereUniqueInput | VentureSubscriptionWhereUniqueInput[]
+    update?: VentureSubscriptionUpdateWithWhereUniqueWithoutUserInput | VentureSubscriptionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: VentureSubscriptionUpdateManyWithWhereWithoutUserInput | VentureSubscriptionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: VentureSubscriptionScalarWhereInput | VentureSubscriptionScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutContactInput = {
+    create?: XOR<UserCreateWithoutContactInput, UserUncheckedCreateWithoutContactInput>
+    connectOrCreate?: UserCreateOrConnectWithoutContactInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUncheckedCreateNestedOneWithoutContactInput = {
+    create?: XOR<UserCreateWithoutContactInput, UserUncheckedCreateWithoutContactInput>
+    connectOrCreate?: UserCreateOrConnectWithoutContactInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneWithoutContactNestedInput = {
+    create?: XOR<UserCreateWithoutContactInput, UserUncheckedCreateWithoutContactInput>
+    connectOrCreate?: UserCreateOrConnectWithoutContactInput
+    upsert?: UserUpsertWithoutContactInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutContactInput, UserUpdateWithoutContactInput>, UserUncheckedUpdateWithoutContactInput>
+  }
+
+  export type UserUncheckedUpdateOneWithoutContactNestedInput = {
+    create?: XOR<UserCreateWithoutContactInput, UserUncheckedCreateWithoutContactInput>
+    connectOrCreate?: UserCreateOrConnectWithoutContactInput
+    upsert?: UserUpsertWithoutContactInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutContactInput, UserUpdateWithoutContactInput>, UserUncheckedUpdateWithoutContactInput>
+  }
+
   export type VentureCategoryCreateNestedOneWithoutXUserPreferencesInput = {
     create?: XOR<VentureCategoryCreateWithoutXUserPreferencesInput, VentureCategoryUncheckedCreateWithoutXUserPreferencesInput>
     connectOrCreate?: VentureCategoryCreateOrConnectWithoutXUserPreferencesInput
@@ -33819,60 +35175,6 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutXUserPreferencesInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutXUserPreferencesInput, UserUpdateWithoutXUserPreferencesInput>, UserUncheckedUpdateWithoutXUserPreferencesInput>
-  }
-
-  export type UserCreateNestedOneWithoutDetailInput = {
-    create?: XOR<UserCreateWithoutDetailInput, UserUncheckedCreateWithoutDetailInput>
-    connectOrCreate?: UserCreateOrConnectWithoutDetailInput
-    connect?: UserWhereUniqueInput
-  }
-
-  export type MunicipalityCreateNestedOneWithoutUserDetailInput = {
-    create?: XOR<MunicipalityCreateWithoutUserDetailInput, MunicipalityUncheckedCreateWithoutUserDetailInput>
-    connectOrCreate?: MunicipalityCreateOrConnectWithoutUserDetailInput
-    connect?: MunicipalityWhereUniqueInput
-  }
-
-  export type UserUncheckedCreateNestedOneWithoutDetailInput = {
-    create?: XOR<UserCreateWithoutDetailInput, UserUncheckedCreateWithoutDetailInput>
-    connectOrCreate?: UserCreateOrConnectWithoutDetailInput
-    connect?: UserWhereUniqueInput
-  }
-
-  export type UserUpdateOneWithoutDetailNestedInput = {
-    create?: XOR<UserCreateWithoutDetailInput, UserUncheckedCreateWithoutDetailInput>
-    connectOrCreate?: UserCreateOrConnectWithoutDetailInput
-    upsert?: UserUpsertWithoutDetailInput
-    disconnect?: UserWhereInput | boolean
-    delete?: UserWhereInput | boolean
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutDetailInput, UserUpdateWithoutDetailInput>, UserUncheckedUpdateWithoutDetailInput>
-  }
-
-  export type MunicipalityUpdateOneRequiredWithoutUserDetailNestedInput = {
-    create?: XOR<MunicipalityCreateWithoutUserDetailInput, MunicipalityUncheckedCreateWithoutUserDetailInput>
-    connectOrCreate?: MunicipalityCreateOrConnectWithoutUserDetailInput
-    upsert?: MunicipalityUpsertWithoutUserDetailInput
-    connect?: MunicipalityWhereUniqueInput
-    update?: XOR<XOR<MunicipalityUpdateToOneWithWhereWithoutUserDetailInput, MunicipalityUpdateWithoutUserDetailInput>, MunicipalityUncheckedUpdateWithoutUserDetailInput>
-  }
-
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
-  }
-
-  export type UserUncheckedUpdateOneWithoutDetailNestedInput = {
-    create?: XOR<UserCreateWithoutDetailInput, UserUncheckedCreateWithoutDetailInput>
-    connectOrCreate?: UserCreateOrConnectWithoutDetailInput
-    upsert?: UserUpsertWithoutDetailInput
-    disconnect?: UserWhereInput | boolean
-    delete?: UserWhereInput | boolean
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutDetailInput, UserUpdateWithoutDetailInput>, UserUncheckedUpdateWithoutDetailInput>
   }
 
   export type MunicipalityCreateNestedManyWithoutDepartmentInput = {
@@ -33979,10 +35281,10 @@ export namespace Prisma {
     connect?: VenturePublicationWhereUniqueInput
   }
 
-  export type UserCreateNestedOneWithoutCommentsInput = {
-    create?: XOR<UserCreateWithoutCommentsInput, UserUncheckedCreateWithoutCommentsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutCommentsInput
-    connect?: UserWhereUniqueInput
+  export type UserDetailCreateNestedOneWithoutCommentsInput = {
+    create?: XOR<UserDetailCreateWithoutCommentsInput, UserDetailUncheckedCreateWithoutCommentsInput>
+    connectOrCreate?: UserDetailCreateOrConnectWithoutCommentsInput
+    connect?: UserDetailWhereUniqueInput
   }
 
   export type VenturePublicationUpdateOneRequiredWithoutCommentsNestedInput = {
@@ -33993,12 +35295,12 @@ export namespace Prisma {
     update?: XOR<XOR<VenturePublicationUpdateToOneWithWhereWithoutCommentsInput, VenturePublicationUpdateWithoutCommentsInput>, VenturePublicationUncheckedUpdateWithoutCommentsInput>
   }
 
-  export type UserUpdateOneRequiredWithoutCommentsNestedInput = {
-    create?: XOR<UserCreateWithoutCommentsInput, UserUncheckedCreateWithoutCommentsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutCommentsInput
-    upsert?: UserUpsertWithoutCommentsInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCommentsInput, UserUpdateWithoutCommentsInput>, UserUncheckedUpdateWithoutCommentsInput>
+  export type UserDetailUpdateOneRequiredWithoutCommentsNestedInput = {
+    create?: XOR<UserDetailCreateWithoutCommentsInput, UserDetailUncheckedCreateWithoutCommentsInput>
+    connectOrCreate?: UserDetailCreateOrConnectWithoutCommentsInput
+    upsert?: UserDetailUpsertWithoutCommentsInput
+    connect?: UserDetailWhereUniqueInput
+    update?: XOR<XOR<UserDetailUpdateToOneWithWhereWithoutCommentsInput, UserDetailUpdateWithoutCommentsInput>, UserDetailUncheckedUpdateWithoutCommentsInput>
   }
 
   export type XEventCategoryCreateNestedManyWithoutCategoryInput = {
@@ -34087,10 +35389,10 @@ export namespace Prisma {
     connect?: VentureEventWhereUniqueInput
   }
 
-  export type UserCreateNestedOneWithoutEventDonationsInput = {
-    create?: XOR<UserCreateWithoutEventDonationsInput, UserUncheckedCreateWithoutEventDonationsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutEventDonationsInput
-    connect?: UserWhereUniqueInput
+  export type UserDetailCreateNestedOneWithoutDonationsInput = {
+    create?: XOR<UserDetailCreateWithoutDonationsInput, UserDetailUncheckedCreateWithoutDonationsInput>
+    connectOrCreate?: UserDetailCreateOrConnectWithoutDonationsInput
+    connect?: UserDetailWhereUniqueInput
   }
 
   export type FloatFieldUpdateOperationsInput = {
@@ -34109,17 +35411,23 @@ export namespace Prisma {
     update?: XOR<XOR<VentureEventUpdateToOneWithWhereWithoutDonationsInput, VentureEventUpdateWithoutDonationsInput>, VentureEventUncheckedUpdateWithoutDonationsInput>
   }
 
-  export type UserUpdateOneRequiredWithoutEventDonationsNestedInput = {
-    create?: XOR<UserCreateWithoutEventDonationsInput, UserUncheckedCreateWithoutEventDonationsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutEventDonationsInput
-    upsert?: UserUpsertWithoutEventDonationsInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutEventDonationsInput, UserUpdateWithoutEventDonationsInput>, UserUncheckedUpdateWithoutEventDonationsInput>
+  export type UserDetailUpdateOneRequiredWithoutDonationsNestedInput = {
+    create?: XOR<UserDetailCreateWithoutDonationsInput, UserDetailUncheckedCreateWithoutDonationsInput>
+    connectOrCreate?: UserDetailCreateOrConnectWithoutDonationsInput
+    upsert?: UserDetailUpsertWithoutDonationsInput
+    connect?: UserDetailWhereUniqueInput
+    update?: XOR<XOR<UserDetailUpdateToOneWithWhereWithoutDonationsInput, UserDetailUpdateWithoutDonationsInput>, UserDetailUncheckedUpdateWithoutDonationsInput>
   }
 
-  export type VentureEventCreateNestedOneWithoutLocationsInput = {
-    create?: XOR<VentureEventCreateWithoutLocationsInput, VentureEventUncheckedCreateWithoutLocationsInput>
-    connectOrCreate?: VentureEventCreateOrConnectWithoutLocationsInput
+  export type VentureEventCreateNestedOneWithoutLocationInput = {
+    create?: XOR<VentureEventCreateWithoutLocationInput, VentureEventUncheckedCreateWithoutLocationInput>
+    connectOrCreate?: VentureEventCreateOrConnectWithoutLocationInput
+    connect?: VentureEventWhereUniqueInput
+  }
+
+  export type VentureEventUncheckedCreateNestedOneWithoutLocationInput = {
+    create?: XOR<VentureEventCreateWithoutLocationInput, VentureEventUncheckedCreateWithoutLocationInput>
+    connectOrCreate?: VentureEventCreateOrConnectWithoutLocationInput
     connect?: VentureEventWhereUniqueInput
   }
 
@@ -34131,32 +35439,62 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type VentureEventUpdateOneRequiredWithoutLocationsNestedInput = {
-    create?: XOR<VentureEventCreateWithoutLocationsInput, VentureEventUncheckedCreateWithoutLocationsInput>
-    connectOrCreate?: VentureEventCreateOrConnectWithoutLocationsInput
-    upsert?: VentureEventUpsertWithoutLocationsInput
+  export type VentureEventUpdateOneWithoutLocationNestedInput = {
+    create?: XOR<VentureEventCreateWithoutLocationInput, VentureEventUncheckedCreateWithoutLocationInput>
+    connectOrCreate?: VentureEventCreateOrConnectWithoutLocationInput
+    upsert?: VentureEventUpsertWithoutLocationInput
+    disconnect?: VentureEventWhereInput | boolean
+    delete?: VentureEventWhereInput | boolean
     connect?: VentureEventWhereUniqueInput
-    update?: XOR<XOR<VentureEventUpdateToOneWithWhereWithoutLocationsInput, VentureEventUpdateWithoutLocationsInput>, VentureEventUncheckedUpdateWithoutLocationsInput>
+    update?: XOR<XOR<VentureEventUpdateToOneWithWhereWithoutLocationInput, VentureEventUpdateWithoutLocationInput>, VentureEventUncheckedUpdateWithoutLocationInput>
   }
 
-  export type VentureCreateNestedOneWithoutLocationsInput = {
-    create?: XOR<VentureCreateWithoutLocationsInput, VentureUncheckedCreateWithoutLocationsInput>
-    connectOrCreate?: VentureCreateOrConnectWithoutLocationsInput
+  export type VentureEventUncheckedUpdateOneWithoutLocationNestedInput = {
+    create?: XOR<VentureEventCreateWithoutLocationInput, VentureEventUncheckedCreateWithoutLocationInput>
+    connectOrCreate?: VentureEventCreateOrConnectWithoutLocationInput
+    upsert?: VentureEventUpsertWithoutLocationInput
+    disconnect?: VentureEventWhereInput | boolean
+    delete?: VentureEventWhereInput | boolean
+    connect?: VentureEventWhereUniqueInput
+    update?: XOR<XOR<VentureEventUpdateToOneWithWhereWithoutLocationInput, VentureEventUpdateWithoutLocationInput>, VentureEventUncheckedUpdateWithoutLocationInput>
+  }
+
+  export type VentureCreateNestedOneWithoutLocationInput = {
+    create?: XOR<VentureCreateWithoutLocationInput, VentureUncheckedCreateWithoutLocationInput>
+    connectOrCreate?: VentureCreateOrConnectWithoutLocationInput
     connect?: VentureWhereUniqueInput
   }
 
-  export type VentureUpdateOneRequiredWithoutLocationsNestedInput = {
-    create?: XOR<VentureCreateWithoutLocationsInput, VentureUncheckedCreateWithoutLocationsInput>
-    connectOrCreate?: VentureCreateOrConnectWithoutLocationsInput
-    upsert?: VentureUpsertWithoutLocationsInput
+  export type VentureUncheckedCreateNestedOneWithoutLocationInput = {
+    create?: XOR<VentureCreateWithoutLocationInput, VentureUncheckedCreateWithoutLocationInput>
+    connectOrCreate?: VentureCreateOrConnectWithoutLocationInput
     connect?: VentureWhereUniqueInput
-    update?: XOR<XOR<VentureUpdateToOneWithWhereWithoutLocationsInput, VentureUpdateWithoutLocationsInput>, VentureUncheckedUpdateWithoutLocationsInput>
   }
 
-  export type UserCreateNestedOneWithoutNotificationsInput = {
-    create?: XOR<UserCreateWithoutNotificationsInput, UserUncheckedCreateWithoutNotificationsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutNotificationsInput
-    connect?: UserWhereUniqueInput
+  export type VentureUpdateOneWithoutLocationNestedInput = {
+    create?: XOR<VentureCreateWithoutLocationInput, VentureUncheckedCreateWithoutLocationInput>
+    connectOrCreate?: VentureCreateOrConnectWithoutLocationInput
+    upsert?: VentureUpsertWithoutLocationInput
+    disconnect?: VentureWhereInput | boolean
+    delete?: VentureWhereInput | boolean
+    connect?: VentureWhereUniqueInput
+    update?: XOR<XOR<VentureUpdateToOneWithWhereWithoutLocationInput, VentureUpdateWithoutLocationInput>, VentureUncheckedUpdateWithoutLocationInput>
+  }
+
+  export type VentureUncheckedUpdateOneWithoutLocationNestedInput = {
+    create?: XOR<VentureCreateWithoutLocationInput, VentureUncheckedCreateWithoutLocationInput>
+    connectOrCreate?: VentureCreateOrConnectWithoutLocationInput
+    upsert?: VentureUpsertWithoutLocationInput
+    disconnect?: VentureWhereInput | boolean
+    delete?: VentureWhereInput | boolean
+    connect?: VentureWhereUniqueInput
+    update?: XOR<XOR<VentureUpdateToOneWithWhereWithoutLocationInput, VentureUpdateWithoutLocationInput>, VentureUncheckedUpdateWithoutLocationInput>
+  }
+
+  export type UserDetailCreateNestedOneWithoutNotificationsInput = {
+    create?: XOR<UserDetailCreateWithoutNotificationsInput, UserDetailUncheckedCreateWithoutNotificationsInput>
+    connectOrCreate?: UserDetailCreateOrConnectWithoutNotificationsInput
+    connect?: UserDetailWhereUniqueInput
   }
 
   export type EnumNotificationTypeFieldUpdateOperationsInput = {
@@ -34167,12 +35505,12 @@ export namespace Prisma {
     set?: $Enums.NotificationStatus
   }
 
-  export type UserUpdateOneRequiredWithoutNotificationsNestedInput = {
-    create?: XOR<UserCreateWithoutNotificationsInput, UserUncheckedCreateWithoutNotificationsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutNotificationsInput
-    upsert?: UserUpsertWithoutNotificationsInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutNotificationsInput, UserUpdateWithoutNotificationsInput>, UserUncheckedUpdateWithoutNotificationsInput>
+  export type UserDetailUpdateOneRequiredWithoutNotificationsNestedInput = {
+    create?: XOR<UserDetailCreateWithoutNotificationsInput, UserDetailUncheckedCreateWithoutNotificationsInput>
+    connectOrCreate?: UserDetailCreateOrConnectWithoutNotificationsInput
+    upsert?: UserDetailUpsertWithoutNotificationsInput
+    connect?: UserDetailWhereUniqueInput
+    update?: XOR<XOR<UserDetailUpdateToOneWithWhereWithoutNotificationsInput, UserDetailUpdateWithoutNotificationsInput>, UserDetailUncheckedUpdateWithoutNotificationsInput>
   }
 
   export type VenturePublicationCreateNestedOneWithoutClapsInput = {
@@ -34181,10 +35519,10 @@ export namespace Prisma {
     connect?: VenturePublicationWhereUniqueInput
   }
 
-  export type UserCreateNestedOneWithoutPublicationClapsInput = {
-    create?: XOR<UserCreateWithoutPublicationClapsInput, UserUncheckedCreateWithoutPublicationClapsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutPublicationClapsInput
-    connect?: UserWhereUniqueInput
+  export type UserDetailCreateNestedOneWithoutClapsInput = {
+    create?: XOR<UserDetailCreateWithoutClapsInput, UserDetailUncheckedCreateWithoutClapsInput>
+    connectOrCreate?: UserDetailCreateOrConnectWithoutClapsInput
+    connect?: UserDetailWhereUniqueInput
   }
 
   export type VenturePublicationUpdateOneRequiredWithoutClapsNestedInput = {
@@ -34195,12 +35533,12 @@ export namespace Prisma {
     update?: XOR<XOR<VenturePublicationUpdateToOneWithWhereWithoutClapsInput, VenturePublicationUpdateWithoutClapsInput>, VenturePublicationUncheckedUpdateWithoutClapsInput>
   }
 
-  export type UserUpdateOneRequiredWithoutPublicationClapsNestedInput = {
-    create?: XOR<UserCreateWithoutPublicationClapsInput, UserUncheckedCreateWithoutPublicationClapsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutPublicationClapsInput
-    upsert?: UserUpsertWithoutPublicationClapsInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPublicationClapsInput, UserUpdateWithoutPublicationClapsInput>, UserUncheckedUpdateWithoutPublicationClapsInput>
+  export type UserDetailUpdateOneRequiredWithoutClapsNestedInput = {
+    create?: XOR<UserDetailCreateWithoutClapsInput, UserDetailUncheckedCreateWithoutClapsInput>
+    connectOrCreate?: UserDetailCreateOrConnectWithoutClapsInput
+    upsert?: UserDetailUpsertWithoutClapsInput
+    connect?: UserDetailWhereUniqueInput
+    update?: XOR<XOR<UserDetailUpdateToOneWithWhereWithoutClapsInput, UserDetailUpdateWithoutClapsInput>, UserDetailUncheckedUpdateWithoutClapsInput>
   }
 
   export type VenturePublicationCreateNestedOneWithoutContentsInput = {
@@ -34311,17 +35649,10 @@ export namespace Prisma {
     connect?: VentureDetailWhereUniqueInput
   }
 
-  export type UserCreateNestedOneWithoutVenturesInput = {
-    create?: XOR<UserCreateWithoutVenturesInput, UserUncheckedCreateWithoutVenturesInput>
-    connectOrCreate?: UserCreateOrConnectWithoutVenturesInput
-    connect?: UserWhereUniqueInput
-  }
-
-  export type XVentureVencureCategoryCreateNestedManyWithoutVentureInput = {
-    create?: XOR<XVentureVencureCategoryCreateWithoutVentureInput, XVentureVencureCategoryUncheckedCreateWithoutVentureInput> | XVentureVencureCategoryCreateWithoutVentureInput[] | XVentureVencureCategoryUncheckedCreateWithoutVentureInput[]
-    connectOrCreate?: XVentureVencureCategoryCreateOrConnectWithoutVentureInput | XVentureVencureCategoryCreateOrConnectWithoutVentureInput[]
-    createMany?: XVentureVencureCategoryCreateManyVentureInputEnvelope
-    connect?: XVentureVencureCategoryWhereUniqueInput | XVentureVencureCategoryWhereUniqueInput[]
+  export type UserDetailCreateNestedOneWithoutVenturesInput = {
+    create?: XOR<UserDetailCreateWithoutVenturesInput, UserDetailUncheckedCreateWithoutVenturesInput>
+    connectOrCreate?: UserDetailCreateOrConnectWithoutVenturesInput
+    connect?: UserDetailWhereUniqueInput
   }
 
   export type VentureCategoryCreateNestedManyWithoutVenturesInput = {
@@ -34330,21 +35661,19 @@ export namespace Prisma {
     connect?: VentureCategoryWhereUniqueInput | VentureCategoryWhereUniqueInput[]
   }
 
-  export type VentureLocationCreateNestedManyWithoutVentureInput = {
-    create?: XOR<VentureLocationCreateWithoutVentureInput, VentureLocationUncheckedCreateWithoutVentureInput> | VentureLocationCreateWithoutVentureInput[] | VentureLocationUncheckedCreateWithoutVentureInput[]
-    connectOrCreate?: VentureLocationCreateOrConnectWithoutVentureInput | VentureLocationCreateOrConnectWithoutVentureInput[]
-    createMany?: VentureLocationCreateManyVentureInputEnvelope
-    connect?: VentureLocationWhereUniqueInput | VentureLocationWhereUniqueInput[]
+  export type VentureLocationCreateNestedOneWithoutVentureInput = {
+    create?: XOR<VentureLocationCreateWithoutVentureInput, VentureLocationUncheckedCreateWithoutVentureInput>
+    connectOrCreate?: VentureLocationCreateOrConnectWithoutVentureInput
+    connect?: VentureLocationWhereUniqueInput
   }
 
-  export type VentureContactCreateNestedManyWithoutVentureInput = {
-    create?: XOR<VentureContactCreateWithoutVentureInput, VentureContactUncheckedCreateWithoutVentureInput> | VentureContactCreateWithoutVentureInput[] | VentureContactUncheckedCreateWithoutVentureInput[]
-    connectOrCreate?: VentureContactCreateOrConnectWithoutVentureInput | VentureContactCreateOrConnectWithoutVentureInput[]
-    createMany?: VentureContactCreateManyVentureInputEnvelope
-    connect?: VentureContactWhereUniqueInput | VentureContactWhereUniqueInput[]
+  export type VentureContactCreateNestedOneWithoutVentureInput = {
+    create?: XOR<VentureContactCreateWithoutVentureInput, VentureContactUncheckedCreateWithoutVentureInput>
+    connectOrCreate?: VentureContactCreateOrConnectWithoutVentureInput
+    connect?: VentureContactWhereUniqueInput
   }
 
-  export type XVentureVencureCategoryUncheckedCreateNestedManyWithoutVentureInput = {
+  export type XVentureVencureCategoryCreateNestedManyWithoutVentureInput = {
     create?: XOR<XVentureVencureCategoryCreateWithoutVentureInput, XVentureVencureCategoryUncheckedCreateWithoutVentureInput> | XVentureVencureCategoryCreateWithoutVentureInput[] | XVentureVencureCategoryUncheckedCreateWithoutVentureInput[]
     connectOrCreate?: XVentureVencureCategoryCreateOrConnectWithoutVentureInput | XVentureVencureCategoryCreateOrConnectWithoutVentureInput[]
     createMany?: XVentureVencureCategoryCreateManyVentureInputEnvelope
@@ -34357,18 +35686,11 @@ export namespace Prisma {
     connect?: VentureCategoryWhereUniqueInput | VentureCategoryWhereUniqueInput[]
   }
 
-  export type VentureLocationUncheckedCreateNestedManyWithoutVentureInput = {
-    create?: XOR<VentureLocationCreateWithoutVentureInput, VentureLocationUncheckedCreateWithoutVentureInput> | VentureLocationCreateWithoutVentureInput[] | VentureLocationUncheckedCreateWithoutVentureInput[]
-    connectOrCreate?: VentureLocationCreateOrConnectWithoutVentureInput | VentureLocationCreateOrConnectWithoutVentureInput[]
-    createMany?: VentureLocationCreateManyVentureInputEnvelope
-    connect?: VentureLocationWhereUniqueInput | VentureLocationWhereUniqueInput[]
-  }
-
-  export type VentureContactUncheckedCreateNestedManyWithoutVentureInput = {
-    create?: XOR<VentureContactCreateWithoutVentureInput, VentureContactUncheckedCreateWithoutVentureInput> | VentureContactCreateWithoutVentureInput[] | VentureContactUncheckedCreateWithoutVentureInput[]
-    connectOrCreate?: VentureContactCreateOrConnectWithoutVentureInput | VentureContactCreateOrConnectWithoutVentureInput[]
-    createMany?: VentureContactCreateManyVentureInputEnvelope
-    connect?: VentureContactWhereUniqueInput | VentureContactWhereUniqueInput[]
+  export type XVentureVencureCategoryUncheckedCreateNestedManyWithoutVentureInput = {
+    create?: XOR<XVentureVencureCategoryCreateWithoutVentureInput, XVentureVencureCategoryUncheckedCreateWithoutVentureInput> | XVentureVencureCategoryCreateWithoutVentureInput[] | XVentureVencureCategoryUncheckedCreateWithoutVentureInput[]
+    connectOrCreate?: XVentureVencureCategoryCreateOrConnectWithoutVentureInput | XVentureVencureCategoryCreateOrConnectWithoutVentureInput[]
+    createMany?: XVentureVencureCategoryCreateManyVentureInputEnvelope
+    connect?: XVentureVencureCategoryWhereUniqueInput | XVentureVencureCategoryWhereUniqueInput[]
   }
 
   export type VentureDetailUpdateOneRequiredWithoutVentureNestedInput = {
@@ -34379,26 +35701,12 @@ export namespace Prisma {
     update?: XOR<XOR<VentureDetailUpdateToOneWithWhereWithoutVentureInput, VentureDetailUpdateWithoutVentureInput>, VentureDetailUncheckedUpdateWithoutVentureInput>
   }
 
-  export type UserUpdateOneRequiredWithoutVenturesNestedInput = {
-    create?: XOR<UserCreateWithoutVenturesInput, UserUncheckedCreateWithoutVenturesInput>
-    connectOrCreate?: UserCreateOrConnectWithoutVenturesInput
-    upsert?: UserUpsertWithoutVenturesInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutVenturesInput, UserUpdateWithoutVenturesInput>, UserUncheckedUpdateWithoutVenturesInput>
-  }
-
-  export type XVentureVencureCategoryUpdateManyWithoutVentureNestedInput = {
-    create?: XOR<XVentureVencureCategoryCreateWithoutVentureInput, XVentureVencureCategoryUncheckedCreateWithoutVentureInput> | XVentureVencureCategoryCreateWithoutVentureInput[] | XVentureVencureCategoryUncheckedCreateWithoutVentureInput[]
-    connectOrCreate?: XVentureVencureCategoryCreateOrConnectWithoutVentureInput | XVentureVencureCategoryCreateOrConnectWithoutVentureInput[]
-    upsert?: XVentureVencureCategoryUpsertWithWhereUniqueWithoutVentureInput | XVentureVencureCategoryUpsertWithWhereUniqueWithoutVentureInput[]
-    createMany?: XVentureVencureCategoryCreateManyVentureInputEnvelope
-    set?: XVentureVencureCategoryWhereUniqueInput | XVentureVencureCategoryWhereUniqueInput[]
-    disconnect?: XVentureVencureCategoryWhereUniqueInput | XVentureVencureCategoryWhereUniqueInput[]
-    delete?: XVentureVencureCategoryWhereUniqueInput | XVentureVencureCategoryWhereUniqueInput[]
-    connect?: XVentureVencureCategoryWhereUniqueInput | XVentureVencureCategoryWhereUniqueInput[]
-    update?: XVentureVencureCategoryUpdateWithWhereUniqueWithoutVentureInput | XVentureVencureCategoryUpdateWithWhereUniqueWithoutVentureInput[]
-    updateMany?: XVentureVencureCategoryUpdateManyWithWhereWithoutVentureInput | XVentureVencureCategoryUpdateManyWithWhereWithoutVentureInput[]
-    deleteMany?: XVentureVencureCategoryScalarWhereInput | XVentureVencureCategoryScalarWhereInput[]
+  export type UserDetailUpdateOneRequiredWithoutVenturesNestedInput = {
+    create?: XOR<UserDetailCreateWithoutVenturesInput, UserDetailUncheckedCreateWithoutVenturesInput>
+    connectOrCreate?: UserDetailCreateOrConnectWithoutVenturesInput
+    upsert?: UserDetailUpsertWithoutVenturesInput
+    connect?: UserDetailWhereUniqueInput
+    update?: XOR<XOR<UserDetailUpdateToOneWithWhereWithoutVenturesInput, UserDetailUpdateWithoutVenturesInput>, UserDetailUncheckedUpdateWithoutVenturesInput>
   }
 
   export type VentureCategoryUpdateManyWithoutVenturesNestedInput = {
@@ -34414,35 +35722,23 @@ export namespace Prisma {
     deleteMany?: VentureCategoryScalarWhereInput | VentureCategoryScalarWhereInput[]
   }
 
-  export type VentureLocationUpdateManyWithoutVentureNestedInput = {
-    create?: XOR<VentureLocationCreateWithoutVentureInput, VentureLocationUncheckedCreateWithoutVentureInput> | VentureLocationCreateWithoutVentureInput[] | VentureLocationUncheckedCreateWithoutVentureInput[]
-    connectOrCreate?: VentureLocationCreateOrConnectWithoutVentureInput | VentureLocationCreateOrConnectWithoutVentureInput[]
-    upsert?: VentureLocationUpsertWithWhereUniqueWithoutVentureInput | VentureLocationUpsertWithWhereUniqueWithoutVentureInput[]
-    createMany?: VentureLocationCreateManyVentureInputEnvelope
-    set?: VentureLocationWhereUniqueInput | VentureLocationWhereUniqueInput[]
-    disconnect?: VentureLocationWhereUniqueInput | VentureLocationWhereUniqueInput[]
-    delete?: VentureLocationWhereUniqueInput | VentureLocationWhereUniqueInput[]
-    connect?: VentureLocationWhereUniqueInput | VentureLocationWhereUniqueInput[]
-    update?: VentureLocationUpdateWithWhereUniqueWithoutVentureInput | VentureLocationUpdateWithWhereUniqueWithoutVentureInput[]
-    updateMany?: VentureLocationUpdateManyWithWhereWithoutVentureInput | VentureLocationUpdateManyWithWhereWithoutVentureInput[]
-    deleteMany?: VentureLocationScalarWhereInput | VentureLocationScalarWhereInput[]
+  export type VentureLocationUpdateOneRequiredWithoutVentureNestedInput = {
+    create?: XOR<VentureLocationCreateWithoutVentureInput, VentureLocationUncheckedCreateWithoutVentureInput>
+    connectOrCreate?: VentureLocationCreateOrConnectWithoutVentureInput
+    upsert?: VentureLocationUpsertWithoutVentureInput
+    connect?: VentureLocationWhereUniqueInput
+    update?: XOR<XOR<VentureLocationUpdateToOneWithWhereWithoutVentureInput, VentureLocationUpdateWithoutVentureInput>, VentureLocationUncheckedUpdateWithoutVentureInput>
   }
 
-  export type VentureContactUpdateManyWithoutVentureNestedInput = {
-    create?: XOR<VentureContactCreateWithoutVentureInput, VentureContactUncheckedCreateWithoutVentureInput> | VentureContactCreateWithoutVentureInput[] | VentureContactUncheckedCreateWithoutVentureInput[]
-    connectOrCreate?: VentureContactCreateOrConnectWithoutVentureInput | VentureContactCreateOrConnectWithoutVentureInput[]
-    upsert?: VentureContactUpsertWithWhereUniqueWithoutVentureInput | VentureContactUpsertWithWhereUniqueWithoutVentureInput[]
-    createMany?: VentureContactCreateManyVentureInputEnvelope
-    set?: VentureContactWhereUniqueInput | VentureContactWhereUniqueInput[]
-    disconnect?: VentureContactWhereUniqueInput | VentureContactWhereUniqueInput[]
-    delete?: VentureContactWhereUniqueInput | VentureContactWhereUniqueInput[]
-    connect?: VentureContactWhereUniqueInput | VentureContactWhereUniqueInput[]
-    update?: VentureContactUpdateWithWhereUniqueWithoutVentureInput | VentureContactUpdateWithWhereUniqueWithoutVentureInput[]
-    updateMany?: VentureContactUpdateManyWithWhereWithoutVentureInput | VentureContactUpdateManyWithWhereWithoutVentureInput[]
-    deleteMany?: VentureContactScalarWhereInput | VentureContactScalarWhereInput[]
+  export type VentureContactUpdateOneRequiredWithoutVentureNestedInput = {
+    create?: XOR<VentureContactCreateWithoutVentureInput, VentureContactUncheckedCreateWithoutVentureInput>
+    connectOrCreate?: VentureContactCreateOrConnectWithoutVentureInput
+    upsert?: VentureContactUpsertWithoutVentureInput
+    connect?: VentureContactWhereUniqueInput
+    update?: XOR<XOR<VentureContactUpdateToOneWithWhereWithoutVentureInput, VentureContactUpdateWithoutVentureInput>, VentureContactUncheckedUpdateWithoutVentureInput>
   }
 
-  export type XVentureVencureCategoryUncheckedUpdateManyWithoutVentureNestedInput = {
+  export type XVentureVencureCategoryUpdateManyWithoutVentureNestedInput = {
     create?: XOR<XVentureVencureCategoryCreateWithoutVentureInput, XVentureVencureCategoryUncheckedCreateWithoutVentureInput> | XVentureVencureCategoryCreateWithoutVentureInput[] | XVentureVencureCategoryUncheckedCreateWithoutVentureInput[]
     connectOrCreate?: XVentureVencureCategoryCreateOrConnectWithoutVentureInput | XVentureVencureCategoryCreateOrConnectWithoutVentureInput[]
     upsert?: XVentureVencureCategoryUpsertWithWhereUniqueWithoutVentureInput | XVentureVencureCategoryUpsertWithWhereUniqueWithoutVentureInput[]
@@ -34469,32 +35765,18 @@ export namespace Prisma {
     deleteMany?: VentureCategoryScalarWhereInput | VentureCategoryScalarWhereInput[]
   }
 
-  export type VentureLocationUncheckedUpdateManyWithoutVentureNestedInput = {
-    create?: XOR<VentureLocationCreateWithoutVentureInput, VentureLocationUncheckedCreateWithoutVentureInput> | VentureLocationCreateWithoutVentureInput[] | VentureLocationUncheckedCreateWithoutVentureInput[]
-    connectOrCreate?: VentureLocationCreateOrConnectWithoutVentureInput | VentureLocationCreateOrConnectWithoutVentureInput[]
-    upsert?: VentureLocationUpsertWithWhereUniqueWithoutVentureInput | VentureLocationUpsertWithWhereUniqueWithoutVentureInput[]
-    createMany?: VentureLocationCreateManyVentureInputEnvelope
-    set?: VentureLocationWhereUniqueInput | VentureLocationWhereUniqueInput[]
-    disconnect?: VentureLocationWhereUniqueInput | VentureLocationWhereUniqueInput[]
-    delete?: VentureLocationWhereUniqueInput | VentureLocationWhereUniqueInput[]
-    connect?: VentureLocationWhereUniqueInput | VentureLocationWhereUniqueInput[]
-    update?: VentureLocationUpdateWithWhereUniqueWithoutVentureInput | VentureLocationUpdateWithWhereUniqueWithoutVentureInput[]
-    updateMany?: VentureLocationUpdateManyWithWhereWithoutVentureInput | VentureLocationUpdateManyWithWhereWithoutVentureInput[]
-    deleteMany?: VentureLocationScalarWhereInput | VentureLocationScalarWhereInput[]
-  }
-
-  export type VentureContactUncheckedUpdateManyWithoutVentureNestedInput = {
-    create?: XOR<VentureContactCreateWithoutVentureInput, VentureContactUncheckedCreateWithoutVentureInput> | VentureContactCreateWithoutVentureInput[] | VentureContactUncheckedCreateWithoutVentureInput[]
-    connectOrCreate?: VentureContactCreateOrConnectWithoutVentureInput | VentureContactCreateOrConnectWithoutVentureInput[]
-    upsert?: VentureContactUpsertWithWhereUniqueWithoutVentureInput | VentureContactUpsertWithWhereUniqueWithoutVentureInput[]
-    createMany?: VentureContactCreateManyVentureInputEnvelope
-    set?: VentureContactWhereUniqueInput | VentureContactWhereUniqueInput[]
-    disconnect?: VentureContactWhereUniqueInput | VentureContactWhereUniqueInput[]
-    delete?: VentureContactWhereUniqueInput | VentureContactWhereUniqueInput[]
-    connect?: VentureContactWhereUniqueInput | VentureContactWhereUniqueInput[]
-    update?: VentureContactUpdateWithWhereUniqueWithoutVentureInput | VentureContactUpdateWithWhereUniqueWithoutVentureInput[]
-    updateMany?: VentureContactUpdateManyWithWhereWithoutVentureInput | VentureContactUpdateManyWithWhereWithoutVentureInput[]
-    deleteMany?: VentureContactScalarWhereInput | VentureContactScalarWhereInput[]
+  export type XVentureVencureCategoryUncheckedUpdateManyWithoutVentureNestedInput = {
+    create?: XOR<XVentureVencureCategoryCreateWithoutVentureInput, XVentureVencureCategoryUncheckedCreateWithoutVentureInput> | XVentureVencureCategoryCreateWithoutVentureInput[] | XVentureVencureCategoryUncheckedCreateWithoutVentureInput[]
+    connectOrCreate?: XVentureVencureCategoryCreateOrConnectWithoutVentureInput | XVentureVencureCategoryCreateOrConnectWithoutVentureInput[]
+    upsert?: XVentureVencureCategoryUpsertWithWhereUniqueWithoutVentureInput | XVentureVencureCategoryUpsertWithWhereUniqueWithoutVentureInput[]
+    createMany?: XVentureVencureCategoryCreateManyVentureInputEnvelope
+    set?: XVentureVencureCategoryWhereUniqueInput | XVentureVencureCategoryWhereUniqueInput[]
+    disconnect?: XVentureVencureCategoryWhereUniqueInput | XVentureVencureCategoryWhereUniqueInput[]
+    delete?: XVentureVencureCategoryWhereUniqueInput | XVentureVencureCategoryWhereUniqueInput[]
+    connect?: XVentureVencureCategoryWhereUniqueInput | XVentureVencureCategoryWhereUniqueInput[]
+    update?: XVentureVencureCategoryUpdateWithWhereUniqueWithoutVentureInput | XVentureVencureCategoryUpdateWithWhereUniqueWithoutVentureInput[]
+    updateMany?: XVentureVencureCategoryUpdateManyWithWhereWithoutVentureInput | XVentureVencureCategoryUpdateManyWithWhereWithoutVentureInput[]
+    deleteMany?: XVentureVencureCategoryScalarWhereInput | XVentureVencureCategoryScalarWhereInput[]
   }
 
   export type VentureCreateNestedOneWithoutContactInput = {
@@ -34503,10 +35785,28 @@ export namespace Prisma {
     connect?: VentureWhereUniqueInput
   }
 
-  export type VentureUpdateOneRequiredWithoutContactNestedInput = {
+  export type VentureUncheckedCreateNestedOneWithoutContactInput = {
+    create?: XOR<VentureCreateWithoutContactInput, VentureUncheckedCreateWithoutContactInput>
+    connectOrCreate?: VentureCreateOrConnectWithoutContactInput
+    connect?: VentureWhereUniqueInput
+  }
+
+  export type VentureUpdateOneWithoutContactNestedInput = {
     create?: XOR<VentureCreateWithoutContactInput, VentureUncheckedCreateWithoutContactInput>
     connectOrCreate?: VentureCreateOrConnectWithoutContactInput
     upsert?: VentureUpsertWithoutContactInput
+    disconnect?: VentureWhereInput | boolean
+    delete?: VentureWhereInput | boolean
+    connect?: VentureWhereUniqueInput
+    update?: XOR<XOR<VentureUpdateToOneWithWhereWithoutContactInput, VentureUpdateWithoutContactInput>, VentureUncheckedUpdateWithoutContactInput>
+  }
+
+  export type VentureUncheckedUpdateOneWithoutContactNestedInput = {
+    create?: XOR<VentureCreateWithoutContactInput, VentureUncheckedCreateWithoutContactInput>
+    connectOrCreate?: VentureCreateOrConnectWithoutContactInput
+    upsert?: VentureUpsertWithoutContactInput
+    disconnect?: VentureWhereInput | boolean
+    delete?: VentureWhereInput | boolean
     connect?: VentureWhereUniqueInput
     update?: XOR<XOR<VentureUpdateToOneWithWhereWithoutContactInput, VentureUpdateWithoutContactInput>, VentureUncheckedUpdateWithoutContactInput>
   }
@@ -34539,6 +35839,18 @@ export namespace Prisma {
     update?: XOR<XOR<VentureUpdateToOneWithWhereWithoutXVentureVencureCategoryInput, VentureUpdateWithoutXVentureVencureCategoryInput>, VentureUncheckedUpdateWithoutXVentureVencureCategoryInput>
   }
 
+  export type UserCreateNestedManyWithoutPreferencesInput = {
+    create?: XOR<UserCreateWithoutPreferencesInput, UserUncheckedCreateWithoutPreferencesInput> | UserCreateWithoutPreferencesInput[] | UserUncheckedCreateWithoutPreferencesInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutPreferencesInput | UserCreateOrConnectWithoutPreferencesInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+  }
+
+  export type VentureCreateNestedManyWithoutCategoriesInput = {
+    create?: XOR<VentureCreateWithoutCategoriesInput, VentureUncheckedCreateWithoutCategoriesInput> | VentureCreateWithoutCategoriesInput[] | VentureUncheckedCreateWithoutCategoriesInput[]
+    connectOrCreate?: VentureCreateOrConnectWithoutCategoriesInput | VentureCreateOrConnectWithoutCategoriesInput[]
+    connect?: VentureWhereUniqueInput | VentureWhereUniqueInput[]
+  }
+
   export type XUserPreferencesCreateNestedManyWithoutVentureCategoryInput = {
     create?: XOR<XUserPreferencesCreateWithoutVentureCategoryInput, XUserPreferencesUncheckedCreateWithoutVentureCategoryInput> | XUserPreferencesCreateWithoutVentureCategoryInput[] | XUserPreferencesUncheckedCreateWithoutVentureCategoryInput[]
     connectOrCreate?: XUserPreferencesCreateOrConnectWithoutVentureCategoryInput | XUserPreferencesCreateOrConnectWithoutVentureCategoryInput[]
@@ -34553,13 +35865,13 @@ export namespace Prisma {
     connect?: XVentureVencureCategoryWhereUniqueInput | XVentureVencureCategoryWhereUniqueInput[]
   }
 
-  export type UserCreateNestedManyWithoutPreferencesInput = {
+  export type UserUncheckedCreateNestedManyWithoutPreferencesInput = {
     create?: XOR<UserCreateWithoutPreferencesInput, UserUncheckedCreateWithoutPreferencesInput> | UserCreateWithoutPreferencesInput[] | UserUncheckedCreateWithoutPreferencesInput[]
     connectOrCreate?: UserCreateOrConnectWithoutPreferencesInput | UserCreateOrConnectWithoutPreferencesInput[]
     connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
   }
 
-  export type VentureCreateNestedManyWithoutCategoriesInput = {
+  export type VentureUncheckedCreateNestedManyWithoutCategoriesInput = {
     create?: XOR<VentureCreateWithoutCategoriesInput, VentureUncheckedCreateWithoutCategoriesInput> | VentureCreateWithoutCategoriesInput[] | VentureUncheckedCreateWithoutCategoriesInput[]
     connectOrCreate?: VentureCreateOrConnectWithoutCategoriesInput | VentureCreateOrConnectWithoutCategoriesInput[]
     connect?: VentureWhereUniqueInput | VentureWhereUniqueInput[]
@@ -34579,16 +35891,30 @@ export namespace Prisma {
     connect?: XVentureVencureCategoryWhereUniqueInput | XVentureVencureCategoryWhereUniqueInput[]
   }
 
-  export type UserUncheckedCreateNestedManyWithoutPreferencesInput = {
+  export type UserUpdateManyWithoutPreferencesNestedInput = {
     create?: XOR<UserCreateWithoutPreferencesInput, UserUncheckedCreateWithoutPreferencesInput> | UserCreateWithoutPreferencesInput[] | UserUncheckedCreateWithoutPreferencesInput[]
     connectOrCreate?: UserCreateOrConnectWithoutPreferencesInput | UserCreateOrConnectWithoutPreferencesInput[]
+    upsert?: UserUpsertWithWhereUniqueWithoutPreferencesInput | UserUpsertWithWhereUniqueWithoutPreferencesInput[]
+    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
     connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    update?: UserUpdateWithWhereUniqueWithoutPreferencesInput | UserUpdateWithWhereUniqueWithoutPreferencesInput[]
+    updateMany?: UserUpdateManyWithWhereWithoutPreferencesInput | UserUpdateManyWithWhereWithoutPreferencesInput[]
+    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
   }
 
-  export type VentureUncheckedCreateNestedManyWithoutCategoriesInput = {
+  export type VentureUpdateManyWithoutCategoriesNestedInput = {
     create?: XOR<VentureCreateWithoutCategoriesInput, VentureUncheckedCreateWithoutCategoriesInput> | VentureCreateWithoutCategoriesInput[] | VentureUncheckedCreateWithoutCategoriesInput[]
     connectOrCreate?: VentureCreateOrConnectWithoutCategoriesInput | VentureCreateOrConnectWithoutCategoriesInput[]
+    upsert?: VentureUpsertWithWhereUniqueWithoutCategoriesInput | VentureUpsertWithWhereUniqueWithoutCategoriesInput[]
+    set?: VentureWhereUniqueInput | VentureWhereUniqueInput[]
+    disconnect?: VentureWhereUniqueInput | VentureWhereUniqueInput[]
+    delete?: VentureWhereUniqueInput | VentureWhereUniqueInput[]
     connect?: VentureWhereUniqueInput | VentureWhereUniqueInput[]
+    update?: VentureUpdateWithWhereUniqueWithoutCategoriesInput | VentureUpdateWithWhereUniqueWithoutCategoriesInput[]
+    updateMany?: VentureUpdateManyWithWhereWithoutCategoriesInput | VentureUpdateManyWithWhereWithoutCategoriesInput[]
+    deleteMany?: VentureScalarWhereInput | VentureScalarWhereInput[]
   }
 
   export type XUserPreferencesUpdateManyWithoutVentureCategoryNestedInput = {
@@ -34619,7 +35945,7 @@ export namespace Prisma {
     deleteMany?: XVentureVencureCategoryScalarWhereInput | XVentureVencureCategoryScalarWhereInput[]
   }
 
-  export type UserUpdateManyWithoutPreferencesNestedInput = {
+  export type UserUncheckedUpdateManyWithoutPreferencesNestedInput = {
     create?: XOR<UserCreateWithoutPreferencesInput, UserUncheckedCreateWithoutPreferencesInput> | UserCreateWithoutPreferencesInput[] | UserUncheckedCreateWithoutPreferencesInput[]
     connectOrCreate?: UserCreateOrConnectWithoutPreferencesInput | UserCreateOrConnectWithoutPreferencesInput[]
     upsert?: UserUpsertWithWhereUniqueWithoutPreferencesInput | UserUpsertWithWhereUniqueWithoutPreferencesInput[]
@@ -34632,7 +35958,7 @@ export namespace Prisma {
     deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
   }
 
-  export type VentureUpdateManyWithoutCategoriesNestedInput = {
+  export type VentureUncheckedUpdateManyWithoutCategoriesNestedInput = {
     create?: XOR<VentureCreateWithoutCategoriesInput, VentureUncheckedCreateWithoutCategoriesInput> | VentureCreateWithoutCategoriesInput[] | VentureUncheckedCreateWithoutCategoriesInput[]
     connectOrCreate?: VentureCreateOrConnectWithoutCategoriesInput | VentureCreateOrConnectWithoutCategoriesInput[]
     upsert?: VentureUpsertWithWhereUniqueWithoutCategoriesInput | VentureUpsertWithWhereUniqueWithoutCategoriesInput[]
@@ -34671,32 +35997,6 @@ export namespace Prisma {
     update?: XVentureVencureCategoryUpdateWithWhereUniqueWithoutCategoryInput | XVentureVencureCategoryUpdateWithWhereUniqueWithoutCategoryInput[]
     updateMany?: XVentureVencureCategoryUpdateManyWithWhereWithoutCategoryInput | XVentureVencureCategoryUpdateManyWithWhereWithoutCategoryInput[]
     deleteMany?: XVentureVencureCategoryScalarWhereInput | XVentureVencureCategoryScalarWhereInput[]
-  }
-
-  export type UserUncheckedUpdateManyWithoutPreferencesNestedInput = {
-    create?: XOR<UserCreateWithoutPreferencesInput, UserUncheckedCreateWithoutPreferencesInput> | UserCreateWithoutPreferencesInput[] | UserUncheckedCreateWithoutPreferencesInput[]
-    connectOrCreate?: UserCreateOrConnectWithoutPreferencesInput | UserCreateOrConnectWithoutPreferencesInput[]
-    upsert?: UserUpsertWithWhereUniqueWithoutPreferencesInput | UserUpsertWithWhereUniqueWithoutPreferencesInput[]
-    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
-    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
-    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
-    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
-    update?: UserUpdateWithWhereUniqueWithoutPreferencesInput | UserUpdateWithWhereUniqueWithoutPreferencesInput[]
-    updateMany?: UserUpdateManyWithWhereWithoutPreferencesInput | UserUpdateManyWithWhereWithoutPreferencesInput[]
-    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
-  }
-
-  export type VentureUncheckedUpdateManyWithoutCategoriesNestedInput = {
-    create?: XOR<VentureCreateWithoutCategoriesInput, VentureUncheckedCreateWithoutCategoriesInput> | VentureCreateWithoutCategoriesInput[] | VentureUncheckedCreateWithoutCategoriesInput[]
-    connectOrCreate?: VentureCreateOrConnectWithoutCategoriesInput | VentureCreateOrConnectWithoutCategoriesInput[]
-    upsert?: VentureUpsertWithWhereUniqueWithoutCategoriesInput | VentureUpsertWithWhereUniqueWithoutCategoriesInput[]
-    set?: VentureWhereUniqueInput | VentureWhereUniqueInput[]
-    disconnect?: VentureWhereUniqueInput | VentureWhereUniqueInput[]
-    delete?: VentureWhereUniqueInput | VentureWhereUniqueInput[]
-    connect?: VentureWhereUniqueInput | VentureWhereUniqueInput[]
-    update?: VentureUpdateWithWhereUniqueWithoutCategoriesInput | VentureUpdateWithWhereUniqueWithoutCategoriesInput[]
-    updateMany?: VentureUpdateManyWithWhereWithoutCategoriesInput | VentureUpdateManyWithWhereWithoutCategoriesInput[]
-    deleteMany?: VentureScalarWhereInput | VentureScalarWhereInput[]
   }
 
   export type VentureCreateNestedOneWithoutDetailInput = {
@@ -34906,11 +36206,10 @@ export namespace Prisma {
     connect?: EventDonationWhereUniqueInput | EventDonationWhereUniqueInput[]
   }
 
-  export type EventLocationCreateNestedManyWithoutEventInput = {
-    create?: XOR<EventLocationCreateWithoutEventInput, EventLocationUncheckedCreateWithoutEventInput> | EventLocationCreateWithoutEventInput[] | EventLocationUncheckedCreateWithoutEventInput[]
-    connectOrCreate?: EventLocationCreateOrConnectWithoutEventInput | EventLocationCreateOrConnectWithoutEventInput[]
-    createMany?: EventLocationCreateManyEventInputEnvelope
-    connect?: EventLocationWhereUniqueInput | EventLocationWhereUniqueInput[]
+  export type EventLocationCreateNestedOneWithoutEventInput = {
+    create?: XOR<EventLocationCreateWithoutEventInput, EventLocationUncheckedCreateWithoutEventInput>
+    connectOrCreate?: EventLocationCreateOrConnectWithoutEventInput
+    connect?: EventLocationWhereUniqueInput
   }
 
   export type VentureDetailCreateNestedOneWithoutEventsInput = {
@@ -34937,13 +36236,6 @@ export namespace Prisma {
     connectOrCreate?: EventDonationCreateOrConnectWithoutEventInput | EventDonationCreateOrConnectWithoutEventInput[]
     createMany?: EventDonationCreateManyEventInputEnvelope
     connect?: EventDonationWhereUniqueInput | EventDonationWhereUniqueInput[]
-  }
-
-  export type EventLocationUncheckedCreateNestedManyWithoutEventInput = {
-    create?: XOR<EventLocationCreateWithoutEventInput, EventLocationUncheckedCreateWithoutEventInput> | EventLocationCreateWithoutEventInput[] | EventLocationUncheckedCreateWithoutEventInput[]
-    connectOrCreate?: EventLocationCreateOrConnectWithoutEventInput | EventLocationCreateOrConnectWithoutEventInput[]
-    createMany?: EventLocationCreateManyEventInputEnvelope
-    connect?: EventLocationWhereUniqueInput | EventLocationWhereUniqueInput[]
   }
 
   export type XEventCategoryUncheckedCreateNestedManyWithoutEventInput = {
@@ -34973,18 +36265,12 @@ export namespace Prisma {
     deleteMany?: EventDonationScalarWhereInput | EventDonationScalarWhereInput[]
   }
 
-  export type EventLocationUpdateManyWithoutEventNestedInput = {
-    create?: XOR<EventLocationCreateWithoutEventInput, EventLocationUncheckedCreateWithoutEventInput> | EventLocationCreateWithoutEventInput[] | EventLocationUncheckedCreateWithoutEventInput[]
-    connectOrCreate?: EventLocationCreateOrConnectWithoutEventInput | EventLocationCreateOrConnectWithoutEventInput[]
-    upsert?: EventLocationUpsertWithWhereUniqueWithoutEventInput | EventLocationUpsertWithWhereUniqueWithoutEventInput[]
-    createMany?: EventLocationCreateManyEventInputEnvelope
-    set?: EventLocationWhereUniqueInput | EventLocationWhereUniqueInput[]
-    disconnect?: EventLocationWhereUniqueInput | EventLocationWhereUniqueInput[]
-    delete?: EventLocationWhereUniqueInput | EventLocationWhereUniqueInput[]
-    connect?: EventLocationWhereUniqueInput | EventLocationWhereUniqueInput[]
-    update?: EventLocationUpdateWithWhereUniqueWithoutEventInput | EventLocationUpdateWithWhereUniqueWithoutEventInput[]
-    updateMany?: EventLocationUpdateManyWithWhereWithoutEventInput | EventLocationUpdateManyWithWhereWithoutEventInput[]
-    deleteMany?: EventLocationScalarWhereInput | EventLocationScalarWhereInput[]
+  export type EventLocationUpdateOneRequiredWithoutEventNestedInput = {
+    create?: XOR<EventLocationCreateWithoutEventInput, EventLocationUncheckedCreateWithoutEventInput>
+    connectOrCreate?: EventLocationCreateOrConnectWithoutEventInput
+    upsert?: EventLocationUpsertWithoutEventInput
+    connect?: EventLocationWhereUniqueInput
+    update?: XOR<XOR<EventLocationUpdateToOneWithWhereWithoutEventInput, EventLocationUpdateWithoutEventInput>, EventLocationUncheckedUpdateWithoutEventInput>
   }
 
   export type VentureDetailUpdateOneRequiredWithoutEventsNestedInput = {
@@ -35036,20 +36322,6 @@ export namespace Prisma {
     deleteMany?: EventDonationScalarWhereInput | EventDonationScalarWhereInput[]
   }
 
-  export type EventLocationUncheckedUpdateManyWithoutEventNestedInput = {
-    create?: XOR<EventLocationCreateWithoutEventInput, EventLocationUncheckedCreateWithoutEventInput> | EventLocationCreateWithoutEventInput[] | EventLocationUncheckedCreateWithoutEventInput[]
-    connectOrCreate?: EventLocationCreateOrConnectWithoutEventInput | EventLocationCreateOrConnectWithoutEventInput[]
-    upsert?: EventLocationUpsertWithWhereUniqueWithoutEventInput | EventLocationUpsertWithWhereUniqueWithoutEventInput[]
-    createMany?: EventLocationCreateManyEventInputEnvelope
-    set?: EventLocationWhereUniqueInput | EventLocationWhereUniqueInput[]
-    disconnect?: EventLocationWhereUniqueInput | EventLocationWhereUniqueInput[]
-    delete?: EventLocationWhereUniqueInput | EventLocationWhereUniqueInput[]
-    connect?: EventLocationWhereUniqueInput | EventLocationWhereUniqueInput[]
-    update?: EventLocationUpdateWithWhereUniqueWithoutEventInput | EventLocationUpdateWithWhereUniqueWithoutEventInput[]
-    updateMany?: EventLocationUpdateManyWithWhereWithoutEventInput | EventLocationUpdateManyWithWhereWithoutEventInput[]
-    deleteMany?: EventLocationScalarWhereInput | EventLocationScalarWhereInput[]
-  }
-
   export type XEventCategoryUncheckedUpdateManyWithoutEventNestedInput = {
     create?: XOR<XEventCategoryCreateWithoutEventInput, XEventCategoryUncheckedCreateWithoutEventInput> | XEventCategoryCreateWithoutEventInput[] | XEventCategoryUncheckedCreateWithoutEventInput[]
     connectOrCreate?: XEventCategoryCreateOrConnectWithoutEventInput | XEventCategoryCreateOrConnectWithoutEventInput[]
@@ -35077,11 +36349,11 @@ export namespace Prisma {
     deleteMany?: EventCategoryScalarWhereInput | EventCategoryScalarWhereInput[]
   }
 
-  export type CommentCreateNestedManyWithoutVenturePublicationInput = {
-    create?: XOR<CommentCreateWithoutVenturePublicationInput, CommentUncheckedCreateWithoutVenturePublicationInput> | CommentCreateWithoutVenturePublicationInput[] | CommentUncheckedCreateWithoutVenturePublicationInput[]
-    connectOrCreate?: CommentCreateOrConnectWithoutVenturePublicationInput | CommentCreateOrConnectWithoutVenturePublicationInput[]
-    createMany?: CommentCreateManyVenturePublicationInputEnvelope
-    connect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+  export type PublicationCommentCreateNestedManyWithoutVenturePublicationInput = {
+    create?: XOR<PublicationCommentCreateWithoutVenturePublicationInput, PublicationCommentUncheckedCreateWithoutVenturePublicationInput> | PublicationCommentCreateWithoutVenturePublicationInput[] | PublicationCommentUncheckedCreateWithoutVenturePublicationInput[]
+    connectOrCreate?: PublicationCommentCreateOrConnectWithoutVenturePublicationInput | PublicationCommentCreateOrConnectWithoutVenturePublicationInput[]
+    createMany?: PublicationCommentCreateManyVenturePublicationInputEnvelope
+    connect?: PublicationCommentWhereUniqueInput | PublicationCommentWhereUniqueInput[]
   }
 
   export type PublicationClapCreateNestedManyWithoutVenturePublicationInput = {
@@ -35104,11 +36376,11 @@ export namespace Prisma {
     connect?: VentureDetailWhereUniqueInput
   }
 
-  export type CommentUncheckedCreateNestedManyWithoutVenturePublicationInput = {
-    create?: XOR<CommentCreateWithoutVenturePublicationInput, CommentUncheckedCreateWithoutVenturePublicationInput> | CommentCreateWithoutVenturePublicationInput[] | CommentUncheckedCreateWithoutVenturePublicationInput[]
-    connectOrCreate?: CommentCreateOrConnectWithoutVenturePublicationInput | CommentCreateOrConnectWithoutVenturePublicationInput[]
-    createMany?: CommentCreateManyVenturePublicationInputEnvelope
-    connect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+  export type PublicationCommentUncheckedCreateNestedManyWithoutVenturePublicationInput = {
+    create?: XOR<PublicationCommentCreateWithoutVenturePublicationInput, PublicationCommentUncheckedCreateWithoutVenturePublicationInput> | PublicationCommentCreateWithoutVenturePublicationInput[] | PublicationCommentUncheckedCreateWithoutVenturePublicationInput[]
+    connectOrCreate?: PublicationCommentCreateOrConnectWithoutVenturePublicationInput | PublicationCommentCreateOrConnectWithoutVenturePublicationInput[]
+    createMany?: PublicationCommentCreateManyVenturePublicationInputEnvelope
+    connect?: PublicationCommentWhereUniqueInput | PublicationCommentWhereUniqueInput[]
   }
 
   export type PublicationClapUncheckedCreateNestedManyWithoutVenturePublicationInput = {
@@ -35129,18 +36401,18 @@ export namespace Prisma {
     set?: $Enums.PublicationType
   }
 
-  export type CommentUpdateManyWithoutVenturePublicationNestedInput = {
-    create?: XOR<CommentCreateWithoutVenturePublicationInput, CommentUncheckedCreateWithoutVenturePublicationInput> | CommentCreateWithoutVenturePublicationInput[] | CommentUncheckedCreateWithoutVenturePublicationInput[]
-    connectOrCreate?: CommentCreateOrConnectWithoutVenturePublicationInput | CommentCreateOrConnectWithoutVenturePublicationInput[]
-    upsert?: CommentUpsertWithWhereUniqueWithoutVenturePublicationInput | CommentUpsertWithWhereUniqueWithoutVenturePublicationInput[]
-    createMany?: CommentCreateManyVenturePublicationInputEnvelope
-    set?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
-    disconnect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
-    delete?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
-    connect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
-    update?: CommentUpdateWithWhereUniqueWithoutVenturePublicationInput | CommentUpdateWithWhereUniqueWithoutVenturePublicationInput[]
-    updateMany?: CommentUpdateManyWithWhereWithoutVenturePublicationInput | CommentUpdateManyWithWhereWithoutVenturePublicationInput[]
-    deleteMany?: CommentScalarWhereInput | CommentScalarWhereInput[]
+  export type PublicationCommentUpdateManyWithoutVenturePublicationNestedInput = {
+    create?: XOR<PublicationCommentCreateWithoutVenturePublicationInput, PublicationCommentUncheckedCreateWithoutVenturePublicationInput> | PublicationCommentCreateWithoutVenturePublicationInput[] | PublicationCommentUncheckedCreateWithoutVenturePublicationInput[]
+    connectOrCreate?: PublicationCommentCreateOrConnectWithoutVenturePublicationInput | PublicationCommentCreateOrConnectWithoutVenturePublicationInput[]
+    upsert?: PublicationCommentUpsertWithWhereUniqueWithoutVenturePublicationInput | PublicationCommentUpsertWithWhereUniqueWithoutVenturePublicationInput[]
+    createMany?: PublicationCommentCreateManyVenturePublicationInputEnvelope
+    set?: PublicationCommentWhereUniqueInput | PublicationCommentWhereUniqueInput[]
+    disconnect?: PublicationCommentWhereUniqueInput | PublicationCommentWhereUniqueInput[]
+    delete?: PublicationCommentWhereUniqueInput | PublicationCommentWhereUniqueInput[]
+    connect?: PublicationCommentWhereUniqueInput | PublicationCommentWhereUniqueInput[]
+    update?: PublicationCommentUpdateWithWhereUniqueWithoutVenturePublicationInput | PublicationCommentUpdateWithWhereUniqueWithoutVenturePublicationInput[]
+    updateMany?: PublicationCommentUpdateManyWithWhereWithoutVenturePublicationInput | PublicationCommentUpdateManyWithWhereWithoutVenturePublicationInput[]
+    deleteMany?: PublicationCommentScalarWhereInput | PublicationCommentScalarWhereInput[]
   }
 
   export type PublicationClapUpdateManyWithoutVenturePublicationNestedInput = {
@@ -35179,18 +36451,18 @@ export namespace Prisma {
     update?: XOR<XOR<VentureDetailUpdateToOneWithWhereWithoutPublicationsInput, VentureDetailUpdateWithoutPublicationsInput>, VentureDetailUncheckedUpdateWithoutPublicationsInput>
   }
 
-  export type CommentUncheckedUpdateManyWithoutVenturePublicationNestedInput = {
-    create?: XOR<CommentCreateWithoutVenturePublicationInput, CommentUncheckedCreateWithoutVenturePublicationInput> | CommentCreateWithoutVenturePublicationInput[] | CommentUncheckedCreateWithoutVenturePublicationInput[]
-    connectOrCreate?: CommentCreateOrConnectWithoutVenturePublicationInput | CommentCreateOrConnectWithoutVenturePublicationInput[]
-    upsert?: CommentUpsertWithWhereUniqueWithoutVenturePublicationInput | CommentUpsertWithWhereUniqueWithoutVenturePublicationInput[]
-    createMany?: CommentCreateManyVenturePublicationInputEnvelope
-    set?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
-    disconnect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
-    delete?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
-    connect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
-    update?: CommentUpdateWithWhereUniqueWithoutVenturePublicationInput | CommentUpdateWithWhereUniqueWithoutVenturePublicationInput[]
-    updateMany?: CommentUpdateManyWithWhereWithoutVenturePublicationInput | CommentUpdateManyWithWhereWithoutVenturePublicationInput[]
-    deleteMany?: CommentScalarWhereInput | CommentScalarWhereInput[]
+  export type PublicationCommentUncheckedUpdateManyWithoutVenturePublicationNestedInput = {
+    create?: XOR<PublicationCommentCreateWithoutVenturePublicationInput, PublicationCommentUncheckedCreateWithoutVenturePublicationInput> | PublicationCommentCreateWithoutVenturePublicationInput[] | PublicationCommentUncheckedCreateWithoutVenturePublicationInput[]
+    connectOrCreate?: PublicationCommentCreateOrConnectWithoutVenturePublicationInput | PublicationCommentCreateOrConnectWithoutVenturePublicationInput[]
+    upsert?: PublicationCommentUpsertWithWhereUniqueWithoutVenturePublicationInput | PublicationCommentUpsertWithWhereUniqueWithoutVenturePublicationInput[]
+    createMany?: PublicationCommentCreateManyVenturePublicationInputEnvelope
+    set?: PublicationCommentWhereUniqueInput | PublicationCommentWhereUniqueInput[]
+    disconnect?: PublicationCommentWhereUniqueInput | PublicationCommentWhereUniqueInput[]
+    delete?: PublicationCommentWhereUniqueInput | PublicationCommentWhereUniqueInput[]
+    connect?: PublicationCommentWhereUniqueInput | PublicationCommentWhereUniqueInput[]
+    update?: PublicationCommentUpdateWithWhereUniqueWithoutVenturePublicationInput | PublicationCommentUpdateWithWhereUniqueWithoutVenturePublicationInput[]
+    updateMany?: PublicationCommentUpdateManyWithWhereWithoutVenturePublicationInput | PublicationCommentUpdateManyWithWhereWithoutVenturePublicationInput[]
+    deleteMany?: PublicationCommentScalarWhereInput | PublicationCommentScalarWhereInput[]
   }
 
   export type PublicationClapUncheckedUpdateManyWithoutVenturePublicationNestedInput = {
@@ -35221,10 +36493,10 @@ export namespace Prisma {
     deleteMany?: PublicationContentScalarWhereInput | PublicationContentScalarWhereInput[]
   }
 
-  export type UserCreateNestedOneWithoutVentureSponsorshipsInput = {
-    create?: XOR<UserCreateWithoutVentureSponsorshipsInput, UserUncheckedCreateWithoutVentureSponsorshipsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutVentureSponsorshipsInput
-    connect?: UserWhereUniqueInput
+  export type UserDetailCreateNestedOneWithoutSponsorshipsInput = {
+    create?: XOR<UserDetailCreateWithoutSponsorshipsInput, UserDetailUncheckedCreateWithoutSponsorshipsInput>
+    connectOrCreate?: UserDetailCreateOrConnectWithoutSponsorshipsInput
+    connect?: UserDetailWhereUniqueInput
   }
 
   export type VentureDetailCreateNestedOneWithoutSponsorshipsInput = {
@@ -35233,12 +36505,12 @@ export namespace Prisma {
     connect?: VentureDetailWhereUniqueInput
   }
 
-  export type UserUpdateOneRequiredWithoutVentureSponsorshipsNestedInput = {
-    create?: XOR<UserCreateWithoutVentureSponsorshipsInput, UserUncheckedCreateWithoutVentureSponsorshipsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutVentureSponsorshipsInput
-    upsert?: UserUpsertWithoutVentureSponsorshipsInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutVentureSponsorshipsInput, UserUpdateWithoutVentureSponsorshipsInput>, UserUncheckedUpdateWithoutVentureSponsorshipsInput>
+  export type UserDetailUpdateOneRequiredWithoutSponsorshipsNestedInput = {
+    create?: XOR<UserDetailCreateWithoutSponsorshipsInput, UserDetailUncheckedCreateWithoutSponsorshipsInput>
+    connectOrCreate?: UserDetailCreateOrConnectWithoutSponsorshipsInput
+    upsert?: UserDetailUpsertWithoutSponsorshipsInput
+    connect?: UserDetailWhereUniqueInput
+    update?: XOR<XOR<UserDetailUpdateToOneWithWhereWithoutSponsorshipsInput, UserDetailUpdateWithoutSponsorshipsInput>, UserDetailUncheckedUpdateWithoutSponsorshipsInput>
   }
 
   export type VentureDetailUpdateOneRequiredWithoutSponsorshipsNestedInput = {
@@ -35249,10 +36521,10 @@ export namespace Prisma {
     update?: XOR<XOR<VentureDetailUpdateToOneWithWhereWithoutSponsorshipsInput, VentureDetailUpdateWithoutSponsorshipsInput>, VentureDetailUncheckedUpdateWithoutSponsorshipsInput>
   }
 
-  export type UserCreateNestedOneWithoutVentureSubscriptionsInput = {
-    create?: XOR<UserCreateWithoutVentureSubscriptionsInput, UserUncheckedCreateWithoutVentureSubscriptionsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutVentureSubscriptionsInput
-    connect?: UserWhereUniqueInput
+  export type UserDetailCreateNestedOneWithoutSubscriptionsInput = {
+    create?: XOR<UserDetailCreateWithoutSubscriptionsInput, UserDetailUncheckedCreateWithoutSubscriptionsInput>
+    connectOrCreate?: UserDetailCreateOrConnectWithoutSubscriptionsInput
+    connect?: UserDetailWhereUniqueInput
   }
 
   export type VentureDetailCreateNestedOneWithoutSubscriptionsInput = {
@@ -35261,12 +36533,12 @@ export namespace Prisma {
     connect?: VentureDetailWhereUniqueInput
   }
 
-  export type UserUpdateOneRequiredWithoutVentureSubscriptionsNestedInput = {
-    create?: XOR<UserCreateWithoutVentureSubscriptionsInput, UserUncheckedCreateWithoutVentureSubscriptionsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutVentureSubscriptionsInput
-    upsert?: UserUpsertWithoutVentureSubscriptionsInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutVentureSubscriptionsInput, UserUpdateWithoutVentureSubscriptionsInput>, UserUncheckedUpdateWithoutVentureSubscriptionsInput>
+  export type UserDetailUpdateOneRequiredWithoutSubscriptionsNestedInput = {
+    create?: XOR<UserDetailCreateWithoutSubscriptionsInput, UserDetailUncheckedCreateWithoutSubscriptionsInput>
+    connectOrCreate?: UserDetailCreateOrConnectWithoutSubscriptionsInput
+    upsert?: UserDetailUpsertWithoutSubscriptionsInput
+    connect?: UserDetailWhereUniqueInput
+    update?: XOR<XOR<UserDetailUpdateToOneWithWhereWithoutSubscriptionsInput, UserDetailUpdateWithoutSubscriptionsInput>, UserDetailUncheckedUpdateWithoutSubscriptionsInput>
   }
 
   export type VentureDetailUpdateOneRequiredWithoutSubscriptionsNestedInput = {
@@ -35610,115 +36882,18 @@ export namespace Prisma {
     _max?: NestedEnumPublicationTypeFilter<$PrismaModel>
   }
 
-  export type CommentCreateWithoutUserInput = {
-    id?: string
-    body: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    venturePublication: VenturePublicationCreateNestedOneWithoutCommentsInput
-  }
-
-  export type CommentUncheckedCreateWithoutUserInput = {
-    id?: string
-    publicationId: string
-    body: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type CommentCreateOrConnectWithoutUserInput = {
-    where: CommentWhereUniqueInput
-    create: XOR<CommentCreateWithoutUserInput, CommentUncheckedCreateWithoutUserInput>
-  }
-
-  export type CommentCreateManyUserInputEnvelope = {
-    data: CommentCreateManyUserInput | CommentCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type EventDonationCreateWithoutUserInput = {
-    id?: string
-    amount: number
-    currency: string
-    createdAt?: Date | string
-    event: VentureEventCreateNestedOneWithoutDonationsInput
-  }
-
-  export type EventDonationUncheckedCreateWithoutUserInput = {
-    id?: string
-    eventId: string
-    amount: number
-    currency: string
-    createdAt?: Date | string
-  }
-
-  export type EventDonationCreateOrConnectWithoutUserInput = {
-    where: EventDonationWhereUniqueInput
-    create: XOR<EventDonationCreateWithoutUserInput, EventDonationUncheckedCreateWithoutUserInput>
-  }
-
-  export type EventDonationCreateManyUserInputEnvelope = {
-    data: EventDonationCreateManyUserInput | EventDonationCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type NotificationCreateWithoutUserInput = {
-    id?: string
-    title: string
-    type: $Enums.NotificationType
-    status: $Enums.NotificationStatus
-    description: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type NotificationUncheckedCreateWithoutUserInput = {
-    id?: string
-    title: string
-    type: $Enums.NotificationType
-    status: $Enums.NotificationStatus
-    description: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type NotificationCreateOrConnectWithoutUserInput = {
-    where: NotificationWhereUniqueInput
-    create: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput>
-  }
-
-  export type NotificationCreateManyUserInputEnvelope = {
-    data: NotificationCreateManyUserInput | NotificationCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type PublicationClapCreateWithoutUserInput = {
-    id?: string
-    createdAt?: Date | string
-    venturePublication: VenturePublicationCreateNestedOneWithoutClapsInput
-  }
-
-  export type PublicationClapUncheckedCreateWithoutUserInput = {
-    id?: string
-    publicationId: string
-    createdAt?: Date | string
-  }
-
-  export type PublicationClapCreateOrConnectWithoutUserInput = {
-    where: PublicationClapWhereUniqueInput
-    create: XOR<PublicationClapCreateWithoutUserInput, PublicationClapUncheckedCreateWithoutUserInput>
-  }
-
-  export type PublicationClapCreateManyUserInputEnvelope = {
-    data: PublicationClapCreateManyUserInput | PublicationClapCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
   export type UserDetailCreateWithoutUserInput = {
     id?: string
     gender: string
     birthDate: Date | string
-    municipality: MunicipalityCreateNestedOneWithoutUserDetailInput
+    municipality: MunicipalityCreateNestedOneWithoutUserDetailsInput
+    ventures?: VentureCreateNestedManyWithoutOwnerDetailInput
+    comments?: PublicationCommentCreateNestedManyWithoutUserInput
+    donations?: EventDonationCreateNestedManyWithoutDonorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    claps?: PublicationClapCreateNestedManyWithoutUserInput
+    sponsorships?: VentureSponsorshipCreateNestedManyWithoutUserInput
+    subscriptions?: VentureSubscriptionCreateNestedManyWithoutUserInput
   }
 
   export type UserDetailUncheckedCreateWithoutUserInput = {
@@ -35726,6 +36901,13 @@ export namespace Prisma {
     gender: string
     birthDate: Date | string
     municipalityId: number
+    ventures?: VentureUncheckedCreateNestedManyWithoutOwnerDetailInput
+    comments?: PublicationCommentUncheckedCreateNestedManyWithoutUserInput
+    donations?: EventDonationUncheckedCreateNestedManyWithoutDonorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    claps?: PublicationClapUncheckedCreateNestedManyWithoutUserInput
+    sponsorships?: VentureSponsorshipUncheckedCreateNestedManyWithoutUserInput
+    subscriptions?: VentureSubscriptionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserDetailCreateOrConnectWithoutUserInput = {
@@ -35733,96 +36915,33 @@ export namespace Prisma {
     create: XOR<UserDetailCreateWithoutUserInput, UserDetailUncheckedCreateWithoutUserInput>
   }
 
-  export type VentureCreateWithoutOwnerInput = {
+  export type UserContactCreateWithoutUserInput = {
     id?: string
-    name: string
-    slug: string
-    coverPhoto: string
-    description: string
-    active?: boolean
-    verified?: boolean
+    phoneNumber: string
+    address: string
+    facebookUrl: string
+    linkedinUrl: string
+    twitterUrl: string
+    instagramUrl: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    detail: VentureDetailCreateNestedOneWithoutVentureInput
-    XVentureVencureCategory?: XVentureVencureCategoryCreateNestedManyWithoutVentureInput
-    categories?: VentureCategoryCreateNestedManyWithoutVenturesInput
-    locations?: VentureLocationCreateNestedManyWithoutVentureInput
-    contact?: VentureContactCreateNestedManyWithoutVentureInput
   }
 
-  export type VentureUncheckedCreateWithoutOwnerInput = {
+  export type UserContactUncheckedCreateWithoutUserInput = {
     id?: string
-    name: string
-    slug: string
-    coverPhoto: string
-    description: string
-    active?: boolean
-    verified?: boolean
-    detailId: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    XVentureVencureCategory?: XVentureVencureCategoryUncheckedCreateNestedManyWithoutVentureInput
-    categories?: VentureCategoryUncheckedCreateNestedManyWithoutVenturesInput
-    locations?: VentureLocationUncheckedCreateNestedManyWithoutVentureInput
-    contact?: VentureContactUncheckedCreateNestedManyWithoutVentureInput
-  }
-
-  export type VentureCreateOrConnectWithoutOwnerInput = {
-    where: VentureWhereUniqueInput
-    create: XOR<VentureCreateWithoutOwnerInput, VentureUncheckedCreateWithoutOwnerInput>
-  }
-
-  export type VentureCreateManyOwnerInputEnvelope = {
-    data: VentureCreateManyOwnerInput | VentureCreateManyOwnerInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type VentureSponsorshipCreateWithoutUserInput = {
-    id: string
-    monthlyAmount: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    detail: VentureDetailCreateNestedOneWithoutSponsorshipsInput
-  }
-
-  export type VentureSponsorshipUncheckedCreateWithoutUserInput = {
-    id: string
-    ventureDetailId: string
-    monthlyAmount: number
+    phoneNumber: string
+    address: string
+    facebookUrl: string
+    linkedinUrl: string
+    twitterUrl: string
+    instagramUrl: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
-  export type VentureSponsorshipCreateOrConnectWithoutUserInput = {
-    where: VentureSponsorshipWhereUniqueInput
-    create: XOR<VentureSponsorshipCreateWithoutUserInput, VentureSponsorshipUncheckedCreateWithoutUserInput>
-  }
-
-  export type VentureSponsorshipCreateManyUserInputEnvelope = {
-    data: VentureSponsorshipCreateManyUserInput | VentureSponsorshipCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type VentureSubscriptionCreateWithoutUserInput = {
-    id: string
-    createdAt?: Date | string
-    detail: VentureDetailCreateNestedOneWithoutSubscriptionsInput
-  }
-
-  export type VentureSubscriptionUncheckedCreateWithoutUserInput = {
-    id: string
-    ventureId: string
-    createdAt?: Date | string
-  }
-
-  export type VentureSubscriptionCreateOrConnectWithoutUserInput = {
-    where: VentureSubscriptionWhereUniqueInput
-    create: XOR<VentureSubscriptionCreateWithoutUserInput, VentureSubscriptionUncheckedCreateWithoutUserInput>
-  }
-
-  export type VentureSubscriptionCreateManyUserInputEnvelope = {
-    data: VentureSubscriptionCreateManyUserInput | VentureSubscriptionCreateManyUserInput[]
-    skipDuplicates?: boolean
+  export type UserContactCreateOrConnectWithoutUserInput = {
+    where: UserContactWhereUniqueInput
+    create: XOR<UserContactCreateWithoutUserInput, UserContactUncheckedCreateWithoutUserInput>
   }
 
   export type XUserPreferencesCreateWithoutUserInput = {
@@ -35872,9 +36991,9 @@ export namespace Prisma {
     description: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    ventures?: VentureCreateNestedManyWithoutCategoriesInput
     XUserPreferences?: XUserPreferencesCreateNestedManyWithoutVentureCategoryInput
     XVentureVencureCategory?: XVentureVencureCategoryCreateNestedManyWithoutCategoryInput
-    ventures?: VentureCreateNestedManyWithoutCategoriesInput
   }
 
   export type VentureCategoryUncheckedCreateWithoutUsersInput = {
@@ -35884,9 +37003,9 @@ export namespace Prisma {
     description: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    ventures?: VentureUncheckedCreateNestedManyWithoutCategoriesInput
     XUserPreferences?: XUserPreferencesUncheckedCreateNestedManyWithoutVentureCategoryInput
     XVentureVencureCategory?: XVentureVencureCategoryUncheckedCreateNestedManyWithoutCategoryInput
-    ventures?: VentureUncheckedCreateNestedManyWithoutCategoriesInput
   }
 
   export type VentureCategoryCreateOrConnectWithoutUsersInput = {
@@ -35917,118 +37036,6 @@ export namespace Prisma {
     create: XOR<RoleCreateWithoutUsersInput, RoleUncheckedCreateWithoutUsersInput>
   }
 
-  export type CommentUpsertWithWhereUniqueWithoutUserInput = {
-    where: CommentWhereUniqueInput
-    update: XOR<CommentUpdateWithoutUserInput, CommentUncheckedUpdateWithoutUserInput>
-    create: XOR<CommentCreateWithoutUserInput, CommentUncheckedCreateWithoutUserInput>
-  }
-
-  export type CommentUpdateWithWhereUniqueWithoutUserInput = {
-    where: CommentWhereUniqueInput
-    data: XOR<CommentUpdateWithoutUserInput, CommentUncheckedUpdateWithoutUserInput>
-  }
-
-  export type CommentUpdateManyWithWhereWithoutUserInput = {
-    where: CommentScalarWhereInput
-    data: XOR<CommentUpdateManyMutationInput, CommentUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type CommentScalarWhereInput = {
-    AND?: CommentScalarWhereInput | CommentScalarWhereInput[]
-    OR?: CommentScalarWhereInput[]
-    NOT?: CommentScalarWhereInput | CommentScalarWhereInput[]
-    id?: StringFilter<"Comment"> | string
-    userId?: StringFilter<"Comment"> | string
-    publicationId?: StringFilter<"Comment"> | string
-    body?: StringFilter<"Comment"> | string
-    createdAt?: DateTimeFilter<"Comment"> | Date | string
-    updatedAt?: DateTimeFilter<"Comment"> | Date | string
-  }
-
-  export type EventDonationUpsertWithWhereUniqueWithoutUserInput = {
-    where: EventDonationWhereUniqueInput
-    update: XOR<EventDonationUpdateWithoutUserInput, EventDonationUncheckedUpdateWithoutUserInput>
-    create: XOR<EventDonationCreateWithoutUserInput, EventDonationUncheckedCreateWithoutUserInput>
-  }
-
-  export type EventDonationUpdateWithWhereUniqueWithoutUserInput = {
-    where: EventDonationWhereUniqueInput
-    data: XOR<EventDonationUpdateWithoutUserInput, EventDonationUncheckedUpdateWithoutUserInput>
-  }
-
-  export type EventDonationUpdateManyWithWhereWithoutUserInput = {
-    where: EventDonationScalarWhereInput
-    data: XOR<EventDonationUpdateManyMutationInput, EventDonationUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type EventDonationScalarWhereInput = {
-    AND?: EventDonationScalarWhereInput | EventDonationScalarWhereInput[]
-    OR?: EventDonationScalarWhereInput[]
-    NOT?: EventDonationScalarWhereInput | EventDonationScalarWhereInput[]
-    id?: StringFilter<"EventDonation"> | string
-    userId?: StringFilter<"EventDonation"> | string
-    eventId?: StringFilter<"EventDonation"> | string
-    amount?: FloatFilter<"EventDonation"> | number
-    currency?: StringFilter<"EventDonation"> | string
-    createdAt?: DateTimeFilter<"EventDonation"> | Date | string
-  }
-
-  export type NotificationUpsertWithWhereUniqueWithoutUserInput = {
-    where: NotificationWhereUniqueInput
-    update: XOR<NotificationUpdateWithoutUserInput, NotificationUncheckedUpdateWithoutUserInput>
-    create: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput>
-  }
-
-  export type NotificationUpdateWithWhereUniqueWithoutUserInput = {
-    where: NotificationWhereUniqueInput
-    data: XOR<NotificationUpdateWithoutUserInput, NotificationUncheckedUpdateWithoutUserInput>
-  }
-
-  export type NotificationUpdateManyWithWhereWithoutUserInput = {
-    where: NotificationScalarWhereInput
-    data: XOR<NotificationUpdateManyMutationInput, NotificationUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type NotificationScalarWhereInput = {
-    AND?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
-    OR?: NotificationScalarWhereInput[]
-    NOT?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
-    id?: StringFilter<"Notification"> | string
-    title?: StringFilter<"Notification"> | string
-    userId?: StringFilter<"Notification"> | string
-    type?: EnumNotificationTypeFilter<"Notification"> | $Enums.NotificationType
-    status?: EnumNotificationStatusFilter<"Notification"> | $Enums.NotificationStatus
-    description?: StringFilter<"Notification"> | string
-    createdAt?: DateTimeFilter<"Notification"> | Date | string
-    updatedAt?: DateTimeFilter<"Notification"> | Date | string
-  }
-
-  export type PublicationClapUpsertWithWhereUniqueWithoutUserInput = {
-    where: PublicationClapWhereUniqueInput
-    update: XOR<PublicationClapUpdateWithoutUserInput, PublicationClapUncheckedUpdateWithoutUserInput>
-    create: XOR<PublicationClapCreateWithoutUserInput, PublicationClapUncheckedCreateWithoutUserInput>
-  }
-
-  export type PublicationClapUpdateWithWhereUniqueWithoutUserInput = {
-    where: PublicationClapWhereUniqueInput
-    data: XOR<PublicationClapUpdateWithoutUserInput, PublicationClapUncheckedUpdateWithoutUserInput>
-  }
-
-  export type PublicationClapUpdateManyWithWhereWithoutUserInput = {
-    where: PublicationClapScalarWhereInput
-    data: XOR<PublicationClapUpdateManyMutationInput, PublicationClapUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type PublicationClapScalarWhereInput = {
-    AND?: PublicationClapScalarWhereInput | PublicationClapScalarWhereInput[]
-    OR?: PublicationClapScalarWhereInput[]
-    NOT?: PublicationClapScalarWhereInput | PublicationClapScalarWhereInput[]
-    id?: StringFilter<"PublicationClap"> | string
-    userId?: StringFilter<"PublicationClap"> | string
-    publicationId?: StringFilter<"PublicationClap"> | string
-    createdAt?: DateTimeFilter<"PublicationClap"> | Date | string
-  }
-
   export type UserDetailUpsertWithoutUserInput = {
     update: XOR<UserDetailUpdateWithoutUserInput, UserDetailUncheckedUpdateWithoutUserInput>
     create: XOR<UserDetailCreateWithoutUserInput, UserDetailUncheckedCreateWithoutUserInput>
@@ -36044,7 +37051,14 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     gender?: StringFieldUpdateOperationsInput | string
     birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    municipality?: MunicipalityUpdateOneRequiredWithoutUserDetailNestedInput
+    municipality?: MunicipalityUpdateOneRequiredWithoutUserDetailsNestedInput
+    ventures?: VentureUpdateManyWithoutOwnerDetailNestedInput
+    comments?: PublicationCommentUpdateManyWithoutUserNestedInput
+    donations?: EventDonationUpdateManyWithoutDonorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    claps?: PublicationClapUpdateManyWithoutUserNestedInput
+    sponsorships?: VentureSponsorshipUpdateManyWithoutUserNestedInput
+    subscriptions?: VentureSubscriptionUpdateManyWithoutUserNestedInput
   }
 
   export type UserDetailUncheckedUpdateWithoutUserInput = {
@@ -36052,93 +37066,48 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
     municipalityId?: IntFieldUpdateOperationsInput | number
+    ventures?: VentureUncheckedUpdateManyWithoutOwnerDetailNestedInput
+    comments?: PublicationCommentUncheckedUpdateManyWithoutUserNestedInput
+    donations?: EventDonationUncheckedUpdateManyWithoutDonorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    claps?: PublicationClapUncheckedUpdateManyWithoutUserNestedInput
+    sponsorships?: VentureSponsorshipUncheckedUpdateManyWithoutUserNestedInput
+    subscriptions?: VentureSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   }
 
-  export type VentureUpsertWithWhereUniqueWithoutOwnerInput = {
-    where: VentureWhereUniqueInput
-    update: XOR<VentureUpdateWithoutOwnerInput, VentureUncheckedUpdateWithoutOwnerInput>
-    create: XOR<VentureCreateWithoutOwnerInput, VentureUncheckedCreateWithoutOwnerInput>
+  export type UserContactUpsertWithoutUserInput = {
+    update: XOR<UserContactUpdateWithoutUserInput, UserContactUncheckedUpdateWithoutUserInput>
+    create: XOR<UserContactCreateWithoutUserInput, UserContactUncheckedCreateWithoutUserInput>
+    where?: UserContactWhereInput
   }
 
-  export type VentureUpdateWithWhereUniqueWithoutOwnerInput = {
-    where: VentureWhereUniqueInput
-    data: XOR<VentureUpdateWithoutOwnerInput, VentureUncheckedUpdateWithoutOwnerInput>
+  export type UserContactUpdateToOneWithWhereWithoutUserInput = {
+    where?: UserContactWhereInput
+    data: XOR<UserContactUpdateWithoutUserInput, UserContactUncheckedUpdateWithoutUserInput>
   }
 
-  export type VentureUpdateManyWithWhereWithoutOwnerInput = {
-    where: VentureScalarWhereInput
-    data: XOR<VentureUpdateManyMutationInput, VentureUncheckedUpdateManyWithoutOwnerInput>
+  export type UserContactUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    facebookUrl?: StringFieldUpdateOperationsInput | string
+    linkedinUrl?: StringFieldUpdateOperationsInput | string
+    twitterUrl?: StringFieldUpdateOperationsInput | string
+    instagramUrl?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type VentureScalarWhereInput = {
-    AND?: VentureScalarWhereInput | VentureScalarWhereInput[]
-    OR?: VentureScalarWhereInput[]
-    NOT?: VentureScalarWhereInput | VentureScalarWhereInput[]
-    id?: StringFilter<"Venture"> | string
-    name?: StringFilter<"Venture"> | string
-    slug?: StringFilter<"Venture"> | string
-    coverPhoto?: StringFilter<"Venture"> | string
-    description?: StringFilter<"Venture"> | string
-    ownerId?: StringFilter<"Venture"> | string
-    active?: BoolFilter<"Venture"> | boolean
-    verified?: BoolFilter<"Venture"> | boolean
-    detailId?: StringFilter<"Venture"> | string
-    createdAt?: DateTimeFilter<"Venture"> | Date | string
-    updatedAt?: DateTimeFilter<"Venture"> | Date | string
-  }
-
-  export type VentureSponsorshipUpsertWithWhereUniqueWithoutUserInput = {
-    where: VentureSponsorshipWhereUniqueInput
-    update: XOR<VentureSponsorshipUpdateWithoutUserInput, VentureSponsorshipUncheckedUpdateWithoutUserInput>
-    create: XOR<VentureSponsorshipCreateWithoutUserInput, VentureSponsorshipUncheckedCreateWithoutUserInput>
-  }
-
-  export type VentureSponsorshipUpdateWithWhereUniqueWithoutUserInput = {
-    where: VentureSponsorshipWhereUniqueInput
-    data: XOR<VentureSponsorshipUpdateWithoutUserInput, VentureSponsorshipUncheckedUpdateWithoutUserInput>
-  }
-
-  export type VentureSponsorshipUpdateManyWithWhereWithoutUserInput = {
-    where: VentureSponsorshipScalarWhereInput
-    data: XOR<VentureSponsorshipUpdateManyMutationInput, VentureSponsorshipUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type VentureSponsorshipScalarWhereInput = {
-    AND?: VentureSponsorshipScalarWhereInput | VentureSponsorshipScalarWhereInput[]
-    OR?: VentureSponsorshipScalarWhereInput[]
-    NOT?: VentureSponsorshipScalarWhereInput | VentureSponsorshipScalarWhereInput[]
-    id?: StringFilter<"VentureSponsorship"> | string
-    sponsorId?: StringFilter<"VentureSponsorship"> | string
-    ventureDetailId?: StringFilter<"VentureSponsorship"> | string
-    monthlyAmount?: FloatFilter<"VentureSponsorship"> | number
-    createdAt?: DateTimeFilter<"VentureSponsorship"> | Date | string
-    updatedAt?: DateTimeFilter<"VentureSponsorship"> | Date | string
-  }
-
-  export type VentureSubscriptionUpsertWithWhereUniqueWithoutUserInput = {
-    where: VentureSubscriptionWhereUniqueInput
-    update: XOR<VentureSubscriptionUpdateWithoutUserInput, VentureSubscriptionUncheckedUpdateWithoutUserInput>
-    create: XOR<VentureSubscriptionCreateWithoutUserInput, VentureSubscriptionUncheckedCreateWithoutUserInput>
-  }
-
-  export type VentureSubscriptionUpdateWithWhereUniqueWithoutUserInput = {
-    where: VentureSubscriptionWhereUniqueInput
-    data: XOR<VentureSubscriptionUpdateWithoutUserInput, VentureSubscriptionUncheckedUpdateWithoutUserInput>
-  }
-
-  export type VentureSubscriptionUpdateManyWithWhereWithoutUserInput = {
-    where: VentureSubscriptionScalarWhereInput
-    data: XOR<VentureSubscriptionUpdateManyMutationInput, VentureSubscriptionUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type VentureSubscriptionScalarWhereInput = {
-    AND?: VentureSubscriptionScalarWhereInput | VentureSubscriptionScalarWhereInput[]
-    OR?: VentureSubscriptionScalarWhereInput[]
-    NOT?: VentureSubscriptionScalarWhereInput | VentureSubscriptionScalarWhereInput[]
-    id?: StringFilter<"VentureSubscription"> | string
-    subscriberId?: StringFilter<"VentureSubscription"> | string
-    ventureId?: StringFilter<"VentureSubscription"> | string
-    createdAt?: DateTimeFilter<"VentureSubscription"> | Date | string
+  export type UserContactUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    facebookUrl?: StringFieldUpdateOperationsInput | string
+    linkedinUrl?: StringFieldUpdateOperationsInput | string
+    twitterUrl?: StringFieldUpdateOperationsInput | string
+    instagramUrl?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type XUserPreferencesUpsertWithWhereUniqueWithoutUserInput = {
@@ -36246,6 +37215,625 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Role"> | Date | string
   }
 
+  export type UserCreateWithoutDetailInput = {
+    id?: string
+    picture: string
+    email: string
+    firstName: string
+    lastName: string
+    active?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    onboardingCompleted?: boolean
+    verified?: boolean
+    contact?: UserContactCreateNestedOneWithoutUserInput
+    XUserPreferences?: XUserPreferencesCreateNestedManyWithoutUserInput
+    XUserRoles?: XUserRolesCreateNestedManyWithoutUserInput
+    preferences?: VentureCategoryCreateNestedManyWithoutUsersInput
+    roles?: RoleCreateNestedManyWithoutUsersInput
+  }
+
+  export type UserUncheckedCreateWithoutDetailInput = {
+    id?: string
+    picture: string
+    email: string
+    firstName: string
+    lastName: string
+    active?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    onboardingCompleted?: boolean
+    verified?: boolean
+    contactId?: string | null
+    XUserPreferences?: XUserPreferencesUncheckedCreateNestedManyWithoutUserInput
+    XUserRoles?: XUserRolesUncheckedCreateNestedManyWithoutUserInput
+    preferences?: VentureCategoryUncheckedCreateNestedManyWithoutUsersInput
+    roles?: RoleUncheckedCreateNestedManyWithoutUsersInput
+  }
+
+  export type UserCreateOrConnectWithoutDetailInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutDetailInput, UserUncheckedCreateWithoutDetailInput>
+  }
+
+  export type MunicipalityCreateWithoutUserDetailsInput = {
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    department: DepartmentCreateNestedOneWithoutMunicipalitiesInput
+  }
+
+  export type MunicipalityUncheckedCreateWithoutUserDetailsInput = {
+    id?: number
+    name: string
+    departmentId: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MunicipalityCreateOrConnectWithoutUserDetailsInput = {
+    where: MunicipalityWhereUniqueInput
+    create: XOR<MunicipalityCreateWithoutUserDetailsInput, MunicipalityUncheckedCreateWithoutUserDetailsInput>
+  }
+
+  export type VentureCreateWithoutOwnerDetailInput = {
+    id?: string
+    name: string
+    slug: string
+    coverPhoto: string
+    description: string
+    active?: boolean
+    verified?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    detail: VentureDetailCreateNestedOneWithoutVentureInput
+    categories?: VentureCategoryCreateNestedManyWithoutVenturesInput
+    location: VentureLocationCreateNestedOneWithoutVentureInput
+    contact: VentureContactCreateNestedOneWithoutVentureInput
+    XVentureVencureCategory?: XVentureVencureCategoryCreateNestedManyWithoutVentureInput
+  }
+
+  export type VentureUncheckedCreateWithoutOwnerDetailInput = {
+    id?: string
+    name: string
+    slug: string
+    coverPhoto: string
+    description: string
+    active?: boolean
+    verified?: boolean
+    detailId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    locationId: string
+    ventureId: string
+    categories?: VentureCategoryUncheckedCreateNestedManyWithoutVenturesInput
+    XVentureVencureCategory?: XVentureVencureCategoryUncheckedCreateNestedManyWithoutVentureInput
+  }
+
+  export type VentureCreateOrConnectWithoutOwnerDetailInput = {
+    where: VentureWhereUniqueInput
+    create: XOR<VentureCreateWithoutOwnerDetailInput, VentureUncheckedCreateWithoutOwnerDetailInput>
+  }
+
+  export type VentureCreateManyOwnerDetailInputEnvelope = {
+    data: VentureCreateManyOwnerDetailInput | VentureCreateManyOwnerDetailInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PublicationCommentCreateWithoutUserInput = {
+    id?: string
+    body: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    venturePublication: VenturePublicationCreateNestedOneWithoutCommentsInput
+  }
+
+  export type PublicationCommentUncheckedCreateWithoutUserInput = {
+    id?: string
+    publicationId: string
+    body: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PublicationCommentCreateOrConnectWithoutUserInput = {
+    where: PublicationCommentWhereUniqueInput
+    create: XOR<PublicationCommentCreateWithoutUserInput, PublicationCommentUncheckedCreateWithoutUserInput>
+  }
+
+  export type PublicationCommentCreateManyUserInputEnvelope = {
+    data: PublicationCommentCreateManyUserInput | PublicationCommentCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type EventDonationCreateWithoutDonorInput = {
+    id?: string
+    amount: number
+    currency: string
+    createdAt?: Date | string
+    event: VentureEventCreateNestedOneWithoutDonationsInput
+  }
+
+  export type EventDonationUncheckedCreateWithoutDonorInput = {
+    id?: string
+    eventId: string
+    amount: number
+    currency: string
+    createdAt?: Date | string
+  }
+
+  export type EventDonationCreateOrConnectWithoutDonorInput = {
+    where: EventDonationWhereUniqueInput
+    create: XOR<EventDonationCreateWithoutDonorInput, EventDonationUncheckedCreateWithoutDonorInput>
+  }
+
+  export type EventDonationCreateManyDonorInputEnvelope = {
+    data: EventDonationCreateManyDonorInput | EventDonationCreateManyDonorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type NotificationCreateWithoutUserInput = {
+    id?: string
+    title: string
+    type: $Enums.NotificationType
+    status: $Enums.NotificationStatus
+    description: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type NotificationUncheckedCreateWithoutUserInput = {
+    id?: string
+    title: string
+    type: $Enums.NotificationType
+    status: $Enums.NotificationStatus
+    description: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type NotificationCreateOrConnectWithoutUserInput = {
+    where: NotificationWhereUniqueInput
+    create: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput>
+  }
+
+  export type NotificationCreateManyUserInputEnvelope = {
+    data: NotificationCreateManyUserInput | NotificationCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PublicationClapCreateWithoutUserInput = {
+    id?: string
+    createdAt?: Date | string
+    venturePublication: VenturePublicationCreateNestedOneWithoutClapsInput
+  }
+
+  export type PublicationClapUncheckedCreateWithoutUserInput = {
+    id?: string
+    publicationId: string
+    createdAt?: Date | string
+  }
+
+  export type PublicationClapCreateOrConnectWithoutUserInput = {
+    where: PublicationClapWhereUniqueInput
+    create: XOR<PublicationClapCreateWithoutUserInput, PublicationClapUncheckedCreateWithoutUserInput>
+  }
+
+  export type PublicationClapCreateManyUserInputEnvelope = {
+    data: PublicationClapCreateManyUserInput | PublicationClapCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type VentureSponsorshipCreateWithoutUserInput = {
+    id: string
+    monthlyAmount: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    detail: VentureDetailCreateNestedOneWithoutSponsorshipsInput
+  }
+
+  export type VentureSponsorshipUncheckedCreateWithoutUserInput = {
+    id: string
+    ventureDetailId: string
+    monthlyAmount: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type VentureSponsorshipCreateOrConnectWithoutUserInput = {
+    where: VentureSponsorshipWhereUniqueInput
+    create: XOR<VentureSponsorshipCreateWithoutUserInput, VentureSponsorshipUncheckedCreateWithoutUserInput>
+  }
+
+  export type VentureSponsorshipCreateManyUserInputEnvelope = {
+    data: VentureSponsorshipCreateManyUserInput | VentureSponsorshipCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type VentureSubscriptionCreateWithoutUserInput = {
+    id: string
+    createdAt?: Date | string
+    detail: VentureDetailCreateNestedOneWithoutSubscriptionsInput
+  }
+
+  export type VentureSubscriptionUncheckedCreateWithoutUserInput = {
+    id: string
+    ventureId: string
+    createdAt?: Date | string
+  }
+
+  export type VentureSubscriptionCreateOrConnectWithoutUserInput = {
+    where: VentureSubscriptionWhereUniqueInput
+    create: XOR<VentureSubscriptionCreateWithoutUserInput, VentureSubscriptionUncheckedCreateWithoutUserInput>
+  }
+
+  export type VentureSubscriptionCreateManyUserInputEnvelope = {
+    data: VentureSubscriptionCreateManyUserInput | VentureSubscriptionCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithoutDetailInput = {
+    update: XOR<UserUpdateWithoutDetailInput, UserUncheckedUpdateWithoutDetailInput>
+    create: XOR<UserCreateWithoutDetailInput, UserUncheckedCreateWithoutDetailInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutDetailInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutDetailInput, UserUncheckedUpdateWithoutDetailInput>
+  }
+
+  export type UserUpdateWithoutDetailInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    picture?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
+    verified?: BoolFieldUpdateOperationsInput | boolean
+    contact?: UserContactUpdateOneWithoutUserNestedInput
+    XUserPreferences?: XUserPreferencesUpdateManyWithoutUserNestedInput
+    XUserRoles?: XUserRolesUpdateManyWithoutUserNestedInput
+    preferences?: VentureCategoryUpdateManyWithoutUsersNestedInput
+    roles?: RoleUpdateManyWithoutUsersNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutDetailInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    picture?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
+    verified?: BoolFieldUpdateOperationsInput | boolean
+    contactId?: NullableStringFieldUpdateOperationsInput | string | null
+    XUserPreferences?: XUserPreferencesUncheckedUpdateManyWithoutUserNestedInput
+    XUserRoles?: XUserRolesUncheckedUpdateManyWithoutUserNestedInput
+    preferences?: VentureCategoryUncheckedUpdateManyWithoutUsersNestedInput
+    roles?: RoleUncheckedUpdateManyWithoutUsersNestedInput
+  }
+
+  export type MunicipalityUpsertWithoutUserDetailsInput = {
+    update: XOR<MunicipalityUpdateWithoutUserDetailsInput, MunicipalityUncheckedUpdateWithoutUserDetailsInput>
+    create: XOR<MunicipalityCreateWithoutUserDetailsInput, MunicipalityUncheckedCreateWithoutUserDetailsInput>
+    where?: MunicipalityWhereInput
+  }
+
+  export type MunicipalityUpdateToOneWithWhereWithoutUserDetailsInput = {
+    where?: MunicipalityWhereInput
+    data: XOR<MunicipalityUpdateWithoutUserDetailsInput, MunicipalityUncheckedUpdateWithoutUserDetailsInput>
+  }
+
+  export type MunicipalityUpdateWithoutUserDetailsInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    department?: DepartmentUpdateOneRequiredWithoutMunicipalitiesNestedInput
+  }
+
+  export type MunicipalityUncheckedUpdateWithoutUserDetailsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    departmentId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VentureUpsertWithWhereUniqueWithoutOwnerDetailInput = {
+    where: VentureWhereUniqueInput
+    update: XOR<VentureUpdateWithoutOwnerDetailInput, VentureUncheckedUpdateWithoutOwnerDetailInput>
+    create: XOR<VentureCreateWithoutOwnerDetailInput, VentureUncheckedCreateWithoutOwnerDetailInput>
+  }
+
+  export type VentureUpdateWithWhereUniqueWithoutOwnerDetailInput = {
+    where: VentureWhereUniqueInput
+    data: XOR<VentureUpdateWithoutOwnerDetailInput, VentureUncheckedUpdateWithoutOwnerDetailInput>
+  }
+
+  export type VentureUpdateManyWithWhereWithoutOwnerDetailInput = {
+    where: VentureScalarWhereInput
+    data: XOR<VentureUpdateManyMutationInput, VentureUncheckedUpdateManyWithoutOwnerDetailInput>
+  }
+
+  export type VentureScalarWhereInput = {
+    AND?: VentureScalarWhereInput | VentureScalarWhereInput[]
+    OR?: VentureScalarWhereInput[]
+    NOT?: VentureScalarWhereInput | VentureScalarWhereInput[]
+    id?: StringFilter<"Venture"> | string
+    name?: StringFilter<"Venture"> | string
+    slug?: StringFilter<"Venture"> | string
+    coverPhoto?: StringFilter<"Venture"> | string
+    description?: StringFilter<"Venture"> | string
+    active?: BoolFilter<"Venture"> | boolean
+    verified?: BoolFilter<"Venture"> | boolean
+    detailId?: StringFilter<"Venture"> | string
+    createdAt?: DateTimeFilter<"Venture"> | Date | string
+    updatedAt?: DateTimeFilter<"Venture"> | Date | string
+    ownerDetailId?: StringFilter<"Venture"> | string
+    locationId?: StringFilter<"Venture"> | string
+    ventureId?: StringFilter<"Venture"> | string
+  }
+
+  export type PublicationCommentUpsertWithWhereUniqueWithoutUserInput = {
+    where: PublicationCommentWhereUniqueInput
+    update: XOR<PublicationCommentUpdateWithoutUserInput, PublicationCommentUncheckedUpdateWithoutUserInput>
+    create: XOR<PublicationCommentCreateWithoutUserInput, PublicationCommentUncheckedCreateWithoutUserInput>
+  }
+
+  export type PublicationCommentUpdateWithWhereUniqueWithoutUserInput = {
+    where: PublicationCommentWhereUniqueInput
+    data: XOR<PublicationCommentUpdateWithoutUserInput, PublicationCommentUncheckedUpdateWithoutUserInput>
+  }
+
+  export type PublicationCommentUpdateManyWithWhereWithoutUserInput = {
+    where: PublicationCommentScalarWhereInput
+    data: XOR<PublicationCommentUpdateManyMutationInput, PublicationCommentUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type PublicationCommentScalarWhereInput = {
+    AND?: PublicationCommentScalarWhereInput | PublicationCommentScalarWhereInput[]
+    OR?: PublicationCommentScalarWhereInput[]
+    NOT?: PublicationCommentScalarWhereInput | PublicationCommentScalarWhereInput[]
+    id?: StringFilter<"PublicationComment"> | string
+    authorDetailId?: StringFilter<"PublicationComment"> | string
+    publicationId?: StringFilter<"PublicationComment"> | string
+    body?: StringFilter<"PublicationComment"> | string
+    createdAt?: DateTimeFilter<"PublicationComment"> | Date | string
+    updatedAt?: DateTimeFilter<"PublicationComment"> | Date | string
+  }
+
+  export type EventDonationUpsertWithWhereUniqueWithoutDonorInput = {
+    where: EventDonationWhereUniqueInput
+    update: XOR<EventDonationUpdateWithoutDonorInput, EventDonationUncheckedUpdateWithoutDonorInput>
+    create: XOR<EventDonationCreateWithoutDonorInput, EventDonationUncheckedCreateWithoutDonorInput>
+  }
+
+  export type EventDonationUpdateWithWhereUniqueWithoutDonorInput = {
+    where: EventDonationWhereUniqueInput
+    data: XOR<EventDonationUpdateWithoutDonorInput, EventDonationUncheckedUpdateWithoutDonorInput>
+  }
+
+  export type EventDonationUpdateManyWithWhereWithoutDonorInput = {
+    where: EventDonationScalarWhereInput
+    data: XOR<EventDonationUpdateManyMutationInput, EventDonationUncheckedUpdateManyWithoutDonorInput>
+  }
+
+  export type EventDonationScalarWhereInput = {
+    AND?: EventDonationScalarWhereInput | EventDonationScalarWhereInput[]
+    OR?: EventDonationScalarWhereInput[]
+    NOT?: EventDonationScalarWhereInput | EventDonationScalarWhereInput[]
+    id?: StringFilter<"EventDonation"> | string
+    donorDetailId?: StringFilter<"EventDonation"> | string
+    eventId?: StringFilter<"EventDonation"> | string
+    amount?: FloatFilter<"EventDonation"> | number
+    currency?: StringFilter<"EventDonation"> | string
+    createdAt?: DateTimeFilter<"EventDonation"> | Date | string
+  }
+
+  export type NotificationUpsertWithWhereUniqueWithoutUserInput = {
+    where: NotificationWhereUniqueInput
+    update: XOR<NotificationUpdateWithoutUserInput, NotificationUncheckedUpdateWithoutUserInput>
+    create: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput>
+  }
+
+  export type NotificationUpdateWithWhereUniqueWithoutUserInput = {
+    where: NotificationWhereUniqueInput
+    data: XOR<NotificationUpdateWithoutUserInput, NotificationUncheckedUpdateWithoutUserInput>
+  }
+
+  export type NotificationUpdateManyWithWhereWithoutUserInput = {
+    where: NotificationScalarWhereInput
+    data: XOR<NotificationUpdateManyMutationInput, NotificationUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type NotificationScalarWhereInput = {
+    AND?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+    OR?: NotificationScalarWhereInput[]
+    NOT?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+    id?: StringFilter<"Notification"> | string
+    title?: StringFilter<"Notification"> | string
+    userDetailId?: StringFilter<"Notification"> | string
+    type?: EnumNotificationTypeFilter<"Notification"> | $Enums.NotificationType
+    status?: EnumNotificationStatusFilter<"Notification"> | $Enums.NotificationStatus
+    description?: StringFilter<"Notification"> | string
+    createdAt?: DateTimeFilter<"Notification"> | Date | string
+    updatedAt?: DateTimeFilter<"Notification"> | Date | string
+  }
+
+  export type PublicationClapUpsertWithWhereUniqueWithoutUserInput = {
+    where: PublicationClapWhereUniqueInput
+    update: XOR<PublicationClapUpdateWithoutUserInput, PublicationClapUncheckedUpdateWithoutUserInput>
+    create: XOR<PublicationClapCreateWithoutUserInput, PublicationClapUncheckedCreateWithoutUserInput>
+  }
+
+  export type PublicationClapUpdateWithWhereUniqueWithoutUserInput = {
+    where: PublicationClapWhereUniqueInput
+    data: XOR<PublicationClapUpdateWithoutUserInput, PublicationClapUncheckedUpdateWithoutUserInput>
+  }
+
+  export type PublicationClapUpdateManyWithWhereWithoutUserInput = {
+    where: PublicationClapScalarWhereInput
+    data: XOR<PublicationClapUpdateManyMutationInput, PublicationClapUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type PublicationClapScalarWhereInput = {
+    AND?: PublicationClapScalarWhereInput | PublicationClapScalarWhereInput[]
+    OR?: PublicationClapScalarWhereInput[]
+    NOT?: PublicationClapScalarWhereInput | PublicationClapScalarWhereInput[]
+    id?: StringFilter<"PublicationClap"> | string
+    userDetailId?: StringFilter<"PublicationClap"> | string
+    publicationId?: StringFilter<"PublicationClap"> | string
+    createdAt?: DateTimeFilter<"PublicationClap"> | Date | string
+  }
+
+  export type VentureSponsorshipUpsertWithWhereUniqueWithoutUserInput = {
+    where: VentureSponsorshipWhereUniqueInput
+    update: XOR<VentureSponsorshipUpdateWithoutUserInput, VentureSponsorshipUncheckedUpdateWithoutUserInput>
+    create: XOR<VentureSponsorshipCreateWithoutUserInput, VentureSponsorshipUncheckedCreateWithoutUserInput>
+  }
+
+  export type VentureSponsorshipUpdateWithWhereUniqueWithoutUserInput = {
+    where: VentureSponsorshipWhereUniqueInput
+    data: XOR<VentureSponsorshipUpdateWithoutUserInput, VentureSponsorshipUncheckedUpdateWithoutUserInput>
+  }
+
+  export type VentureSponsorshipUpdateManyWithWhereWithoutUserInput = {
+    where: VentureSponsorshipScalarWhereInput
+    data: XOR<VentureSponsorshipUpdateManyMutationInput, VentureSponsorshipUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type VentureSponsorshipScalarWhereInput = {
+    AND?: VentureSponsorshipScalarWhereInput | VentureSponsorshipScalarWhereInput[]
+    OR?: VentureSponsorshipScalarWhereInput[]
+    NOT?: VentureSponsorshipScalarWhereInput | VentureSponsorshipScalarWhereInput[]
+    id?: StringFilter<"VentureSponsorship"> | string
+    sponsorDetailId?: StringFilter<"VentureSponsorship"> | string
+    ventureDetailId?: StringFilter<"VentureSponsorship"> | string
+    monthlyAmount?: FloatFilter<"VentureSponsorship"> | number
+    createdAt?: DateTimeFilter<"VentureSponsorship"> | Date | string
+    updatedAt?: DateTimeFilter<"VentureSponsorship"> | Date | string
+  }
+
+  export type VentureSubscriptionUpsertWithWhereUniqueWithoutUserInput = {
+    where: VentureSubscriptionWhereUniqueInput
+    update: XOR<VentureSubscriptionUpdateWithoutUserInput, VentureSubscriptionUncheckedUpdateWithoutUserInput>
+    create: XOR<VentureSubscriptionCreateWithoutUserInput, VentureSubscriptionUncheckedCreateWithoutUserInput>
+  }
+
+  export type VentureSubscriptionUpdateWithWhereUniqueWithoutUserInput = {
+    where: VentureSubscriptionWhereUniqueInput
+    data: XOR<VentureSubscriptionUpdateWithoutUserInput, VentureSubscriptionUncheckedUpdateWithoutUserInput>
+  }
+
+  export type VentureSubscriptionUpdateManyWithWhereWithoutUserInput = {
+    where: VentureSubscriptionScalarWhereInput
+    data: XOR<VentureSubscriptionUpdateManyMutationInput, VentureSubscriptionUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type VentureSubscriptionScalarWhereInput = {
+    AND?: VentureSubscriptionScalarWhereInput | VentureSubscriptionScalarWhereInput[]
+    OR?: VentureSubscriptionScalarWhereInput[]
+    NOT?: VentureSubscriptionScalarWhereInput | VentureSubscriptionScalarWhereInput[]
+    id?: StringFilter<"VentureSubscription"> | string
+    subscriberDetailId?: StringFilter<"VentureSubscription"> | string
+    ventureId?: StringFilter<"VentureSubscription"> | string
+    createdAt?: DateTimeFilter<"VentureSubscription"> | Date | string
+  }
+
+  export type UserCreateWithoutContactInput = {
+    id?: string
+    picture: string
+    email: string
+    firstName: string
+    lastName: string
+    active?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    onboardingCompleted?: boolean
+    verified?: boolean
+    detail?: UserDetailCreateNestedOneWithoutUserInput
+    XUserPreferences?: XUserPreferencesCreateNestedManyWithoutUserInput
+    XUserRoles?: XUserRolesCreateNestedManyWithoutUserInput
+    preferences?: VentureCategoryCreateNestedManyWithoutUsersInput
+    roles?: RoleCreateNestedManyWithoutUsersInput
+  }
+
+  export type UserUncheckedCreateWithoutContactInput = {
+    id?: string
+    picture: string
+    email: string
+    firstName: string
+    lastName: string
+    active?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    onboardingCompleted?: boolean
+    detailId?: string | null
+    verified?: boolean
+    XUserPreferences?: XUserPreferencesUncheckedCreateNestedManyWithoutUserInput
+    XUserRoles?: XUserRolesUncheckedCreateNestedManyWithoutUserInput
+    preferences?: VentureCategoryUncheckedCreateNestedManyWithoutUsersInput
+    roles?: RoleUncheckedCreateNestedManyWithoutUsersInput
+  }
+
+  export type UserCreateOrConnectWithoutContactInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutContactInput, UserUncheckedCreateWithoutContactInput>
+  }
+
+  export type UserUpsertWithoutContactInput = {
+    update: XOR<UserUpdateWithoutContactInput, UserUncheckedUpdateWithoutContactInput>
+    create: XOR<UserCreateWithoutContactInput, UserUncheckedCreateWithoutContactInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutContactInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutContactInput, UserUncheckedUpdateWithoutContactInput>
+  }
+
+  export type UserUpdateWithoutContactInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    picture?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
+    verified?: BoolFieldUpdateOperationsInput | boolean
+    detail?: UserDetailUpdateOneWithoutUserNestedInput
+    XUserPreferences?: XUserPreferencesUpdateManyWithoutUserNestedInput
+    XUserRoles?: XUserRolesUpdateManyWithoutUserNestedInput
+    preferences?: VentureCategoryUpdateManyWithoutUsersNestedInput
+    roles?: RoleUpdateManyWithoutUsersNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutContactInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    picture?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
+    detailId?: NullableStringFieldUpdateOperationsInput | string | null
+    verified?: BoolFieldUpdateOperationsInput | boolean
+    XUserPreferences?: XUserPreferencesUncheckedUpdateManyWithoutUserNestedInput
+    XUserRoles?: XUserRolesUncheckedUpdateManyWithoutUserNestedInput
+    preferences?: VentureCategoryUncheckedUpdateManyWithoutUsersNestedInput
+    roles?: RoleUncheckedUpdateManyWithoutUsersNestedInput
+  }
+
   export type VentureCategoryCreateWithoutXUserPreferencesInput = {
     id: string
     name: string
@@ -36253,9 +37841,9 @@ export namespace Prisma {
     description: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    XVentureVencureCategory?: XVentureVencureCategoryCreateNestedManyWithoutCategoryInput
     users?: UserCreateNestedManyWithoutPreferencesInput
     ventures?: VentureCreateNestedManyWithoutCategoriesInput
+    XVentureVencureCategory?: XVentureVencureCategoryCreateNestedManyWithoutCategoryInput
   }
 
   export type VentureCategoryUncheckedCreateWithoutXUserPreferencesInput = {
@@ -36265,9 +37853,9 @@ export namespace Prisma {
     description: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    XVentureVencureCategory?: XVentureVencureCategoryUncheckedCreateNestedManyWithoutCategoryInput
     users?: UserUncheckedCreateNestedManyWithoutPreferencesInput
     ventures?: VentureUncheckedCreateNestedManyWithoutCategoriesInput
+    XVentureVencureCategory?: XVentureVencureCategoryUncheckedCreateNestedManyWithoutCategoryInput
   }
 
   export type VentureCategoryCreateOrConnectWithoutXUserPreferencesInput = {
@@ -36286,14 +37874,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     onboardingCompleted?: boolean
     verified?: boolean
-    comments?: CommentCreateNestedManyWithoutUserInput
-    eventDonations?: EventDonationCreateNestedManyWithoutUserInput
-    notifications?: NotificationCreateNestedManyWithoutUserInput
-    publicationClaps?: PublicationClapCreateNestedManyWithoutUserInput
     detail?: UserDetailCreateNestedOneWithoutUserInput
-    ventures?: VentureCreateNestedManyWithoutOwnerInput
-    ventureSponsorships?: VentureSponsorshipCreateNestedManyWithoutUserInput
-    ventureSubscriptions?: VentureSubscriptionCreateNestedManyWithoutUserInput
+    contact?: UserContactCreateNestedOneWithoutUserInput
     XUserRoles?: XUserRolesCreateNestedManyWithoutUserInput
     preferences?: VentureCategoryCreateNestedManyWithoutUsersInput
     roles?: RoleCreateNestedManyWithoutUsersInput
@@ -36309,15 +37891,9 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     onboardingCompleted?: boolean
-    userDetailId?: string | null
+    detailId?: string | null
     verified?: boolean
-    comments?: CommentUncheckedCreateNestedManyWithoutUserInput
-    eventDonations?: EventDonationUncheckedCreateNestedManyWithoutUserInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
-    publicationClaps?: PublicationClapUncheckedCreateNestedManyWithoutUserInput
-    ventures?: VentureUncheckedCreateNestedManyWithoutOwnerInput
-    ventureSponsorships?: VentureSponsorshipUncheckedCreateNestedManyWithoutUserInput
-    ventureSubscriptions?: VentureSubscriptionUncheckedCreateNestedManyWithoutUserInput
+    contactId?: string | null
     XUserRoles?: XUserRolesUncheckedCreateNestedManyWithoutUserInput
     preferences?: VentureCategoryUncheckedCreateNestedManyWithoutUsersInput
     roles?: RoleUncheckedCreateNestedManyWithoutUsersInput
@@ -36346,9 +37922,9 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    XVentureVencureCategory?: XVentureVencureCategoryUpdateManyWithoutCategoryNestedInput
     users?: UserUpdateManyWithoutPreferencesNestedInput
     ventures?: VentureUpdateManyWithoutCategoriesNestedInput
+    XVentureVencureCategory?: XVentureVencureCategoryUpdateManyWithoutCategoryNestedInput
   }
 
   export type VentureCategoryUncheckedUpdateWithoutXUserPreferencesInput = {
@@ -36358,9 +37934,9 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    XVentureVencureCategory?: XVentureVencureCategoryUncheckedUpdateManyWithoutCategoryNestedInput
     users?: UserUncheckedUpdateManyWithoutPreferencesNestedInput
     ventures?: VentureUncheckedUpdateManyWithoutCategoriesNestedInput
+    XVentureVencureCategory?: XVentureVencureCategoryUncheckedUpdateManyWithoutCategoryNestedInput
   }
 
   export type UserUpsertWithoutXUserPreferencesInput = {
@@ -36385,14 +37961,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     verified?: BoolFieldUpdateOperationsInput | boolean
-    comments?: CommentUpdateManyWithoutUserNestedInput
-    eventDonations?: EventDonationUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUpdateManyWithoutUserNestedInput
-    publicationClaps?: PublicationClapUpdateManyWithoutUserNestedInput
     detail?: UserDetailUpdateOneWithoutUserNestedInput
-    ventures?: VentureUpdateManyWithoutOwnerNestedInput
-    ventureSponsorships?: VentureSponsorshipUpdateManyWithoutUserNestedInput
-    ventureSubscriptions?: VentureSubscriptionUpdateManyWithoutUserNestedInput
+    contact?: UserContactUpdateOneWithoutUserNestedInput
     XUserRoles?: XUserRolesUpdateManyWithoutUserNestedInput
     preferences?: VentureCategoryUpdateManyWithoutUsersNestedInput
     roles?: RoleUpdateManyWithoutUsersNestedInput
@@ -36408,183 +37978,19 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
-    userDetailId?: NullableStringFieldUpdateOperationsInput | string | null
+    detailId?: NullableStringFieldUpdateOperationsInput | string | null
     verified?: BoolFieldUpdateOperationsInput | boolean
-    comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
-    eventDonations?: EventDonationUncheckedUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
-    publicationClaps?: PublicationClapUncheckedUpdateManyWithoutUserNestedInput
-    ventures?: VentureUncheckedUpdateManyWithoutOwnerNestedInput
-    ventureSponsorships?: VentureSponsorshipUncheckedUpdateManyWithoutUserNestedInput
-    ventureSubscriptions?: VentureSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    contactId?: NullableStringFieldUpdateOperationsInput | string | null
     XUserRoles?: XUserRolesUncheckedUpdateManyWithoutUserNestedInput
     preferences?: VentureCategoryUncheckedUpdateManyWithoutUsersNestedInput
     roles?: RoleUncheckedUpdateManyWithoutUsersNestedInput
-  }
-
-  export type UserCreateWithoutDetailInput = {
-    id?: string
-    picture: string
-    email: string
-    firstName: string
-    lastName: string
-    active?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    onboardingCompleted?: boolean
-    verified?: boolean
-    comments?: CommentCreateNestedManyWithoutUserInput
-    eventDonations?: EventDonationCreateNestedManyWithoutUserInput
-    notifications?: NotificationCreateNestedManyWithoutUserInput
-    publicationClaps?: PublicationClapCreateNestedManyWithoutUserInput
-    ventures?: VentureCreateNestedManyWithoutOwnerInput
-    ventureSponsorships?: VentureSponsorshipCreateNestedManyWithoutUserInput
-    ventureSubscriptions?: VentureSubscriptionCreateNestedManyWithoutUserInput
-    XUserPreferences?: XUserPreferencesCreateNestedManyWithoutUserInput
-    XUserRoles?: XUserRolesCreateNestedManyWithoutUserInput
-    preferences?: VentureCategoryCreateNestedManyWithoutUsersInput
-    roles?: RoleCreateNestedManyWithoutUsersInput
-  }
-
-  export type UserUncheckedCreateWithoutDetailInput = {
-    id?: string
-    picture: string
-    email: string
-    firstName: string
-    lastName: string
-    active?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    onboardingCompleted?: boolean
-    verified?: boolean
-    comments?: CommentUncheckedCreateNestedManyWithoutUserInput
-    eventDonations?: EventDonationUncheckedCreateNestedManyWithoutUserInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
-    publicationClaps?: PublicationClapUncheckedCreateNestedManyWithoutUserInput
-    ventures?: VentureUncheckedCreateNestedManyWithoutOwnerInput
-    ventureSponsorships?: VentureSponsorshipUncheckedCreateNestedManyWithoutUserInput
-    ventureSubscriptions?: VentureSubscriptionUncheckedCreateNestedManyWithoutUserInput
-    XUserPreferences?: XUserPreferencesUncheckedCreateNestedManyWithoutUserInput
-    XUserRoles?: XUserRolesUncheckedCreateNestedManyWithoutUserInput
-    preferences?: VentureCategoryUncheckedCreateNestedManyWithoutUsersInput
-    roles?: RoleUncheckedCreateNestedManyWithoutUsersInput
-  }
-
-  export type UserCreateOrConnectWithoutDetailInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutDetailInput, UserUncheckedCreateWithoutDetailInput>
-  }
-
-  export type MunicipalityCreateWithoutUserDetailInput = {
-    name: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    department: DepartmentCreateNestedOneWithoutMunicipalitiesInput
-  }
-
-  export type MunicipalityUncheckedCreateWithoutUserDetailInput = {
-    id?: number
-    name: string
-    departmentId: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type MunicipalityCreateOrConnectWithoutUserDetailInput = {
-    where: MunicipalityWhereUniqueInput
-    create: XOR<MunicipalityCreateWithoutUserDetailInput, MunicipalityUncheckedCreateWithoutUserDetailInput>
-  }
-
-  export type UserUpsertWithoutDetailInput = {
-    update: XOR<UserUpdateWithoutDetailInput, UserUncheckedUpdateWithoutDetailInput>
-    create: XOR<UserCreateWithoutDetailInput, UserUncheckedCreateWithoutDetailInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutDetailInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutDetailInput, UserUncheckedUpdateWithoutDetailInput>
-  }
-
-  export type UserUpdateWithoutDetailInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    picture?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    firstName?: StringFieldUpdateOperationsInput | string
-    lastName?: StringFieldUpdateOperationsInput | string
-    active?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
-    verified?: BoolFieldUpdateOperationsInput | boolean
-    comments?: CommentUpdateManyWithoutUserNestedInput
-    eventDonations?: EventDonationUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUpdateManyWithoutUserNestedInput
-    publicationClaps?: PublicationClapUpdateManyWithoutUserNestedInput
-    ventures?: VentureUpdateManyWithoutOwnerNestedInput
-    ventureSponsorships?: VentureSponsorshipUpdateManyWithoutUserNestedInput
-    ventureSubscriptions?: VentureSubscriptionUpdateManyWithoutUserNestedInput
-    XUserPreferences?: XUserPreferencesUpdateManyWithoutUserNestedInput
-    XUserRoles?: XUserRolesUpdateManyWithoutUserNestedInput
-    preferences?: VentureCategoryUpdateManyWithoutUsersNestedInput
-    roles?: RoleUpdateManyWithoutUsersNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutDetailInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    picture?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    firstName?: StringFieldUpdateOperationsInput | string
-    lastName?: StringFieldUpdateOperationsInput | string
-    active?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
-    verified?: BoolFieldUpdateOperationsInput | boolean
-    comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
-    eventDonations?: EventDonationUncheckedUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
-    publicationClaps?: PublicationClapUncheckedUpdateManyWithoutUserNestedInput
-    ventures?: VentureUncheckedUpdateManyWithoutOwnerNestedInput
-    ventureSponsorships?: VentureSponsorshipUncheckedUpdateManyWithoutUserNestedInput
-    ventureSubscriptions?: VentureSubscriptionUncheckedUpdateManyWithoutUserNestedInput
-    XUserPreferences?: XUserPreferencesUncheckedUpdateManyWithoutUserNestedInput
-    XUserRoles?: XUserRolesUncheckedUpdateManyWithoutUserNestedInput
-    preferences?: VentureCategoryUncheckedUpdateManyWithoutUsersNestedInput
-    roles?: RoleUncheckedUpdateManyWithoutUsersNestedInput
-  }
-
-  export type MunicipalityUpsertWithoutUserDetailInput = {
-    update: XOR<MunicipalityUpdateWithoutUserDetailInput, MunicipalityUncheckedUpdateWithoutUserDetailInput>
-    create: XOR<MunicipalityCreateWithoutUserDetailInput, MunicipalityUncheckedCreateWithoutUserDetailInput>
-    where?: MunicipalityWhereInput
-  }
-
-  export type MunicipalityUpdateToOneWithWhereWithoutUserDetailInput = {
-    where?: MunicipalityWhereInput
-    data: XOR<MunicipalityUpdateWithoutUserDetailInput, MunicipalityUncheckedUpdateWithoutUserDetailInput>
-  }
-
-  export type MunicipalityUpdateWithoutUserDetailInput = {
-    name?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    department?: DepartmentUpdateOneRequiredWithoutMunicipalitiesNestedInput
-  }
-
-  export type MunicipalityUncheckedUpdateWithoutUserDetailInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-    departmentId?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type MunicipalityCreateWithoutDepartmentInput = {
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    userDetail?: UserDetailCreateNestedManyWithoutMunicipalityInput
+    userDetails?: UserDetailCreateNestedManyWithoutMunicipalityInput
   }
 
   export type MunicipalityUncheckedCreateWithoutDepartmentInput = {
@@ -36592,7 +37998,7 @@ export namespace Prisma {
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    userDetail?: UserDetailUncheckedCreateNestedManyWithoutMunicipalityInput
+    userDetails?: UserDetailUncheckedCreateNestedManyWithoutMunicipalityInput
   }
 
   export type MunicipalityCreateOrConnectWithoutDepartmentInput = {
@@ -36655,6 +38061,13 @@ export namespace Prisma {
     gender: string
     birthDate: Date | string
     user?: UserCreateNestedOneWithoutDetailInput
+    ventures?: VentureCreateNestedManyWithoutOwnerDetailInput
+    comments?: PublicationCommentCreateNestedManyWithoutUserInput
+    donations?: EventDonationCreateNestedManyWithoutDonorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    claps?: PublicationClapCreateNestedManyWithoutUserInput
+    sponsorships?: VentureSponsorshipCreateNestedManyWithoutUserInput
+    subscriptions?: VentureSubscriptionCreateNestedManyWithoutUserInput
   }
 
   export type UserDetailUncheckedCreateWithoutMunicipalityInput = {
@@ -36662,6 +38075,13 @@ export namespace Prisma {
     gender: string
     birthDate: Date | string
     user?: UserUncheckedCreateNestedOneWithoutDetailInput
+    ventures?: VentureUncheckedCreateNestedManyWithoutOwnerDetailInput
+    comments?: PublicationCommentUncheckedCreateNestedManyWithoutUserInput
+    donations?: EventDonationUncheckedCreateNestedManyWithoutDonorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    claps?: PublicationClapUncheckedCreateNestedManyWithoutUserInput
+    sponsorships?: VentureSponsorshipUncheckedCreateNestedManyWithoutUserInput
+    subscriptions?: VentureSubscriptionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserDetailCreateOrConnectWithoutMunicipalityInput = {
@@ -36753,57 +38173,37 @@ export namespace Prisma {
     create: XOR<VenturePublicationCreateWithoutCommentsInput, VenturePublicationUncheckedCreateWithoutCommentsInput>
   }
 
-  export type UserCreateWithoutCommentsInput = {
+  export type UserDetailCreateWithoutCommentsInput = {
     id?: string
-    picture: string
-    email: string
-    firstName: string
-    lastName: string
-    active?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    onboardingCompleted?: boolean
-    verified?: boolean
-    eventDonations?: EventDonationCreateNestedManyWithoutUserInput
+    gender: string
+    birthDate: Date | string
+    user?: UserCreateNestedOneWithoutDetailInput
+    municipality: MunicipalityCreateNestedOneWithoutUserDetailsInput
+    ventures?: VentureCreateNestedManyWithoutOwnerDetailInput
+    donations?: EventDonationCreateNestedManyWithoutDonorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
-    publicationClaps?: PublicationClapCreateNestedManyWithoutUserInput
-    detail?: UserDetailCreateNestedOneWithoutUserInput
-    ventures?: VentureCreateNestedManyWithoutOwnerInput
-    ventureSponsorships?: VentureSponsorshipCreateNestedManyWithoutUserInput
-    ventureSubscriptions?: VentureSubscriptionCreateNestedManyWithoutUserInput
-    XUserPreferences?: XUserPreferencesCreateNestedManyWithoutUserInput
-    XUserRoles?: XUserRolesCreateNestedManyWithoutUserInput
-    preferences?: VentureCategoryCreateNestedManyWithoutUsersInput
-    roles?: RoleCreateNestedManyWithoutUsersInput
+    claps?: PublicationClapCreateNestedManyWithoutUserInput
+    sponsorships?: VentureSponsorshipCreateNestedManyWithoutUserInput
+    subscriptions?: VentureSubscriptionCreateNestedManyWithoutUserInput
   }
 
-  export type UserUncheckedCreateWithoutCommentsInput = {
+  export type UserDetailUncheckedCreateWithoutCommentsInput = {
     id?: string
-    picture: string
-    email: string
-    firstName: string
-    lastName: string
-    active?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    onboardingCompleted?: boolean
-    userDetailId?: string | null
-    verified?: boolean
-    eventDonations?: EventDonationUncheckedCreateNestedManyWithoutUserInput
+    gender: string
+    birthDate: Date | string
+    municipalityId: number
+    user?: UserUncheckedCreateNestedOneWithoutDetailInput
+    ventures?: VentureUncheckedCreateNestedManyWithoutOwnerDetailInput
+    donations?: EventDonationUncheckedCreateNestedManyWithoutDonorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
-    publicationClaps?: PublicationClapUncheckedCreateNestedManyWithoutUserInput
-    ventures?: VentureUncheckedCreateNestedManyWithoutOwnerInput
-    ventureSponsorships?: VentureSponsorshipUncheckedCreateNestedManyWithoutUserInput
-    ventureSubscriptions?: VentureSubscriptionUncheckedCreateNestedManyWithoutUserInput
-    XUserPreferences?: XUserPreferencesUncheckedCreateNestedManyWithoutUserInput
-    XUserRoles?: XUserRolesUncheckedCreateNestedManyWithoutUserInput
-    preferences?: VentureCategoryUncheckedCreateNestedManyWithoutUsersInput
-    roles?: RoleUncheckedCreateNestedManyWithoutUsersInput
+    claps?: PublicationClapUncheckedCreateNestedManyWithoutUserInput
+    sponsorships?: VentureSponsorshipUncheckedCreateNestedManyWithoutUserInput
+    subscriptions?: VentureSubscriptionUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type UserCreateOrConnectWithoutCommentsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutCommentsInput, UserUncheckedCreateWithoutCommentsInput>
+  export type UserDetailCreateOrConnectWithoutCommentsInput = {
+    where: UserDetailWhereUniqueInput
+    create: XOR<UserDetailCreateWithoutCommentsInput, UserDetailUncheckedCreateWithoutCommentsInput>
   }
 
   export type VenturePublicationUpsertWithoutCommentsInput = {
@@ -36841,63 +38241,43 @@ export namespace Prisma {
     contents?: PublicationContentUncheckedUpdateManyWithoutVenturePublicationNestedInput
   }
 
-  export type UserUpsertWithoutCommentsInput = {
-    update: XOR<UserUpdateWithoutCommentsInput, UserUncheckedUpdateWithoutCommentsInput>
-    create: XOR<UserCreateWithoutCommentsInput, UserUncheckedCreateWithoutCommentsInput>
-    where?: UserWhereInput
+  export type UserDetailUpsertWithoutCommentsInput = {
+    update: XOR<UserDetailUpdateWithoutCommentsInput, UserDetailUncheckedUpdateWithoutCommentsInput>
+    create: XOR<UserDetailCreateWithoutCommentsInput, UserDetailUncheckedCreateWithoutCommentsInput>
+    where?: UserDetailWhereInput
   }
 
-  export type UserUpdateToOneWithWhereWithoutCommentsInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutCommentsInput, UserUncheckedUpdateWithoutCommentsInput>
+  export type UserDetailUpdateToOneWithWhereWithoutCommentsInput = {
+    where?: UserDetailWhereInput
+    data: XOR<UserDetailUpdateWithoutCommentsInput, UserDetailUncheckedUpdateWithoutCommentsInput>
   }
 
-  export type UserUpdateWithoutCommentsInput = {
+  export type UserDetailUpdateWithoutCommentsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    picture?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    firstName?: StringFieldUpdateOperationsInput | string
-    lastName?: StringFieldUpdateOperationsInput | string
-    active?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
-    verified?: BoolFieldUpdateOperationsInput | boolean
-    eventDonations?: EventDonationUpdateManyWithoutUserNestedInput
+    gender?: StringFieldUpdateOperationsInput | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneWithoutDetailNestedInput
+    municipality?: MunicipalityUpdateOneRequiredWithoutUserDetailsNestedInput
+    ventures?: VentureUpdateManyWithoutOwnerDetailNestedInput
+    donations?: EventDonationUpdateManyWithoutDonorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
-    publicationClaps?: PublicationClapUpdateManyWithoutUserNestedInput
-    detail?: UserDetailUpdateOneWithoutUserNestedInput
-    ventures?: VentureUpdateManyWithoutOwnerNestedInput
-    ventureSponsorships?: VentureSponsorshipUpdateManyWithoutUserNestedInput
-    ventureSubscriptions?: VentureSubscriptionUpdateManyWithoutUserNestedInput
-    XUserPreferences?: XUserPreferencesUpdateManyWithoutUserNestedInput
-    XUserRoles?: XUserRolesUpdateManyWithoutUserNestedInput
-    preferences?: VentureCategoryUpdateManyWithoutUsersNestedInput
-    roles?: RoleUpdateManyWithoutUsersNestedInput
+    claps?: PublicationClapUpdateManyWithoutUserNestedInput
+    sponsorships?: VentureSponsorshipUpdateManyWithoutUserNestedInput
+    subscriptions?: VentureSubscriptionUpdateManyWithoutUserNestedInput
   }
 
-  export type UserUncheckedUpdateWithoutCommentsInput = {
+  export type UserDetailUncheckedUpdateWithoutCommentsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    picture?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    firstName?: StringFieldUpdateOperationsInput | string
-    lastName?: StringFieldUpdateOperationsInput | string
-    active?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
-    userDetailId?: NullableStringFieldUpdateOperationsInput | string | null
-    verified?: BoolFieldUpdateOperationsInput | boolean
-    eventDonations?: EventDonationUncheckedUpdateManyWithoutUserNestedInput
+    gender?: StringFieldUpdateOperationsInput | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    municipalityId?: IntFieldUpdateOperationsInput | number
+    user?: UserUncheckedUpdateOneWithoutDetailNestedInput
+    ventures?: VentureUncheckedUpdateManyWithoutOwnerDetailNestedInput
+    donations?: EventDonationUncheckedUpdateManyWithoutDonorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
-    publicationClaps?: PublicationClapUncheckedUpdateManyWithoutUserNestedInput
-    ventures?: VentureUncheckedUpdateManyWithoutOwnerNestedInput
-    ventureSponsorships?: VentureSponsorshipUncheckedUpdateManyWithoutUserNestedInput
-    ventureSubscriptions?: VentureSubscriptionUncheckedUpdateManyWithoutUserNestedInput
-    XUserPreferences?: XUserPreferencesUncheckedUpdateManyWithoutUserNestedInput
-    XUserRoles?: XUserRolesUncheckedUpdateManyWithoutUserNestedInput
-    preferences?: VentureCategoryUncheckedUpdateManyWithoutUsersNestedInput
-    roles?: RoleUncheckedUpdateManyWithoutUsersNestedInput
+    claps?: PublicationClapUncheckedUpdateManyWithoutUserNestedInput
+    sponsorships?: VentureSponsorshipUncheckedUpdateManyWithoutUserNestedInput
+    subscriptions?: VentureSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type XEventCategoryCreateWithoutCategoryInput = {
@@ -36928,7 +38308,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     donations?: EventDonationCreateNestedManyWithoutEventInput
-    locations?: EventLocationCreateNestedManyWithoutEventInput
+    location: EventLocationCreateNestedOneWithoutEventInput
     ventureDetail: VentureDetailCreateNestedOneWithoutEventsInput
     XEventCategory?: XEventCategoryCreateNestedManyWithoutEventInput
   }
@@ -36943,8 +38323,8 @@ export namespace Prisma {
     endDate: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
+    locationId: string
     donations?: EventDonationUncheckedCreateNestedManyWithoutEventInput
-    locations?: EventLocationUncheckedCreateNestedManyWithoutEventInput
     XEventCategory?: XEventCategoryUncheckedCreateNestedManyWithoutEventInput
   }
 
@@ -37006,6 +38386,7 @@ export namespace Prisma {
     endDate?: DateTimeFilter<"VentureEvent"> | Date | string
     createdAt?: DateTimeFilter<"VentureEvent"> | Date | string
     updatedAt?: DateTimeFilter<"VentureEvent"> | Date | string
+    locationId?: StringFilter<"VentureEvent"> | string
   }
 
   export type VentureEventCreateWithoutDonationsInput = {
@@ -37017,7 +38398,7 @@ export namespace Prisma {
     endDate: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
-    locations?: EventLocationCreateNestedManyWithoutEventInput
+    location: EventLocationCreateNestedOneWithoutEventInput
     ventureDetail: VentureDetailCreateNestedOneWithoutEventsInput
     XEventCategory?: XEventCategoryCreateNestedManyWithoutEventInput
     EventCategory?: EventCategoryCreateNestedManyWithoutVentureEventInput
@@ -37033,7 +38414,7 @@ export namespace Prisma {
     endDate: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
-    locations?: EventLocationUncheckedCreateNestedManyWithoutEventInput
+    locationId: string
     XEventCategory?: XEventCategoryUncheckedCreateNestedManyWithoutEventInput
     EventCategory?: EventCategoryUncheckedCreateNestedManyWithoutVentureEventInput
   }
@@ -37043,57 +38424,37 @@ export namespace Prisma {
     create: XOR<VentureEventCreateWithoutDonationsInput, VentureEventUncheckedCreateWithoutDonationsInput>
   }
 
-  export type UserCreateWithoutEventDonationsInput = {
+  export type UserDetailCreateWithoutDonationsInput = {
     id?: string
-    picture: string
-    email: string
-    firstName: string
-    lastName: string
-    active?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    onboardingCompleted?: boolean
-    verified?: boolean
-    comments?: CommentCreateNestedManyWithoutUserInput
+    gender: string
+    birthDate: Date | string
+    user?: UserCreateNestedOneWithoutDetailInput
+    municipality: MunicipalityCreateNestedOneWithoutUserDetailsInput
+    ventures?: VentureCreateNestedManyWithoutOwnerDetailInput
+    comments?: PublicationCommentCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
-    publicationClaps?: PublicationClapCreateNestedManyWithoutUserInput
-    detail?: UserDetailCreateNestedOneWithoutUserInput
-    ventures?: VentureCreateNestedManyWithoutOwnerInput
-    ventureSponsorships?: VentureSponsorshipCreateNestedManyWithoutUserInput
-    ventureSubscriptions?: VentureSubscriptionCreateNestedManyWithoutUserInput
-    XUserPreferences?: XUserPreferencesCreateNestedManyWithoutUserInput
-    XUserRoles?: XUserRolesCreateNestedManyWithoutUserInput
-    preferences?: VentureCategoryCreateNestedManyWithoutUsersInput
-    roles?: RoleCreateNestedManyWithoutUsersInput
+    claps?: PublicationClapCreateNestedManyWithoutUserInput
+    sponsorships?: VentureSponsorshipCreateNestedManyWithoutUserInput
+    subscriptions?: VentureSubscriptionCreateNestedManyWithoutUserInput
   }
 
-  export type UserUncheckedCreateWithoutEventDonationsInput = {
+  export type UserDetailUncheckedCreateWithoutDonationsInput = {
     id?: string
-    picture: string
-    email: string
-    firstName: string
-    lastName: string
-    active?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    onboardingCompleted?: boolean
-    userDetailId?: string | null
-    verified?: boolean
-    comments?: CommentUncheckedCreateNestedManyWithoutUserInput
+    gender: string
+    birthDate: Date | string
+    municipalityId: number
+    user?: UserUncheckedCreateNestedOneWithoutDetailInput
+    ventures?: VentureUncheckedCreateNestedManyWithoutOwnerDetailInput
+    comments?: PublicationCommentUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
-    publicationClaps?: PublicationClapUncheckedCreateNestedManyWithoutUserInput
-    ventures?: VentureUncheckedCreateNestedManyWithoutOwnerInput
-    ventureSponsorships?: VentureSponsorshipUncheckedCreateNestedManyWithoutUserInput
-    ventureSubscriptions?: VentureSubscriptionUncheckedCreateNestedManyWithoutUserInput
-    XUserPreferences?: XUserPreferencesUncheckedCreateNestedManyWithoutUserInput
-    XUserRoles?: XUserRolesUncheckedCreateNestedManyWithoutUserInput
-    preferences?: VentureCategoryUncheckedCreateNestedManyWithoutUsersInput
-    roles?: RoleUncheckedCreateNestedManyWithoutUsersInput
+    claps?: PublicationClapUncheckedCreateNestedManyWithoutUserInput
+    sponsorships?: VentureSponsorshipUncheckedCreateNestedManyWithoutUserInput
+    subscriptions?: VentureSubscriptionUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type UserCreateOrConnectWithoutEventDonationsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutEventDonationsInput, UserUncheckedCreateWithoutEventDonationsInput>
+  export type UserDetailCreateOrConnectWithoutDonationsInput = {
+    where: UserDetailWhereUniqueInput
+    create: XOR<UserDetailCreateWithoutDonationsInput, UserDetailUncheckedCreateWithoutDonationsInput>
   }
 
   export type VentureEventUpsertWithoutDonationsInput = {
@@ -37116,7 +38477,7 @@ export namespace Prisma {
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    locations?: EventLocationUpdateManyWithoutEventNestedInput
+    location?: EventLocationUpdateOneRequiredWithoutEventNestedInput
     ventureDetail?: VentureDetailUpdateOneRequiredWithoutEventsNestedInput
     XEventCategory?: XEventCategoryUpdateManyWithoutEventNestedInput
     EventCategory?: EventCategoryUpdateManyWithoutVentureEventNestedInput
@@ -37132,71 +38493,51 @@ export namespace Prisma {
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    locations?: EventLocationUncheckedUpdateManyWithoutEventNestedInput
+    locationId?: StringFieldUpdateOperationsInput | string
     XEventCategory?: XEventCategoryUncheckedUpdateManyWithoutEventNestedInput
     EventCategory?: EventCategoryUncheckedUpdateManyWithoutVentureEventNestedInput
   }
 
-  export type UserUpsertWithoutEventDonationsInput = {
-    update: XOR<UserUpdateWithoutEventDonationsInput, UserUncheckedUpdateWithoutEventDonationsInput>
-    create: XOR<UserCreateWithoutEventDonationsInput, UserUncheckedCreateWithoutEventDonationsInput>
-    where?: UserWhereInput
+  export type UserDetailUpsertWithoutDonationsInput = {
+    update: XOR<UserDetailUpdateWithoutDonationsInput, UserDetailUncheckedUpdateWithoutDonationsInput>
+    create: XOR<UserDetailCreateWithoutDonationsInput, UserDetailUncheckedCreateWithoutDonationsInput>
+    where?: UserDetailWhereInput
   }
 
-  export type UserUpdateToOneWithWhereWithoutEventDonationsInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutEventDonationsInput, UserUncheckedUpdateWithoutEventDonationsInput>
+  export type UserDetailUpdateToOneWithWhereWithoutDonationsInput = {
+    where?: UserDetailWhereInput
+    data: XOR<UserDetailUpdateWithoutDonationsInput, UserDetailUncheckedUpdateWithoutDonationsInput>
   }
 
-  export type UserUpdateWithoutEventDonationsInput = {
+  export type UserDetailUpdateWithoutDonationsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    picture?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    firstName?: StringFieldUpdateOperationsInput | string
-    lastName?: StringFieldUpdateOperationsInput | string
-    active?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
-    verified?: BoolFieldUpdateOperationsInput | boolean
-    comments?: CommentUpdateManyWithoutUserNestedInput
+    gender?: StringFieldUpdateOperationsInput | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneWithoutDetailNestedInput
+    municipality?: MunicipalityUpdateOneRequiredWithoutUserDetailsNestedInput
+    ventures?: VentureUpdateManyWithoutOwnerDetailNestedInput
+    comments?: PublicationCommentUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
-    publicationClaps?: PublicationClapUpdateManyWithoutUserNestedInput
-    detail?: UserDetailUpdateOneWithoutUserNestedInput
-    ventures?: VentureUpdateManyWithoutOwnerNestedInput
-    ventureSponsorships?: VentureSponsorshipUpdateManyWithoutUserNestedInput
-    ventureSubscriptions?: VentureSubscriptionUpdateManyWithoutUserNestedInput
-    XUserPreferences?: XUserPreferencesUpdateManyWithoutUserNestedInput
-    XUserRoles?: XUserRolesUpdateManyWithoutUserNestedInput
-    preferences?: VentureCategoryUpdateManyWithoutUsersNestedInput
-    roles?: RoleUpdateManyWithoutUsersNestedInput
+    claps?: PublicationClapUpdateManyWithoutUserNestedInput
+    sponsorships?: VentureSponsorshipUpdateManyWithoutUserNestedInput
+    subscriptions?: VentureSubscriptionUpdateManyWithoutUserNestedInput
   }
 
-  export type UserUncheckedUpdateWithoutEventDonationsInput = {
+  export type UserDetailUncheckedUpdateWithoutDonationsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    picture?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    firstName?: StringFieldUpdateOperationsInput | string
-    lastName?: StringFieldUpdateOperationsInput | string
-    active?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
-    userDetailId?: NullableStringFieldUpdateOperationsInput | string | null
-    verified?: BoolFieldUpdateOperationsInput | boolean
-    comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
+    gender?: StringFieldUpdateOperationsInput | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    municipalityId?: IntFieldUpdateOperationsInput | number
+    user?: UserUncheckedUpdateOneWithoutDetailNestedInput
+    ventures?: VentureUncheckedUpdateManyWithoutOwnerDetailNestedInput
+    comments?: PublicationCommentUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
-    publicationClaps?: PublicationClapUncheckedUpdateManyWithoutUserNestedInput
-    ventures?: VentureUncheckedUpdateManyWithoutOwnerNestedInput
-    ventureSponsorships?: VentureSponsorshipUncheckedUpdateManyWithoutUserNestedInput
-    ventureSubscriptions?: VentureSubscriptionUncheckedUpdateManyWithoutUserNestedInput
-    XUserPreferences?: XUserPreferencesUncheckedUpdateManyWithoutUserNestedInput
-    XUserRoles?: XUserRolesUncheckedUpdateManyWithoutUserNestedInput
-    preferences?: VentureCategoryUncheckedUpdateManyWithoutUsersNestedInput
-    roles?: RoleUncheckedUpdateManyWithoutUsersNestedInput
+    claps?: PublicationClapUncheckedUpdateManyWithoutUserNestedInput
+    sponsorships?: VentureSponsorshipUncheckedUpdateManyWithoutUserNestedInput
+    subscriptions?: VentureSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   }
 
-  export type VentureEventCreateWithoutLocationsInput = {
+  export type VentureEventCreateWithoutLocationInput = {
     id: string
     title: string
     description: string
@@ -37211,7 +38552,7 @@ export namespace Prisma {
     EventCategory?: EventCategoryCreateNestedManyWithoutVentureEventInput
   }
 
-  export type VentureEventUncheckedCreateWithoutLocationsInput = {
+  export type VentureEventUncheckedCreateWithoutLocationInput = {
     id: string
     title: string
     description: string
@@ -37226,23 +38567,23 @@ export namespace Prisma {
     EventCategory?: EventCategoryUncheckedCreateNestedManyWithoutVentureEventInput
   }
 
-  export type VentureEventCreateOrConnectWithoutLocationsInput = {
+  export type VentureEventCreateOrConnectWithoutLocationInput = {
     where: VentureEventWhereUniqueInput
-    create: XOR<VentureEventCreateWithoutLocationsInput, VentureEventUncheckedCreateWithoutLocationsInput>
+    create: XOR<VentureEventCreateWithoutLocationInput, VentureEventUncheckedCreateWithoutLocationInput>
   }
 
-  export type VentureEventUpsertWithoutLocationsInput = {
-    update: XOR<VentureEventUpdateWithoutLocationsInput, VentureEventUncheckedUpdateWithoutLocationsInput>
-    create: XOR<VentureEventCreateWithoutLocationsInput, VentureEventUncheckedCreateWithoutLocationsInput>
+  export type VentureEventUpsertWithoutLocationInput = {
+    update: XOR<VentureEventUpdateWithoutLocationInput, VentureEventUncheckedUpdateWithoutLocationInput>
+    create: XOR<VentureEventCreateWithoutLocationInput, VentureEventUncheckedCreateWithoutLocationInput>
     where?: VentureEventWhereInput
   }
 
-  export type VentureEventUpdateToOneWithWhereWithoutLocationsInput = {
+  export type VentureEventUpdateToOneWithWhereWithoutLocationInput = {
     where?: VentureEventWhereInput
-    data: XOR<VentureEventUpdateWithoutLocationsInput, VentureEventUncheckedUpdateWithoutLocationsInput>
+    data: XOR<VentureEventUpdateWithoutLocationInput, VentureEventUncheckedUpdateWithoutLocationInput>
   }
 
-  export type VentureEventUpdateWithoutLocationsInput = {
+  export type VentureEventUpdateWithoutLocationInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
@@ -37257,7 +38598,7 @@ export namespace Prisma {
     EventCategory?: EventCategoryUpdateManyWithoutVentureEventNestedInput
   }
 
-  export type VentureEventUncheckedUpdateWithoutLocationsInput = {
+  export type VentureEventUncheckedUpdateWithoutLocationInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
@@ -37272,7 +38613,7 @@ export namespace Prisma {
     EventCategory?: EventCategoryUncheckedUpdateManyWithoutVentureEventNestedInput
   }
 
-  export type VentureCreateWithoutLocationsInput = {
+  export type VentureCreateWithoutLocationInput = {
     id?: string
     name: string
     slug: string
@@ -37283,46 +38624,46 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     detail: VentureDetailCreateNestedOneWithoutVentureInput
-    owner: UserCreateNestedOneWithoutVenturesInput
-    XVentureVencureCategory?: XVentureVencureCategoryCreateNestedManyWithoutVentureInput
+    ownerDetail: UserDetailCreateNestedOneWithoutVenturesInput
     categories?: VentureCategoryCreateNestedManyWithoutVenturesInput
-    contact?: VentureContactCreateNestedManyWithoutVentureInput
+    contact: VentureContactCreateNestedOneWithoutVentureInput
+    XVentureVencureCategory?: XVentureVencureCategoryCreateNestedManyWithoutVentureInput
   }
 
-  export type VentureUncheckedCreateWithoutLocationsInput = {
+  export type VentureUncheckedCreateWithoutLocationInput = {
     id?: string
     name: string
     slug: string
     coverPhoto: string
     description: string
-    ownerId: string
     active?: boolean
     verified?: boolean
     detailId: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    XVentureVencureCategory?: XVentureVencureCategoryUncheckedCreateNestedManyWithoutVentureInput
+    ownerDetailId: string
+    ventureId: string
     categories?: VentureCategoryUncheckedCreateNestedManyWithoutVenturesInput
-    contact?: VentureContactUncheckedCreateNestedManyWithoutVentureInput
+    XVentureVencureCategory?: XVentureVencureCategoryUncheckedCreateNestedManyWithoutVentureInput
   }
 
-  export type VentureCreateOrConnectWithoutLocationsInput = {
+  export type VentureCreateOrConnectWithoutLocationInput = {
     where: VentureWhereUniqueInput
-    create: XOR<VentureCreateWithoutLocationsInput, VentureUncheckedCreateWithoutLocationsInput>
+    create: XOR<VentureCreateWithoutLocationInput, VentureUncheckedCreateWithoutLocationInput>
   }
 
-  export type VentureUpsertWithoutLocationsInput = {
-    update: XOR<VentureUpdateWithoutLocationsInput, VentureUncheckedUpdateWithoutLocationsInput>
-    create: XOR<VentureCreateWithoutLocationsInput, VentureUncheckedCreateWithoutLocationsInput>
+  export type VentureUpsertWithoutLocationInput = {
+    update: XOR<VentureUpdateWithoutLocationInput, VentureUncheckedUpdateWithoutLocationInput>
+    create: XOR<VentureCreateWithoutLocationInput, VentureUncheckedCreateWithoutLocationInput>
     where?: VentureWhereInput
   }
 
-  export type VentureUpdateToOneWithWhereWithoutLocationsInput = {
+  export type VentureUpdateToOneWithWhereWithoutLocationInput = {
     where?: VentureWhereInput
-    data: XOR<VentureUpdateWithoutLocationsInput, VentureUncheckedUpdateWithoutLocationsInput>
+    data: XOR<VentureUpdateWithoutLocationInput, VentureUncheckedUpdateWithoutLocationInput>
   }
 
-  export type VentureUpdateWithoutLocationsInput = {
+  export type VentureUpdateWithoutLocationInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
@@ -37333,139 +38674,99 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     detail?: VentureDetailUpdateOneRequiredWithoutVentureNestedInput
-    owner?: UserUpdateOneRequiredWithoutVenturesNestedInput
-    XVentureVencureCategory?: XVentureVencureCategoryUpdateManyWithoutVentureNestedInput
+    ownerDetail?: UserDetailUpdateOneRequiredWithoutVenturesNestedInput
     categories?: VentureCategoryUpdateManyWithoutVenturesNestedInput
-    contact?: VentureContactUpdateManyWithoutVentureNestedInput
+    contact?: VentureContactUpdateOneRequiredWithoutVentureNestedInput
+    XVentureVencureCategory?: XVentureVencureCategoryUpdateManyWithoutVentureNestedInput
   }
 
-  export type VentureUncheckedUpdateWithoutLocationsInput = {
+  export type VentureUncheckedUpdateWithoutLocationInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     coverPhoto?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    ownerId?: StringFieldUpdateOperationsInput | string
     active?: BoolFieldUpdateOperationsInput | boolean
     verified?: BoolFieldUpdateOperationsInput | boolean
     detailId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    XVentureVencureCategory?: XVentureVencureCategoryUncheckedUpdateManyWithoutVentureNestedInput
+    ownerDetailId?: StringFieldUpdateOperationsInput | string
+    ventureId?: StringFieldUpdateOperationsInput | string
     categories?: VentureCategoryUncheckedUpdateManyWithoutVenturesNestedInput
-    contact?: VentureContactUncheckedUpdateManyWithoutVentureNestedInput
+    XVentureVencureCategory?: XVentureVencureCategoryUncheckedUpdateManyWithoutVentureNestedInput
   }
 
-  export type UserCreateWithoutNotificationsInput = {
+  export type UserDetailCreateWithoutNotificationsInput = {
     id?: string
-    picture: string
-    email: string
-    firstName: string
-    lastName: string
-    active?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    onboardingCompleted?: boolean
-    verified?: boolean
-    comments?: CommentCreateNestedManyWithoutUserInput
-    eventDonations?: EventDonationCreateNestedManyWithoutUserInput
-    publicationClaps?: PublicationClapCreateNestedManyWithoutUserInput
-    detail?: UserDetailCreateNestedOneWithoutUserInput
-    ventures?: VentureCreateNestedManyWithoutOwnerInput
-    ventureSponsorships?: VentureSponsorshipCreateNestedManyWithoutUserInput
-    ventureSubscriptions?: VentureSubscriptionCreateNestedManyWithoutUserInput
-    XUserPreferences?: XUserPreferencesCreateNestedManyWithoutUserInput
-    XUserRoles?: XUserRolesCreateNestedManyWithoutUserInput
-    preferences?: VentureCategoryCreateNestedManyWithoutUsersInput
-    roles?: RoleCreateNestedManyWithoutUsersInput
+    gender: string
+    birthDate: Date | string
+    user?: UserCreateNestedOneWithoutDetailInput
+    municipality: MunicipalityCreateNestedOneWithoutUserDetailsInput
+    ventures?: VentureCreateNestedManyWithoutOwnerDetailInput
+    comments?: PublicationCommentCreateNestedManyWithoutUserInput
+    donations?: EventDonationCreateNestedManyWithoutDonorInput
+    claps?: PublicationClapCreateNestedManyWithoutUserInput
+    sponsorships?: VentureSponsorshipCreateNestedManyWithoutUserInput
+    subscriptions?: VentureSubscriptionCreateNestedManyWithoutUserInput
   }
 
-  export type UserUncheckedCreateWithoutNotificationsInput = {
+  export type UserDetailUncheckedCreateWithoutNotificationsInput = {
     id?: string
-    picture: string
-    email: string
-    firstName: string
-    lastName: string
-    active?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    onboardingCompleted?: boolean
-    userDetailId?: string | null
-    verified?: boolean
-    comments?: CommentUncheckedCreateNestedManyWithoutUserInput
-    eventDonations?: EventDonationUncheckedCreateNestedManyWithoutUserInput
-    publicationClaps?: PublicationClapUncheckedCreateNestedManyWithoutUserInput
-    ventures?: VentureUncheckedCreateNestedManyWithoutOwnerInput
-    ventureSponsorships?: VentureSponsorshipUncheckedCreateNestedManyWithoutUserInput
-    ventureSubscriptions?: VentureSubscriptionUncheckedCreateNestedManyWithoutUserInput
-    XUserPreferences?: XUserPreferencesUncheckedCreateNestedManyWithoutUserInput
-    XUserRoles?: XUserRolesUncheckedCreateNestedManyWithoutUserInput
-    preferences?: VentureCategoryUncheckedCreateNestedManyWithoutUsersInput
-    roles?: RoleUncheckedCreateNestedManyWithoutUsersInput
+    gender: string
+    birthDate: Date | string
+    municipalityId: number
+    user?: UserUncheckedCreateNestedOneWithoutDetailInput
+    ventures?: VentureUncheckedCreateNestedManyWithoutOwnerDetailInput
+    comments?: PublicationCommentUncheckedCreateNestedManyWithoutUserInput
+    donations?: EventDonationUncheckedCreateNestedManyWithoutDonorInput
+    claps?: PublicationClapUncheckedCreateNestedManyWithoutUserInput
+    sponsorships?: VentureSponsorshipUncheckedCreateNestedManyWithoutUserInput
+    subscriptions?: VentureSubscriptionUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type UserCreateOrConnectWithoutNotificationsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutNotificationsInput, UserUncheckedCreateWithoutNotificationsInput>
+  export type UserDetailCreateOrConnectWithoutNotificationsInput = {
+    where: UserDetailWhereUniqueInput
+    create: XOR<UserDetailCreateWithoutNotificationsInput, UserDetailUncheckedCreateWithoutNotificationsInput>
   }
 
-  export type UserUpsertWithoutNotificationsInput = {
-    update: XOR<UserUpdateWithoutNotificationsInput, UserUncheckedUpdateWithoutNotificationsInput>
-    create: XOR<UserCreateWithoutNotificationsInput, UserUncheckedCreateWithoutNotificationsInput>
-    where?: UserWhereInput
+  export type UserDetailUpsertWithoutNotificationsInput = {
+    update: XOR<UserDetailUpdateWithoutNotificationsInput, UserDetailUncheckedUpdateWithoutNotificationsInput>
+    create: XOR<UserDetailCreateWithoutNotificationsInput, UserDetailUncheckedCreateWithoutNotificationsInput>
+    where?: UserDetailWhereInput
   }
 
-  export type UserUpdateToOneWithWhereWithoutNotificationsInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutNotificationsInput, UserUncheckedUpdateWithoutNotificationsInput>
+  export type UserDetailUpdateToOneWithWhereWithoutNotificationsInput = {
+    where?: UserDetailWhereInput
+    data: XOR<UserDetailUpdateWithoutNotificationsInput, UserDetailUncheckedUpdateWithoutNotificationsInput>
   }
 
-  export type UserUpdateWithoutNotificationsInput = {
+  export type UserDetailUpdateWithoutNotificationsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    picture?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    firstName?: StringFieldUpdateOperationsInput | string
-    lastName?: StringFieldUpdateOperationsInput | string
-    active?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
-    verified?: BoolFieldUpdateOperationsInput | boolean
-    comments?: CommentUpdateManyWithoutUserNestedInput
-    eventDonations?: EventDonationUpdateManyWithoutUserNestedInput
-    publicationClaps?: PublicationClapUpdateManyWithoutUserNestedInput
-    detail?: UserDetailUpdateOneWithoutUserNestedInput
-    ventures?: VentureUpdateManyWithoutOwnerNestedInput
-    ventureSponsorships?: VentureSponsorshipUpdateManyWithoutUserNestedInput
-    ventureSubscriptions?: VentureSubscriptionUpdateManyWithoutUserNestedInput
-    XUserPreferences?: XUserPreferencesUpdateManyWithoutUserNestedInput
-    XUserRoles?: XUserRolesUpdateManyWithoutUserNestedInput
-    preferences?: VentureCategoryUpdateManyWithoutUsersNestedInput
-    roles?: RoleUpdateManyWithoutUsersNestedInput
+    gender?: StringFieldUpdateOperationsInput | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneWithoutDetailNestedInput
+    municipality?: MunicipalityUpdateOneRequiredWithoutUserDetailsNestedInput
+    ventures?: VentureUpdateManyWithoutOwnerDetailNestedInput
+    comments?: PublicationCommentUpdateManyWithoutUserNestedInput
+    donations?: EventDonationUpdateManyWithoutDonorNestedInput
+    claps?: PublicationClapUpdateManyWithoutUserNestedInput
+    sponsorships?: VentureSponsorshipUpdateManyWithoutUserNestedInput
+    subscriptions?: VentureSubscriptionUpdateManyWithoutUserNestedInput
   }
 
-  export type UserUncheckedUpdateWithoutNotificationsInput = {
+  export type UserDetailUncheckedUpdateWithoutNotificationsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    picture?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    firstName?: StringFieldUpdateOperationsInput | string
-    lastName?: StringFieldUpdateOperationsInput | string
-    active?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
-    userDetailId?: NullableStringFieldUpdateOperationsInput | string | null
-    verified?: BoolFieldUpdateOperationsInput | boolean
-    comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
-    eventDonations?: EventDonationUncheckedUpdateManyWithoutUserNestedInput
-    publicationClaps?: PublicationClapUncheckedUpdateManyWithoutUserNestedInput
-    ventures?: VentureUncheckedUpdateManyWithoutOwnerNestedInput
-    ventureSponsorships?: VentureSponsorshipUncheckedUpdateManyWithoutUserNestedInput
-    ventureSubscriptions?: VentureSubscriptionUncheckedUpdateManyWithoutUserNestedInput
-    XUserPreferences?: XUserPreferencesUncheckedUpdateManyWithoutUserNestedInput
-    XUserRoles?: XUserRolesUncheckedUpdateManyWithoutUserNestedInput
-    preferences?: VentureCategoryUncheckedUpdateManyWithoutUsersNestedInput
-    roles?: RoleUncheckedUpdateManyWithoutUsersNestedInput
+    gender?: StringFieldUpdateOperationsInput | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    municipalityId?: IntFieldUpdateOperationsInput | number
+    user?: UserUncheckedUpdateOneWithoutDetailNestedInput
+    ventures?: VentureUncheckedUpdateManyWithoutOwnerDetailNestedInput
+    comments?: PublicationCommentUncheckedUpdateManyWithoutUserNestedInput
+    donations?: EventDonationUncheckedUpdateManyWithoutDonorNestedInput
+    claps?: PublicationClapUncheckedUpdateManyWithoutUserNestedInput
+    sponsorships?: VentureSponsorshipUncheckedUpdateManyWithoutUserNestedInput
+    subscriptions?: VentureSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type VenturePublicationCreateWithoutClapsInput = {
@@ -37475,7 +38776,7 @@ export namespace Prisma {
     clapsCount: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    comments?: CommentCreateNestedManyWithoutVenturePublicationInput
+    comments?: PublicationCommentCreateNestedManyWithoutVenturePublicationInput
     contents?: PublicationContentCreateNestedManyWithoutVenturePublicationInput
     detail: VentureDetailCreateNestedOneWithoutPublicationsInput
   }
@@ -37488,7 +38789,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     detailId: string
-    comments?: CommentUncheckedCreateNestedManyWithoutVenturePublicationInput
+    comments?: PublicationCommentUncheckedCreateNestedManyWithoutVenturePublicationInput
     contents?: PublicationContentUncheckedCreateNestedManyWithoutVenturePublicationInput
   }
 
@@ -37497,57 +38798,37 @@ export namespace Prisma {
     create: XOR<VenturePublicationCreateWithoutClapsInput, VenturePublicationUncheckedCreateWithoutClapsInput>
   }
 
-  export type UserCreateWithoutPublicationClapsInput = {
+  export type UserDetailCreateWithoutClapsInput = {
     id?: string
-    picture: string
-    email: string
-    firstName: string
-    lastName: string
-    active?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    onboardingCompleted?: boolean
-    verified?: boolean
-    comments?: CommentCreateNestedManyWithoutUserInput
-    eventDonations?: EventDonationCreateNestedManyWithoutUserInput
+    gender: string
+    birthDate: Date | string
+    user?: UserCreateNestedOneWithoutDetailInput
+    municipality: MunicipalityCreateNestedOneWithoutUserDetailsInput
+    ventures?: VentureCreateNestedManyWithoutOwnerDetailInput
+    comments?: PublicationCommentCreateNestedManyWithoutUserInput
+    donations?: EventDonationCreateNestedManyWithoutDonorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
-    detail?: UserDetailCreateNestedOneWithoutUserInput
-    ventures?: VentureCreateNestedManyWithoutOwnerInput
-    ventureSponsorships?: VentureSponsorshipCreateNestedManyWithoutUserInput
-    ventureSubscriptions?: VentureSubscriptionCreateNestedManyWithoutUserInput
-    XUserPreferences?: XUserPreferencesCreateNestedManyWithoutUserInput
-    XUserRoles?: XUserRolesCreateNestedManyWithoutUserInput
-    preferences?: VentureCategoryCreateNestedManyWithoutUsersInput
-    roles?: RoleCreateNestedManyWithoutUsersInput
+    sponsorships?: VentureSponsorshipCreateNestedManyWithoutUserInput
+    subscriptions?: VentureSubscriptionCreateNestedManyWithoutUserInput
   }
 
-  export type UserUncheckedCreateWithoutPublicationClapsInput = {
+  export type UserDetailUncheckedCreateWithoutClapsInput = {
     id?: string
-    picture: string
-    email: string
-    firstName: string
-    lastName: string
-    active?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    onboardingCompleted?: boolean
-    userDetailId?: string | null
-    verified?: boolean
-    comments?: CommentUncheckedCreateNestedManyWithoutUserInput
-    eventDonations?: EventDonationUncheckedCreateNestedManyWithoutUserInput
+    gender: string
+    birthDate: Date | string
+    municipalityId: number
+    user?: UserUncheckedCreateNestedOneWithoutDetailInput
+    ventures?: VentureUncheckedCreateNestedManyWithoutOwnerDetailInput
+    comments?: PublicationCommentUncheckedCreateNestedManyWithoutUserInput
+    donations?: EventDonationUncheckedCreateNestedManyWithoutDonorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
-    ventures?: VentureUncheckedCreateNestedManyWithoutOwnerInput
-    ventureSponsorships?: VentureSponsorshipUncheckedCreateNestedManyWithoutUserInput
-    ventureSubscriptions?: VentureSubscriptionUncheckedCreateNestedManyWithoutUserInput
-    XUserPreferences?: XUserPreferencesUncheckedCreateNestedManyWithoutUserInput
-    XUserRoles?: XUserRolesUncheckedCreateNestedManyWithoutUserInput
-    preferences?: VentureCategoryUncheckedCreateNestedManyWithoutUsersInput
-    roles?: RoleUncheckedCreateNestedManyWithoutUsersInput
+    sponsorships?: VentureSponsorshipUncheckedCreateNestedManyWithoutUserInput
+    subscriptions?: VentureSubscriptionUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type UserCreateOrConnectWithoutPublicationClapsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutPublicationClapsInput, UserUncheckedCreateWithoutPublicationClapsInput>
+  export type UserDetailCreateOrConnectWithoutClapsInput = {
+    where: UserDetailWhereUniqueInput
+    create: XOR<UserDetailCreateWithoutClapsInput, UserDetailUncheckedCreateWithoutClapsInput>
   }
 
   export type VenturePublicationUpsertWithoutClapsInput = {
@@ -37568,7 +38849,7 @@ export namespace Prisma {
     clapsCount?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    comments?: CommentUpdateManyWithoutVenturePublicationNestedInput
+    comments?: PublicationCommentUpdateManyWithoutVenturePublicationNestedInput
     contents?: PublicationContentUpdateManyWithoutVenturePublicationNestedInput
     detail?: VentureDetailUpdateOneRequiredWithoutPublicationsNestedInput
   }
@@ -37581,67 +38862,47 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     detailId?: StringFieldUpdateOperationsInput | string
-    comments?: CommentUncheckedUpdateManyWithoutVenturePublicationNestedInput
+    comments?: PublicationCommentUncheckedUpdateManyWithoutVenturePublicationNestedInput
     contents?: PublicationContentUncheckedUpdateManyWithoutVenturePublicationNestedInput
   }
 
-  export type UserUpsertWithoutPublicationClapsInput = {
-    update: XOR<UserUpdateWithoutPublicationClapsInput, UserUncheckedUpdateWithoutPublicationClapsInput>
-    create: XOR<UserCreateWithoutPublicationClapsInput, UserUncheckedCreateWithoutPublicationClapsInput>
-    where?: UserWhereInput
+  export type UserDetailUpsertWithoutClapsInput = {
+    update: XOR<UserDetailUpdateWithoutClapsInput, UserDetailUncheckedUpdateWithoutClapsInput>
+    create: XOR<UserDetailCreateWithoutClapsInput, UserDetailUncheckedCreateWithoutClapsInput>
+    where?: UserDetailWhereInput
   }
 
-  export type UserUpdateToOneWithWhereWithoutPublicationClapsInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutPublicationClapsInput, UserUncheckedUpdateWithoutPublicationClapsInput>
+  export type UserDetailUpdateToOneWithWhereWithoutClapsInput = {
+    where?: UserDetailWhereInput
+    data: XOR<UserDetailUpdateWithoutClapsInput, UserDetailUncheckedUpdateWithoutClapsInput>
   }
 
-  export type UserUpdateWithoutPublicationClapsInput = {
+  export type UserDetailUpdateWithoutClapsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    picture?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    firstName?: StringFieldUpdateOperationsInput | string
-    lastName?: StringFieldUpdateOperationsInput | string
-    active?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
-    verified?: BoolFieldUpdateOperationsInput | boolean
-    comments?: CommentUpdateManyWithoutUserNestedInput
-    eventDonations?: EventDonationUpdateManyWithoutUserNestedInput
+    gender?: StringFieldUpdateOperationsInput | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneWithoutDetailNestedInput
+    municipality?: MunicipalityUpdateOneRequiredWithoutUserDetailsNestedInput
+    ventures?: VentureUpdateManyWithoutOwnerDetailNestedInput
+    comments?: PublicationCommentUpdateManyWithoutUserNestedInput
+    donations?: EventDonationUpdateManyWithoutDonorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
-    detail?: UserDetailUpdateOneWithoutUserNestedInput
-    ventures?: VentureUpdateManyWithoutOwnerNestedInput
-    ventureSponsorships?: VentureSponsorshipUpdateManyWithoutUserNestedInput
-    ventureSubscriptions?: VentureSubscriptionUpdateManyWithoutUserNestedInput
-    XUserPreferences?: XUserPreferencesUpdateManyWithoutUserNestedInput
-    XUserRoles?: XUserRolesUpdateManyWithoutUserNestedInput
-    preferences?: VentureCategoryUpdateManyWithoutUsersNestedInput
-    roles?: RoleUpdateManyWithoutUsersNestedInput
+    sponsorships?: VentureSponsorshipUpdateManyWithoutUserNestedInput
+    subscriptions?: VentureSubscriptionUpdateManyWithoutUserNestedInput
   }
 
-  export type UserUncheckedUpdateWithoutPublicationClapsInput = {
+  export type UserDetailUncheckedUpdateWithoutClapsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    picture?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    firstName?: StringFieldUpdateOperationsInput | string
-    lastName?: StringFieldUpdateOperationsInput | string
-    active?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
-    userDetailId?: NullableStringFieldUpdateOperationsInput | string | null
-    verified?: BoolFieldUpdateOperationsInput | boolean
-    comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
-    eventDonations?: EventDonationUncheckedUpdateManyWithoutUserNestedInput
+    gender?: StringFieldUpdateOperationsInput | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    municipalityId?: IntFieldUpdateOperationsInput | number
+    user?: UserUncheckedUpdateOneWithoutDetailNestedInput
+    ventures?: VentureUncheckedUpdateManyWithoutOwnerDetailNestedInput
+    comments?: PublicationCommentUncheckedUpdateManyWithoutUserNestedInput
+    donations?: EventDonationUncheckedUpdateManyWithoutDonorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
-    ventures?: VentureUncheckedUpdateManyWithoutOwnerNestedInput
-    ventureSponsorships?: VentureSponsorshipUncheckedUpdateManyWithoutUserNestedInput
-    ventureSubscriptions?: VentureSubscriptionUncheckedUpdateManyWithoutUserNestedInput
-    XUserPreferences?: XUserPreferencesUncheckedUpdateManyWithoutUserNestedInput
-    XUserRoles?: XUserRolesUncheckedUpdateManyWithoutUserNestedInput
-    preferences?: VentureCategoryUncheckedUpdateManyWithoutUsersNestedInput
-    roles?: RoleUncheckedUpdateManyWithoutUsersNestedInput
+    sponsorships?: VentureSponsorshipUncheckedUpdateManyWithoutUserNestedInput
+    subscriptions?: VentureSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type VenturePublicationCreateWithoutContentsInput = {
@@ -37651,7 +38912,7 @@ export namespace Prisma {
     clapsCount: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    comments?: CommentCreateNestedManyWithoutVenturePublicationInput
+    comments?: PublicationCommentCreateNestedManyWithoutVenturePublicationInput
     claps?: PublicationClapCreateNestedManyWithoutVenturePublicationInput
     detail: VentureDetailCreateNestedOneWithoutPublicationsInput
   }
@@ -37664,7 +38925,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     detailId: string
-    comments?: CommentUncheckedCreateNestedManyWithoutVenturePublicationInput
+    comments?: PublicationCommentUncheckedCreateNestedManyWithoutVenturePublicationInput
     claps?: PublicationClapUncheckedCreateNestedManyWithoutVenturePublicationInput
   }
 
@@ -37691,7 +38952,7 @@ export namespace Prisma {
     clapsCount?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    comments?: CommentUpdateManyWithoutVenturePublicationNestedInput
+    comments?: PublicationCommentUpdateManyWithoutVenturePublicationNestedInput
     claps?: PublicationClapUpdateManyWithoutVenturePublicationNestedInput
     detail?: VentureDetailUpdateOneRequiredWithoutPublicationsNestedInput
   }
@@ -37704,7 +38965,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     detailId?: StringFieldUpdateOperationsInput | string
-    comments?: CommentUncheckedUpdateManyWithoutVenturePublicationNestedInput
+    comments?: PublicationCommentUncheckedUpdateManyWithoutVenturePublicationNestedInput
     claps?: PublicationClapUncheckedUpdateManyWithoutVenturePublicationNestedInput
   }
 
@@ -37741,14 +39002,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     onboardingCompleted?: boolean
     verified?: boolean
-    comments?: CommentCreateNestedManyWithoutUserInput
-    eventDonations?: EventDonationCreateNestedManyWithoutUserInput
-    notifications?: NotificationCreateNestedManyWithoutUserInput
-    publicationClaps?: PublicationClapCreateNestedManyWithoutUserInput
     detail?: UserDetailCreateNestedOneWithoutUserInput
-    ventures?: VentureCreateNestedManyWithoutOwnerInput
-    ventureSponsorships?: VentureSponsorshipCreateNestedManyWithoutUserInput
-    ventureSubscriptions?: VentureSubscriptionCreateNestedManyWithoutUserInput
+    contact?: UserContactCreateNestedOneWithoutUserInput
     XUserPreferences?: XUserPreferencesCreateNestedManyWithoutUserInput
     XUserRoles?: XUserRolesCreateNestedManyWithoutUserInput
     preferences?: VentureCategoryCreateNestedManyWithoutUsersInput
@@ -37764,15 +39019,9 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     onboardingCompleted?: boolean
-    userDetailId?: string | null
+    detailId?: string | null
     verified?: boolean
-    comments?: CommentUncheckedCreateNestedManyWithoutUserInput
-    eventDonations?: EventDonationUncheckedCreateNestedManyWithoutUserInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
-    publicationClaps?: PublicationClapUncheckedCreateNestedManyWithoutUserInput
-    ventures?: VentureUncheckedCreateNestedManyWithoutOwnerInput
-    ventureSponsorships?: VentureSponsorshipUncheckedCreateNestedManyWithoutUserInput
-    ventureSubscriptions?: VentureSubscriptionUncheckedCreateNestedManyWithoutUserInput
+    contactId?: string | null
     XUserPreferences?: XUserPreferencesUncheckedCreateNestedManyWithoutUserInput
     XUserRoles?: XUserRolesUncheckedCreateNestedManyWithoutUserInput
     preferences?: VentureCategoryUncheckedCreateNestedManyWithoutUsersInput
@@ -37828,8 +39077,9 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     onboardingCompleted?: BoolFilter<"User"> | boolean
-    userDetailId?: StringNullableFilter<"User"> | string | null
+    detailId?: StringNullableFilter<"User"> | string | null
     verified?: BoolFilter<"User"> | boolean
+    contactId?: StringNullableFilter<"User"> | string | null
   }
 
   export type VentureDetailCreateWithoutVentureInput = {
@@ -37857,57 +39107,112 @@ export namespace Prisma {
     create: XOR<VentureDetailCreateWithoutVentureInput, VentureDetailUncheckedCreateWithoutVentureInput>
   }
 
-  export type UserCreateWithoutVenturesInput = {
+  export type UserDetailCreateWithoutVenturesInput = {
     id?: string
-    picture: string
-    email: string
-    firstName: string
-    lastName: string
-    active?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    onboardingCompleted?: boolean
-    verified?: boolean
-    comments?: CommentCreateNestedManyWithoutUserInput
-    eventDonations?: EventDonationCreateNestedManyWithoutUserInput
+    gender: string
+    birthDate: Date | string
+    user?: UserCreateNestedOneWithoutDetailInput
+    municipality: MunicipalityCreateNestedOneWithoutUserDetailsInput
+    comments?: PublicationCommentCreateNestedManyWithoutUserInput
+    donations?: EventDonationCreateNestedManyWithoutDonorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
-    publicationClaps?: PublicationClapCreateNestedManyWithoutUserInput
-    detail?: UserDetailCreateNestedOneWithoutUserInput
-    ventureSponsorships?: VentureSponsorshipCreateNestedManyWithoutUserInput
-    ventureSubscriptions?: VentureSubscriptionCreateNestedManyWithoutUserInput
-    XUserPreferences?: XUserPreferencesCreateNestedManyWithoutUserInput
-    XUserRoles?: XUserRolesCreateNestedManyWithoutUserInput
-    preferences?: VentureCategoryCreateNestedManyWithoutUsersInput
-    roles?: RoleCreateNestedManyWithoutUsersInput
+    claps?: PublicationClapCreateNestedManyWithoutUserInput
+    sponsorships?: VentureSponsorshipCreateNestedManyWithoutUserInput
+    subscriptions?: VentureSubscriptionCreateNestedManyWithoutUserInput
   }
 
-  export type UserUncheckedCreateWithoutVenturesInput = {
+  export type UserDetailUncheckedCreateWithoutVenturesInput = {
     id?: string
-    picture: string
-    email: string
-    firstName: string
-    lastName: string
-    active?: boolean
+    gender: string
+    birthDate: Date | string
+    municipalityId: number
+    user?: UserUncheckedCreateNestedOneWithoutDetailInput
+    comments?: PublicationCommentUncheckedCreateNestedManyWithoutUserInput
+    donations?: EventDonationUncheckedCreateNestedManyWithoutDonorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    claps?: PublicationClapUncheckedCreateNestedManyWithoutUserInput
+    sponsorships?: VentureSponsorshipUncheckedCreateNestedManyWithoutUserInput
+    subscriptions?: VentureSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserDetailCreateOrConnectWithoutVenturesInput = {
+    where: UserDetailWhereUniqueInput
+    create: XOR<UserDetailCreateWithoutVenturesInput, UserDetailUncheckedCreateWithoutVenturesInput>
+  }
+
+  export type VentureCategoryCreateWithoutVenturesInput = {
+    id: string
+    name: string
+    slug: string
+    description: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    onboardingCompleted?: boolean
-    userDetailId?: string | null
-    verified?: boolean
-    comments?: CommentUncheckedCreateNestedManyWithoutUserInput
-    eventDonations?: EventDonationUncheckedCreateNestedManyWithoutUserInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
-    publicationClaps?: PublicationClapUncheckedCreateNestedManyWithoutUserInput
-    ventureSponsorships?: VentureSponsorshipUncheckedCreateNestedManyWithoutUserInput
-    ventureSubscriptions?: VentureSubscriptionUncheckedCreateNestedManyWithoutUserInput
-    XUserPreferences?: XUserPreferencesUncheckedCreateNestedManyWithoutUserInput
-    XUserRoles?: XUserRolesUncheckedCreateNestedManyWithoutUserInput
-    preferences?: VentureCategoryUncheckedCreateNestedManyWithoutUsersInput
-    roles?: RoleUncheckedCreateNestedManyWithoutUsersInput
+    users?: UserCreateNestedManyWithoutPreferencesInput
+    XUserPreferences?: XUserPreferencesCreateNestedManyWithoutVentureCategoryInput
+    XVentureVencureCategory?: XVentureVencureCategoryCreateNestedManyWithoutCategoryInput
   }
 
-  export type UserCreateOrConnectWithoutVenturesInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutVenturesInput, UserUncheckedCreateWithoutVenturesInput>
+  export type VentureCategoryUncheckedCreateWithoutVenturesInput = {
+    id: string
+    name: string
+    slug: string
+    description: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    users?: UserUncheckedCreateNestedManyWithoutPreferencesInput
+    XUserPreferences?: XUserPreferencesUncheckedCreateNestedManyWithoutVentureCategoryInput
+    XVentureVencureCategory?: XVentureVencureCategoryUncheckedCreateNestedManyWithoutCategoryInput
+  }
+
+  export type VentureCategoryCreateOrConnectWithoutVenturesInput = {
+    where: VentureCategoryWhereUniqueInput
+    create: XOR<VentureCategoryCreateWithoutVenturesInput, VentureCategoryUncheckedCreateWithoutVenturesInput>
+  }
+
+  export type VentureLocationCreateWithoutVentureInput = {
+    id?: string
+    ventureId: string
+    lat?: number | null
+    lng?: number | null
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type VentureLocationUncheckedCreateWithoutVentureInput = {
+    id?: string
+    ventureId: string
+    lat?: number | null
+    lng?: number | null
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type VentureLocationCreateOrConnectWithoutVentureInput = {
+    where: VentureLocationWhereUniqueInput
+    create: XOR<VentureLocationCreateWithoutVentureInput, VentureLocationUncheckedCreateWithoutVentureInput>
+  }
+
+  export type VentureContactCreateWithoutVentureInput = {
+    id?: string
+    email: string
+    phoneNumber: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type VentureContactUncheckedCreateWithoutVentureInput = {
+    id?: string
+    email: string
+    phoneNumber: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type VentureContactCreateOrConnectWithoutVentureInput = {
+    where: VentureContactWhereUniqueInput
+    create: XOR<VentureContactCreateWithoutVentureInput, VentureContactUncheckedCreateWithoutVentureInput>
   }
 
   export type XVentureVencureCategoryCreateWithoutVentureInput = {
@@ -37925,91 +39230,6 @@ export namespace Prisma {
 
   export type XVentureVencureCategoryCreateManyVentureInputEnvelope = {
     data: XVentureVencureCategoryCreateManyVentureInput | XVentureVencureCategoryCreateManyVentureInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type VentureCategoryCreateWithoutVenturesInput = {
-    id: string
-    name: string
-    slug: string
-    description: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    XUserPreferences?: XUserPreferencesCreateNestedManyWithoutVentureCategoryInput
-    XVentureVencureCategory?: XVentureVencureCategoryCreateNestedManyWithoutCategoryInput
-    users?: UserCreateNestedManyWithoutPreferencesInput
-  }
-
-  export type VentureCategoryUncheckedCreateWithoutVenturesInput = {
-    id: string
-    name: string
-    slug: string
-    description: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    XUserPreferences?: XUserPreferencesUncheckedCreateNestedManyWithoutVentureCategoryInput
-    XVentureVencureCategory?: XVentureVencureCategoryUncheckedCreateNestedManyWithoutCategoryInput
-    users?: UserUncheckedCreateNestedManyWithoutPreferencesInput
-  }
-
-  export type VentureCategoryCreateOrConnectWithoutVenturesInput = {
-    where: VentureCategoryWhereUniqueInput
-    create: XOR<VentureCategoryCreateWithoutVenturesInput, VentureCategoryUncheckedCreateWithoutVenturesInput>
-  }
-
-  export type VentureLocationCreateWithoutVentureInput = {
-    id?: string
-    lat?: number | null
-    lng?: number | null
-    description?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type VentureLocationUncheckedCreateWithoutVentureInput = {
-    id?: string
-    lat?: number | null
-    lng?: number | null
-    description?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type VentureLocationCreateOrConnectWithoutVentureInput = {
-    where: VentureLocationWhereUniqueInput
-    create: XOR<VentureLocationCreateWithoutVentureInput, VentureLocationUncheckedCreateWithoutVentureInput>
-  }
-
-  export type VentureLocationCreateManyVentureInputEnvelope = {
-    data: VentureLocationCreateManyVentureInput | VentureLocationCreateManyVentureInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type VentureContactCreateWithoutVentureInput = {
-    id?: string
-    email: string
-    phoneCode: string
-    phoneNumber: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type VentureContactUncheckedCreateWithoutVentureInput = {
-    id?: string
-    email: string
-    phoneCode: string
-    phoneNumber: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type VentureContactCreateOrConnectWithoutVentureInput = {
-    where: VentureContactWhereUniqueInput
-    create: XOR<VentureContactCreateWithoutVentureInput, VentureContactUncheckedCreateWithoutVentureInput>
-  }
-
-  export type VentureContactCreateManyVentureInputEnvelope = {
-    data: VentureContactCreateManyVentureInput | VentureContactCreateManyVentureInput[]
     skipDuplicates?: boolean
   }
 
@@ -38044,63 +39264,117 @@ export namespace Prisma {
     subscriptions?: VentureSubscriptionUncheckedUpdateManyWithoutDetailNestedInput
   }
 
-  export type UserUpsertWithoutVenturesInput = {
-    update: XOR<UserUpdateWithoutVenturesInput, UserUncheckedUpdateWithoutVenturesInput>
-    create: XOR<UserCreateWithoutVenturesInput, UserUncheckedCreateWithoutVenturesInput>
-    where?: UserWhereInput
+  export type UserDetailUpsertWithoutVenturesInput = {
+    update: XOR<UserDetailUpdateWithoutVenturesInput, UserDetailUncheckedUpdateWithoutVenturesInput>
+    create: XOR<UserDetailCreateWithoutVenturesInput, UserDetailUncheckedCreateWithoutVenturesInput>
+    where?: UserDetailWhereInput
   }
 
-  export type UserUpdateToOneWithWhereWithoutVenturesInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutVenturesInput, UserUncheckedUpdateWithoutVenturesInput>
+  export type UserDetailUpdateToOneWithWhereWithoutVenturesInput = {
+    where?: UserDetailWhereInput
+    data: XOR<UserDetailUpdateWithoutVenturesInput, UserDetailUncheckedUpdateWithoutVenturesInput>
   }
 
-  export type UserUpdateWithoutVenturesInput = {
+  export type UserDetailUpdateWithoutVenturesInput = {
     id?: StringFieldUpdateOperationsInput | string
-    picture?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    firstName?: StringFieldUpdateOperationsInput | string
-    lastName?: StringFieldUpdateOperationsInput | string
-    active?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
-    verified?: BoolFieldUpdateOperationsInput | boolean
-    comments?: CommentUpdateManyWithoutUserNestedInput
-    eventDonations?: EventDonationUpdateManyWithoutUserNestedInput
+    gender?: StringFieldUpdateOperationsInput | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneWithoutDetailNestedInput
+    municipality?: MunicipalityUpdateOneRequiredWithoutUserDetailsNestedInput
+    comments?: PublicationCommentUpdateManyWithoutUserNestedInput
+    donations?: EventDonationUpdateManyWithoutDonorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
-    publicationClaps?: PublicationClapUpdateManyWithoutUserNestedInput
-    detail?: UserDetailUpdateOneWithoutUserNestedInput
-    ventureSponsorships?: VentureSponsorshipUpdateManyWithoutUserNestedInput
-    ventureSubscriptions?: VentureSubscriptionUpdateManyWithoutUserNestedInput
-    XUserPreferences?: XUserPreferencesUpdateManyWithoutUserNestedInput
-    XUserRoles?: XUserRolesUpdateManyWithoutUserNestedInput
-    preferences?: VentureCategoryUpdateManyWithoutUsersNestedInput
-    roles?: RoleUpdateManyWithoutUsersNestedInput
+    claps?: PublicationClapUpdateManyWithoutUserNestedInput
+    sponsorships?: VentureSponsorshipUpdateManyWithoutUserNestedInput
+    subscriptions?: VentureSubscriptionUpdateManyWithoutUserNestedInput
   }
 
-  export type UserUncheckedUpdateWithoutVenturesInput = {
+  export type UserDetailUncheckedUpdateWithoutVenturesInput = {
     id?: StringFieldUpdateOperationsInput | string
-    picture?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    firstName?: StringFieldUpdateOperationsInput | string
-    lastName?: StringFieldUpdateOperationsInput | string
-    active?: BoolFieldUpdateOperationsInput | boolean
+    gender?: StringFieldUpdateOperationsInput | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    municipalityId?: IntFieldUpdateOperationsInput | number
+    user?: UserUncheckedUpdateOneWithoutDetailNestedInput
+    comments?: PublicationCommentUncheckedUpdateManyWithoutUserNestedInput
+    donations?: EventDonationUncheckedUpdateManyWithoutDonorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    claps?: PublicationClapUncheckedUpdateManyWithoutUserNestedInput
+    sponsorships?: VentureSponsorshipUncheckedUpdateManyWithoutUserNestedInput
+    subscriptions?: VentureSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type VentureCategoryUpsertWithWhereUniqueWithoutVenturesInput = {
+    where: VentureCategoryWhereUniqueInput
+    update: XOR<VentureCategoryUpdateWithoutVenturesInput, VentureCategoryUncheckedUpdateWithoutVenturesInput>
+    create: XOR<VentureCategoryCreateWithoutVenturesInput, VentureCategoryUncheckedCreateWithoutVenturesInput>
+  }
+
+  export type VentureCategoryUpdateWithWhereUniqueWithoutVenturesInput = {
+    where: VentureCategoryWhereUniqueInput
+    data: XOR<VentureCategoryUpdateWithoutVenturesInput, VentureCategoryUncheckedUpdateWithoutVenturesInput>
+  }
+
+  export type VentureCategoryUpdateManyWithWhereWithoutVenturesInput = {
+    where: VentureCategoryScalarWhereInput
+    data: XOR<VentureCategoryUpdateManyMutationInput, VentureCategoryUncheckedUpdateManyWithoutVenturesInput>
+  }
+
+  export type VentureLocationUpsertWithoutVentureInput = {
+    update: XOR<VentureLocationUpdateWithoutVentureInput, VentureLocationUncheckedUpdateWithoutVentureInput>
+    create: XOR<VentureLocationCreateWithoutVentureInput, VentureLocationUncheckedCreateWithoutVentureInput>
+    where?: VentureLocationWhereInput
+  }
+
+  export type VentureLocationUpdateToOneWithWhereWithoutVentureInput = {
+    where?: VentureLocationWhereInput
+    data: XOR<VentureLocationUpdateWithoutVentureInput, VentureLocationUncheckedUpdateWithoutVentureInput>
+  }
+
+  export type VentureLocationUpdateWithoutVentureInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    ventureId?: StringFieldUpdateOperationsInput | string
+    lat?: NullableFloatFieldUpdateOperationsInput | number | null
+    lng?: NullableFloatFieldUpdateOperationsInput | number | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
-    userDetailId?: NullableStringFieldUpdateOperationsInput | string | null
-    verified?: BoolFieldUpdateOperationsInput | boolean
-    comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
-    eventDonations?: EventDonationUncheckedUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
-    publicationClaps?: PublicationClapUncheckedUpdateManyWithoutUserNestedInput
-    ventureSponsorships?: VentureSponsorshipUncheckedUpdateManyWithoutUserNestedInput
-    ventureSubscriptions?: VentureSubscriptionUncheckedUpdateManyWithoutUserNestedInput
-    XUserPreferences?: XUserPreferencesUncheckedUpdateManyWithoutUserNestedInput
-    XUserRoles?: XUserRolesUncheckedUpdateManyWithoutUserNestedInput
-    preferences?: VentureCategoryUncheckedUpdateManyWithoutUsersNestedInput
-    roles?: RoleUncheckedUpdateManyWithoutUsersNestedInput
+  }
+
+  export type VentureLocationUncheckedUpdateWithoutVentureInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    ventureId?: StringFieldUpdateOperationsInput | string
+    lat?: NullableFloatFieldUpdateOperationsInput | number | null
+    lng?: NullableFloatFieldUpdateOperationsInput | number | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VentureContactUpsertWithoutVentureInput = {
+    update: XOR<VentureContactUpdateWithoutVentureInput, VentureContactUncheckedUpdateWithoutVentureInput>
+    create: XOR<VentureContactCreateWithoutVentureInput, VentureContactUncheckedCreateWithoutVentureInput>
+    where?: VentureContactWhereInput
+  }
+
+  export type VentureContactUpdateToOneWithWhereWithoutVentureInput = {
+    where?: VentureContactWhereInput
+    data: XOR<VentureContactUpdateWithoutVentureInput, VentureContactUncheckedUpdateWithoutVentureInput>
+  }
+
+  export type VentureContactUpdateWithoutVentureInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VentureContactUncheckedUpdateWithoutVentureInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type XVentureVencureCategoryUpsertWithWhereUniqueWithoutVentureInput = {
@@ -38127,80 +39401,6 @@ export namespace Prisma {
     categoryId?: StringFilter<"XVentureVencureCategory"> | string
   }
 
-  export type VentureCategoryUpsertWithWhereUniqueWithoutVenturesInput = {
-    where: VentureCategoryWhereUniqueInput
-    update: XOR<VentureCategoryUpdateWithoutVenturesInput, VentureCategoryUncheckedUpdateWithoutVenturesInput>
-    create: XOR<VentureCategoryCreateWithoutVenturesInput, VentureCategoryUncheckedCreateWithoutVenturesInput>
-  }
-
-  export type VentureCategoryUpdateWithWhereUniqueWithoutVenturesInput = {
-    where: VentureCategoryWhereUniqueInput
-    data: XOR<VentureCategoryUpdateWithoutVenturesInput, VentureCategoryUncheckedUpdateWithoutVenturesInput>
-  }
-
-  export type VentureCategoryUpdateManyWithWhereWithoutVenturesInput = {
-    where: VentureCategoryScalarWhereInput
-    data: XOR<VentureCategoryUpdateManyMutationInput, VentureCategoryUncheckedUpdateManyWithoutVenturesInput>
-  }
-
-  export type VentureLocationUpsertWithWhereUniqueWithoutVentureInput = {
-    where: VentureLocationWhereUniqueInput
-    update: XOR<VentureLocationUpdateWithoutVentureInput, VentureLocationUncheckedUpdateWithoutVentureInput>
-    create: XOR<VentureLocationCreateWithoutVentureInput, VentureLocationUncheckedCreateWithoutVentureInput>
-  }
-
-  export type VentureLocationUpdateWithWhereUniqueWithoutVentureInput = {
-    where: VentureLocationWhereUniqueInput
-    data: XOR<VentureLocationUpdateWithoutVentureInput, VentureLocationUncheckedUpdateWithoutVentureInput>
-  }
-
-  export type VentureLocationUpdateManyWithWhereWithoutVentureInput = {
-    where: VentureLocationScalarWhereInput
-    data: XOR<VentureLocationUpdateManyMutationInput, VentureLocationUncheckedUpdateManyWithoutVentureInput>
-  }
-
-  export type VentureLocationScalarWhereInput = {
-    AND?: VentureLocationScalarWhereInput | VentureLocationScalarWhereInput[]
-    OR?: VentureLocationScalarWhereInput[]
-    NOT?: VentureLocationScalarWhereInput | VentureLocationScalarWhereInput[]
-    id?: StringFilter<"VentureLocation"> | string
-    ventureId?: StringFilter<"VentureLocation"> | string
-    lat?: FloatNullableFilter<"VentureLocation"> | number | null
-    lng?: FloatNullableFilter<"VentureLocation"> | number | null
-    description?: StringNullableFilter<"VentureLocation"> | string | null
-    createdAt?: DateTimeFilter<"VentureLocation"> | Date | string
-    updatedAt?: DateTimeFilter<"VentureLocation"> | Date | string
-  }
-
-  export type VentureContactUpsertWithWhereUniqueWithoutVentureInput = {
-    where: VentureContactWhereUniqueInput
-    update: XOR<VentureContactUpdateWithoutVentureInput, VentureContactUncheckedUpdateWithoutVentureInput>
-    create: XOR<VentureContactCreateWithoutVentureInput, VentureContactUncheckedCreateWithoutVentureInput>
-  }
-
-  export type VentureContactUpdateWithWhereUniqueWithoutVentureInput = {
-    where: VentureContactWhereUniqueInput
-    data: XOR<VentureContactUpdateWithoutVentureInput, VentureContactUncheckedUpdateWithoutVentureInput>
-  }
-
-  export type VentureContactUpdateManyWithWhereWithoutVentureInput = {
-    where: VentureContactScalarWhereInput
-    data: XOR<VentureContactUpdateManyMutationInput, VentureContactUncheckedUpdateManyWithoutVentureInput>
-  }
-
-  export type VentureContactScalarWhereInput = {
-    AND?: VentureContactScalarWhereInput | VentureContactScalarWhereInput[]
-    OR?: VentureContactScalarWhereInput[]
-    NOT?: VentureContactScalarWhereInput | VentureContactScalarWhereInput[]
-    id?: StringFilter<"VentureContact"> | string
-    ventureId?: StringFilter<"VentureContact"> | string
-    email?: StringFilter<"VentureContact"> | string
-    phoneCode?: StringFilter<"VentureContact"> | string
-    phoneNumber?: StringFilter<"VentureContact"> | string
-    createdAt?: DateTimeFilter<"VentureContact"> | Date | string
-    updatedAt?: DateTimeFilter<"VentureContact"> | Date | string
-  }
-
   export type VentureCreateWithoutContactInput = {
     id?: string
     name: string
@@ -38212,10 +39412,10 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     detail: VentureDetailCreateNestedOneWithoutVentureInput
-    owner: UserCreateNestedOneWithoutVenturesInput
-    XVentureVencureCategory?: XVentureVencureCategoryCreateNestedManyWithoutVentureInput
+    ownerDetail: UserDetailCreateNestedOneWithoutVenturesInput
     categories?: VentureCategoryCreateNestedManyWithoutVenturesInput
-    locations?: VentureLocationCreateNestedManyWithoutVentureInput
+    location: VentureLocationCreateNestedOneWithoutVentureInput
+    XVentureVencureCategory?: XVentureVencureCategoryCreateNestedManyWithoutVentureInput
   }
 
   export type VentureUncheckedCreateWithoutContactInput = {
@@ -38224,15 +39424,15 @@ export namespace Prisma {
     slug: string
     coverPhoto: string
     description: string
-    ownerId: string
     active?: boolean
     verified?: boolean
     detailId: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    XVentureVencureCategory?: XVentureVencureCategoryUncheckedCreateNestedManyWithoutVentureInput
+    ownerDetailId: string
+    locationId: string
     categories?: VentureCategoryUncheckedCreateNestedManyWithoutVenturesInput
-    locations?: VentureLocationUncheckedCreateNestedManyWithoutVentureInput
+    XVentureVencureCategory?: XVentureVencureCategoryUncheckedCreateNestedManyWithoutVentureInput
   }
 
   export type VentureCreateOrConnectWithoutContactInput = {
@@ -38262,10 +39462,10 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     detail?: VentureDetailUpdateOneRequiredWithoutVentureNestedInput
-    owner?: UserUpdateOneRequiredWithoutVenturesNestedInput
-    XVentureVencureCategory?: XVentureVencureCategoryUpdateManyWithoutVentureNestedInput
+    ownerDetail?: UserDetailUpdateOneRequiredWithoutVenturesNestedInput
     categories?: VentureCategoryUpdateManyWithoutVenturesNestedInput
-    locations?: VentureLocationUpdateManyWithoutVentureNestedInput
+    location?: VentureLocationUpdateOneRequiredWithoutVentureNestedInput
+    XVentureVencureCategory?: XVentureVencureCategoryUpdateManyWithoutVentureNestedInput
   }
 
   export type VentureUncheckedUpdateWithoutContactInput = {
@@ -38274,15 +39474,15 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     coverPhoto?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    ownerId?: StringFieldUpdateOperationsInput | string
     active?: BoolFieldUpdateOperationsInput | boolean
     verified?: BoolFieldUpdateOperationsInput | boolean
     detailId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    XVentureVencureCategory?: XVentureVencureCategoryUncheckedUpdateManyWithoutVentureNestedInput
+    ownerDetailId?: StringFieldUpdateOperationsInput | string
+    locationId?: StringFieldUpdateOperationsInput | string
     categories?: VentureCategoryUncheckedUpdateManyWithoutVenturesNestedInput
-    locations?: VentureLocationUncheckedUpdateManyWithoutVentureNestedInput
+    XVentureVencureCategory?: XVentureVencureCategoryUncheckedUpdateManyWithoutVentureNestedInput
   }
 
   export type VentureCategoryCreateWithoutXVentureVencureCategoryInput = {
@@ -38292,9 +39492,9 @@ export namespace Prisma {
     description: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    XUserPreferences?: XUserPreferencesCreateNestedManyWithoutVentureCategoryInput
     users?: UserCreateNestedManyWithoutPreferencesInput
     ventures?: VentureCreateNestedManyWithoutCategoriesInput
+    XUserPreferences?: XUserPreferencesCreateNestedManyWithoutVentureCategoryInput
   }
 
   export type VentureCategoryUncheckedCreateWithoutXVentureVencureCategoryInput = {
@@ -38304,9 +39504,9 @@ export namespace Prisma {
     description: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    XUserPreferences?: XUserPreferencesUncheckedCreateNestedManyWithoutVentureCategoryInput
     users?: UserUncheckedCreateNestedManyWithoutPreferencesInput
     ventures?: VentureUncheckedCreateNestedManyWithoutCategoriesInput
+    XUserPreferences?: XUserPreferencesUncheckedCreateNestedManyWithoutVentureCategoryInput
   }
 
   export type VentureCategoryCreateOrConnectWithoutXVentureVencureCategoryInput = {
@@ -38325,10 +39525,10 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     detail: VentureDetailCreateNestedOneWithoutVentureInput
-    owner: UserCreateNestedOneWithoutVenturesInput
+    ownerDetail: UserDetailCreateNestedOneWithoutVenturesInput
     categories?: VentureCategoryCreateNestedManyWithoutVenturesInput
-    locations?: VentureLocationCreateNestedManyWithoutVentureInput
-    contact?: VentureContactCreateNestedManyWithoutVentureInput
+    location: VentureLocationCreateNestedOneWithoutVentureInput
+    contact: VentureContactCreateNestedOneWithoutVentureInput
   }
 
   export type VentureUncheckedCreateWithoutXVentureVencureCategoryInput = {
@@ -38337,15 +39537,15 @@ export namespace Prisma {
     slug: string
     coverPhoto: string
     description: string
-    ownerId: string
     active?: boolean
     verified?: boolean
     detailId: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    ownerDetailId: string
+    locationId: string
+    ventureId: string
     categories?: VentureCategoryUncheckedCreateNestedManyWithoutVenturesInput
-    locations?: VentureLocationUncheckedCreateNestedManyWithoutVentureInput
-    contact?: VentureContactUncheckedCreateNestedManyWithoutVentureInput
   }
 
   export type VentureCreateOrConnectWithoutXVentureVencureCategoryInput = {
@@ -38371,9 +39571,9 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    XUserPreferences?: XUserPreferencesUpdateManyWithoutVentureCategoryNestedInput
     users?: UserUpdateManyWithoutPreferencesNestedInput
     ventures?: VentureUpdateManyWithoutCategoriesNestedInput
+    XUserPreferences?: XUserPreferencesUpdateManyWithoutVentureCategoryNestedInput
   }
 
   export type VentureCategoryUncheckedUpdateWithoutXVentureVencureCategoryInput = {
@@ -38383,9 +39583,9 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    XUserPreferences?: XUserPreferencesUncheckedUpdateManyWithoutVentureCategoryNestedInput
     users?: UserUncheckedUpdateManyWithoutPreferencesNestedInput
     ventures?: VentureUncheckedUpdateManyWithoutCategoriesNestedInput
+    XUserPreferences?: XUserPreferencesUncheckedUpdateManyWithoutVentureCategoryNestedInput
   }
 
   export type VentureUpsertWithoutXVentureVencureCategoryInput = {
@@ -38410,10 +39610,10 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     detail?: VentureDetailUpdateOneRequiredWithoutVentureNestedInput
-    owner?: UserUpdateOneRequiredWithoutVenturesNestedInput
+    ownerDetail?: UserDetailUpdateOneRequiredWithoutVenturesNestedInput
     categories?: VentureCategoryUpdateManyWithoutVenturesNestedInput
-    locations?: VentureLocationUpdateManyWithoutVentureNestedInput
-    contact?: VentureContactUpdateManyWithoutVentureNestedInput
+    location?: VentureLocationUpdateOneRequiredWithoutVentureNestedInput
+    contact?: VentureContactUpdateOneRequiredWithoutVentureNestedInput
   }
 
   export type VentureUncheckedUpdateWithoutXVentureVencureCategoryInput = {
@@ -38422,15 +39622,95 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     coverPhoto?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    ownerId?: StringFieldUpdateOperationsInput | string
     active?: BoolFieldUpdateOperationsInput | boolean
     verified?: BoolFieldUpdateOperationsInput | boolean
     detailId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ownerDetailId?: StringFieldUpdateOperationsInput | string
+    locationId?: StringFieldUpdateOperationsInput | string
+    ventureId?: StringFieldUpdateOperationsInput | string
     categories?: VentureCategoryUncheckedUpdateManyWithoutVenturesNestedInput
-    locations?: VentureLocationUncheckedUpdateManyWithoutVentureNestedInput
-    contact?: VentureContactUncheckedUpdateManyWithoutVentureNestedInput
+  }
+
+  export type UserCreateWithoutPreferencesInput = {
+    id?: string
+    picture: string
+    email: string
+    firstName: string
+    lastName: string
+    active?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    onboardingCompleted?: boolean
+    verified?: boolean
+    detail?: UserDetailCreateNestedOneWithoutUserInput
+    contact?: UserContactCreateNestedOneWithoutUserInput
+    XUserPreferences?: XUserPreferencesCreateNestedManyWithoutUserInput
+    XUserRoles?: XUserRolesCreateNestedManyWithoutUserInput
+    roles?: RoleCreateNestedManyWithoutUsersInput
+  }
+
+  export type UserUncheckedCreateWithoutPreferencesInput = {
+    id?: string
+    picture: string
+    email: string
+    firstName: string
+    lastName: string
+    active?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    onboardingCompleted?: boolean
+    detailId?: string | null
+    verified?: boolean
+    contactId?: string | null
+    XUserPreferences?: XUserPreferencesUncheckedCreateNestedManyWithoutUserInput
+    XUserRoles?: XUserRolesUncheckedCreateNestedManyWithoutUserInput
+    roles?: RoleUncheckedCreateNestedManyWithoutUsersInput
+  }
+
+  export type UserCreateOrConnectWithoutPreferencesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutPreferencesInput, UserUncheckedCreateWithoutPreferencesInput>
+  }
+
+  export type VentureCreateWithoutCategoriesInput = {
+    id?: string
+    name: string
+    slug: string
+    coverPhoto: string
+    description: string
+    active?: boolean
+    verified?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    detail: VentureDetailCreateNestedOneWithoutVentureInput
+    ownerDetail: UserDetailCreateNestedOneWithoutVenturesInput
+    location: VentureLocationCreateNestedOneWithoutVentureInput
+    contact: VentureContactCreateNestedOneWithoutVentureInput
+    XVentureVencureCategory?: XVentureVencureCategoryCreateNestedManyWithoutVentureInput
+  }
+
+  export type VentureUncheckedCreateWithoutCategoriesInput = {
+    id?: string
+    name: string
+    slug: string
+    coverPhoto: string
+    description: string
+    active?: boolean
+    verified?: boolean
+    detailId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    ownerDetailId: string
+    locationId: string
+    ventureId: string
+    XVentureVencureCategory?: XVentureVencureCategoryUncheckedCreateNestedManyWithoutVentureInput
+  }
+
+  export type VentureCreateOrConnectWithoutCategoriesInput = {
+    where: VentureWhereUniqueInput
+    create: XOR<VentureCreateWithoutCategoriesInput, VentureUncheckedCreateWithoutCategoriesInput>
   }
 
   export type XUserPreferencesCreateWithoutVentureCategoryInput = {
@@ -38469,96 +39749,36 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type UserCreateWithoutPreferencesInput = {
-    id?: string
-    picture: string
-    email: string
-    firstName: string
-    lastName: string
-    active?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    onboardingCompleted?: boolean
-    verified?: boolean
-    comments?: CommentCreateNestedManyWithoutUserInput
-    eventDonations?: EventDonationCreateNestedManyWithoutUserInput
-    notifications?: NotificationCreateNestedManyWithoutUserInput
-    publicationClaps?: PublicationClapCreateNestedManyWithoutUserInput
-    detail?: UserDetailCreateNestedOneWithoutUserInput
-    ventures?: VentureCreateNestedManyWithoutOwnerInput
-    ventureSponsorships?: VentureSponsorshipCreateNestedManyWithoutUserInput
-    ventureSubscriptions?: VentureSubscriptionCreateNestedManyWithoutUserInput
-    XUserPreferences?: XUserPreferencesCreateNestedManyWithoutUserInput
-    XUserRoles?: XUserRolesCreateNestedManyWithoutUserInput
-    roles?: RoleCreateNestedManyWithoutUsersInput
-  }
-
-  export type UserUncheckedCreateWithoutPreferencesInput = {
-    id?: string
-    picture: string
-    email: string
-    firstName: string
-    lastName: string
-    active?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    onboardingCompleted?: boolean
-    userDetailId?: string | null
-    verified?: boolean
-    comments?: CommentUncheckedCreateNestedManyWithoutUserInput
-    eventDonations?: EventDonationUncheckedCreateNestedManyWithoutUserInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
-    publicationClaps?: PublicationClapUncheckedCreateNestedManyWithoutUserInput
-    ventures?: VentureUncheckedCreateNestedManyWithoutOwnerInput
-    ventureSponsorships?: VentureSponsorshipUncheckedCreateNestedManyWithoutUserInput
-    ventureSubscriptions?: VentureSubscriptionUncheckedCreateNestedManyWithoutUserInput
-    XUserPreferences?: XUserPreferencesUncheckedCreateNestedManyWithoutUserInput
-    XUserRoles?: XUserRolesUncheckedCreateNestedManyWithoutUserInput
-    roles?: RoleUncheckedCreateNestedManyWithoutUsersInput
-  }
-
-  export type UserCreateOrConnectWithoutPreferencesInput = {
+  export type UserUpsertWithWhereUniqueWithoutPreferencesInput = {
     where: UserWhereUniqueInput
+    update: XOR<UserUpdateWithoutPreferencesInput, UserUncheckedUpdateWithoutPreferencesInput>
     create: XOR<UserCreateWithoutPreferencesInput, UserUncheckedCreateWithoutPreferencesInput>
   }
 
-  export type VentureCreateWithoutCategoriesInput = {
-    id?: string
-    name: string
-    slug: string
-    coverPhoto: string
-    description: string
-    active?: boolean
-    verified?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    detail: VentureDetailCreateNestedOneWithoutVentureInput
-    owner: UserCreateNestedOneWithoutVenturesInput
-    XVentureVencureCategory?: XVentureVencureCategoryCreateNestedManyWithoutVentureInput
-    locations?: VentureLocationCreateNestedManyWithoutVentureInput
-    contact?: VentureContactCreateNestedManyWithoutVentureInput
+  export type UserUpdateWithWhereUniqueWithoutPreferencesInput = {
+    where: UserWhereUniqueInput
+    data: XOR<UserUpdateWithoutPreferencesInput, UserUncheckedUpdateWithoutPreferencesInput>
   }
 
-  export type VentureUncheckedCreateWithoutCategoriesInput = {
-    id?: string
-    name: string
-    slug: string
-    coverPhoto: string
-    description: string
-    ownerId: string
-    active?: boolean
-    verified?: boolean
-    detailId: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    XVentureVencureCategory?: XVentureVencureCategoryUncheckedCreateNestedManyWithoutVentureInput
-    locations?: VentureLocationUncheckedCreateNestedManyWithoutVentureInput
-    contact?: VentureContactUncheckedCreateNestedManyWithoutVentureInput
+  export type UserUpdateManyWithWhereWithoutPreferencesInput = {
+    where: UserScalarWhereInput
+    data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyWithoutPreferencesInput>
   }
 
-  export type VentureCreateOrConnectWithoutCategoriesInput = {
+  export type VentureUpsertWithWhereUniqueWithoutCategoriesInput = {
     where: VentureWhereUniqueInput
+    update: XOR<VentureUpdateWithoutCategoriesInput, VentureUncheckedUpdateWithoutCategoriesInput>
     create: XOR<VentureCreateWithoutCategoriesInput, VentureUncheckedCreateWithoutCategoriesInput>
+  }
+
+  export type VentureUpdateWithWhereUniqueWithoutCategoriesInput = {
+    where: VentureWhereUniqueInput
+    data: XOR<VentureUpdateWithoutCategoriesInput, VentureUncheckedUpdateWithoutCategoriesInput>
+  }
+
+  export type VentureUpdateManyWithWhereWithoutCategoriesInput = {
+    where: VentureScalarWhereInput
+    data: XOR<VentureUpdateManyMutationInput, VentureUncheckedUpdateManyWithoutCategoriesInput>
   }
 
   export type XUserPreferencesUpsertWithWhereUniqueWithoutVentureCategoryInput = {
@@ -38593,38 +39813,6 @@ export namespace Prisma {
     data: XOR<XVentureVencureCategoryUpdateManyMutationInput, XVentureVencureCategoryUncheckedUpdateManyWithoutCategoryInput>
   }
 
-  export type UserUpsertWithWhereUniqueWithoutPreferencesInput = {
-    where: UserWhereUniqueInput
-    update: XOR<UserUpdateWithoutPreferencesInput, UserUncheckedUpdateWithoutPreferencesInput>
-    create: XOR<UserCreateWithoutPreferencesInput, UserUncheckedCreateWithoutPreferencesInput>
-  }
-
-  export type UserUpdateWithWhereUniqueWithoutPreferencesInput = {
-    where: UserWhereUniqueInput
-    data: XOR<UserUpdateWithoutPreferencesInput, UserUncheckedUpdateWithoutPreferencesInput>
-  }
-
-  export type UserUpdateManyWithWhereWithoutPreferencesInput = {
-    where: UserScalarWhereInput
-    data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyWithoutPreferencesInput>
-  }
-
-  export type VentureUpsertWithWhereUniqueWithoutCategoriesInput = {
-    where: VentureWhereUniqueInput
-    update: XOR<VentureUpdateWithoutCategoriesInput, VentureUncheckedUpdateWithoutCategoriesInput>
-    create: XOR<VentureCreateWithoutCategoriesInput, VentureUncheckedCreateWithoutCategoriesInput>
-  }
-
-  export type VentureUpdateWithWhereUniqueWithoutCategoriesInput = {
-    where: VentureWhereUniqueInput
-    data: XOR<VentureUpdateWithoutCategoriesInput, VentureUncheckedUpdateWithoutCategoriesInput>
-  }
-
-  export type VentureUpdateManyWithWhereWithoutCategoriesInput = {
-    where: VentureScalarWhereInput
-    data: XOR<VentureUpdateManyMutationInput, VentureUncheckedUpdateManyWithoutCategoriesInput>
-  }
-
   export type VentureCreateWithoutDetailInput = {
     id?: string
     name: string
@@ -38635,11 +39823,11 @@ export namespace Prisma {
     verified?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    owner: UserCreateNestedOneWithoutVenturesInput
-    XVentureVencureCategory?: XVentureVencureCategoryCreateNestedManyWithoutVentureInput
+    ownerDetail: UserDetailCreateNestedOneWithoutVenturesInput
     categories?: VentureCategoryCreateNestedManyWithoutVenturesInput
-    locations?: VentureLocationCreateNestedManyWithoutVentureInput
-    contact?: VentureContactCreateNestedManyWithoutVentureInput
+    location: VentureLocationCreateNestedOneWithoutVentureInput
+    contact: VentureContactCreateNestedOneWithoutVentureInput
+    XVentureVencureCategory?: XVentureVencureCategoryCreateNestedManyWithoutVentureInput
   }
 
   export type VentureUncheckedCreateWithoutDetailInput = {
@@ -38648,15 +39836,15 @@ export namespace Prisma {
     slug: string
     coverPhoto: string
     description: string
-    ownerId: string
     active?: boolean
     verified?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    XVentureVencureCategory?: XVentureVencureCategoryUncheckedCreateNestedManyWithoutVentureInput
+    ownerDetailId: string
+    locationId: string
+    ventureId: string
     categories?: VentureCategoryUncheckedCreateNestedManyWithoutVenturesInput
-    locations?: VentureLocationUncheckedCreateNestedManyWithoutVentureInput
-    contact?: VentureContactUncheckedCreateNestedManyWithoutVentureInput
+    XVentureVencureCategory?: XVentureVencureCategoryUncheckedCreateNestedManyWithoutVentureInput
   }
 
   export type VentureCreateOrConnectWithoutDetailInput = {
@@ -38674,7 +39862,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     donations?: EventDonationCreateNestedManyWithoutEventInput
-    locations?: EventLocationCreateNestedManyWithoutEventInput
+    location: EventLocationCreateNestedOneWithoutEventInput
     XEventCategory?: XEventCategoryCreateNestedManyWithoutEventInput
     EventCategory?: EventCategoryCreateNestedManyWithoutVentureEventInput
   }
@@ -38688,8 +39876,8 @@ export namespace Prisma {
     endDate: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
+    locationId: string
     donations?: EventDonationUncheckedCreateNestedManyWithoutEventInput
-    locations?: EventLocationUncheckedCreateNestedManyWithoutEventInput
     XEventCategory?: XEventCategoryUncheckedCreateNestedManyWithoutEventInput
     EventCategory?: EventCategoryUncheckedCreateNestedManyWithoutVentureEventInput
   }
@@ -38711,7 +39899,7 @@ export namespace Prisma {
     clapsCount: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    comments?: CommentCreateNestedManyWithoutVenturePublicationInput
+    comments?: PublicationCommentCreateNestedManyWithoutVenturePublicationInput
     claps?: PublicationClapCreateNestedManyWithoutVenturePublicationInput
     contents?: PublicationContentCreateNestedManyWithoutVenturePublicationInput
   }
@@ -38723,7 +39911,7 @@ export namespace Prisma {
     clapsCount: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    comments?: CommentUncheckedCreateNestedManyWithoutVenturePublicationInput
+    comments?: PublicationCommentUncheckedCreateNestedManyWithoutVenturePublicationInput
     claps?: PublicationClapUncheckedCreateNestedManyWithoutVenturePublicationInput
     contents?: PublicationContentUncheckedCreateNestedManyWithoutVenturePublicationInput
   }
@@ -38743,12 +39931,12 @@ export namespace Prisma {
     monthlyAmount: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutVentureSponsorshipsInput
+    user: UserDetailCreateNestedOneWithoutSponsorshipsInput
   }
 
   export type VentureSponsorshipUncheckedCreateWithoutDetailInput = {
     id: string
-    sponsorId: string
+    sponsorDetailId: string
     monthlyAmount: number
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -38767,12 +39955,12 @@ export namespace Prisma {
   export type VentureSubscriptionCreateWithoutDetailInput = {
     id: string
     createdAt?: Date | string
-    user: UserCreateNestedOneWithoutVentureSubscriptionsInput
+    user: UserDetailCreateNestedOneWithoutSubscriptionsInput
   }
 
   export type VentureSubscriptionUncheckedCreateWithoutDetailInput = {
     id: string
-    subscriberId: string
+    subscriberDetailId: string
     createdAt?: Date | string
   }
 
@@ -38807,11 +39995,11 @@ export namespace Prisma {
     verified?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    owner?: UserUpdateOneRequiredWithoutVenturesNestedInput
-    XVentureVencureCategory?: XVentureVencureCategoryUpdateManyWithoutVentureNestedInput
+    ownerDetail?: UserDetailUpdateOneRequiredWithoutVenturesNestedInput
     categories?: VentureCategoryUpdateManyWithoutVenturesNestedInput
-    locations?: VentureLocationUpdateManyWithoutVentureNestedInput
-    contact?: VentureContactUpdateManyWithoutVentureNestedInput
+    location?: VentureLocationUpdateOneRequiredWithoutVentureNestedInput
+    contact?: VentureContactUpdateOneRequiredWithoutVentureNestedInput
+    XVentureVencureCategory?: XVentureVencureCategoryUpdateManyWithoutVentureNestedInput
   }
 
   export type VentureUncheckedUpdateWithoutDetailInput = {
@@ -38820,15 +40008,15 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     coverPhoto?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    ownerId?: StringFieldUpdateOperationsInput | string
     active?: BoolFieldUpdateOperationsInput | boolean
     verified?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    XVentureVencureCategory?: XVentureVencureCategoryUncheckedUpdateManyWithoutVentureNestedInput
+    ownerDetailId?: StringFieldUpdateOperationsInput | string
+    locationId?: StringFieldUpdateOperationsInput | string
+    ventureId?: StringFieldUpdateOperationsInput | string
     categories?: VentureCategoryUncheckedUpdateManyWithoutVenturesNestedInput
-    locations?: VentureLocationUncheckedUpdateManyWithoutVentureNestedInput
-    contact?: VentureContactUncheckedUpdateManyWithoutVentureNestedInput
+    XVentureVencureCategory?: XVentureVencureCategoryUncheckedUpdateManyWithoutVentureNestedInput
   }
 
   export type VentureEventUpsertWithWhereUniqueWithoutVentureDetailInput = {
@@ -38913,12 +40101,12 @@ export namespace Prisma {
     amount: number
     currency: string
     createdAt?: Date | string
-    user: UserCreateNestedOneWithoutEventDonationsInput
+    donor: UserDetailCreateNestedOneWithoutDonationsInput
   }
 
   export type EventDonationUncheckedCreateWithoutEventInput = {
     id?: string
-    userId: string
+    donorDetailId: string
     amount: number
     currency: string
     createdAt?: Date | string
@@ -38939,8 +40127,6 @@ export namespace Prisma {
     lat?: number | null
     lng?: number | null
     description?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
   }
 
   export type EventLocationUncheckedCreateWithoutEventInput = {
@@ -38948,18 +40134,11 @@ export namespace Prisma {
     lat?: number | null
     lng?: number | null
     description?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
   }
 
   export type EventLocationCreateOrConnectWithoutEventInput = {
     where: EventLocationWhereUniqueInput
     create: XOR<EventLocationCreateWithoutEventInput, EventLocationUncheckedCreateWithoutEventInput>
-  }
-
-  export type EventLocationCreateManyEventInputEnvelope = {
-    data: EventLocationCreateManyEventInput | EventLocationCreateManyEventInput[]
-    skipDuplicates?: boolean
   }
 
   export type VentureDetailCreateWithoutEventsInput = {
@@ -39046,33 +40225,29 @@ export namespace Prisma {
     data: XOR<EventDonationUpdateManyMutationInput, EventDonationUncheckedUpdateManyWithoutEventInput>
   }
 
-  export type EventLocationUpsertWithWhereUniqueWithoutEventInput = {
-    where: EventLocationWhereUniqueInput
+  export type EventLocationUpsertWithoutEventInput = {
     update: XOR<EventLocationUpdateWithoutEventInput, EventLocationUncheckedUpdateWithoutEventInput>
     create: XOR<EventLocationCreateWithoutEventInput, EventLocationUncheckedCreateWithoutEventInput>
+    where?: EventLocationWhereInput
   }
 
-  export type EventLocationUpdateWithWhereUniqueWithoutEventInput = {
-    where: EventLocationWhereUniqueInput
+  export type EventLocationUpdateToOneWithWhereWithoutEventInput = {
+    where?: EventLocationWhereInput
     data: XOR<EventLocationUpdateWithoutEventInput, EventLocationUncheckedUpdateWithoutEventInput>
   }
 
-  export type EventLocationUpdateManyWithWhereWithoutEventInput = {
-    where: EventLocationScalarWhereInput
-    data: XOR<EventLocationUpdateManyMutationInput, EventLocationUncheckedUpdateManyWithoutEventInput>
+  export type EventLocationUpdateWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    lat?: NullableFloatFieldUpdateOperationsInput | number | null
+    lng?: NullableFloatFieldUpdateOperationsInput | number | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type EventLocationScalarWhereInput = {
-    AND?: EventLocationScalarWhereInput | EventLocationScalarWhereInput[]
-    OR?: EventLocationScalarWhereInput[]
-    NOT?: EventLocationScalarWhereInput | EventLocationScalarWhereInput[]
-    id?: StringFilter<"EventLocation"> | string
-    ventureEventId?: StringFilter<"EventLocation"> | string
-    lat?: FloatNullableFilter<"EventLocation"> | number | null
-    lng?: FloatNullableFilter<"EventLocation"> | number | null
-    description?: StringNullableFilter<"EventLocation"> | string | null
-    createdAt?: DateTimeFilter<"EventLocation"> | Date | string
-    updatedAt?: DateTimeFilter<"EventLocation"> | Date | string
+  export type EventLocationUncheckedUpdateWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    lat?: NullableFloatFieldUpdateOperationsInput | number | null
+    lng?: NullableFloatFieldUpdateOperationsInput | number | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type VentureDetailUpsertWithoutEventsInput = {
@@ -39150,41 +40325,41 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"EventCategory"> | Date | string
   }
 
-  export type CommentCreateWithoutVenturePublicationInput = {
+  export type PublicationCommentCreateWithoutVenturePublicationInput = {
     id?: string
     body: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    User: UserCreateNestedOneWithoutCommentsInput
+    User: UserDetailCreateNestedOneWithoutCommentsInput
   }
 
-  export type CommentUncheckedCreateWithoutVenturePublicationInput = {
+  export type PublicationCommentUncheckedCreateWithoutVenturePublicationInput = {
     id?: string
-    userId: string
+    authorDetailId: string
     body: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
-  export type CommentCreateOrConnectWithoutVenturePublicationInput = {
-    where: CommentWhereUniqueInput
-    create: XOR<CommentCreateWithoutVenturePublicationInput, CommentUncheckedCreateWithoutVenturePublicationInput>
+  export type PublicationCommentCreateOrConnectWithoutVenturePublicationInput = {
+    where: PublicationCommentWhereUniqueInput
+    create: XOR<PublicationCommentCreateWithoutVenturePublicationInput, PublicationCommentUncheckedCreateWithoutVenturePublicationInput>
   }
 
-  export type CommentCreateManyVenturePublicationInputEnvelope = {
-    data: CommentCreateManyVenturePublicationInput | CommentCreateManyVenturePublicationInput[]
+  export type PublicationCommentCreateManyVenturePublicationInputEnvelope = {
+    data: PublicationCommentCreateManyVenturePublicationInput | PublicationCommentCreateManyVenturePublicationInput[]
     skipDuplicates?: boolean
   }
 
   export type PublicationClapCreateWithoutVenturePublicationInput = {
     id?: string
     createdAt?: Date | string
-    user: UserCreateNestedOneWithoutPublicationClapsInput
+    user: UserDetailCreateNestedOneWithoutClapsInput
   }
 
   export type PublicationClapUncheckedCreateWithoutVenturePublicationInput = {
     id?: string
-    userId: string
+    userDetailId: string
     createdAt?: Date | string
   }
 
@@ -39249,20 +40424,20 @@ export namespace Prisma {
     create: XOR<VentureDetailCreateWithoutPublicationsInput, VentureDetailUncheckedCreateWithoutPublicationsInput>
   }
 
-  export type CommentUpsertWithWhereUniqueWithoutVenturePublicationInput = {
-    where: CommentWhereUniqueInput
-    update: XOR<CommentUpdateWithoutVenturePublicationInput, CommentUncheckedUpdateWithoutVenturePublicationInput>
-    create: XOR<CommentCreateWithoutVenturePublicationInput, CommentUncheckedCreateWithoutVenturePublicationInput>
+  export type PublicationCommentUpsertWithWhereUniqueWithoutVenturePublicationInput = {
+    where: PublicationCommentWhereUniqueInput
+    update: XOR<PublicationCommentUpdateWithoutVenturePublicationInput, PublicationCommentUncheckedUpdateWithoutVenturePublicationInput>
+    create: XOR<PublicationCommentCreateWithoutVenturePublicationInput, PublicationCommentUncheckedCreateWithoutVenturePublicationInput>
   }
 
-  export type CommentUpdateWithWhereUniqueWithoutVenturePublicationInput = {
-    where: CommentWhereUniqueInput
-    data: XOR<CommentUpdateWithoutVenturePublicationInput, CommentUncheckedUpdateWithoutVenturePublicationInput>
+  export type PublicationCommentUpdateWithWhereUniqueWithoutVenturePublicationInput = {
+    where: PublicationCommentWhereUniqueInput
+    data: XOR<PublicationCommentUpdateWithoutVenturePublicationInput, PublicationCommentUncheckedUpdateWithoutVenturePublicationInput>
   }
 
-  export type CommentUpdateManyWithWhereWithoutVenturePublicationInput = {
-    where: CommentScalarWhereInput
-    data: XOR<CommentUpdateManyMutationInput, CommentUncheckedUpdateManyWithoutVenturePublicationInput>
+  export type PublicationCommentUpdateManyWithWhereWithoutVenturePublicationInput = {
+    where: PublicationCommentScalarWhereInput
+    data: XOR<PublicationCommentUpdateManyMutationInput, PublicationCommentUncheckedUpdateManyWithoutVenturePublicationInput>
   }
 
   export type PublicationClapUpsertWithWhereUniqueWithoutVenturePublicationInput = {
@@ -39340,57 +40515,37 @@ export namespace Prisma {
     subscriptions?: VentureSubscriptionUncheckedUpdateManyWithoutDetailNestedInput
   }
 
-  export type UserCreateWithoutVentureSponsorshipsInput = {
+  export type UserDetailCreateWithoutSponsorshipsInput = {
     id?: string
-    picture: string
-    email: string
-    firstName: string
-    lastName: string
-    active?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    onboardingCompleted?: boolean
-    verified?: boolean
-    comments?: CommentCreateNestedManyWithoutUserInput
-    eventDonations?: EventDonationCreateNestedManyWithoutUserInput
+    gender: string
+    birthDate: Date | string
+    user?: UserCreateNestedOneWithoutDetailInput
+    municipality: MunicipalityCreateNestedOneWithoutUserDetailsInput
+    ventures?: VentureCreateNestedManyWithoutOwnerDetailInput
+    comments?: PublicationCommentCreateNestedManyWithoutUserInput
+    donations?: EventDonationCreateNestedManyWithoutDonorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
-    publicationClaps?: PublicationClapCreateNestedManyWithoutUserInput
-    detail?: UserDetailCreateNestedOneWithoutUserInput
-    ventures?: VentureCreateNestedManyWithoutOwnerInput
-    ventureSubscriptions?: VentureSubscriptionCreateNestedManyWithoutUserInput
-    XUserPreferences?: XUserPreferencesCreateNestedManyWithoutUserInput
-    XUserRoles?: XUserRolesCreateNestedManyWithoutUserInput
-    preferences?: VentureCategoryCreateNestedManyWithoutUsersInput
-    roles?: RoleCreateNestedManyWithoutUsersInput
+    claps?: PublicationClapCreateNestedManyWithoutUserInput
+    subscriptions?: VentureSubscriptionCreateNestedManyWithoutUserInput
   }
 
-  export type UserUncheckedCreateWithoutVentureSponsorshipsInput = {
+  export type UserDetailUncheckedCreateWithoutSponsorshipsInput = {
     id?: string
-    picture: string
-    email: string
-    firstName: string
-    lastName: string
-    active?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    onboardingCompleted?: boolean
-    userDetailId?: string | null
-    verified?: boolean
-    comments?: CommentUncheckedCreateNestedManyWithoutUserInput
-    eventDonations?: EventDonationUncheckedCreateNestedManyWithoutUserInput
+    gender: string
+    birthDate: Date | string
+    municipalityId: number
+    user?: UserUncheckedCreateNestedOneWithoutDetailInput
+    ventures?: VentureUncheckedCreateNestedManyWithoutOwnerDetailInput
+    comments?: PublicationCommentUncheckedCreateNestedManyWithoutUserInput
+    donations?: EventDonationUncheckedCreateNestedManyWithoutDonorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
-    publicationClaps?: PublicationClapUncheckedCreateNestedManyWithoutUserInput
-    ventures?: VentureUncheckedCreateNestedManyWithoutOwnerInput
-    ventureSubscriptions?: VentureSubscriptionUncheckedCreateNestedManyWithoutUserInput
-    XUserPreferences?: XUserPreferencesUncheckedCreateNestedManyWithoutUserInput
-    XUserRoles?: XUserRolesUncheckedCreateNestedManyWithoutUserInput
-    preferences?: VentureCategoryUncheckedCreateNestedManyWithoutUsersInput
-    roles?: RoleUncheckedCreateNestedManyWithoutUsersInput
+    claps?: PublicationClapUncheckedCreateNestedManyWithoutUserInput
+    subscriptions?: VentureSubscriptionUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type UserCreateOrConnectWithoutVentureSponsorshipsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutVentureSponsorshipsInput, UserUncheckedCreateWithoutVentureSponsorshipsInput>
+  export type UserDetailCreateOrConnectWithoutSponsorshipsInput = {
+    where: UserDetailWhereUniqueInput
+    create: XOR<UserDetailCreateWithoutSponsorshipsInput, UserDetailUncheckedCreateWithoutSponsorshipsInput>
   }
 
   export type VentureDetailCreateWithoutSponsorshipsInput = {
@@ -39418,63 +40573,43 @@ export namespace Prisma {
     create: XOR<VentureDetailCreateWithoutSponsorshipsInput, VentureDetailUncheckedCreateWithoutSponsorshipsInput>
   }
 
-  export type UserUpsertWithoutVentureSponsorshipsInput = {
-    update: XOR<UserUpdateWithoutVentureSponsorshipsInput, UserUncheckedUpdateWithoutVentureSponsorshipsInput>
-    create: XOR<UserCreateWithoutVentureSponsorshipsInput, UserUncheckedCreateWithoutVentureSponsorshipsInput>
-    where?: UserWhereInput
+  export type UserDetailUpsertWithoutSponsorshipsInput = {
+    update: XOR<UserDetailUpdateWithoutSponsorshipsInput, UserDetailUncheckedUpdateWithoutSponsorshipsInput>
+    create: XOR<UserDetailCreateWithoutSponsorshipsInput, UserDetailUncheckedCreateWithoutSponsorshipsInput>
+    where?: UserDetailWhereInput
   }
 
-  export type UserUpdateToOneWithWhereWithoutVentureSponsorshipsInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutVentureSponsorshipsInput, UserUncheckedUpdateWithoutVentureSponsorshipsInput>
+  export type UserDetailUpdateToOneWithWhereWithoutSponsorshipsInput = {
+    where?: UserDetailWhereInput
+    data: XOR<UserDetailUpdateWithoutSponsorshipsInput, UserDetailUncheckedUpdateWithoutSponsorshipsInput>
   }
 
-  export type UserUpdateWithoutVentureSponsorshipsInput = {
+  export type UserDetailUpdateWithoutSponsorshipsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    picture?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    firstName?: StringFieldUpdateOperationsInput | string
-    lastName?: StringFieldUpdateOperationsInput | string
-    active?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
-    verified?: BoolFieldUpdateOperationsInput | boolean
-    comments?: CommentUpdateManyWithoutUserNestedInput
-    eventDonations?: EventDonationUpdateManyWithoutUserNestedInput
+    gender?: StringFieldUpdateOperationsInput | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneWithoutDetailNestedInput
+    municipality?: MunicipalityUpdateOneRequiredWithoutUserDetailsNestedInput
+    ventures?: VentureUpdateManyWithoutOwnerDetailNestedInput
+    comments?: PublicationCommentUpdateManyWithoutUserNestedInput
+    donations?: EventDonationUpdateManyWithoutDonorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
-    publicationClaps?: PublicationClapUpdateManyWithoutUserNestedInput
-    detail?: UserDetailUpdateOneWithoutUserNestedInput
-    ventures?: VentureUpdateManyWithoutOwnerNestedInput
-    ventureSubscriptions?: VentureSubscriptionUpdateManyWithoutUserNestedInput
-    XUserPreferences?: XUserPreferencesUpdateManyWithoutUserNestedInput
-    XUserRoles?: XUserRolesUpdateManyWithoutUserNestedInput
-    preferences?: VentureCategoryUpdateManyWithoutUsersNestedInput
-    roles?: RoleUpdateManyWithoutUsersNestedInput
+    claps?: PublicationClapUpdateManyWithoutUserNestedInput
+    subscriptions?: VentureSubscriptionUpdateManyWithoutUserNestedInput
   }
 
-  export type UserUncheckedUpdateWithoutVentureSponsorshipsInput = {
+  export type UserDetailUncheckedUpdateWithoutSponsorshipsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    picture?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    firstName?: StringFieldUpdateOperationsInput | string
-    lastName?: StringFieldUpdateOperationsInput | string
-    active?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
-    userDetailId?: NullableStringFieldUpdateOperationsInput | string | null
-    verified?: BoolFieldUpdateOperationsInput | boolean
-    comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
-    eventDonations?: EventDonationUncheckedUpdateManyWithoutUserNestedInput
+    gender?: StringFieldUpdateOperationsInput | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    municipalityId?: IntFieldUpdateOperationsInput | number
+    user?: UserUncheckedUpdateOneWithoutDetailNestedInput
+    ventures?: VentureUncheckedUpdateManyWithoutOwnerDetailNestedInput
+    comments?: PublicationCommentUncheckedUpdateManyWithoutUserNestedInput
+    donations?: EventDonationUncheckedUpdateManyWithoutDonorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
-    publicationClaps?: PublicationClapUncheckedUpdateManyWithoutUserNestedInput
-    ventures?: VentureUncheckedUpdateManyWithoutOwnerNestedInput
-    ventureSubscriptions?: VentureSubscriptionUncheckedUpdateManyWithoutUserNestedInput
-    XUserPreferences?: XUserPreferencesUncheckedUpdateManyWithoutUserNestedInput
-    XUserRoles?: XUserRolesUncheckedUpdateManyWithoutUserNestedInput
-    preferences?: VentureCategoryUncheckedUpdateManyWithoutUsersNestedInput
-    roles?: RoleUncheckedUpdateManyWithoutUsersNestedInput
+    claps?: PublicationClapUncheckedUpdateManyWithoutUserNestedInput
+    subscriptions?: VentureSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type VentureDetailUpsertWithoutSponsorshipsInput = {
@@ -39508,57 +40643,37 @@ export namespace Prisma {
     subscriptions?: VentureSubscriptionUncheckedUpdateManyWithoutDetailNestedInput
   }
 
-  export type UserCreateWithoutVentureSubscriptionsInput = {
+  export type UserDetailCreateWithoutSubscriptionsInput = {
     id?: string
-    picture: string
-    email: string
-    firstName: string
-    lastName: string
-    active?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    onboardingCompleted?: boolean
-    verified?: boolean
-    comments?: CommentCreateNestedManyWithoutUserInput
-    eventDonations?: EventDonationCreateNestedManyWithoutUserInput
+    gender: string
+    birthDate: Date | string
+    user?: UserCreateNestedOneWithoutDetailInput
+    municipality: MunicipalityCreateNestedOneWithoutUserDetailsInput
+    ventures?: VentureCreateNestedManyWithoutOwnerDetailInput
+    comments?: PublicationCommentCreateNestedManyWithoutUserInput
+    donations?: EventDonationCreateNestedManyWithoutDonorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
-    publicationClaps?: PublicationClapCreateNestedManyWithoutUserInput
-    detail?: UserDetailCreateNestedOneWithoutUserInput
-    ventures?: VentureCreateNestedManyWithoutOwnerInput
-    ventureSponsorships?: VentureSponsorshipCreateNestedManyWithoutUserInput
-    XUserPreferences?: XUserPreferencesCreateNestedManyWithoutUserInput
-    XUserRoles?: XUserRolesCreateNestedManyWithoutUserInput
-    preferences?: VentureCategoryCreateNestedManyWithoutUsersInput
-    roles?: RoleCreateNestedManyWithoutUsersInput
+    claps?: PublicationClapCreateNestedManyWithoutUserInput
+    sponsorships?: VentureSponsorshipCreateNestedManyWithoutUserInput
   }
 
-  export type UserUncheckedCreateWithoutVentureSubscriptionsInput = {
+  export type UserDetailUncheckedCreateWithoutSubscriptionsInput = {
     id?: string
-    picture: string
-    email: string
-    firstName: string
-    lastName: string
-    active?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    onboardingCompleted?: boolean
-    userDetailId?: string | null
-    verified?: boolean
-    comments?: CommentUncheckedCreateNestedManyWithoutUserInput
-    eventDonations?: EventDonationUncheckedCreateNestedManyWithoutUserInput
+    gender: string
+    birthDate: Date | string
+    municipalityId: number
+    user?: UserUncheckedCreateNestedOneWithoutDetailInput
+    ventures?: VentureUncheckedCreateNestedManyWithoutOwnerDetailInput
+    comments?: PublicationCommentUncheckedCreateNestedManyWithoutUserInput
+    donations?: EventDonationUncheckedCreateNestedManyWithoutDonorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
-    publicationClaps?: PublicationClapUncheckedCreateNestedManyWithoutUserInput
-    ventures?: VentureUncheckedCreateNestedManyWithoutOwnerInput
-    ventureSponsorships?: VentureSponsorshipUncheckedCreateNestedManyWithoutUserInput
-    XUserPreferences?: XUserPreferencesUncheckedCreateNestedManyWithoutUserInput
-    XUserRoles?: XUserRolesUncheckedCreateNestedManyWithoutUserInput
-    preferences?: VentureCategoryUncheckedCreateNestedManyWithoutUsersInput
-    roles?: RoleUncheckedCreateNestedManyWithoutUsersInput
+    claps?: PublicationClapUncheckedCreateNestedManyWithoutUserInput
+    sponsorships?: VentureSponsorshipUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type UserCreateOrConnectWithoutVentureSubscriptionsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutVentureSubscriptionsInput, UserUncheckedCreateWithoutVentureSubscriptionsInput>
+  export type UserDetailCreateOrConnectWithoutSubscriptionsInput = {
+    where: UserDetailWhereUniqueInput
+    create: XOR<UserDetailCreateWithoutSubscriptionsInput, UserDetailUncheckedCreateWithoutSubscriptionsInput>
   }
 
   export type VentureDetailCreateWithoutSubscriptionsInput = {
@@ -39586,63 +40701,43 @@ export namespace Prisma {
     create: XOR<VentureDetailCreateWithoutSubscriptionsInput, VentureDetailUncheckedCreateWithoutSubscriptionsInput>
   }
 
-  export type UserUpsertWithoutVentureSubscriptionsInput = {
-    update: XOR<UserUpdateWithoutVentureSubscriptionsInput, UserUncheckedUpdateWithoutVentureSubscriptionsInput>
-    create: XOR<UserCreateWithoutVentureSubscriptionsInput, UserUncheckedCreateWithoutVentureSubscriptionsInput>
-    where?: UserWhereInput
+  export type UserDetailUpsertWithoutSubscriptionsInput = {
+    update: XOR<UserDetailUpdateWithoutSubscriptionsInput, UserDetailUncheckedUpdateWithoutSubscriptionsInput>
+    create: XOR<UserDetailCreateWithoutSubscriptionsInput, UserDetailUncheckedCreateWithoutSubscriptionsInput>
+    where?: UserDetailWhereInput
   }
 
-  export type UserUpdateToOneWithWhereWithoutVentureSubscriptionsInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutVentureSubscriptionsInput, UserUncheckedUpdateWithoutVentureSubscriptionsInput>
+  export type UserDetailUpdateToOneWithWhereWithoutSubscriptionsInput = {
+    where?: UserDetailWhereInput
+    data: XOR<UserDetailUpdateWithoutSubscriptionsInput, UserDetailUncheckedUpdateWithoutSubscriptionsInput>
   }
 
-  export type UserUpdateWithoutVentureSubscriptionsInput = {
+  export type UserDetailUpdateWithoutSubscriptionsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    picture?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    firstName?: StringFieldUpdateOperationsInput | string
-    lastName?: StringFieldUpdateOperationsInput | string
-    active?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
-    verified?: BoolFieldUpdateOperationsInput | boolean
-    comments?: CommentUpdateManyWithoutUserNestedInput
-    eventDonations?: EventDonationUpdateManyWithoutUserNestedInput
+    gender?: StringFieldUpdateOperationsInput | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneWithoutDetailNestedInput
+    municipality?: MunicipalityUpdateOneRequiredWithoutUserDetailsNestedInput
+    ventures?: VentureUpdateManyWithoutOwnerDetailNestedInput
+    comments?: PublicationCommentUpdateManyWithoutUserNestedInput
+    donations?: EventDonationUpdateManyWithoutDonorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
-    publicationClaps?: PublicationClapUpdateManyWithoutUserNestedInput
-    detail?: UserDetailUpdateOneWithoutUserNestedInput
-    ventures?: VentureUpdateManyWithoutOwnerNestedInput
-    ventureSponsorships?: VentureSponsorshipUpdateManyWithoutUserNestedInput
-    XUserPreferences?: XUserPreferencesUpdateManyWithoutUserNestedInput
-    XUserRoles?: XUserRolesUpdateManyWithoutUserNestedInput
-    preferences?: VentureCategoryUpdateManyWithoutUsersNestedInput
-    roles?: RoleUpdateManyWithoutUsersNestedInput
+    claps?: PublicationClapUpdateManyWithoutUserNestedInput
+    sponsorships?: VentureSponsorshipUpdateManyWithoutUserNestedInput
   }
 
-  export type UserUncheckedUpdateWithoutVentureSubscriptionsInput = {
+  export type UserDetailUncheckedUpdateWithoutSubscriptionsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    picture?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    firstName?: StringFieldUpdateOperationsInput | string
-    lastName?: StringFieldUpdateOperationsInput | string
-    active?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
-    userDetailId?: NullableStringFieldUpdateOperationsInput | string | null
-    verified?: BoolFieldUpdateOperationsInput | boolean
-    comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
-    eventDonations?: EventDonationUncheckedUpdateManyWithoutUserNestedInput
+    gender?: StringFieldUpdateOperationsInput | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    municipalityId?: IntFieldUpdateOperationsInput | number
+    user?: UserUncheckedUpdateOneWithoutDetailNestedInput
+    ventures?: VentureUncheckedUpdateManyWithoutOwnerDetailNestedInput
+    comments?: PublicationCommentUncheckedUpdateManyWithoutUserNestedInput
+    donations?: EventDonationUncheckedUpdateManyWithoutDonorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
-    publicationClaps?: PublicationClapUncheckedUpdateManyWithoutUserNestedInput
-    ventures?: VentureUncheckedUpdateManyWithoutOwnerNestedInput
-    ventureSponsorships?: VentureSponsorshipUncheckedUpdateManyWithoutUserNestedInput
-    XUserPreferences?: XUserPreferencesUncheckedUpdateManyWithoutUserNestedInput
-    XUserRoles?: XUserRolesUncheckedUpdateManyWithoutUserNestedInput
-    preferences?: VentureCategoryUncheckedUpdateManyWithoutUsersNestedInput
-    roles?: RoleUncheckedUpdateManyWithoutUsersNestedInput
+    claps?: PublicationClapUncheckedUpdateManyWithoutUserNestedInput
+    sponsorships?: VentureSponsorshipUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type VentureDetailUpsertWithoutSubscriptionsInput = {
@@ -39711,7 +40806,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     donations?: EventDonationCreateNestedManyWithoutEventInput
-    locations?: EventLocationCreateNestedManyWithoutEventInput
+    location: EventLocationCreateNestedOneWithoutEventInput
     ventureDetail: VentureDetailCreateNestedOneWithoutEventsInput
     EventCategory?: EventCategoryCreateNestedManyWithoutVentureEventInput
   }
@@ -39726,8 +40821,8 @@ export namespace Prisma {
     endDate: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
+    locationId: string
     donations?: EventDonationUncheckedCreateNestedManyWithoutEventInput
-    locations?: EventLocationUncheckedCreateNestedManyWithoutEventInput
     EventCategory?: EventCategoryUncheckedCreateNestedManyWithoutVentureEventInput
   }
 
@@ -39788,7 +40883,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     donations?: EventDonationUpdateManyWithoutEventNestedInput
-    locations?: EventLocationUpdateManyWithoutEventNestedInput
+    location?: EventLocationUpdateOneRequiredWithoutEventNestedInput
     ventureDetail?: VentureDetailUpdateOneRequiredWithoutEventsNestedInput
     EventCategory?: EventCategoryUpdateManyWithoutVentureEventNestedInput
   }
@@ -39803,8 +40898,8 @@ export namespace Prisma {
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    locationId?: StringFieldUpdateOperationsInput | string
     donations?: EventDonationUncheckedUpdateManyWithoutEventNestedInput
-    locations?: EventLocationUncheckedUpdateManyWithoutEventNestedInput
     EventCategory?: EventCategoryUncheckedUpdateManyWithoutVentureEventNestedInput
   }
 
@@ -39842,14 +40937,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     onboardingCompleted?: boolean
     verified?: boolean
-    comments?: CommentCreateNestedManyWithoutUserInput
-    eventDonations?: EventDonationCreateNestedManyWithoutUserInput
-    notifications?: NotificationCreateNestedManyWithoutUserInput
-    publicationClaps?: PublicationClapCreateNestedManyWithoutUserInput
     detail?: UserDetailCreateNestedOneWithoutUserInput
-    ventures?: VentureCreateNestedManyWithoutOwnerInput
-    ventureSponsorships?: VentureSponsorshipCreateNestedManyWithoutUserInput
-    ventureSubscriptions?: VentureSubscriptionCreateNestedManyWithoutUserInput
+    contact?: UserContactCreateNestedOneWithoutUserInput
     XUserPreferences?: XUserPreferencesCreateNestedManyWithoutUserInput
     preferences?: VentureCategoryCreateNestedManyWithoutUsersInput
     roles?: RoleCreateNestedManyWithoutUsersInput
@@ -39865,15 +40954,9 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     onboardingCompleted?: boolean
-    userDetailId?: string | null
+    detailId?: string | null
     verified?: boolean
-    comments?: CommentUncheckedCreateNestedManyWithoutUserInput
-    eventDonations?: EventDonationUncheckedCreateNestedManyWithoutUserInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
-    publicationClaps?: PublicationClapUncheckedCreateNestedManyWithoutUserInput
-    ventures?: VentureUncheckedCreateNestedManyWithoutOwnerInput
-    ventureSponsorships?: VentureSponsorshipUncheckedCreateNestedManyWithoutUserInput
-    ventureSubscriptions?: VentureSubscriptionUncheckedCreateNestedManyWithoutUserInput
+    contactId?: string | null
     XUserPreferences?: XUserPreferencesUncheckedCreateNestedManyWithoutUserInput
     preferences?: VentureCategoryUncheckedCreateNestedManyWithoutUsersInput
     roles?: RoleUncheckedCreateNestedManyWithoutUsersInput
@@ -39935,14 +41018,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     verified?: BoolFieldUpdateOperationsInput | boolean
-    comments?: CommentUpdateManyWithoutUserNestedInput
-    eventDonations?: EventDonationUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUpdateManyWithoutUserNestedInput
-    publicationClaps?: PublicationClapUpdateManyWithoutUserNestedInput
     detail?: UserDetailUpdateOneWithoutUserNestedInput
-    ventures?: VentureUpdateManyWithoutOwnerNestedInput
-    ventureSponsorships?: VentureSponsorshipUpdateManyWithoutUserNestedInput
-    ventureSubscriptions?: VentureSubscriptionUpdateManyWithoutUserNestedInput
+    contact?: UserContactUpdateOneWithoutUserNestedInput
     XUserPreferences?: XUserPreferencesUpdateManyWithoutUserNestedInput
     preferences?: VentureCategoryUpdateManyWithoutUsersNestedInput
     roles?: RoleUpdateManyWithoutUsersNestedInput
@@ -39958,21 +41035,129 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
-    userDetailId?: NullableStringFieldUpdateOperationsInput | string | null
+    detailId?: NullableStringFieldUpdateOperationsInput | string | null
     verified?: BoolFieldUpdateOperationsInput | boolean
-    comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
-    eventDonations?: EventDonationUncheckedUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
-    publicationClaps?: PublicationClapUncheckedUpdateManyWithoutUserNestedInput
-    ventures?: VentureUncheckedUpdateManyWithoutOwnerNestedInput
-    ventureSponsorships?: VentureSponsorshipUncheckedUpdateManyWithoutUserNestedInput
-    ventureSubscriptions?: VentureSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    contactId?: NullableStringFieldUpdateOperationsInput | string | null
     XUserPreferences?: XUserPreferencesUncheckedUpdateManyWithoutUserNestedInput
     preferences?: VentureCategoryUncheckedUpdateManyWithoutUsersNestedInput
     roles?: RoleUncheckedUpdateManyWithoutUsersNestedInput
   }
 
-  export type CommentCreateManyUserInput = {
+  export type XUserPreferencesCreateManyUserInput = {
+    categoryId: string
+  }
+
+  export type XUserRolesCreateManyUserInput = {
+    id: string
+    roleId: string
+    createdAt?: Date | string
+  }
+
+  export type XUserPreferencesUpdateWithoutUserInput = {
+    ventureCategory?: VentureCategoryUpdateOneRequiredWithoutXUserPreferencesNestedInput
+  }
+
+  export type XUserPreferencesUncheckedUpdateWithoutUserInput = {
+    categoryId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type XUserPreferencesUncheckedUpdateManyWithoutUserInput = {
+    categoryId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type XUserRolesUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    role?: RoleUpdateOneRequiredWithoutXUserRolesNestedInput
+  }
+
+  export type XUserRolesUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    roleId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type XUserRolesUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    roleId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VentureCategoryUpdateWithoutUsersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ventures?: VentureUpdateManyWithoutCategoriesNestedInput
+    XUserPreferences?: XUserPreferencesUpdateManyWithoutVentureCategoryNestedInput
+    XVentureVencureCategory?: XVentureVencureCategoryUpdateManyWithoutCategoryNestedInput
+  }
+
+  export type VentureCategoryUncheckedUpdateWithoutUsersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ventures?: VentureUncheckedUpdateManyWithoutCategoriesNestedInput
+    XUserPreferences?: XUserPreferencesUncheckedUpdateManyWithoutVentureCategoryNestedInput
+    XVentureVencureCategory?: XVentureVencureCategoryUncheckedUpdateManyWithoutCategoryNestedInput
+  }
+
+  export type VentureCategoryUncheckedUpdateManyWithoutUsersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RoleUpdateWithoutUsersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: EnumAppRoleFieldUpdateOperationsInput | $Enums.AppRole
+    label?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    XUserRoles?: XUserRolesUpdateManyWithoutRoleNestedInput
+  }
+
+  export type RoleUncheckedUpdateWithoutUsersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: EnumAppRoleFieldUpdateOperationsInput | $Enums.AppRole
+    label?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    XUserRoles?: XUserRolesUncheckedUpdateManyWithoutRoleNestedInput
+  }
+
+  export type RoleUncheckedUpdateManyWithoutUsersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: EnumAppRoleFieldUpdateOperationsInput | $Enums.AppRole
+    label?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VentureCreateManyOwnerDetailInput = {
+    id?: string
+    name: string
+    slug: string
+    coverPhoto: string
+    description: string
+    active?: boolean
+    verified?: boolean
+    detailId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    locationId: string
+    ventureId: string
+  }
+
+  export type PublicationCommentCreateManyUserInput = {
     id?: string
     publicationId: string
     body: string
@@ -39980,7 +41165,7 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
-  export type EventDonationCreateManyUserInput = {
+  export type EventDonationCreateManyDonorInput = {
     id?: string
     eventId: string
     amount: number
@@ -40004,19 +41189,6 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
-  export type VentureCreateManyOwnerInput = {
-    id?: string
-    name: string
-    slug: string
-    coverPhoto: string
-    description: string
-    active?: boolean
-    verified?: boolean
-    detailId: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
   export type VentureSponsorshipCreateManyUserInput = {
     id: string
     ventureDetailId: string
@@ -40031,17 +41203,56 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
-  export type XUserPreferencesCreateManyUserInput = {
-    categoryId: string
+  export type VentureUpdateWithoutOwnerDetailInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    coverPhoto?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    active?: BoolFieldUpdateOperationsInput | boolean
+    verified?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    detail?: VentureDetailUpdateOneRequiredWithoutVentureNestedInput
+    categories?: VentureCategoryUpdateManyWithoutVenturesNestedInput
+    location?: VentureLocationUpdateOneRequiredWithoutVentureNestedInput
+    contact?: VentureContactUpdateOneRequiredWithoutVentureNestedInput
+    XVentureVencureCategory?: XVentureVencureCategoryUpdateManyWithoutVentureNestedInput
   }
 
-  export type XUserRolesCreateManyUserInput = {
-    id: string
-    roleId: string
-    createdAt?: Date | string
+  export type VentureUncheckedUpdateWithoutOwnerDetailInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    coverPhoto?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    active?: BoolFieldUpdateOperationsInput | boolean
+    verified?: BoolFieldUpdateOperationsInput | boolean
+    detailId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    locationId?: StringFieldUpdateOperationsInput | string
+    ventureId?: StringFieldUpdateOperationsInput | string
+    categories?: VentureCategoryUncheckedUpdateManyWithoutVenturesNestedInput
+    XVentureVencureCategory?: XVentureVencureCategoryUncheckedUpdateManyWithoutVentureNestedInput
   }
 
-  export type CommentUpdateWithoutUserInput = {
+  export type VentureUncheckedUpdateManyWithoutOwnerDetailInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    coverPhoto?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    active?: BoolFieldUpdateOperationsInput | boolean
+    verified?: BoolFieldUpdateOperationsInput | boolean
+    detailId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    locationId?: StringFieldUpdateOperationsInput | string
+    ventureId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type PublicationCommentUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     body?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -40049,7 +41260,7 @@ export namespace Prisma {
     venturePublication?: VenturePublicationUpdateOneRequiredWithoutCommentsNestedInput
   }
 
-  export type CommentUncheckedUpdateWithoutUserInput = {
+  export type PublicationCommentUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     publicationId?: StringFieldUpdateOperationsInput | string
     body?: StringFieldUpdateOperationsInput | string
@@ -40057,7 +41268,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type CommentUncheckedUpdateManyWithoutUserInput = {
+  export type PublicationCommentUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     publicationId?: StringFieldUpdateOperationsInput | string
     body?: StringFieldUpdateOperationsInput | string
@@ -40065,7 +41276,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type EventDonationUpdateWithoutUserInput = {
+  export type EventDonationUpdateWithoutDonorInput = {
     id?: StringFieldUpdateOperationsInput | string
     amount?: FloatFieldUpdateOperationsInput | number
     currency?: StringFieldUpdateOperationsInput | string
@@ -40073,7 +41284,7 @@ export namespace Prisma {
     event?: VentureEventUpdateOneRequiredWithoutDonationsNestedInput
   }
 
-  export type EventDonationUncheckedUpdateWithoutUserInput = {
+  export type EventDonationUncheckedUpdateWithoutDonorInput = {
     id?: StringFieldUpdateOperationsInput | string
     eventId?: StringFieldUpdateOperationsInput | string
     amount?: FloatFieldUpdateOperationsInput | number
@@ -40081,7 +41292,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type EventDonationUncheckedUpdateManyWithoutUserInput = {
+  export type EventDonationUncheckedUpdateManyWithoutDonorInput = {
     id?: StringFieldUpdateOperationsInput | string
     eventId?: StringFieldUpdateOperationsInput | string
     amount?: FloatFieldUpdateOperationsInput | number
@@ -40137,53 +41348,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type VentureUpdateWithoutOwnerInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    slug?: StringFieldUpdateOperationsInput | string
-    coverPhoto?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    active?: BoolFieldUpdateOperationsInput | boolean
-    verified?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    detail?: VentureDetailUpdateOneRequiredWithoutVentureNestedInput
-    XVentureVencureCategory?: XVentureVencureCategoryUpdateManyWithoutVentureNestedInput
-    categories?: VentureCategoryUpdateManyWithoutVenturesNestedInput
-    locations?: VentureLocationUpdateManyWithoutVentureNestedInput
-    contact?: VentureContactUpdateManyWithoutVentureNestedInput
-  }
-
-  export type VentureUncheckedUpdateWithoutOwnerInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    slug?: StringFieldUpdateOperationsInput | string
-    coverPhoto?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    active?: BoolFieldUpdateOperationsInput | boolean
-    verified?: BoolFieldUpdateOperationsInput | boolean
-    detailId?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    XVentureVencureCategory?: XVentureVencureCategoryUncheckedUpdateManyWithoutVentureNestedInput
-    categories?: VentureCategoryUncheckedUpdateManyWithoutVenturesNestedInput
-    locations?: VentureLocationUncheckedUpdateManyWithoutVentureNestedInput
-    contact?: VentureContactUncheckedUpdateManyWithoutVentureNestedInput
-  }
-
-  export type VentureUncheckedUpdateManyWithoutOwnerInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    slug?: StringFieldUpdateOperationsInput | string
-    coverPhoto?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    active?: BoolFieldUpdateOperationsInput | boolean
-    verified?: BoolFieldUpdateOperationsInput | boolean
-    detailId?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type VentureSponsorshipUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     monthlyAmount?: FloatFieldUpdateOperationsInput | number
@@ -40226,95 +41390,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type XUserPreferencesUpdateWithoutUserInput = {
-    ventureCategory?: VentureCategoryUpdateOneRequiredWithoutXUserPreferencesNestedInput
-  }
-
-  export type XUserPreferencesUncheckedUpdateWithoutUserInput = {
-    categoryId?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type XUserPreferencesUncheckedUpdateManyWithoutUserInput = {
-    categoryId?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type XUserRolesUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    role?: RoleUpdateOneRequiredWithoutXUserRolesNestedInput
-  }
-
-  export type XUserRolesUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    roleId?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type XUserRolesUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    roleId?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type VentureCategoryUpdateWithoutUsersInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    slug?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    XUserPreferences?: XUserPreferencesUpdateManyWithoutVentureCategoryNestedInput
-    XVentureVencureCategory?: XVentureVencureCategoryUpdateManyWithoutCategoryNestedInput
-    ventures?: VentureUpdateManyWithoutCategoriesNestedInput
-  }
-
-  export type VentureCategoryUncheckedUpdateWithoutUsersInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    slug?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    XUserPreferences?: XUserPreferencesUncheckedUpdateManyWithoutVentureCategoryNestedInput
-    XVentureVencureCategory?: XVentureVencureCategoryUncheckedUpdateManyWithoutCategoryNestedInput
-    ventures?: VentureUncheckedUpdateManyWithoutCategoriesNestedInput
-  }
-
-  export type VentureCategoryUncheckedUpdateManyWithoutUsersInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    slug?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type RoleUpdateWithoutUsersInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: EnumAppRoleFieldUpdateOperationsInput | $Enums.AppRole
-    label?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    XUserRoles?: XUserRolesUpdateManyWithoutRoleNestedInput
-  }
-
-  export type RoleUncheckedUpdateWithoutUsersInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: EnumAppRoleFieldUpdateOperationsInput | $Enums.AppRole
-    label?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    XUserRoles?: XUserRolesUncheckedUpdateManyWithoutRoleNestedInput
-  }
-
-  export type RoleUncheckedUpdateManyWithoutUsersInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: EnumAppRoleFieldUpdateOperationsInput | $Enums.AppRole
-    label?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type MunicipalityCreateManyDepartmentInput = {
     id?: number
     name: string
@@ -40326,7 +41401,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userDetail?: UserDetailUpdateManyWithoutMunicipalityNestedInput
+    userDetails?: UserDetailUpdateManyWithoutMunicipalityNestedInput
   }
 
   export type MunicipalityUncheckedUpdateWithoutDepartmentInput = {
@@ -40334,7 +41409,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userDetail?: UserDetailUncheckedUpdateManyWithoutMunicipalityNestedInput
+    userDetails?: UserDetailUncheckedUpdateManyWithoutMunicipalityNestedInput
   }
 
   export type MunicipalityUncheckedUpdateManyWithoutDepartmentInput = {
@@ -40355,6 +41430,13 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneWithoutDetailNestedInput
+    ventures?: VentureUpdateManyWithoutOwnerDetailNestedInput
+    comments?: PublicationCommentUpdateManyWithoutUserNestedInput
+    donations?: EventDonationUpdateManyWithoutDonorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    claps?: PublicationClapUpdateManyWithoutUserNestedInput
+    sponsorships?: VentureSponsorshipUpdateManyWithoutUserNestedInput
+    subscriptions?: VentureSubscriptionUpdateManyWithoutUserNestedInput
   }
 
   export type UserDetailUncheckedUpdateWithoutMunicipalityInput = {
@@ -40362,6 +41444,13 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUncheckedUpdateOneWithoutDetailNestedInput
+    ventures?: VentureUncheckedUpdateManyWithoutOwnerDetailNestedInput
+    comments?: PublicationCommentUncheckedUpdateManyWithoutUserNestedInput
+    donations?: EventDonationUncheckedUpdateManyWithoutDonorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    claps?: PublicationClapUncheckedUpdateManyWithoutUserNestedInput
+    sponsorships?: VentureSponsorshipUncheckedUpdateManyWithoutUserNestedInput
+    subscriptions?: VentureSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserDetailUncheckedUpdateManyWithoutMunicipalityInput = {
@@ -40396,7 +41485,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     donations?: EventDonationUpdateManyWithoutEventNestedInput
-    locations?: EventLocationUpdateManyWithoutEventNestedInput
+    location?: EventLocationUpdateOneRequiredWithoutEventNestedInput
     ventureDetail?: VentureDetailUpdateOneRequiredWithoutEventsNestedInput
     XEventCategory?: XEventCategoryUpdateManyWithoutEventNestedInput
   }
@@ -40411,8 +41500,8 @@ export namespace Prisma {
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    locationId?: StringFieldUpdateOperationsInput | string
     donations?: EventDonationUncheckedUpdateManyWithoutEventNestedInput
-    locations?: EventLocationUncheckedUpdateManyWithoutEventNestedInput
     XEventCategory?: XEventCategoryUncheckedUpdateManyWithoutEventNestedInput
   }
 
@@ -40426,6 +41515,7 @@ export namespace Prisma {
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    locationId?: StringFieldUpdateOperationsInput | string
   }
 
   export type XUserRolesCreateManyRoleInput = {
@@ -40463,14 +41553,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     verified?: BoolFieldUpdateOperationsInput | boolean
-    comments?: CommentUpdateManyWithoutUserNestedInput
-    eventDonations?: EventDonationUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUpdateManyWithoutUserNestedInput
-    publicationClaps?: PublicationClapUpdateManyWithoutUserNestedInput
     detail?: UserDetailUpdateOneWithoutUserNestedInput
-    ventures?: VentureUpdateManyWithoutOwnerNestedInput
-    ventureSponsorships?: VentureSponsorshipUpdateManyWithoutUserNestedInput
-    ventureSubscriptions?: VentureSubscriptionUpdateManyWithoutUserNestedInput
+    contact?: UserContactUpdateOneWithoutUserNestedInput
     XUserPreferences?: XUserPreferencesUpdateManyWithoutUserNestedInput
     XUserRoles?: XUserRolesUpdateManyWithoutUserNestedInput
     preferences?: VentureCategoryUpdateManyWithoutUsersNestedInput
@@ -40486,15 +41570,9 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
-    userDetailId?: NullableStringFieldUpdateOperationsInput | string | null
+    detailId?: NullableStringFieldUpdateOperationsInput | string | null
     verified?: BoolFieldUpdateOperationsInput | boolean
-    comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
-    eventDonations?: EventDonationUncheckedUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
-    publicationClaps?: PublicationClapUncheckedUpdateManyWithoutUserNestedInput
-    ventures?: VentureUncheckedUpdateManyWithoutOwnerNestedInput
-    ventureSponsorships?: VentureSponsorshipUncheckedUpdateManyWithoutUserNestedInput
-    ventureSubscriptions?: VentureSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    contactId?: NullableStringFieldUpdateOperationsInput | string | null
     XUserPreferences?: XUserPreferencesUncheckedUpdateManyWithoutUserNestedInput
     XUserRoles?: XUserRolesUncheckedUpdateManyWithoutUserNestedInput
     preferences?: VentureCategoryUncheckedUpdateManyWithoutUsersNestedInput
@@ -40510,30 +41588,46 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
-    userDetailId?: NullableStringFieldUpdateOperationsInput | string | null
+    detailId?: NullableStringFieldUpdateOperationsInput | string | null
     verified?: BoolFieldUpdateOperationsInput | boolean
+    contactId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type XVentureVencureCategoryCreateManyVentureInput = {
     categoryId: string
   }
 
-  export type VentureLocationCreateManyVentureInput = {
-    id?: string
-    lat?: number | null
-    lng?: number | null
-    description?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
+  export type VentureCategoryUpdateWithoutVenturesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    users?: UserUpdateManyWithoutPreferencesNestedInput
+    XUserPreferences?: XUserPreferencesUpdateManyWithoutVentureCategoryNestedInput
+    XVentureVencureCategory?: XVentureVencureCategoryUpdateManyWithoutCategoryNestedInput
   }
 
-  export type VentureContactCreateManyVentureInput = {
-    id?: string
-    email: string
-    phoneCode: string
-    phoneNumber: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
+  export type VentureCategoryUncheckedUpdateWithoutVenturesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    users?: UserUncheckedUpdateManyWithoutPreferencesNestedInput
+    XUserPreferences?: XUserPreferencesUncheckedUpdateManyWithoutVentureCategoryNestedInput
+    XVentureVencureCategory?: XVentureVencureCategoryUncheckedUpdateManyWithoutCategoryNestedInput
+  }
+
+  export type VentureCategoryUncheckedUpdateManyWithoutVenturesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type XVentureVencureCategoryUpdateWithoutVentureInput = {
@@ -40548,99 +41642,113 @@ export namespace Prisma {
     categoryId?: StringFieldUpdateOperationsInput | string
   }
 
-  export type VentureCategoryUpdateWithoutVenturesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    slug?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    XUserPreferences?: XUserPreferencesUpdateManyWithoutVentureCategoryNestedInput
-    XVentureVencureCategory?: XVentureVencureCategoryUpdateManyWithoutCategoryNestedInput
-    users?: UserUpdateManyWithoutPreferencesNestedInput
-  }
-
-  export type VentureCategoryUncheckedUpdateWithoutVenturesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    slug?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    XUserPreferences?: XUserPreferencesUncheckedUpdateManyWithoutVentureCategoryNestedInput
-    XVentureVencureCategory?: XVentureVencureCategoryUncheckedUpdateManyWithoutCategoryNestedInput
-    users?: UserUncheckedUpdateManyWithoutPreferencesNestedInput
-  }
-
-  export type VentureCategoryUncheckedUpdateManyWithoutVenturesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    slug?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type VentureLocationUpdateWithoutVentureInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    lat?: NullableFloatFieldUpdateOperationsInput | number | null
-    lng?: NullableFloatFieldUpdateOperationsInput | number | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type VentureLocationUncheckedUpdateWithoutVentureInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    lat?: NullableFloatFieldUpdateOperationsInput | number | null
-    lng?: NullableFloatFieldUpdateOperationsInput | number | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type VentureLocationUncheckedUpdateManyWithoutVentureInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    lat?: NullableFloatFieldUpdateOperationsInput | number | null
-    lng?: NullableFloatFieldUpdateOperationsInput | number | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type VentureContactUpdateWithoutVentureInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    phoneCode?: StringFieldUpdateOperationsInput | string
-    phoneNumber?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type VentureContactUncheckedUpdateWithoutVentureInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    phoneCode?: StringFieldUpdateOperationsInput | string
-    phoneNumber?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type VentureContactUncheckedUpdateManyWithoutVentureInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    phoneCode?: StringFieldUpdateOperationsInput | string
-    phoneNumber?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type XUserPreferencesCreateManyVentureCategoryInput = {
     userId: string
   }
 
   export type XVentureVencureCategoryCreateManyCategoryInput = {
     ventureId: string
+  }
+
+  export type UserUpdateWithoutPreferencesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    picture?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
+    verified?: BoolFieldUpdateOperationsInput | boolean
+    detail?: UserDetailUpdateOneWithoutUserNestedInput
+    contact?: UserContactUpdateOneWithoutUserNestedInput
+    XUserPreferences?: XUserPreferencesUpdateManyWithoutUserNestedInput
+    XUserRoles?: XUserRolesUpdateManyWithoutUserNestedInput
+    roles?: RoleUpdateManyWithoutUsersNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutPreferencesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    picture?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
+    detailId?: NullableStringFieldUpdateOperationsInput | string | null
+    verified?: BoolFieldUpdateOperationsInput | boolean
+    contactId?: NullableStringFieldUpdateOperationsInput | string | null
+    XUserPreferences?: XUserPreferencesUncheckedUpdateManyWithoutUserNestedInput
+    XUserRoles?: XUserRolesUncheckedUpdateManyWithoutUserNestedInput
+    roles?: RoleUncheckedUpdateManyWithoutUsersNestedInput
+  }
+
+  export type UserUncheckedUpdateManyWithoutPreferencesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    picture?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
+    detailId?: NullableStringFieldUpdateOperationsInput | string | null
+    verified?: BoolFieldUpdateOperationsInput | boolean
+    contactId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type VentureUpdateWithoutCategoriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    coverPhoto?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    active?: BoolFieldUpdateOperationsInput | boolean
+    verified?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    detail?: VentureDetailUpdateOneRequiredWithoutVentureNestedInput
+    ownerDetail?: UserDetailUpdateOneRequiredWithoutVenturesNestedInput
+    location?: VentureLocationUpdateOneRequiredWithoutVentureNestedInput
+    contact?: VentureContactUpdateOneRequiredWithoutVentureNestedInput
+    XVentureVencureCategory?: XVentureVencureCategoryUpdateManyWithoutVentureNestedInput
+  }
+
+  export type VentureUncheckedUpdateWithoutCategoriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    coverPhoto?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    active?: BoolFieldUpdateOperationsInput | boolean
+    verified?: BoolFieldUpdateOperationsInput | boolean
+    detailId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ownerDetailId?: StringFieldUpdateOperationsInput | string
+    locationId?: StringFieldUpdateOperationsInput | string
+    ventureId?: StringFieldUpdateOperationsInput | string
+    XVentureVencureCategory?: XVentureVencureCategoryUncheckedUpdateManyWithoutVentureNestedInput
+  }
+
+  export type VentureUncheckedUpdateManyWithoutCategoriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    coverPhoto?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    active?: BoolFieldUpdateOperationsInput | boolean
+    verified?: BoolFieldUpdateOperationsInput | boolean
+    detailId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ownerDetailId?: StringFieldUpdateOperationsInput | string
+    locationId?: StringFieldUpdateOperationsInput | string
+    ventureId?: StringFieldUpdateOperationsInput | string
   }
 
   export type XUserPreferencesUpdateWithoutVentureCategoryInput = {
@@ -40667,116 +41775,6 @@ export namespace Prisma {
     ventureId?: StringFieldUpdateOperationsInput | string
   }
 
-  export type UserUpdateWithoutPreferencesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    picture?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    firstName?: StringFieldUpdateOperationsInput | string
-    lastName?: StringFieldUpdateOperationsInput | string
-    active?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
-    verified?: BoolFieldUpdateOperationsInput | boolean
-    comments?: CommentUpdateManyWithoutUserNestedInput
-    eventDonations?: EventDonationUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUpdateManyWithoutUserNestedInput
-    publicationClaps?: PublicationClapUpdateManyWithoutUserNestedInput
-    detail?: UserDetailUpdateOneWithoutUserNestedInput
-    ventures?: VentureUpdateManyWithoutOwnerNestedInput
-    ventureSponsorships?: VentureSponsorshipUpdateManyWithoutUserNestedInput
-    ventureSubscriptions?: VentureSubscriptionUpdateManyWithoutUserNestedInput
-    XUserPreferences?: XUserPreferencesUpdateManyWithoutUserNestedInput
-    XUserRoles?: XUserRolesUpdateManyWithoutUserNestedInput
-    roles?: RoleUpdateManyWithoutUsersNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutPreferencesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    picture?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    firstName?: StringFieldUpdateOperationsInput | string
-    lastName?: StringFieldUpdateOperationsInput | string
-    active?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
-    userDetailId?: NullableStringFieldUpdateOperationsInput | string | null
-    verified?: BoolFieldUpdateOperationsInput | boolean
-    comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
-    eventDonations?: EventDonationUncheckedUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
-    publicationClaps?: PublicationClapUncheckedUpdateManyWithoutUserNestedInput
-    ventures?: VentureUncheckedUpdateManyWithoutOwnerNestedInput
-    ventureSponsorships?: VentureSponsorshipUncheckedUpdateManyWithoutUserNestedInput
-    ventureSubscriptions?: VentureSubscriptionUncheckedUpdateManyWithoutUserNestedInput
-    XUserPreferences?: XUserPreferencesUncheckedUpdateManyWithoutUserNestedInput
-    XUserRoles?: XUserRolesUncheckedUpdateManyWithoutUserNestedInput
-    roles?: RoleUncheckedUpdateManyWithoutUsersNestedInput
-  }
-
-  export type UserUncheckedUpdateManyWithoutPreferencesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    picture?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    firstName?: StringFieldUpdateOperationsInput | string
-    lastName?: StringFieldUpdateOperationsInput | string
-    active?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
-    userDetailId?: NullableStringFieldUpdateOperationsInput | string | null
-    verified?: BoolFieldUpdateOperationsInput | boolean
-  }
-
-  export type VentureUpdateWithoutCategoriesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    slug?: StringFieldUpdateOperationsInput | string
-    coverPhoto?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    active?: BoolFieldUpdateOperationsInput | boolean
-    verified?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    detail?: VentureDetailUpdateOneRequiredWithoutVentureNestedInput
-    owner?: UserUpdateOneRequiredWithoutVenturesNestedInput
-    XVentureVencureCategory?: XVentureVencureCategoryUpdateManyWithoutVentureNestedInput
-    locations?: VentureLocationUpdateManyWithoutVentureNestedInput
-    contact?: VentureContactUpdateManyWithoutVentureNestedInput
-  }
-
-  export type VentureUncheckedUpdateWithoutCategoriesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    slug?: StringFieldUpdateOperationsInput | string
-    coverPhoto?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    ownerId?: StringFieldUpdateOperationsInput | string
-    active?: BoolFieldUpdateOperationsInput | boolean
-    verified?: BoolFieldUpdateOperationsInput | boolean
-    detailId?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    XVentureVencureCategory?: XVentureVencureCategoryUncheckedUpdateManyWithoutVentureNestedInput
-    locations?: VentureLocationUncheckedUpdateManyWithoutVentureNestedInput
-    contact?: VentureContactUncheckedUpdateManyWithoutVentureNestedInput
-  }
-
-  export type VentureUncheckedUpdateManyWithoutCategoriesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    slug?: StringFieldUpdateOperationsInput | string
-    coverPhoto?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    ownerId?: StringFieldUpdateOperationsInput | string
-    active?: BoolFieldUpdateOperationsInput | boolean
-    verified?: BoolFieldUpdateOperationsInput | boolean
-    detailId?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type VentureEventCreateManyVentureDetailInput = {
     id: string
     title: string
@@ -40786,6 +41784,7 @@ export namespace Prisma {
     endDate: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
+    locationId: string
   }
 
   export type VenturePublicationCreateManyDetailInput = {
@@ -40799,7 +41798,7 @@ export namespace Prisma {
 
   export type VentureSponsorshipCreateManyDetailInput = {
     id: string
-    sponsorId: string
+    sponsorDetailId: string
     monthlyAmount: number
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -40807,7 +41806,7 @@ export namespace Prisma {
 
   export type VentureSubscriptionCreateManyDetailInput = {
     id: string
-    subscriberId: string
+    subscriberDetailId: string
     createdAt?: Date | string
   }
 
@@ -40821,7 +41820,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     donations?: EventDonationUpdateManyWithoutEventNestedInput
-    locations?: EventLocationUpdateManyWithoutEventNestedInput
+    location?: EventLocationUpdateOneRequiredWithoutEventNestedInput
     XEventCategory?: XEventCategoryUpdateManyWithoutEventNestedInput
     EventCategory?: EventCategoryUpdateManyWithoutVentureEventNestedInput
   }
@@ -40835,8 +41834,8 @@ export namespace Prisma {
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    locationId?: StringFieldUpdateOperationsInput | string
     donations?: EventDonationUncheckedUpdateManyWithoutEventNestedInput
-    locations?: EventLocationUncheckedUpdateManyWithoutEventNestedInput
     XEventCategory?: XEventCategoryUncheckedUpdateManyWithoutEventNestedInput
     EventCategory?: EventCategoryUncheckedUpdateManyWithoutVentureEventNestedInput
   }
@@ -40850,6 +41849,7 @@ export namespace Prisma {
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    locationId?: StringFieldUpdateOperationsInput | string
   }
 
   export type VenturePublicationUpdateWithoutDetailInput = {
@@ -40859,7 +41859,7 @@ export namespace Prisma {
     clapsCount?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    comments?: CommentUpdateManyWithoutVenturePublicationNestedInput
+    comments?: PublicationCommentUpdateManyWithoutVenturePublicationNestedInput
     claps?: PublicationClapUpdateManyWithoutVenturePublicationNestedInput
     contents?: PublicationContentUpdateManyWithoutVenturePublicationNestedInput
   }
@@ -40871,7 +41871,7 @@ export namespace Prisma {
     clapsCount?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    comments?: CommentUncheckedUpdateManyWithoutVenturePublicationNestedInput
+    comments?: PublicationCommentUncheckedUpdateManyWithoutVenturePublicationNestedInput
     claps?: PublicationClapUncheckedUpdateManyWithoutVenturePublicationNestedInput
     contents?: PublicationContentUncheckedUpdateManyWithoutVenturePublicationNestedInput
   }
@@ -40890,12 +41890,12 @@ export namespace Prisma {
     monthlyAmount?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutVentureSponsorshipsNestedInput
+    user?: UserDetailUpdateOneRequiredWithoutSponsorshipsNestedInput
   }
 
   export type VentureSponsorshipUncheckedUpdateWithoutDetailInput = {
     id?: StringFieldUpdateOperationsInput | string
-    sponsorId?: StringFieldUpdateOperationsInput | string
+    sponsorDetailId?: StringFieldUpdateOperationsInput | string
     monthlyAmount?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -40903,7 +41903,7 @@ export namespace Prisma {
 
   export type VentureSponsorshipUncheckedUpdateManyWithoutDetailInput = {
     id?: StringFieldUpdateOperationsInput | string
-    sponsorId?: StringFieldUpdateOperationsInput | string
+    sponsorDetailId?: StringFieldUpdateOperationsInput | string
     monthlyAmount?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -40912,36 +41912,27 @@ export namespace Prisma {
   export type VentureSubscriptionUpdateWithoutDetailInput = {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutVentureSubscriptionsNestedInput
+    user?: UserDetailUpdateOneRequiredWithoutSubscriptionsNestedInput
   }
 
   export type VentureSubscriptionUncheckedUpdateWithoutDetailInput = {
     id?: StringFieldUpdateOperationsInput | string
-    subscriberId?: StringFieldUpdateOperationsInput | string
+    subscriberDetailId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type VentureSubscriptionUncheckedUpdateManyWithoutDetailInput = {
     id?: StringFieldUpdateOperationsInput | string
-    subscriberId?: StringFieldUpdateOperationsInput | string
+    subscriberDetailId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type EventDonationCreateManyEventInput = {
     id?: string
-    userId: string
+    donorDetailId: string
     amount: number
     currency: string
     createdAt?: Date | string
-  }
-
-  export type EventLocationCreateManyEventInput = {
-    id?: string
-    lat?: number | null
-    lng?: number | null
-    description?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
   }
 
   export type XEventCategoryCreateManyEventInput = {
@@ -40953,12 +41944,12 @@ export namespace Prisma {
     amount?: FloatFieldUpdateOperationsInput | number
     currency?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutEventDonationsNestedInput
+    donor?: UserDetailUpdateOneRequiredWithoutDonationsNestedInput
   }
 
   export type EventDonationUncheckedUpdateWithoutEventInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
+    donorDetailId?: StringFieldUpdateOperationsInput | string
     amount?: FloatFieldUpdateOperationsInput | number
     currency?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -40966,37 +41957,10 @@ export namespace Prisma {
 
   export type EventDonationUncheckedUpdateManyWithoutEventInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
+    donorDetailId?: StringFieldUpdateOperationsInput | string
     amount?: FloatFieldUpdateOperationsInput | number
     currency?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type EventLocationUpdateWithoutEventInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    lat?: NullableFloatFieldUpdateOperationsInput | number | null
-    lng?: NullableFloatFieldUpdateOperationsInput | number | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type EventLocationUncheckedUpdateWithoutEventInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    lat?: NullableFloatFieldUpdateOperationsInput | number | null
-    lng?: NullableFloatFieldUpdateOperationsInput | number | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type EventLocationUncheckedUpdateManyWithoutEventInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    lat?: NullableFloatFieldUpdateOperationsInput | number | null
-    lng?: NullableFloatFieldUpdateOperationsInput | number | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type XEventCategoryUpdateWithoutEventInput = {
@@ -41040,9 +42004,9 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type CommentCreateManyVenturePublicationInput = {
+  export type PublicationCommentCreateManyVenturePublicationInput = {
     id?: string
-    userId: string
+    authorDetailId: string
     body: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -41050,7 +42014,7 @@ export namespace Prisma {
 
   export type PublicationClapCreateManyVenturePublicationInput = {
     id?: string
-    userId: string
+    userDetailId: string
     createdAt?: Date | string
   }
 
@@ -41062,25 +42026,25 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
-  export type CommentUpdateWithoutVenturePublicationInput = {
+  export type PublicationCommentUpdateWithoutVenturePublicationInput = {
     id?: StringFieldUpdateOperationsInput | string
     body?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    User?: UserUpdateOneRequiredWithoutCommentsNestedInput
+    User?: UserDetailUpdateOneRequiredWithoutCommentsNestedInput
   }
 
-  export type CommentUncheckedUpdateWithoutVenturePublicationInput = {
+  export type PublicationCommentUncheckedUpdateWithoutVenturePublicationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
+    authorDetailId?: StringFieldUpdateOperationsInput | string
     body?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type CommentUncheckedUpdateManyWithoutVenturePublicationInput = {
+  export type PublicationCommentUncheckedUpdateManyWithoutVenturePublicationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
+    authorDetailId?: StringFieldUpdateOperationsInput | string
     body?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -41089,18 +42053,18 @@ export namespace Prisma {
   export type PublicationClapUpdateWithoutVenturePublicationInput = {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutPublicationClapsNestedInput
+    user?: UserDetailUpdateOneRequiredWithoutClapsNestedInput
   }
 
   export type PublicationClapUncheckedUpdateWithoutVenturePublicationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
+    userDetailId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type PublicationClapUncheckedUpdateManyWithoutVenturePublicationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
+    userDetailId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -41137,6 +42101,10 @@ export namespace Prisma {
      * @deprecated Use UserCountOutputTypeDefaultArgs instead
      */
     export type UserCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = UserCountOutputTypeDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use UserDetailCountOutputTypeDefaultArgs instead
+     */
+    export type UserDetailCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = UserDetailCountOutputTypeDefaultArgs<ExtArgs>
     /**
      * @deprecated Use DepartmentCountOutputTypeDefaultArgs instead
      */
@@ -41178,13 +42146,17 @@ export namespace Prisma {
      */
     export type UserArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = UserDefaultArgs<ExtArgs>
     /**
-     * @deprecated Use XUserPreferencesDefaultArgs instead
-     */
-    export type XUserPreferencesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = XUserPreferencesDefaultArgs<ExtArgs>
-    /**
      * @deprecated Use UserDetailDefaultArgs instead
      */
     export type UserDetailArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = UserDetailDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use UserContactDefaultArgs instead
+     */
+    export type UserContactArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = UserContactDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use XUserPreferencesDefaultArgs instead
+     */
+    export type XUserPreferencesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = XUserPreferencesDefaultArgs<ExtArgs>
     /**
      * @deprecated Use DepartmentDefaultArgs instead
      */
@@ -41194,9 +42166,9 @@ export namespace Prisma {
      */
     export type MunicipalityArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = MunicipalityDefaultArgs<ExtArgs>
     /**
-     * @deprecated Use CommentDefaultArgs instead
+     * @deprecated Use PublicationCommentDefaultArgs instead
      */
-    export type CommentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = CommentDefaultArgs<ExtArgs>
+    export type PublicationCommentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = PublicationCommentDefaultArgs<ExtArgs>
     /**
      * @deprecated Use EventCategoryDefaultArgs instead
      */

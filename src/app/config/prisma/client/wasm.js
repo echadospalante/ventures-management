@@ -132,13 +132,9 @@ exports.Prisma.UserScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   onboardingCompleted: 'onboardingCompleted',
-  userDetailId: 'userDetailId',
-  verified: 'verified'
-};
-
-exports.Prisma.XUserPreferencesScalarFieldEnum = {
-  userId: 'userId',
-  categoryId: 'categoryId'
+  detailId: 'detailId',
+  verified: 'verified',
+  contactId: 'contactId'
 };
 
 exports.Prisma.UserDetailScalarFieldEnum = {
@@ -146,6 +142,23 @@ exports.Prisma.UserDetailScalarFieldEnum = {
   gender: 'gender',
   birthDate: 'birthDate',
   municipalityId: 'municipalityId'
+};
+
+exports.Prisma.UserContactScalarFieldEnum = {
+  id: 'id',
+  phoneNumber: 'phoneNumber',
+  address: 'address',
+  facebookUrl: 'facebookUrl',
+  linkedinUrl: 'linkedinUrl',
+  twitterUrl: 'twitterUrl',
+  instagramUrl: 'instagramUrl',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.XUserPreferencesScalarFieldEnum = {
+  userId: 'userId',
+  categoryId: 'categoryId'
 };
 
 exports.Prisma.DepartmentScalarFieldEnum = {
@@ -163,9 +176,9 @@ exports.Prisma.MunicipalityScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
-exports.Prisma.CommentScalarFieldEnum = {
+exports.Prisma.PublicationCommentScalarFieldEnum = {
   id: 'id',
-  userId: 'userId',
+  authorDetailId: 'authorDetailId',
   publicationId: 'publicationId',
   body: 'body',
   createdAt: 'createdAt',
@@ -183,7 +196,7 @@ exports.Prisma.EventCategoryScalarFieldEnum = {
 
 exports.Prisma.EventDonationScalarFieldEnum = {
   id: 'id',
-  userId: 'userId',
+  donorDetailId: 'donorDetailId',
   eventId: 'eventId',
   amount: 'amount',
   currency: 'currency',
@@ -192,12 +205,9 @@ exports.Prisma.EventDonationScalarFieldEnum = {
 
 exports.Prisma.EventLocationScalarFieldEnum = {
   id: 'id',
-  ventureEventId: 'ventureEventId',
   lat: 'lat',
   lng: 'lng',
-  description: 'description',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  description: 'description'
 };
 
 exports.Prisma.VentureLocationScalarFieldEnum = {
@@ -213,7 +223,7 @@ exports.Prisma.VentureLocationScalarFieldEnum = {
 exports.Prisma.NotificationScalarFieldEnum = {
   id: 'id',
   title: 'title',
-  userId: 'userId',
+  userDetailId: 'userDetailId',
   type: 'type',
   status: 'status',
   description: 'description',
@@ -223,7 +233,7 @@ exports.Prisma.NotificationScalarFieldEnum = {
 
 exports.Prisma.PublicationClapScalarFieldEnum = {
   id: 'id',
-  userId: 'userId',
+  userDetailId: 'userDetailId',
   publicationId: 'publicationId',
   createdAt: 'createdAt'
 };
@@ -251,19 +261,19 @@ exports.Prisma.VentureScalarFieldEnum = {
   slug: 'slug',
   coverPhoto: 'coverPhoto',
   description: 'description',
-  ownerId: 'ownerId',
   active: 'active',
   verified: 'verified',
   detailId: 'detailId',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  ownerDetailId: 'ownerDetailId',
+  locationId: 'locationId',
+  ventureId: 'ventureId'
 };
 
 exports.Prisma.VentureContactScalarFieldEnum = {
   id: 'id',
-  ventureId: 'ventureId',
   email: 'email',
-  phoneCode: 'phoneCode',
   phoneNumber: 'phoneNumber',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -298,7 +308,8 @@ exports.Prisma.VentureEventScalarFieldEnum = {
   startDate: 'startDate',
   endDate: 'endDate',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  locationId: 'locationId'
 };
 
 exports.Prisma.VenturePublicationScalarFieldEnum = {
@@ -313,7 +324,7 @@ exports.Prisma.VenturePublicationScalarFieldEnum = {
 
 exports.Prisma.VentureSponsorshipScalarFieldEnum = {
   id: 'id',
-  sponsorId: 'sponsorId',
+  sponsorDetailId: 'sponsorDetailId',
   ventureDetailId: 'ventureDetailId',
   monthlyAmount: 'monthlyAmount',
   createdAt: 'createdAt',
@@ -322,7 +333,7 @@ exports.Prisma.VentureSponsorshipScalarFieldEnum = {
 
 exports.Prisma.VentureSubscriptionScalarFieldEnum = {
   id: 'id',
-  subscriberId: 'subscriberId',
+  subscriberDetailId: 'subscriberDetailId',
   ventureId: 'ventureId',
   createdAt: 'createdAt'
 };
@@ -355,13 +366,16 @@ exports.Prisma.NullsOrder = {
 };
 exports.NotificationType = exports.$Enums.NotificationType = {
   WELCOME: 'WELCOME',
+  REGISTER_COMPLETED: 'REGISTER_COMPLETED',
   ACCOUNT_VERIFIED: 'ACCOUNT_VERIFIED',
+  ACCOUNT_UNVERIFIED: 'ACCOUNT_UNVERIFIED',
   ACCOUNT_LOCKED: 'ACCOUNT_LOCKED',
   ACCOUNT_UNLOCKED: 'ACCOUNT_UNLOCKED',
-  NEW_FOLLOWER: 'NEW_FOLLOWER',
-  NEW_COMMENT: 'NEW_COMMENT',
+  LOGIN: 'LOGIN',
+  NEW_SUBSCRIPTION: 'NEW_SUBSCRIPTION',
   NEW_SPONSOR: 'NEW_SPONSOR',
-  NEW_DONATION: 'NEW_DONATION'
+  NEW_DONATION: 'NEW_DONATION',
+  NEW_COMMENT: 'NEW_COMMENT'
 };
 
 exports.NotificationStatus = exports.$Enums.NotificationStatus = {
@@ -385,20 +399,21 @@ exports.AppRole = exports.$Enums.AppRole = {
 };
 
 exports.PublicationType = exports.$Enums.PublicationType = {
-  TEXTUAL: 'TEXTUAL',
-  VIDEO: 'VIDEO',
-  IMAGE: 'IMAGE',
+  STANDARD: 'STANDARD',
   ANNOUNCEMENT: 'ANNOUNCEMENT',
-  ACHIEVEMENT: 'ACHIEVEMENT'
+  ACHIEVEMENT: 'ACHIEVEMENT',
+  PROMOTION: 'PROMOTION',
+  BEHIND_THE_SCENES: 'BEHIND_THE_SCENES'
 };
 
 exports.Prisma.ModelName = {
   User: 'User',
-  XUserPreferences: 'XUserPreferences',
   UserDetail: 'UserDetail',
+  UserContact: 'UserContact',
+  XUserPreferences: 'XUserPreferences',
   Department: 'Department',
   Municipality: 'Municipality',
-  Comment: 'Comment',
+  PublicationComment: 'PublicationComment',
   EventCategory: 'EventCategory',
   EventDonation: 'EventDonation',
   EventLocation: 'EventLocation',
