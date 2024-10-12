@@ -1,15 +1,77 @@
 import { Injectable } from '@nestjs/common';
 
-import { ComplexInclude, VentureCategory } from 'echadospalante-core';
+import {
+  ComplexInclude,
+  Pagination,
+  VentureCategory,
+} from 'echadospalante-core';
 
 import { PrismaConfig } from '../../../../config/prisma/prisma.connection';
 import { VentureCategoriesRepository } from '../../domain/gateway/database/venture-categories.repository';
+import { VentureCategoryFilters } from '../../domain/core/venture-category-filter';
+import { VentureFilters } from '../../domain/core/venture-filters';
 
 @Injectable()
 export class VentureCategoriesRepositoryImpl
   implements VentureCategoriesRepository
 {
-  public constructor(private prismaClient: PrismaConfig) {}
+  public constructor(private readonly prismaClient: PrismaConfig) {}
+
+  public count(filters: VentureFilters): Promise<number> {
+    return this.prismaClient.client.ventureCategory
+      .count({
+        where: {
+          OR: [
+            {
+              name: {
+                contains: filters.search ?? '',
+                mode: 'insensitive',
+              },
+            },
+            {
+              description: {
+                contains: filters.search ?? '',
+                mode: 'insensitive',
+              },
+            },
+          ],
+        },
+      })
+      .then((count) => count);
+  }
+
+  public findAllByCriteria(
+    filters: VentureCategoryFilters,
+    include: Partial<ComplexInclude<VentureCategory>>,
+    pagination: Pagination,
+  ): Promise<VentureCategory[]> {
+    return this.prismaClient.client.ventureCategory
+      .findMany({
+        where: {
+          OR: [
+            {
+              name: {
+                contains: filters.search ?? '',
+                mode: 'insensitive',
+              },
+            },
+            {
+              description: {
+                contains: filters.search ?? '',
+                mode: 'insensitive',
+              },
+            },
+          ],
+        },
+        take: pagination.take,
+        skip: pagination.skip,
+        include,
+      })
+      .then(
+        (ventureCategories) =>
+          ventureCategories as unknown as VentureCategory[],
+      );
+  }
 
   public existsBySlug(slug: string): Promise<boolean> {
     return this.prismaClient.client.ventureCategory

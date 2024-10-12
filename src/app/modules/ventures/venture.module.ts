@@ -14,13 +14,16 @@ import { VentureCategoriesRepositoryImpl } from './infrastructure/database/ventu
 import { VenturesRepositoryImpl } from './infrastructure/database/venture.repository';
 import { UserHttpAdapter } from './infrastructure/http/http.service';
 import { VenturesController } from './infrastructure/web/v1/venture.controller';
+import { VentureCategoriesController } from './infrastructure/web/v1/venture-categories.controller';
+import { VentureCategoriesService } from './domain/service/venture-categories.service';
 
 @Module({
-  controllers: [VenturesController],
+  controllers: [VenturesController, VentureCategoriesController],
   providers: [
     PrismaConfig,
     RabbitMQConfig,
     VenturesService,
+    VentureCategoriesService,
     {
       provide: VenturesRepository,
       useClass: VenturesRepositoryImpl,

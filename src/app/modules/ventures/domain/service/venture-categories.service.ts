@@ -1,12 +1,19 @@
 import { ConflictException, Inject, Injectable, Logger } from '@nestjs/common';
 
-import { VentureCategory } from 'echadospalante-core';
+import {
+  ComplexInclude,
+  Pagination,
+  VentureCategory,
+} from 'echadospalante-core';
 
 import { VentureCategoriesRepository } from '../gateway/database/venture-categories.repository';
 import { stringToSlug } from '../../../../helpers/functions/slug-generator';
+import { VentureCategoryFilters } from '../core/venture-category-filter';
+import { VentureFilters } from '../core/venture-filters';
 
 @Injectable()
 export class VentureCategoriesService {
+  
   private readonly logger: Logger = new Logger(VentureCategoriesService.name);
 
   public constructor(
@@ -14,9 +21,19 @@ export class VentureCategoriesService {
     private readonly usersRepository: VentureCategoriesRepository,
   ) {}
 
-  public getVentureCategories(): Promise<VentureCategory[]> {
-    this.logger.log('Getting all venture categories');
-    return this.usersRepository.findAll({});
+  public getVentureCategories(
+     filters: VentureCategoryFilters,
+     include: ComplexInclude<VentureCategory>,
+     pagination: Pagination,
+  ): Promise<VentureCategory[]> {
+    console.log(JSON.stringify({filters, include, pagination}));
+    this.logger.log('Getting venture categories');
+    return this.usersRepository.findAllByCriteria(filters, include, pagination);
+  }
+
+  public countVentureCategories(filters: VentureFilters) {
+    this.logger.log('Counting venture categories');
+    return this.usersRepository.count(filters);
   }
 
   public async createVentureCategory(
