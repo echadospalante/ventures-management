@@ -71,7 +71,9 @@ export default class VenturesQueryDto {
     const include: ComplexInclude<Venture> = {
       categories: query.includeCategories,
       detail: query.includeDetail,
-      owner: query.includeOwner,
+      ownerDetail: false,
+      contact: false,
+      location: false,
     };
 
     const pagination: Pagination = {

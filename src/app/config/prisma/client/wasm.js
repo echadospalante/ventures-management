@@ -132,9 +132,9 @@ exports.Prisma.UserScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   onboardingCompleted: 'onboardingCompleted',
-  detailId: 'detailId',
   verified: 'verified',
-  contactId: 'contactId'
+  contactId: 'contactId',
+  detailId: 'detailId'
 };
 
 exports.Prisma.UserDetailScalarFieldEnum = {
@@ -196,11 +196,11 @@ exports.Prisma.EventCategoryScalarFieldEnum = {
 
 exports.Prisma.EventDonationScalarFieldEnum = {
   id: 'id',
-  donorDetailId: 'donorDetailId',
   eventId: 'eventId',
   amount: 'amount',
   currency: 'currency',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  donorDetailId: 'donorDetailId'
 };
 
 exports.Prisma.EventLocationScalarFieldEnum = {
@@ -223,19 +223,19 @@ exports.Prisma.VentureLocationScalarFieldEnum = {
 exports.Prisma.NotificationScalarFieldEnum = {
   id: 'id',
   title: 'title',
-  userDetailId: 'userDetailId',
   type: 'type',
   status: 'status',
   description: 'description',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  userDetailId: 'userDetailId'
 };
 
 exports.Prisma.PublicationClapScalarFieldEnum = {
   id: 'id',
-  userDetailId: 'userDetailId',
   publicationId: 'publicationId',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  userDetailId: 'userDetailId'
 };
 
 exports.Prisma.PublicationContentScalarFieldEnum = {
@@ -266,8 +266,8 @@ exports.Prisma.VentureScalarFieldEnum = {
   detailId: 'detailId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  ownerDetailId: 'ownerDetailId',
   locationId: 'locationId',
+  ownerDetailId: 'ownerDetailId',
   ventureId: 'ventureId'
 };
 
@@ -324,18 +324,18 @@ exports.Prisma.VenturePublicationScalarFieldEnum = {
 
 exports.Prisma.VentureSponsorshipScalarFieldEnum = {
   id: 'id',
-  sponsorDetailId: 'sponsorDetailId',
   ventureDetailId: 'ventureDetailId',
   monthlyAmount: 'monthlyAmount',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  sponsorDetailId: 'sponsorDetailId'
 };
 
 exports.Prisma.VentureSubscriptionScalarFieldEnum = {
   id: 'id',
-  subscriberDetailId: 'subscriberDetailId',
   ventureId: 'ventureId',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  subscriberDetailId: 'subscriberDetailId'
 };
 
 exports.Prisma.XEventCategoryScalarFieldEnum = {

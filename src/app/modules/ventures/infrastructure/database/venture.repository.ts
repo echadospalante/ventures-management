@@ -62,60 +62,60 @@ export class VenturesRepositoryImpl implements VenturesRepository {
     });
   }
 
-  public findAllByCriteria(
-    filters: VentureFilters,
-    include: Partial<ComplexInclude<Venture>>,
-    pagination?: Pagination,
-  ): Promise<Venture[]> {
-    const {
-      search,
-      categoryId,
-      departmentId,
-      municipalityId,
-      point,
-      radius,
-      ownerId,
-    } = filters;
+  // public findAllByCriteria(
+  //   filters: VentureFilters,
+  //   include: Partial<ComplexInclude<Venture>>,
+  //   pagination?: Pagination,
+  // ): Promise<Venture[]> {
+  //   const {
+  //     search,
+  //     categoryId,
+  //     departmentId,
+  //     municipalityId,
+  //     point,
+  //     radius,
+  //     ownerId,
+  //   } = filters;
 
-    return this.prismaClient.client.venture.findMany({
-      where: {
-        AND: {
-          OR: [
-            { name: { contains: search } },
-            { description: { contains: search } },
-            { owner: { firstName: { contains: search } } },
-            { owner: { lastName: { contains: search } } },
-            { owner: { email: { contains: search } } },
-          ],
-        },
-        categories: {
-          some: {
-            id: categoryId,
-          },
-        },
-      },
-    });
-  }
+  //   return this.prismaClient.client.venture.findMany({
+  //     where: {
+  //       AND: {
+  //         OR: [
+  //           { name: { contains: search } },
+  //           { description: { contains: search } },
+  //           // { owner: { firstName: { contains: search } } },
+  //           // { owner: { lastName: { contains: search } } },
+  //           // { owner: { email: { contains: search } } },
+  //         ],
+  //       },
+  //       // categories: {
+  //       //   some: {
+  //       //     id: categoryId,
+  //       //   },
+  //       // },
+  //     },
+  //   });
+  // }
 
   public deleteByEmail(id: string): Promise<void> {
     throw new Error('Method not implemented.');
   }
 
-  public save(venture: Venture): Promise<Venture> {
-    return this.prismaClient.client.venture.create({
-      data: {
-        ...venture,
-        owner: {
-          connect: {
-            id: venture.owner.id,
-          },
-        },
-        detail: {
-          create: venture.detail,
-        },
-      },
-    });
-  }
+  // public save(venture: Venture): Promise<Venture> {
+  //   return this.prismaClient.client.venture.create({
+  //     data: {
+  //       ...venture,
+  //       owner: {
+  //         connect: {
+  //           id: venture.owner.id,
+  //         },
+  //       },
+  //       detail: {
+  //         create: venture.detail,
+  //       },
+  //     },
+  //   });
+  // }
 
   public findAll(
     include: Partial<ComplexInclude<Venture>>,

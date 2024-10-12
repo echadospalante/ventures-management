@@ -4,7 +4,6 @@ import { ConfigModule } from '@nestjs/config';
 import { RabbitMQConfig } from '../../config/amqp/amqp.connection';
 import { PrismaConfig } from '../../config/prisma/prisma.connection';
 import { SharedModule } from '../shared/shared.module';
-import { CreateUserInterceptor } from './application/interceptors/create-user.interceptor';
 import { VentureAMQPProducer } from './domain/gateway/amqp/venture.amqp';
 import { VentureCategoriesRepository } from './domain/gateway/database/venture-categories.repository';
 import { VenturesRepository } from './domain/gateway/database/ventures.repository';
@@ -21,7 +20,6 @@ import { VenturesController } from './infrastructure/web/v1/venture.controller';
   providers: [
     PrismaConfig,
     RabbitMQConfig,
-    CreateUserInterceptor,
     VenturesService,
     {
       provide: VenturesRepository,

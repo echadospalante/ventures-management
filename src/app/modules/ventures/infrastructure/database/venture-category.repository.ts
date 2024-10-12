@@ -20,7 +20,7 @@ export class VentureCategoriesRepositoryImpl
   }
 
   public findManyById(
-    ids: number[],
+    ids: string[],
     include: Partial<ComplexInclude<VentureCategory>>,
   ): Promise<VentureCategory[]> {
     return this.prismaClient.client.ventureCategory

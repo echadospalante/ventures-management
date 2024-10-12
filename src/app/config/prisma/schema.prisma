@@ -9,39 +9,38 @@ datasource db {
 }
 
 model User {
-  id                  String                @id @default(cuid())
+  id                  String             @id @default(cuid())
   picture             String
-  email               String                @unique
+  email               String             @unique
   firstName           String
   lastName            String
-  active              Boolean               @default(true)
-  createdAt           DateTime              @default(now())
-  updatedAt           DateTime              @default(now()) @updatedAt
-  onboardingCompleted Boolean               @default(false)
-  detailId            String?               @unique
-  verified            Boolean               @default(false)
-  detail              UserDetail?           @relation(fields: [detailId], references: [id])
-  contact             UserContact?          @relation(fields: [contactId], references: [id])
-  contactId           String?               @unique
-  
+  active              Boolean            @default(true)
+  createdAt           DateTime           @default(now())
+  updatedAt           DateTime           @default(now()) @updatedAt
+  onboardingCompleted Boolean            @default(false)
+  verified            Boolean            @default(false)
+  contactId           String?            @unique
+  detailId            String?            @unique
+  contact             UserContact?       @relation(fields: [contactId], references: [id])
+  detail              UserDetail?        @relation(fields: [detailId], references: [id])
   XUserPreferences    XUserPreferences[]
   XUserRoles          XUserRoles[]
-  preferences         VentureCategory[]     @relation("XUserPreferences")
-  roles               Role[]                @relation("XUserRoles")
+  preferences         VentureCategory[]  @relation("XUserPreferences")
+  roles               Role[]             @relation("XUserRoles")
 }
 
 model UserDetail {
-  id             String       @id @default(cuid())
+  id             String                @id @default(cuid())
   gender         String
   birthDate      DateTime
   municipalityId Int
-  user           User?
-  municipality   Municipality @relation(fields: [municipalityId], references: [id])
-  ventures       Venture[]
-  comments       PublicationComment[]
   donations      EventDonation[]
   notifications  Notification[]
   claps          PublicationClap[]
+  comments       PublicationComment[]
+  user           User?
+  municipality   Municipality          @relation(fields: [municipalityId], references: [id])
+  ventures       Venture[]
   sponsorships   VentureSponsorship[]
   subscriptions  VentureSubscription[]
 }
@@ -54,7 +53,8 @@ model UserContact {
   linkedinUrl  String
   twitterUrl   String
   instagramUrl String
-  updatedAt    DateTime @default(now())  @updatedAt
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now()) @updatedAt
   user         User?
 }
 
@@ -67,12 +67,11 @@ model XUserPreferences {
   @@id([userId, categoryId])
 }
 
-
 model Department {
   id             Int            @id @default(autoincrement())
   name           String
   createdAt      DateTime       @default(now())
-  updatedAt      DateTime       @default(now())  @updatedAt
+  updatedAt      DateTime       @default(now()) @updatedAt
   municipalities Municipality[]
 }
 
@@ -81,20 +80,20 @@ model Municipality {
   name         String
   departmentId Int
   createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @default(now())  @updatedAt
+  updatedAt    DateTime     @default(now()) @updatedAt
   department   Department   @relation(fields: [departmentId], references: [id])
   userDetails  UserDetail[]
 }
 
 model PublicationComment {
   id                 String             @id @default(cuid())
-  authorDetailId             String
+  authorDetailId     String
   publicationId      String
   body               String
   createdAt          DateTime           @default(now())
-  updatedAt          DateTime           @default(now())  @updatedAt
-  venturePublication VenturePublication @relation(fields: [publicationId], references: [id])
+  updatedAt          DateTime           @default(now()) @updatedAt
   User               UserDetail         @relation(fields: [authorDetailId], references: [id])
+  venturePublication VenturePublication @relation(fields: [publicationId], references: [id])
 }
 
 model EventCategory {
@@ -103,28 +102,28 @@ model EventCategory {
   slug           String           @unique
   description    String
   createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @default(now())  @updatedAt
+  updatedAt      DateTime         @default(now()) @updatedAt
   XEventCategory XEventCategory[]
   ventureEvent   VentureEvent[]   @relation("XEventCategory")
 }
 
 model EventDonation {
-  id         String       @id @default(cuid())
-  donorDetailId     String
-  eventId    String
-  amount     Float
-  currency   String
-  createdAt  DateTime     @default(now())
-  event      VentureEvent @relation(fields: [eventId], references: [id])
-  donor      UserDetail         @relation(fields: [donorDetailId], references: [id])
+  id            String       @id @default(cuid())
+  eventId       String
+  amount        Float
+  currency      String
+  createdAt     DateTime     @default(now())
+  donorDetailId String
+  donor         UserDetail   @relation(fields: [donorDetailId], references: [id])
+  event         VentureEvent @relation(fields: [eventId], references: [id])
 }
 
 model EventLocation {
-  id             String       @id @default(cuid())
-  lat            Float?
-  lng            Float?
-  description    String?
-  event          VentureEvent?
+  id          String        @id @default(cuid())
+  lat         Float?
+  lng         Float?
+  description String?
+  event       VentureEvent?
 }
 
 model VentureLocation {
@@ -134,29 +133,29 @@ model VentureLocation {
   lng         Float?
   description String?
   createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now())  @updatedAt
+  updatedAt   DateTime @default(now()) @updatedAt
   venture     Venture?
 }
 
 model Notification {
   id           String             @id @default(cuid())
   title        String
-  userDetailId String
   type         NotificationType
   status       NotificationStatus
   description  String
   createdAt    DateTime           @default(now())
-  updatedAt    DateTime           @default(now())  @updatedAt
-  user         UserDetail               @relation(fields: [userDetailId], references: [id])
+  updatedAt    DateTime           @default(now()) @updatedAt
+  userDetailId String
+  user         UserDetail         @relation(fields: [userDetailId], references: [id])
 }
 
 model PublicationClap {
   id                 String             @id @default(cuid())
-  userDetailId       String
   publicationId      String
   createdAt          DateTime           @default(now())
+  userDetailId       String
   venturePublication VenturePublication @relation(fields: [publicationId], references: [id])
-  user               UserDetail               @relation(fields: [userDetailId], references: [id])
+  user               UserDetail         @relation(fields: [userDetailId], references: [id])
 }
 
 model PublicationContent {
@@ -165,7 +164,7 @@ model PublicationContent {
   content            String
   publicationId      String
   createdAt          DateTime           @default(now())
-  updatedAt          DateTime           @default(now())  @updatedAt
+  updatedAt          DateTime           @default(now()) @updatedAt
   venturePublication VenturePublication @relation(fields: [publicationId], references: [id])
 }
 
@@ -174,7 +173,7 @@ model Role {
   name       AppRole      @unique
   label      String       @default("")
   createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @default(now())  @updatedAt
+  updatedAt  DateTime     @default(now()) @updatedAt
   XUserRoles XUserRoles[]
   users      User[]       @relation("XUserRoles")
 }
@@ -189,25 +188,25 @@ model Venture {
   verified                Boolean                   @default(false)
   detailId                String                    @unique
   createdAt               DateTime                  @default(now())
-  updatedAt               DateTime                  @default(now())  @updatedAt
-  detail                  VentureDetail             @relation(fields: [detailId], references: [id])
-  ownerDetail             UserDetail                @relation(fields: [ownerDetailId], references: [id])
+  updatedAt               DateTime                  @default(now()) @updatedAt
+  locationId              String                    @unique
   ownerDetailId           String
-  categories              VentureCategory[]         @relation("XVentureVencureCategory")
-  location                VentureLocation          @relation(fields: [locationId], references: [id])
-  locationId              String                   @unique
-  contact                 VentureContact @relation(fields: [ventureId], references: [id])
   ventureId               String                    @unique
+  detail                  VentureDetail             @relation(fields: [detailId], references: [id])
+  location                VentureLocation           @relation(fields: [locationId], references: [id])
+  ownerDetail             UserDetail                @relation(fields: [ownerDetailId], references: [id])
+  contact                 VentureContact            @relation(fields: [ventureId], references: [id])
   XVentureVencureCategory XVentureVencureCategory[]
+  categories              VentureCategory[]         @relation("XVentureVencureCategory")
 }
 
 model VentureContact {
   id          String   @id @default(cuid())
   email       String
   phoneNumber String
-  venture     Venture?  
   createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now())  @updatedAt
+  updatedAt   DateTime @default(now()) @updatedAt
+  venture     Venture?
 }
 
 model XVentureVencureCategory {
@@ -220,31 +219,31 @@ model XVentureVencureCategory {
 }
 
 model VentureCategory {
-  id                      String                    @id
+  id                      String                    @id @default(cuid())
   name                    String
   slug                    String                    @unique
   description             String
   createdAt               DateTime                  @default(now())
-  updatedAt               DateTime                  @default(now())  @updatedAt
-  users                   User[]                    @relation("XUserPreferences")
-  ventures                Venture[]                 @relation("XVentureVencureCategory")
+  updatedAt               DateTime                  @default(now()) @updatedAt
   XUserPreferences        XUserPreferences[]
   XVentureVencureCategory XVentureVencureCategory[]
+  users                   User[]                    @relation("XUserPreferences")
+  ventures                Venture[]                 @relation("XVentureVencureCategory")
 }
 
 model VentureDetail {
   id            String                @id @default(cuid())
+  createdAt     DateTime              @default(now())
+  updatedAt     DateTime              @default(now()) @updatedAt
   venture       Venture?
   events        VentureEvent[]
   publications  VenturePublication[]
   sponsorships  VentureSponsorship[]
   subscriptions VentureSubscription[]
-  createdAt     DateTime              @default(now())
-  updatedAt     DateTime              @default(now())  @updatedAt
 }
 
 model VentureEvent {
-  id             String           @id
+  id             String           @id @default(cuid())
   title          String
   description    String
   coverPhoto     String
@@ -252,47 +251,47 @@ model VentureEvent {
   startDate      DateTime
   endDate        DateTime
   createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @default(now())  @updatedAt
+  updatedAt      DateTime         @default(now()) @updatedAt
+  locationId     String           @unique
   donations      EventDonation[]
-  location       EventLocation    @relation(fields: [locationId], references: [id]) 
-  locationId     String           @unique 
+  location       EventLocation    @relation(fields: [locationId], references: [id])
   ventureDetail  VentureDetail    @relation(fields: [ventureId], references: [id])
   XEventCategory XEventCategory[]
   EventCategory  EventCategory[]  @relation("XEventCategory")
 }
 
 model VenturePublication {
-  id          String               @id
+  id          String               @id @default(cuid())
   description String
   type        PublicationType
   clapsCount  Int
   createdAt   DateTime             @default(now())
-  updatedAt   DateTime             @default(now())  @updatedAt
+  updatedAt   DateTime             @default(now()) @updatedAt
   detailId    String
-  comments    PublicationComment[]
   claps       PublicationClap[]
+  comments    PublicationComment[]
   contents    PublicationContent[]
   detail      VentureDetail        @relation(fields: [detailId], references: [id])
 }
 
 model VentureSponsorship {
-  id              String        @id
-  sponsorDetailId       String
+  id              String        @id @default(cuid())
   ventureDetailId String
   monthlyAmount   Float
   createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @default(now())  @updatedAt
-  user            UserDetail          @relation(fields: [sponsorDetailId], references: [id])
+  updatedAt       DateTime      @default(now()) @updatedAt
+  sponsorDetailId String
+  user            UserDetail    @relation(fields: [sponsorDetailId], references: [id])
   detail          VentureDetail @relation(fields: [ventureDetailId], references: [id])
 }
 
 model VentureSubscription {
-  id           String        @id
+  id                 String        @id @default(cuid())
+  ventureId          String
+  createdAt          DateTime      @default(now())
   subscriberDetailId String
-  ventureId    String
-  createdAt    DateTime      @default(now())
-  user         UserDetail          @relation(fields: [subscriberDetailId], references: [id])
-  detail       VentureDetail @relation(fields: [ventureId], references: [id])
+  user               UserDetail    @relation(fields: [subscriberDetailId], references: [id])
+  detail             VentureDetail @relation(fields: [ventureId], references: [id])
 }
 
 model XEventCategory {

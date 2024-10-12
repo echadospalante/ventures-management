@@ -11,7 +11,7 @@ export class VentureCategoriesService {
 
   public constructor(
     @Inject(VentureCategoriesRepository)
-    private usersRepository: VentureCategoriesRepository,
+    private readonly usersRepository: VentureCategoriesRepository,
   ) {}
 
   public getVentureCategories(): Promise<VentureCategory[]> {
@@ -24,9 +24,9 @@ export class VentureCategoriesService {
     description: string,
   ): Promise<VentureCategory> {
     this.logger.log(`Creating venture category ${name}`);
-    const existsByName = await this.usersRepository.findByName(name, {});
+    const category = await this.usersRepository.findByName(name, {});
     const slug = stringToSlug(name);
-    if (existsByName)
+    if (category)
       throw new ConflictException('Venture category already exists');
 
     const existsBySlug = await this.usersRepository.existsBySlug(name);

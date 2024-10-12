@@ -15,26 +15,26 @@ export class VenturesController {
 
   public constructor(private readonly venturesService: VenturesService) {}
 
-  @Http.Get()
-  @Http.HttpCode(Http.HttpStatus.OK)
-  public async getVentures(@Http.Query() query: VenturesQueryDto) {
-    const { include, pagination, filters } = VenturesQueryDto.parseQuery(query);
-    console.log({ filters });
-    const [items, total] = await Promise.all([
-      this.venturesService.getVentures(filters, include, pagination),
-      0,
-    ]);
-    return { items, total };
-  }
+  // @Http.Get()
+  // @Http.HttpCode(Http.HttpStatus.OK)
+  // public async getVentures(@Http.Query() query: VenturesQueryDto) {
+  //   const { include, pagination, filters } = VenturesQueryDto.parseQuery(query);
+  //   console.log({ filters });
+  //   const [items, total] = await Promise.all([
+  //     this.venturesService.getVentures(filters, include, pagination),
+  //     0,
+  //   ]);
+  //   return { items, total };
+  // }
 
-  @Http.Post()
-  @Http.HttpCode(Http.HttpStatus.CREATED)
-  public createVenture(
-    @Http.UploadedFile() image: Express.Multer.File,
-    @Http.Body() ventureCreateDto: VentureCreateDto,
-  ): Promise<Venture> {
-    return this.venturesService.saveVenture(ventureCreateDto, image);
-  }
+  // @Http.Post()
+  // @Http.HttpCode(Http.HttpStatus.CREATED)
+  // public createVenture(
+  //   @Http.UploadedFile() image: Express.Multer.File,
+  //   @Http.Body() ventureCreateDto: VentureCreateDto,
+  // ): Promise<Venture> {
+  //   return this.venturesService.saveVenture(ventureCreateDto, image);
+  // }
 
   // @Http.Put('/enable/:email')
   // @Http.HttpCode(Http.HttpStatus.ACCEPTED)
@@ -88,9 +88,9 @@ export class VenturesController {
   //   return this.venturesService.deleteVentureByEmail(email);
   // }
 
-  @Http.Get('/:slug')
-  @Http.HttpCode(Http.HttpStatus.OK)
-  public getVentureByEmail(@Http.Param('slug') slug: string): Promise<Venture> {
-    return this.venturesService.getVentureBySlug(slug);
-  }
+  // @Http.Get('/:slug')
+  // @Http.HttpCode(Http.HttpStatus.OK)
+  // public getVentureByEmail(@Http.Param('slug') slug: string): Promise<Venture> {
+  //   return this.venturesService.getVentureBySlug(slug);
+  // }
 }

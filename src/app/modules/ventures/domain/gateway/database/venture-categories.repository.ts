@@ -11,7 +11,7 @@ export interface VentureCategoriesRepository {
     include: Partial<ComplexInclude<VentureCategory>>,
   ): Promise<VentureCategory[]>;
   findManyById(
-    id: number[],
+    id: string[],
     include: Partial<ComplexInclude<VentureCategory>>,
   ): Promise<VentureCategory[]>;
   findByName(

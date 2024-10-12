@@ -9,4 +9,5 @@ export const environment = () => ({
   // --------------------------------------------------------------
   // --------------------------------------------------------------
   RABBIT_URI: process.env.RABBIT_URI,
+  PROJECT_NAME: process.env.PROJECT_NAME,
 });

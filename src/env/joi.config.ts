@@ -6,6 +6,7 @@ export interface EnvironmentSetup {
   METRICS_PORT: string;
   DATABASE_URL: string;
   RABBIT_URI: string;
+  PROJECT_ID: string;
 }
 
 export const JoiValidationSchema = Joi.object<EnvironmentSetup>({
@@ -18,4 +19,5 @@ export const JoiValidationSchema = Joi.object<EnvironmentSetup>({
   DATABASE_URL: Joi.string().required(),
   // --------------------------------------------------------------
   RABBIT_URI: Joi.string().required(),
+  PROJECT_ID: Joi.string().required(),
 });
