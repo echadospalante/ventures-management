@@ -22,11 +22,10 @@ export class VentureCategoriesService {
   ) {}
 
   public getVentureCategories(
-     filters: VentureCategoryFilters,
-     include: ComplexInclude<VentureCategory>,
-     pagination: Pagination,
+    filters: VentureCategoryFilters,
+    include: ComplexInclude<VentureCategory>,
+    pagination: Pagination,
   ): Promise<VentureCategory[]> {
-    console.log(JSON.stringify({filters, include, pagination}));
     this.logger.log('Getting venture categories');
     return this.usersRepository.findAllByCriteria(filters, include, pagination);
   }

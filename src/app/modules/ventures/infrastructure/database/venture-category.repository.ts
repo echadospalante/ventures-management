@@ -63,8 +63,8 @@ export class VentureCategoriesRepositoryImpl
             },
           ],
         },
-        take: pagination.take,
-        skip: pagination.skip,
+        take: pagination.take === -1 ? undefined : pagination.take,
+        skip: pagination.skip === -1 ? undefined : pagination.skip,
         include,
       })
       .then(
