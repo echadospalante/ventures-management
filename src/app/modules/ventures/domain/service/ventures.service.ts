@@ -1,20 +1,13 @@
 import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
-
-import {
-  BasicType,
-  ComplexInclude,
-  Pagination,
-  Venture,
-} from 'echadospalante-core';
-
-import { stringToSlug } from 'src/app/helpers/functions/slug-generator';
-import VentureCreateDto from '../../infrastructure/web/v1/model/request/venture-create.dto';
-import { VentureFilters } from '../core/venture-filters';
+import { CdnService } from 'src/app/modules/shared/domain/service/cdn.service';
 import { VentureAMQPProducer } from '../gateway/amqp/venture.amqp';
 import { VentureCategoriesRepository } from '../gateway/database/venture-categories.repository';
 import { VenturesRepository } from '../gateway/database/ventures.repository';
-import { CdnService } from 'src/app/modules/shared/domain/service/cdn.service';
 import { UserHttpService } from '../gateway/http/http.gateway';
+import { VentureFilters } from '../core/venture-filters';
+import { BasicType, ComplexInclude, Pagination, Venture } from 'echadospalante-core';
+import VentureCreateDto from '../../infrastructure/web/v1/model/request/venture-create.dto';
+import { stringToSlug } from 'src/app/helpers/functions/slug-generator';
 
 @Injectable()
 export class VenturesService {
@@ -44,28 +37,6 @@ export class VenturesService {
     );
   }
 
-  public async getVentureById(ventureId: string): Promise<Venture> {
-    const venture = await this.venturesRepository.findById(ventureId, {
-      categories: true,
-      detail: false,
-      owner: true,
-    });
-    if (!venture) throw new NotFoundException('Venture not found');
-    return venture;
-  }
-
-  public async getVentureBySlug(slug: string): Promise<Venture> {
-    const venture = await this.venturesRepository.findBySlug(slug, {});
-    if (!venture) throw new NotFoundException('Venture not found');
-    return venture;
-  }
-
-  public async countVentures(
-    filters: Partial<BasicType<Venture>>,
-  ): Promise<number> {
-    return this.venturesRepository.countByCriteria(filters);
-  }
-
   public async saveVenture(
     venture: VentureCreateDto,
     coverPhoto: Express.Multer.File,
@@ -84,18 +55,40 @@ export class VenturesService {
     });
   }
 
+  // public async getVentureById(ventureId: string): Promise<Venture> {
+  //   const venture = await this.venturesRepository.findById(ventureId, {
+  //     categories: true,
+  //     detail: false,
+  //     owner: true,
+  //   });
+  //   if (!venture) throw new NotFoundException('Venture not found');
+  //   return venture;
+  // }
+
+  // public async getVentureBySlug(slug: string): Promise<Venture> {
+  //   const venture = await this.venturesRepository.findBySlug(slug, {});
+  //   if (!venture) throw new NotFoundException('Venture not found');
+  //   return venture;
+  // }
+
+  public async countVentures(
+    filters: VentureFilters
+  ): Promise<number> {
+    return this.venturesRepository.countByCriteria(filters);
+  }
+
   private async buildVentureToSave(
     venture: VentureCreateDto,
     coverPhoto: string,
   ): Promise<Venture> {
     let slug = stringToSlug(venture.name);
-    const ventureDB = await this.venturesRepository.existBySlug(slug);
+    const ventureDB = await this.venturesRepository.existsBySlug(slug);
     if (ventureDB) {
       slug = `${slug}-${crypto.randomUUID().substring(0, 8)}`;
     }
 
     const categories = await this.ventureCategoriesRepository.findManyById(
-      venture.categoryIds,
+      venture.categoriesIds,
       {},
     );
     const owner = await this.userHttpService.getUserByEmail(venture.ownerEmail);
@@ -108,7 +101,6 @@ export class VenturesService {
       ...venture,
       id: crypto.randomUUID(),
       slug,
-      owner,
       categories,
       coverPhoto,
       active: true,

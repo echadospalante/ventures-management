@@ -19,10 +19,9 @@ export class VenturesController {
   @Http.HttpCode(Http.HttpStatus.OK)
   public async getVentures(@Http.Query() query: VenturesQueryDto) {
     const { include, pagination, filters } = VenturesQueryDto.parseQuery(query);
-    console.log({ filters });
     const [items, total] = await Promise.all([
       this.venturesService.getVentures(filters, include, pagination),
-      0,
+      this.venturesService.countVentures(filters),
     ]);
     return { items, total };
   }
@@ -36,37 +35,34 @@ export class VenturesController {
     return this.venturesService.saveVenture(ventureCreateDto, image);
   }
 
-  // @Http.Put('/enable/:email')
+  // @Http.Put('/enable/:id')
   // @Http.HttpCode(Http.HttpStatus.ACCEPTED)
-  // public enableVenture(
-  //   @Http.Param('email') email: string,
-  // ): Promise<Venture | null> {
-  //   return this.venturesService.enableVenture(email);
+  // public enableVenture(@Http.Param('id') id: string): Promise<Venture | null> {
+  //   return this.venturesService.enableVenture(id);
   // }
 
-  // @Http.Put('/disable/:email')
+  // @Http.Put('/disable/:id')
   // @Http.HttpCode(Http.HttpStatus.ACCEPTED)
   // public disableVenture(
-  //   @Http.Param('email') email: string,
+  //   @Http.Param('id') id: string,
   // ): Promise<Venture | null> {
-  //   return this.venturesService.disableVenture(email);
+  //   return this.venturesService.disableVenture(id);
   // }
 
-  // @Http.Put('/verify/:email')
+  // @Http.Put('/verify/:id')
   // @Http.HttpCode(Http.HttpStatus.ACCEPTED)
   // public verifyVenture(
-  //   @Http.Param('email') email: string,
+  //   @Http.Param('id') id: string,
   // ): Promise<Venture | null> {
-  //   return this.venturesService.verifyVenture(email);
+  //   return this.venturesService.verifyVenture(id);
   // }
 
-  // @Http.Put('/unverify/:email')
+  // @Http.Put('/unverify/:id')
   // @Http.HttpCode(Http.HttpStatus.ACCEPTED)
   // public unverifyVenture(
-  //   @Http.Param('email') email: string,
+  //   @Http.Param('id') id: string,
   // ): Promise<Venture | null> {
-  //   console.log({ EMAIL: email });
-  //   return this.venturesService.unverifyVenture(email);
+  //   return this.venturesService.unverifyVenture(id);
   // }
 
   // @Http.Put('/image/:id')
@@ -88,9 +84,9 @@ export class VenturesController {
   //   return this.venturesService.deleteVentureByEmail(email);
   // }
 
-  @Http.Get('/:slug')
-  @Http.HttpCode(Http.HttpStatus.OK)
-  public getVentureByEmail(@Http.Param('slug') slug: string): Promise<Venture> {
-    return this.venturesService.getVentureBySlug(slug);
-  }
+  // @Http.Get('/:slug')
+  // @Http.HttpCode(Http.HttpStatus.OK)
+  // public getVentureByEmail(@Http.Param('slug') slug: string): Promise<Venture> {
+  //   return this.venturesService.getVentureBySlug(slug);
+  // }
 }

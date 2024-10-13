@@ -33,67 +33,59 @@ export class VentureAMQPProducerImpl implements VentureAMQPProducer {
     return [
       {
         queue: this.configService.getOrThrow<string>(
-          'RABBIT_USER_CREATED_QUEUE',
+          'RABBIT_VENTURE_CREATED_QUEUE',
         ),
-        rk: this.configService.getOrThrow<string>('RABBIT_USER_CREATED_RK'),
+        rk: this.configService.getOrThrow<string>('RABBIT_VENTURE_CREATED_RK'),
       },
       {
         queue: this.configService.getOrThrow<string>(
-          'RABBIT_USER_UPDATED_QUEUE',
+          'RABBIT_VENTURE_UPDATED_QUEUE',
         ),
-        rk: this.configService.getOrThrow<string>('RABBIT_USER_UPDATED_RK'),
+        rk: this.configService.getOrThrow<string>('RABBIT_VENTURE_UPDATED_RK'),
       },
       {
         queue: this.configService.getOrThrow<string>(
-          'RABBIT_USER_ENABLED_QUEUE',
+          'RABBIT_VENTURE_ENABLED_QUEUE',
         ),
-        rk: this.configService.getOrThrow<string>('RABBIT_USER_ENABLED_RK'),
+        rk: this.configService.getOrThrow<string>('RABBIT_VENTURE_ENABLED_RK'),
       },
       {
         queue: this.configService.getOrThrow<string>(
-          'RABBIT_USER_DISABLED_QUEUE',
+          'RABBIT_VENTURE_DISABLED_QUEUE',
         ),
-        rk: this.configService.getOrThrow<string>('RABBIT_USER_DISABLED_RK'),
+        rk: this.configService.getOrThrow<string>('RABBIT_VENTURE_DISABLED_RK'),
       },
       {
         queue: this.configService.getOrThrow<string>(
-          'RABBIT_USER_DELETED_QUEUE',
+          'RABBIT_VENTURE_DELETED_QUEUE',
         ),
-        rk: this.configService.getOrThrow<string>('RABBIT_USER_DELETED_RK'),
+        rk: this.configService.getOrThrow<string>('RABBIT_VENTURE_DELETED_RK'),
+      },
+     
+      {
+        queue: this.configService.getOrThrow<string>(
+          'RABBIT_VENTURE_VERIFIED_QUEUE',
+        ),
+        rk: this.configService.getOrThrow<string>('RABBIT_VENTURE_VERIFIED_RK'),
       },
       {
         queue: this.configService.getOrThrow<string>(
-          'RABBIT_USER_REGISTERED_QUEUE',
+          'RABBIT_VENTURE_UNVERIFIED_QUEUE',
         ),
-        rk: this.configService.getOrThrow<string>('RABBIT_USER_REGISTERED_RK'),
-      },
-      {
-        queue: this.configService.getOrThrow<string>(
-          'RABBIT_USER_VERIFIED_QUEUE',
+        rk: this.configService.getOrThrow<string>(
+          'RABBIT_VENTURE_UNVERIFIED_RK',
         ),
-        rk: this.configService.getOrThrow<string>('RABBIT_USER_VERIFIED_RK'),
       },
-      {
-        queue: this.configService.getOrThrow<string>(
-          'RABBIT_USER_UNVERIFIED_QUEUE',
-        ),
-        rk: this.configService.getOrThrow<string>('RABBIT_USER_UNVERIFIED_RK'),
-      },
-      {
-        queue: this.configService.getOrThrow<string>(
-          'RABBIT_USER_LOGGED_QUEUE',
-        ),
-        rk: this.configService.getOrThrow<string>('RABBIT_USER_LOGGED_RK'),
-      },
+      
     ];
   }
 
   private get venturesExchange() {
-    return this.configService.getOrThrow<string>('RABBIT_USERS_EXCHANGE');
+    return this.configService.getOrThrow<string>('RABBIT_VENTURES_EXCHANGE');
   }
 
   private get venturesExchangeType() {
-    return this.configService.getOrThrow<string>('RABBIT_USERS_EXCHANGE_TYPE');
+    return this.configService.getOrThrow<string>('RABBIT_VENTURES_EXCHANGE_TYPE');
   }
 
   private sendMessageToQueue<T>(
@@ -156,63 +148,63 @@ export class VentureAMQPProducerImpl implements VentureAMQPProducer {
 
   public emitVentureCreatedEvent(venture: Venture) {
     return this.sendMessageToQueue(
-      this.configService.getOrThrow<string>('RABBIT_USER_CREATED_RK'),
+      this.configService.getOrThrow<string>('RABBIT_VENTURE_CREATED_RK'),
       venture,
     );
   }
 
   public emitVentureUpdatedEvent(venture: Venture) {
     return this.sendMessageToQueue(
-      this.configService.getOrThrow<string>('RABBIT_USER_UPDATED_RK'),
+      this.configService.getOrThrow<string>('RABBIT_VENTURE_UPDATED_RK'),
       venture,
     );
   }
 
   public emitVentureEnabledEvent(venture: Venture) {
     return this.sendMessageToQueue(
-      this.configService.getOrThrow<string>('RABBIT_USER_ENABLED_RK'),
+      this.configService.getOrThrow<string>('RABBIT_VENTURE_ENABLED_RK'),
       venture,
     );
   }
 
   public emitVentureDisabledEvent(venture: Venture) {
     return this.sendMessageToQueue(
-      this.configService.getOrThrow<string>('RABBIT_USER_DISABLED_RK'),
+      this.configService.getOrThrow<string>('RABBIT_VENTURE_DISABLED_RK'),
       venture,
     );
   }
 
   public emitVentureDeletedEvent(venture: Venture) {
     return this.sendMessageToQueue(
-      this.configService.getOrThrow<string>('RABBIT_USER_DELETED_RK'),
+      this.configService.getOrThrow<string>('RABBIT_VENTURE_DELETED_RK'),
       venture,
     );
   }
 
   public emitVentureLoggedEvent(venture: Venture) {
     return this.sendMessageToQueue(
-      this.configService.getOrThrow<string>('RABBIT_USER_LOGGED_RK'),
+      this.configService.getOrThrow<string>('RABBIT_VENTURE_LOGGED_RK'),
       venture,
     );
   }
 
   public emitVentureRegisteredEvent(venture: Venture) {
     return this.sendMessageToQueue(
-      this.configService.getOrThrow<string>('RABBIT_USER_REGISTERED_RK'),
+      this.configService.getOrThrow<string>('RABBIT_VENTURE_REGISTERED_RK'),
       venture,
     );
   }
 
   public emitVentureVerifiedEvent(venture: Venture) {
     return this.sendMessageToQueue(
-      this.configService.getOrThrow<string>('RABBIT_USER_VERIFIED_RK'),
+      this.configService.getOrThrow<string>('RABBIT_VENTURE_VERIFIED_RK'),
       venture,
     );
   }
 
   public emitVentureUnverifiedEvent(venture: Venture) {
     return this.sendMessageToQueue(
-      this.configService.getOrThrow<string>('RABBIT_USER_UNVERIFIED_RK'),
+      this.configService.getOrThrow<string>('RABBIT_VENTURE_UNVERIFIED_RK'),
       venture,
     );
   }

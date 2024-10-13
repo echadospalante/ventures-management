@@ -1,8 +1,7 @@
 import { Storage } from '@google-cloud/storage';
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-
-import credentials from './credenciales.json';
+import path from 'path';
 
 @Injectable()
 export class GoogleCloudStorageConfig {
@@ -10,12 +9,13 @@ export class GoogleCloudStorageConfig {
   private storage: Storage;
 
   public constructor(private configService: ConfigService) {
+    this.logger.log(path.resolve(__dirname, '../../../../credenciales.json'))
     this.storage = new Storage({
-      projectId: credentials.web.project_id,
-      credentials: {
-        private_key: credentials.web.client_secret,
-        client_id: credentials.web.client_id,
-      },
+      projectId: configService.getOrThrow('PROJECT_ID'),
+      keyFilename: path.resolve(
+        __dirname,
+        '../../../../credenciales/gce-echadospalante.json',
+      ),
     });
 
     this.createBucketIfNotExists();

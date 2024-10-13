@@ -4,7 +4,6 @@ import { ConfigModule } from '@nestjs/config';
 import { RabbitMQConfig } from '../../config/amqp/amqp.connection';
 import { PrismaConfig } from '../../config/prisma/prisma.connection';
 import { SharedModule } from '../shared/shared.module';
-import { CreateUserInterceptor } from './application/interceptors/create-user.interceptor';
 import { VentureAMQPProducer } from './domain/gateway/amqp/venture.amqp';
 import { VentureCategoriesRepository } from './domain/gateway/database/venture-categories.repository';
 import { VenturesRepository } from './domain/gateway/database/ventures.repository';
@@ -15,14 +14,16 @@ import { VentureCategoriesRepositoryImpl } from './infrastructure/database/ventu
 import { VenturesRepositoryImpl } from './infrastructure/database/venture.repository';
 import { UserHttpAdapter } from './infrastructure/http/http.service';
 import { VenturesController } from './infrastructure/web/v1/venture.controller';
+import { VentureCategoriesController } from './infrastructure/web/v1/venture-categories.controller';
+import { VentureCategoriesService } from './domain/service/venture-categories.service';
 
 @Module({
-  controllers: [VenturesController],
+  controllers: [VenturesController, VentureCategoriesController],
   providers: [
     PrismaConfig,
     RabbitMQConfig,
-    CreateUserInterceptor,
     VenturesService,
+    VentureCategoriesService,
     {
       provide: VenturesRepository,
       useClass: VenturesRepositoryImpl,
