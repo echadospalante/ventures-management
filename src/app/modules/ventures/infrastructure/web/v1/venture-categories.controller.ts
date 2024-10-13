@@ -3,6 +3,7 @@ import { Logger } from '@nestjs/common';
 
 import { VentureCategoriesService } from '../../../domain/service/venture-categories.service';
 import VentureCategoriesQueryDto from './model/request/venture-categories-query.dto';
+import VentureCreateDto from './model/request/venture-create.dto';
 
 const path = '/ventures/categories';
 

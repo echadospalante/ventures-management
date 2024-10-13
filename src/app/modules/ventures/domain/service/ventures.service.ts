@@ -1,33 +1,59 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { CdnService } from 'src/app/modules/shared/domain/service/cdn.service';
+import { VentureAMQPProducer } from '../gateway/amqp/venture.amqp';
+import { VentureCategoriesRepository } from '../gateway/database/venture-categories.repository';
+import { VenturesRepository } from '../gateway/database/ventures.repository';
+import { UserHttpService } from '../gateway/http/http.gateway';
+import { VentureFilters } from '../core/venture-filters';
+import { BasicType, ComplexInclude, Pagination, Venture } from 'echadospalante-core';
+import VentureCreateDto from '../../infrastructure/web/v1/model/request/venture-create.dto';
+import { stringToSlug } from 'src/app/helpers/functions/slug-generator';
 
 @Injectable()
 export class VenturesService {
   private readonly logger: Logger = new Logger(VenturesService.name);
 
+  public constructor(
+    @Inject(VenturesRepository)
+    private venturesRepository: VenturesRepository,
+    @Inject(VentureCategoriesRepository)
+    private ventureCategoriesRepository: VentureCategoriesRepository,
+    @Inject(VentureAMQPProducer)
+    private ventureAMQPProducer: VentureAMQPProducer,
+    @Inject(UserHttpService)
+    private userHttpService: UserHttpService,
+    private cdnService: CdnService,
+  ) {}
 
-   // public constructor(
-  //   @Inject(VenturesRepository)
-  //   private venturesRepository: VenturesRepository,
-  //   @Inject(VentureCategoriesRepository)
-  //   private ventureCategoriesRepository: VentureCategoriesRepository,
-  //   @Inject(VentureAMQPProducer)
-  //   private ventureAMQPProducer: VentureAMQPProducer,
-  //   @Inject(UserHttpService)
-  //   private userHttpService: UserHttpService,
-  //   private cdnService: CdnService,
-  // ) {}
+  public getVentures(
+    filters: VentureFilters,
+    include: ComplexInclude<Venture>,
+    pagination: Pagination,
+  ): Promise<Venture[]> {
+    return this.venturesRepository.findAllByCriteria(
+      filters,
+      include,
+      pagination,
+    );
+  }
 
-  // public getVentures(
-  //   filters: VentureFilters,
-  //   include: ComplexInclude<Venture>,
-  //   pagination: Pagination,
-  // ): Promise<Venture[]> {
-  //   return this.venturesRepository.findAllByCriteria(
-  //     filters,
-  //     include,
-  //     pagination,
-  //   );
-  // }
+  public async saveVenture(
+    venture: VentureCreateDto,
+    coverPhoto: Express.Multer.File,
+  ): Promise<Venture> {
+    const imageUrl = await this.cdnService.uploadFile(coverPhoto);
+
+    const ventureToSave: Venture = await this.buildVentureToSave(
+      venture,
+      imageUrl,
+    );
+
+    return this.venturesRepository.save(ventureToSave).then((savedVenture) => {
+      this.logger.log(`Venture ${ventureToSave.name} saved successfully`);
+      this.ventureAMQPProducer.emitVentureCreatedEvent(savedVenture);
+      return savedVenture;
+    });
+  }
 
   // public async getVentureById(ventureId: string): Promise<Venture> {
   //   const venture = await this.venturesRepository.findById(ventureId, {
@@ -45,61 +71,43 @@ export class VenturesService {
   //   return venture;
   // }
 
-  // public async countVentures(
-  //   filters: Partial<BasicType<Venture>>,
-  // ): Promise<number> {
-  //   return this.venturesRepository.countByCriteria(filters);
-  // }
+  public async countVentures(
+    filters: VentureFilters
+  ): Promise<number> {
+    return this.venturesRepository.countByCriteria(filters);
+  }
 
-  // public async saveVenture(
-  //   venture: VentureCreateDto,
-  //   coverPhoto: Express.Multer.File,
-  // ): Promise<Venture> {
-  //   const imageUrl = await this.cdnService.uploadFile(coverPhoto);
+  private async buildVentureToSave(
+    venture: VentureCreateDto,
+    coverPhoto: string,
+  ): Promise<Venture> {
+    let slug = stringToSlug(venture.name);
+    const ventureDB = await this.venturesRepository.existsBySlug(slug);
+    if (ventureDB) {
+      slug = `${slug}-${crypto.randomUUID().substring(0, 8)}`;
+    }
 
-  //   const ventureToSave: Venture = await this.buildVentureToSave(
-  //     venture,
-  //     imageUrl,
-  //   );
+    const categories = await this.ventureCategoriesRepository.findManyById(
+      venture.categoriesIds,
+      {},
+    );
+    const owner = await this.userHttpService.getUserByEmail(venture.ownerEmail);
 
-  //   return this.venturesRepository.save(ventureToSave).then((savedVenture) => {
-  //     this.logger.log(`Venture ${ventureToSave.name} saved successfully`);
-  //     this.ventureAMQPProducer.emitVentureCreatedEvent(savedVenture);
-  //     return savedVenture;
-  //   });
-  // }
+    if (!owner.active) {
+      throw new NotFoundException('User not found');
+    }
 
-  // private async buildVentureToSave(
-  //   venture: VentureCreateDto,
-  //   coverPhoto: string,
-  // ): Promise<Venture> {
-  //   let slug = stringToSlug(venture.name);
-  //   const ventureDB = await this.venturesRepository.existBySlug(slug);
-  //   if (ventureDB) {
-  //     slug = `${slug}-${crypto.randomUUID().substring(0, 8)}`;
-  //   }
-
-  //   const categories = await this.ventureCategoriesRepository.findManyById(
-  //     venture.categoryIds,
-  //     {},
-  //   );
-  //   const owner = await this.userHttpService.getUserByEmail(venture.ownerEmail);
-
-  //   if (!owner.active) {
-  //     throw new NotFoundException('User not found');
-  //   }
-
-  //   return {
-  //     ...venture,
-  //     id: crypto.randomUUID(),
-  //     slug,
-  //     categories,
-  //     coverPhoto,
-  //     active: true,
-  //     verified: owner.verified,
-  //     createdAt: new Date(),
-  //   };
-  // }
+    return {
+      ...venture,
+      id: crypto.randomUUID(),
+      slug,
+      categories,
+      coverPhoto,
+      active: true,
+      verified: owner.verified,
+      createdAt: new Date(),
+    };
+  }
 
   // public async enableVenture(ventureId: string): Promise<Venture | null> {
   //   const venture = await this.venturesRepository.findById(ventureId, {

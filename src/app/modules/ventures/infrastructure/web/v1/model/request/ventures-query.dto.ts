@@ -39,7 +39,7 @@ export default class VenturesQueryDto {
   @Validate.IsPositive()
   @Validate.IsOptional()
   @Validate.IsInt()
-  public categoryId?: number;
+  public categoryIds?: string[];
 
   @Validate.IsPositive()
   @Validate.IsOptional()
@@ -83,7 +83,7 @@ export default class VenturesQueryDto {
 
     const filters: VentureFilters = {
       search: query.search,
-      categoryId: query.categoryId,
+      categoriesIds: query.categoryIds,
       departmentId: query.departmentId,
       municipalityId: query.municipalityId,
       point: query.point,
