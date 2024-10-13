@@ -32,7 +32,7 @@ export class VenturesRepositoryImpl implements VenturesRepository {
       .then((venture) => venture as Venture | null);
   }
 
-  public existBySlug(slug: string): Promise<boolean> {
+  public existsBySlug(slug: string): Promise<boolean> {
     return this.prismaClient.client.venture
       .count({
         where: {
@@ -56,9 +56,35 @@ export class VenturesRepositoryImpl implements VenturesRepository {
       .then((venture) => venture as Venture | null);
   }
 
-  public countByCriteria(filter: Partial<BasicType<Venture>>): Promise<number> {
+  public countByCriteria(filter: VentureFilters): Promise<number> {
+    //   search?: string;
+    // categoryId?: number;
+    // departmentId?: number;
+    // municipalityId?: number;
+    // point?: string; // Latitude,Longitude
+    // radius?: number; // In meters
+    // ownerId?: string;
     return this.prismaClient.client.venture.count({
-      where: { ...filter },
+      where: {
+        AND: {
+          OR: [
+            { name: { contains: filter.search } },
+            { description: { contains: filter.search } },
+          ],
+          categories: {
+            some: {
+              id: {
+                in: filter.categoriesIds,
+              },
+            },
+          },
+          ownerDetail: {
+            user: {
+              id: filter.ownerId,
+            },
+          },
+        },
+      },
     });
   }
 
@@ -67,54 +93,100 @@ export class VenturesRepositoryImpl implements VenturesRepository {
     include: Partial<ComplexInclude<Venture>>,
     pagination?: Pagination,
   ): Promise<Venture[]> {
-    const {
-      search,
-      categoryId,
-      departmentId,
-      municipalityId,
-      point,
-      radius,
-      ownerId,
-    } = filters;
-
-    return this.prismaClient.client.venture.findMany({
-      where: {
-        AND: {
-          OR: [
-            { name: { contains: search } },
-            { description: { contains: search } },
-            { owner: { firstName: { contains: search } } },
-            { owner: { lastName: { contains: search } } },
-            { owner: { email: { contains: search } } },
-          ],
-        },
-        categories: {
-          some: {
-            id: categoryId,
+    return this.prismaClient.client.venture
+      .findMany({
+        where: {
+          AND: {
+            OR: [
+              { name: { contains: filters.search } },
+              { description: { contains: filters.search } },
+            ],
+            categories: {
+              some: {
+                id: {
+                  in: filters.categoriesIds,
+                },
+              },
+            },
+            ownerDetail: {
+              user: {
+                id: filters.ownerId,
+              },
+            },
           },
         },
-      },
-    });
+        include,
+        skip: pagination?.skip,
+        take: pagination?.take,
+      })
+      .then((ventures) => ventures as unknown as Venture[]);
   }
+
+  // public findAllByCriteria(
+  //   filters: VentureFilters,
+  //   include: Partial<ComplexInclude<Venture>>,
+  //   pagination?: Pagination,
+  // ): Promise<Venture[]> {
+  //   const {
+  //     search,
+  //     categoryId,
+  //     departmentId,
+  //     municipalityId,
+  //     point,
+  //     radius,
+  //     ownerId,
+  //   } = filters;
+
+  //   return this.prismaClient.client.venture.findMany({
+  //     where: {
+  //       AND: {
+  //         OR: [
+  //           { name: { contains: search } },
+  //           { description: { contains: search } },
+  //           // { owner: { firstName: { contains: search } } },
+  //           // { owner: { lastName: { contains: search } } },
+  //           // { owner: { email: { contains: search } } },
+  //         ],
+  //       },
+  //       // categories: {
+  //       //   some: {
+  //       //     id: categoryId,
+  //       //   },
+  //       // },
+  //     },
+  //   });
+  // }
 
   public deleteByEmail(id: string): Promise<void> {
     throw new Error('Method not implemented.');
   }
 
   public save(venture: Venture): Promise<Venture> {
-    return this.prismaClient.client.venture.create({
-      data: {
-        ...venture,
-        owner: {
-          connect: {
-            id: venture.owner.id,
+    return this.prismaClient.client.venture
+      .create({
+        data: {
+          ...venture,
+          ownerDetail: {
+            connect: {
+              id: venture.ownerDetail!.id,
+            },
           },
+          categories: {
+            connect: venture.categories?.map((category) => ({
+              id: category.id,
+            })),
+          },
+          location: {
+            create: {
+              lat: venture.location?.lat,
+              lng: venture.location?.lng,
+              description: venture.location?.description,
+            },
+          },
+          detail: {},
         },
-        ventureDetail: {
-          create: venture.detail,
-        },
-      },
-    });
+      })
+      .then((venture) => venture as unknown as Venture);
   }
 
   public findAll(
@@ -154,40 +226,6 @@ export class VenturesRepositoryImpl implements VenturesRepository {
     throw new Error('Method not implemented.');
   }
 
-  // public save(venture: Venture): Promise<Venture> {
-  //   return this.prismaClient.client.venture
-  //     .create({
-  //       data: {
-  //         ...venture,
-  //         roles: {
-  //           connect: venture.roles.map((role) => ({ id: role.id })),
-  //         },
-  //         notifications: {
-  //           connect: venture.notifications.map((notification) => ({
-  //             id: notification.id,
-  //           })),
-  //         },
-  //         comments: {
-  //           connect: venture.comments.map((comment) => ({
-  //             id: comment.id,
-  //           })),
-  //         },
-  //         ventures: {
-  //           connect: venture.ventures.map((venture) => ({
-  //             id: venture.id,
-  //           })),
-  //         },
-  //         preferences: {
-  //           connect: venture.preferences.map((preference) => ({
-  //             id: preference.id,
-  //           })),
-  //         },
-  //         detail: undefined,
-  //       },
-  //     })
-  //     .then(() => venture as Venture);
-  // }
-
   // public findByEmail(
   //   email: string,
   //   include: ComplexInclude<Venture>,
@@ -200,14 +238,6 @@ export class VenturesRepositoryImpl implements VenturesRepository {
   //       include,
   //     })
   //     .then((venture) => venture as Venture | null);
-  // }
-
-  // public async countByCriteria(
-  //   filter: Partial<BasicType<Venture>>,
-  // ): Promise<number> {
-  //   return this.prismaClient.client.venture.count({
-  //     where: { ...filter },
-  //   });
   // }
 
   // public findAllByCriteria(

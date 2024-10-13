@@ -4,7 +4,7 @@
 
 # Generated files
 /generated
-
+/credenciales
 # Logs
 logs
 *.log

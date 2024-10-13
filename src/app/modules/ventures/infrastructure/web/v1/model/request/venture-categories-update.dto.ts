@@ -1,7 +1,7 @@
 import * as Validate from 'class-validator';
 import { AppRole } from 'echadospalante-core';
 
-export default class UserRolesUpdateDto {
+export default class VentureCategoriesUpdateDto {
   @Validate.IsString()
   @Validate.IsEmail()
   public email: string;

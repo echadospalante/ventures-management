@@ -1,6 +1,6 @@
 export interface VentureFilters {
   search?: string;
-  categoryId?: number;
+  categoriesIds?: string[];
   departmentId?: number;
   municipalityId?: number;
   point?: string; // Latitude,Longitude
