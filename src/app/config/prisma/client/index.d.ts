@@ -13678,7 +13678,6 @@ export namespace Prisma {
 
   export type VentureLocationMinAggregateOutputType = {
     id: string | null
-    ventureId: string | null
     lat: number | null
     lng: number | null
     description: string | null
@@ -13688,7 +13687,6 @@ export namespace Prisma {
 
   export type VentureLocationMaxAggregateOutputType = {
     id: string | null
-    ventureId: string | null
     lat: number | null
     lng: number | null
     description: string | null
@@ -13698,7 +13696,6 @@ export namespace Prisma {
 
   export type VentureLocationCountAggregateOutputType = {
     id: number
-    ventureId: number
     lat: number
     lng: number
     description: number
@@ -13720,7 +13717,6 @@ export namespace Prisma {
 
   export type VentureLocationMinAggregateInputType = {
     id?: true
-    ventureId?: true
     lat?: true
     lng?: true
     description?: true
@@ -13730,7 +13726,6 @@ export namespace Prisma {
 
   export type VentureLocationMaxAggregateInputType = {
     id?: true
-    ventureId?: true
     lat?: true
     lng?: true
     description?: true
@@ -13740,7 +13735,6 @@ export namespace Prisma {
 
   export type VentureLocationCountAggregateInputType = {
     id?: true
-    ventureId?: true
     lat?: true
     lng?: true
     description?: true
@@ -13837,7 +13831,6 @@ export namespace Prisma {
 
   export type VentureLocationGroupByOutputType = {
     id: string
-    ventureId: string
     lat: number | null
     lng: number | null
     description: string | null
@@ -13866,7 +13859,6 @@ export namespace Prisma {
 
   export type VentureLocationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    ventureId?: boolean
     lat?: boolean
     lng?: boolean
     description?: boolean
@@ -13877,7 +13869,6 @@ export namespace Prisma {
 
   export type VentureLocationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    ventureId?: boolean
     lat?: boolean
     lng?: boolean
     description?: boolean
@@ -13887,7 +13878,6 @@ export namespace Prisma {
 
   export type VentureLocationSelectScalar = {
     id?: boolean
-    ventureId?: boolean
     lat?: boolean
     lng?: boolean
     description?: boolean
@@ -13907,7 +13897,6 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      ventureId: string
       lat: number | null
       lng: number | null
       description: string | null
@@ -14308,7 +14297,6 @@ export namespace Prisma {
    */ 
   interface VentureLocationFieldRefs {
     readonly id: FieldRef<"VentureLocation", 'String'>
-    readonly ventureId: FieldRef<"VentureLocation", 'String'>
     readonly lat: FieldRef<"VentureLocation", 'Float'>
     readonly lng: FieldRef<"VentureLocation", 'Float'>
     readonly description: FieldRef<"VentureLocation", 'String'>
@@ -14508,7 +14496,7 @@ export namespace Prisma {
     /**
      * The data needed to create a VentureLocation.
      */
-    data: XOR<VentureLocationCreateInput, VentureLocationUncheckedCreateInput>
+    data?: XOR<VentureLocationCreateInput, VentureLocationUncheckedCreateInput>
   }
 
   /**
@@ -29472,7 +29460,6 @@ export namespace Prisma {
 
   export const VentureLocationScalarFieldEnum: {
     id: 'id',
-    ventureId: 'ventureId',
     lat: 'lat',
     lng: 'lng',
     description: 'description',
@@ -30483,7 +30470,6 @@ export namespace Prisma {
     OR?: VentureLocationWhereInput[]
     NOT?: VentureLocationWhereInput | VentureLocationWhereInput[]
     id?: StringFilter<"VentureLocation"> | string
-    ventureId?: StringFilter<"VentureLocation"> | string
     lat?: FloatNullableFilter<"VentureLocation"> | number | null
     lng?: FloatNullableFilter<"VentureLocation"> | number | null
     description?: StringNullableFilter<"VentureLocation"> | string | null
@@ -30494,7 +30480,6 @@ export namespace Prisma {
 
   export type VentureLocationOrderByWithRelationInput = {
     id?: SortOrder
-    ventureId?: SortOrder
     lat?: SortOrderInput | SortOrder
     lng?: SortOrderInput | SortOrder
     description?: SortOrderInput | SortOrder
@@ -30508,7 +30493,6 @@ export namespace Prisma {
     AND?: VentureLocationWhereInput | VentureLocationWhereInput[]
     OR?: VentureLocationWhereInput[]
     NOT?: VentureLocationWhereInput | VentureLocationWhereInput[]
-    ventureId?: StringFilter<"VentureLocation"> | string
     lat?: FloatNullableFilter<"VentureLocation"> | number | null
     lng?: FloatNullableFilter<"VentureLocation"> | number | null
     description?: StringNullableFilter<"VentureLocation"> | string | null
@@ -30519,7 +30503,6 @@ export namespace Prisma {
 
   export type VentureLocationOrderByWithAggregationInput = {
     id?: SortOrder
-    ventureId?: SortOrder
     lat?: SortOrderInput | SortOrder
     lng?: SortOrderInput | SortOrder
     description?: SortOrderInput | SortOrder
@@ -30537,7 +30520,6 @@ export namespace Prisma {
     OR?: VentureLocationScalarWhereWithAggregatesInput[]
     NOT?: VentureLocationScalarWhereWithAggregatesInput | VentureLocationScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"VentureLocation"> | string
-    ventureId?: StringWithAggregatesFilter<"VentureLocation"> | string
     lat?: FloatNullableWithAggregatesFilter<"VentureLocation"> | number | null
     lng?: FloatNullableWithAggregatesFilter<"VentureLocation"> | number | null
     description?: StringNullableWithAggregatesFilter<"VentureLocation"> | string | null
@@ -32179,7 +32161,6 @@ export namespace Prisma {
 
   export type VentureLocationCreateInput = {
     id?: string
-    ventureId: string
     lat?: number | null
     lng?: number | null
     description?: string | null
@@ -32190,7 +32171,6 @@ export namespace Prisma {
 
   export type VentureLocationUncheckedCreateInput = {
     id?: string
-    ventureId: string
     lat?: number | null
     lng?: number | null
     description?: string | null
@@ -32201,7 +32181,6 @@ export namespace Prisma {
 
   export type VentureLocationUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    ventureId?: StringFieldUpdateOperationsInput | string
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
     lng?: NullableFloatFieldUpdateOperationsInput | number | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -32212,7 +32191,6 @@ export namespace Prisma {
 
   export type VentureLocationUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    ventureId?: StringFieldUpdateOperationsInput | string
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
     lng?: NullableFloatFieldUpdateOperationsInput | number | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -32223,7 +32201,6 @@ export namespace Prisma {
 
   export type VentureLocationCreateManyInput = {
     id?: string
-    ventureId: string
     lat?: number | null
     lng?: number | null
     description?: string | null
@@ -32233,7 +32210,6 @@ export namespace Prisma {
 
   export type VentureLocationUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    ventureId?: StringFieldUpdateOperationsInput | string
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
     lng?: NullableFloatFieldUpdateOperationsInput | number | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -32243,7 +32219,6 @@ export namespace Prisma {
 
   export type VentureLocationUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    ventureId?: StringFieldUpdateOperationsInput | string
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
     lng?: NullableFloatFieldUpdateOperationsInput | number | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -33937,7 +33912,6 @@ export namespace Prisma {
 
   export type VentureLocationCountOrderByAggregateInput = {
     id?: SortOrder
-    ventureId?: SortOrder
     lat?: SortOrder
     lng?: SortOrder
     description?: SortOrder
@@ -33952,7 +33926,6 @@ export namespace Prisma {
 
   export type VentureLocationMaxOrderByAggregateInput = {
     id?: SortOrder
-    ventureId?: SortOrder
     lat?: SortOrder
     lng?: SortOrder
     description?: SortOrder
@@ -33962,7 +33935,6 @@ export namespace Prisma {
 
   export type VentureLocationMinOrderByAggregateInput = {
     id?: SortOrder
-    ventureId?: SortOrder
     lat?: SortOrder
     lng?: SortOrder
     description?: SortOrder
@@ -39109,7 +39081,6 @@ export namespace Prisma {
 
   export type VentureLocationCreateWithoutVentureInput = {
     id?: string
-    ventureId: string
     lat?: number | null
     lng?: number | null
     description?: string | null
@@ -39119,7 +39090,6 @@ export namespace Prisma {
 
   export type VentureLocationUncheckedCreateWithoutVentureInput = {
     id?: string
-    ventureId: string
     lat?: number | null
     lng?: number | null
     description?: string | null
@@ -39277,7 +39247,6 @@ export namespace Prisma {
 
   export type VentureLocationUpdateWithoutVentureInput = {
     id?: StringFieldUpdateOperationsInput | string
-    ventureId?: StringFieldUpdateOperationsInput | string
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
     lng?: NullableFloatFieldUpdateOperationsInput | number | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -39287,7 +39256,6 @@ export namespace Prisma {
 
   export type VentureLocationUncheckedUpdateWithoutVentureInput = {
     id?: StringFieldUpdateOperationsInput | string
-    ventureId?: StringFieldUpdateOperationsInput | string
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
     lng?: NullableFloatFieldUpdateOperationsInput | number | null
     description?: NullableStringFieldUpdateOperationsInput | string | null

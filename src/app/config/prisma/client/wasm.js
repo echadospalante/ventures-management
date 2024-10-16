@@ -212,7 +212,6 @@ exports.Prisma.EventLocationScalarFieldEnum = {
 
 exports.Prisma.VentureLocationScalarFieldEnum = {
   id: 'id',
-  ventureId: 'ventureId',
   lat: 'lat',
   lng: 'lng',
   description: 'description',

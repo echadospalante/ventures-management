@@ -183,6 +183,7 @@ export class VenturesRepositoryImpl implements VenturesRepository {
               description: venture.location?.description,
             },
           },
+          contact: {},
           detail: {},
         },
       })

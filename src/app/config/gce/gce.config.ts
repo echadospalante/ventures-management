@@ -9,7 +9,7 @@ export class GoogleCloudStorageConfig {
   private storage: Storage;
 
   public constructor(private configService: ConfigService) {
-    this.logger.log(path.resolve(__dirname, '../../../../credenciales.json'))
+    this.logger.log(path.resolve(__dirname, '../../../../credenciales.json'));
     this.storage = new Storage({
       projectId: configService.getOrThrow('PROJECT_ID'),
       keyFilename: path.resolve(

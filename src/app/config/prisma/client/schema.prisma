@@ -128,7 +128,6 @@ model EventLocation {
 
 model VentureLocation {
   id          String   @id @default(cuid())
-  ventureId   String
   lat         Float?
   lng         Float?
   description String?
