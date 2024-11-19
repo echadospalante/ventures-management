@@ -212,6 +212,7 @@ exports.Prisma.EventLocationScalarFieldEnum = {
 
 exports.Prisma.VentureLocationScalarFieldEnum = {
   id: 'id',
+  ventureId: 'ventureId',
   lat: 'lat',
   lng: 'lng',
   description: 'description',
@@ -267,7 +268,7 @@ exports.Prisma.VentureScalarFieldEnum = {
   updatedAt: 'updatedAt',
   locationId: 'locationId',
   ownerDetailId: 'ownerDetailId',
-  ventureId: 'ventureId'
+  ventureContactId: 'ventureContactId'
 };
 
 exports.Prisma.VentureContactScalarFieldEnum = {

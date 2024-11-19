@@ -1,18 +1,15 @@
-import {
-  BasicType,
-  ComplexInclude,
-  Pagination,
-  Venture,
-  VentureCategory,
-} from 'echadospalante-core';
+import { ComplexInclude, Pagination, Venture } from 'echadospalante-core';
 
-import { VentureFilters } from '../../core/venture-filters';
+import {
+  OwnedVentureFilters,
+  VentureFilters,
+} from '../../core/venture-filters';
 
 export interface VenturesRepository {
-  // findBySlug(
-  //   slug: string,
-  //   include: Partial<ComplexInclude<Venture>>,
-  // ): Promise<Venture | null>;
+  findBySlug(
+    slug: string,
+    include: Partial<ComplexInclude<Venture>>,
+  ): Promise<Venture | null>;
   // findById(
   //   id: string,
   //   include: Partial<ComplexInclude<Venture>>,
@@ -20,6 +17,11 @@ export interface VenturesRepository {
   countByCriteria(filter: VentureFilters): Promise<number>;
   findAllByCriteria(
     filters: VentureFilters,
+    include: Partial<ComplexInclude<Venture>>,
+    pagination?: Pagination,
+  ): Promise<Venture[]>;
+  findOwnedVentures(
+    filters: OwnedVentureFilters,
     include: Partial<ComplexInclude<Venture>>,
     pagination?: Pagination,
   ): Promise<Venture[]>;

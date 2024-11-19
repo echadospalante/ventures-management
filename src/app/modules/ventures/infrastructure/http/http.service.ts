@@ -18,7 +18,7 @@ export class UserHttpAdapter implements UserHttpService {
 
   public getUserByEmail(email: string): Promise<User> {
     return this.httpService.get<User>(
-      `${this.BASE_USERS_URL}/api/v1/users/${email}`, // Add include params
+      `${this.BASE_USERS_URL}/api/v1/users/${email}?includeDetail=true`, // Add include params
     );
   }
 }

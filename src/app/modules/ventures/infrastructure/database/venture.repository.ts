@@ -3,7 +3,6 @@ import { Injectable } from '@nestjs/common';
 // import { BasicType, ComplexInclude, Pagination, Venture } from 'echadospalante-core';
 
 import {
-  BasicType,
   ComplexInclude,
   Pagination,
   Venture,
@@ -11,12 +10,36 @@ import {
 } from 'echadospalante-core';
 
 import { PrismaConfig } from '../../../../config/prisma/prisma.connection';
-import { VentureFilters } from '../../domain/core/venture-filters';
+import {
+  OwnedVentureFilters,
+  VentureFilters,
+} from '../../domain/core/venture-filters';
 import { VenturesRepository } from '../../domain/gateway/database/ventures.repository';
 
 @Injectable()
 export class VenturesRepositoryImpl implements VenturesRepository {
   public constructor(private prismaClient: PrismaConfig) {}
+  public findOwnedVentures(
+    filters: OwnedVentureFilters,
+    include: Partial<ComplexInclude<Venture>>,
+    pagination?: Pagination,
+  ): Promise<Venture[]> {
+    const { ownerEmail } = filters;
+    return this.prismaClient.client.venture
+      .findMany({
+        where: {
+          ownerDetail: {
+            user: {
+              email: ownerEmail,
+            },
+          },
+        },
+        include,
+        skip: pagination?.skip,
+        take: pagination?.take,
+      })
+      .then((ventures) => ventures as unknown as Venture[]);
+  }
 
   public findBySlug(
     slug: string,
@@ -56,7 +79,7 @@ export class VenturesRepositoryImpl implements VenturesRepository {
       .then((venture) => venture as Venture | null);
   }
 
-  public countByCriteria(filter: VentureFilters): Promise<number> {
+  public countByCriteria(filters: VentureFilters): Promise<number> {
     //   search?: string;
     // categoryId?: number;
     // departmentId?: number;
@@ -68,21 +91,25 @@ export class VenturesRepositoryImpl implements VenturesRepository {
       where: {
         AND: {
           OR: [
-            { name: { contains: filter.search } },
-            { description: { contains: filter.search } },
+            { name: { contains: filters.search } },
+            { description: { contains: filters.search } },
           ],
-          categories: {
-            some: {
-              id: {
-                in: filter.categoriesIds,
-              },
-            },
-          },
-          ownerDetail: {
-            user: {
-              id: filter.ownerId,
-            },
-          },
+          categories: filters.categoriesIds?.length
+            ? {
+                some: {
+                  id: {
+                    in: filters.categoriesIds,
+                  },
+                },
+              }
+            : {},
+          ownerDetail: filters.ownerId
+            ? {
+                user: {
+                  id: filters.ownerId,
+                },
+              }
+            : {},
         },
       },
     });
@@ -101,25 +128,29 @@ export class VenturesRepositoryImpl implements VenturesRepository {
               { name: { contains: filters.search } },
               { description: { contains: filters.search } },
             ],
-            categories: {
-              some: {
-                id: {
-                  in: filters.categoriesIds,
-                },
-              },
-            },
-            ownerDetail: {
-              user: {
-                id: filters.ownerId,
-              },
-            },
+            categories: filters.categoriesIds?.length
+              ? {
+                  some: {
+                    id: {
+                      in: filters.categoriesIds,
+                    },
+                  },
+                }
+              : {},
+            ownerDetail: filters.ownerId
+              ? {
+                  user: {
+                    id: filters.ownerId,
+                  },
+                }
+              : {},
           },
         },
         include,
         skip: pagination?.skip,
         take: pagination?.take,
       })
-      .then((ventures) => ventures as unknown as Venture[]);
+      .then((ventures) => ventures as any[]);
   }
 
   // public findAllByCriteria(
@@ -165,7 +196,11 @@ export class VenturesRepositoryImpl implements VenturesRepository {
     return this.prismaClient.client.venture
       .create({
         data: {
-          ...venture,
+          name: venture.name,
+          coverPhoto: venture.coverPhoto,
+          description: venture.description,
+          slug: venture.slug,
+          active: venture.active,
           ownerDetail: {
             connect: {
               id: venture.ownerDetail!.id,
@@ -183,8 +218,15 @@ export class VenturesRepositoryImpl implements VenturesRepository {
               description: venture.location?.description,
             },
           },
-          contact: {},
-          detail: {},
+          contact: {
+            create: {
+              email: venture.contact?.email || '',
+              phoneNumber: venture.contact?.phoneNumber || '',
+            },
+          },
+          detail: {
+            create: {},
+          },
         },
       })
       .then((venture) => venture as unknown as Venture);

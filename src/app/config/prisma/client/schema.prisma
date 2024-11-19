@@ -128,12 +128,13 @@ model EventLocation {
 
 model VentureLocation {
   id          String   @id @default(cuid())
+  ventureId   String?
   lat         Float?
   lng         Float?
   description String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now()) @updatedAt
-  venture     Venture?
+  Venture     Venture?
 }
 
 model Notification {
@@ -190,11 +191,11 @@ model Venture {
   updatedAt               DateTime                  @default(now()) @updatedAt
   locationId              String                    @unique
   ownerDetailId           String
-  ventureId               String                    @unique
+  ventureContactId        String                    @unique
   detail                  VentureDetail             @relation(fields: [detailId], references: [id])
   location                VentureLocation           @relation(fields: [locationId], references: [id])
   ownerDetail             UserDetail                @relation(fields: [ownerDetailId], references: [id])
-  contact                 VentureContact            @relation(fields: [ventureId], references: [id])
+  contact                 VentureContact            @relation(fields: [ventureContactId], references: [id])
   XVentureVencureCategory XVentureVencureCategory[]
   categories              VentureCategory[]         @relation("XVentureVencureCategory")
 }
@@ -205,7 +206,7 @@ model VentureContact {
   phoneNumber String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now()) @updatedAt
-  venture     Venture?
+  Venture     Venture?
 }
 
 model XVentureVencureCategory {

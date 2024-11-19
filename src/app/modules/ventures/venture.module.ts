@@ -13,7 +13,7 @@ import { VentureAMQPProducerImpl } from './infrastructure/amqp/producers/venture
 import { VentureCategoriesRepositoryImpl } from './infrastructure/database/venture-category.repository';
 import { VenturesRepositoryImpl } from './infrastructure/database/venture.repository';
 import { UserHttpAdapter } from './infrastructure/http/http.service';
-import { VenturesController } from './infrastructure/web/v1/venture.controller';
+import { VenturesController } from './infrastructure/web/v1/ventures.controller';
 import { VentureCategoriesController } from './infrastructure/web/v1/venture-categories.controller';
 import { VentureCategoriesService } from './domain/service/venture-categories.service';
 

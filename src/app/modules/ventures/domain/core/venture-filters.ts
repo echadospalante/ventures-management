@@ -7,3 +7,7 @@ export interface VentureFilters {
   radius?: number; // In meters
   ownerId?: string;
 }
+
+export interface OwnedVentureFilters {
+  ownerEmail: string;
+}

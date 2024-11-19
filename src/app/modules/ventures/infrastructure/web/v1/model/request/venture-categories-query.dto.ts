@@ -28,7 +28,6 @@ export default class VentureCategoriesQueryDto {
   @Transform((param) => parseInt(param.value))
   @Validate.IsNumber()
   @Validate.IsInt()
-  @Validate.Min(-1)
   public take: number;
 
   @Validate.IsString()

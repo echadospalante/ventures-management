@@ -21,6 +21,16 @@ export default class VenturesQueryDto {
   @Validate.IsOptional()
   public includeOwner: boolean;
 
+  @Transform(({ value }) => value === 'true')
+  @Validate.IsBoolean()
+  @Validate.IsOptional()
+  public includeLocation: boolean;
+
+  @Transform(({ value }) => value === 'true')
+  @Validate.IsBoolean()
+  @Validate.IsOptional()
+  public includeContact: boolean;
+
   @Validate.IsNumber()
   @Validate.IsInt()
   @Transform((param) => parseInt(param.value))
@@ -67,13 +77,13 @@ export default class VenturesQueryDto {
   @Validate.IsInt()
   public radius?: number;
 
-  static parseQuery(query: VenturesQueryDto) {
+  public static parseQuery(query: VenturesQueryDto) {
     const include: ComplexInclude<Venture> = {
       categories: query.includeCategories,
       detail: query.includeDetail,
-      ownerDetail: false,
-      contact: false,
-      location: false,
+      ownerDetail: query.includeOwner,
+      contact: query.includeContact,
+      location: query.includeLocation,
     };
 
     const pagination: Pagination = {

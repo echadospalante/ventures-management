@@ -4,8 +4,14 @@ import { VentureAMQPProducer } from '../gateway/amqp/venture.amqp';
 import { VentureCategoriesRepository } from '../gateway/database/venture-categories.repository';
 import { VenturesRepository } from '../gateway/database/ventures.repository';
 import { UserHttpService } from '../gateway/http/http.gateway';
-import { VentureFilters } from '../core/venture-filters';
-import { BasicType, ComplexInclude, Pagination, Venture } from 'echadospalante-core';
+import { OwnedVentureFilters, VentureFilters } from '../core/venture-filters';
+import {
+  BasicType,
+  ComplexInclude,
+  Pagination,
+  Venture,
+  VentureCreate,
+} from 'echadospalante-core';
 import VentureCreateDto from '../../infrastructure/web/v1/model/request/venture-create.dto';
 import { stringToSlug } from 'src/app/helpers/functions/slug-generator';
 
@@ -37,15 +43,41 @@ export class VenturesService {
     );
   }
 
-  public async saveVenture(
-    venture: VentureCreateDto,
-    coverPhoto: Express.Multer.File,
-  ): Promise<Venture> {
-    const imageUrl = await this.cdnService.uploadFile(coverPhoto);
+  public getOwnedVentures(
+    filters: OwnedVentureFilters,
+    include: ComplexInclude<Venture>,
+    pagination: Pagination,
+  ): Promise<Venture[]> {
+    return this.venturesRepository.findOwnedVentures(
+      filters,
+      include,
+      pagination,
+    );
+  }
 
-    const ventureToSave: Venture = await this.buildVentureToSave(
+  public async getVentureBySlug(slug: string): Promise<Venture> {
+    const ventureDetail = await this.venturesRepository.findBySlug(slug, {
+      categories: true,
+      contact: true,
+      detail: true,
+      location: true,
+      ownerDetail: true,
+    });
+
+    if (!ventureDetail) throw new NotFoundException('Venture not found');
+
+    return ventureDetail;
+  }
+
+  public async saveVenture(
+    venture: VentureCreate,
+    coverPhoto: Express.Multer.File,
+    ownerEmail: string,
+  ): Promise<Venture> {
+    const ventureToSave = await this.buildVentureToSave(
       venture,
-      imageUrl,
+      'https://storage.googleapis.com/echadospalante-ventures-bucket/Universidad-de-Antioquia-Blog-3.jpg',
+      ownerEmail,
     );
 
     return this.venturesRepository.save(ventureToSave).then((savedVenture) => {
@@ -71,15 +103,14 @@ export class VenturesService {
   //   return venture;
   // }
 
-  public async countVentures(
-    filters: VentureFilters
-  ): Promise<number> {
+  public async countVentures(filters: VentureFilters): Promise<number> {
     return this.venturesRepository.countByCriteria(filters);
   }
 
   private async buildVentureToSave(
-    venture: VentureCreateDto,
+    venture: VentureCreate,
     coverPhoto: string,
+    ownerEmail: string,
   ): Promise<Venture> {
     let slug = stringToSlug(venture.name);
     const ventureDB = await this.venturesRepository.existsBySlug(slug);
@@ -91,21 +122,40 @@ export class VenturesService {
       venture.categoriesIds,
       {},
     );
-    const owner = await this.userHttpService.getUserByEmail(venture.ownerEmail);
+
+    const owner = await this.userHttpService.getUserByEmail(ownerEmail);
 
     if (!owner.active) {
       throw new NotFoundException('User not found');
     }
 
+    console.log({ owner: owner });
+
     return {
       ...venture,
-      id: crypto.randomUUID(),
+      id: crypto.randomUUID().toString(),
       slug,
       categories,
       coverPhoto,
       active: true,
       verified: owner.verified,
+      ownerDetail: owner.detail,
       createdAt: new Date(),
+      contact: {
+        id: crypto.randomUUID().toString(),
+        email: venture.contact?.email || '',
+        phoneNumber: venture.contact?.phoneNumber || '',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      location: {
+        id: crypto.randomUUID().toString(),
+        lat: venture.location?.lat || 0,
+        lng: venture.location?.lng || 0,
+        description: venture.location?.description || '',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
     };
   }
 

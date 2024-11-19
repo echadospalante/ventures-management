@@ -13678,6 +13678,7 @@ export namespace Prisma {
 
   export type VentureLocationMinAggregateOutputType = {
     id: string | null
+    ventureId: string | null
     lat: number | null
     lng: number | null
     description: string | null
@@ -13687,6 +13688,7 @@ export namespace Prisma {
 
   export type VentureLocationMaxAggregateOutputType = {
     id: string | null
+    ventureId: string | null
     lat: number | null
     lng: number | null
     description: string | null
@@ -13696,6 +13698,7 @@ export namespace Prisma {
 
   export type VentureLocationCountAggregateOutputType = {
     id: number
+    ventureId: number
     lat: number
     lng: number
     description: number
@@ -13717,6 +13720,7 @@ export namespace Prisma {
 
   export type VentureLocationMinAggregateInputType = {
     id?: true
+    ventureId?: true
     lat?: true
     lng?: true
     description?: true
@@ -13726,6 +13730,7 @@ export namespace Prisma {
 
   export type VentureLocationMaxAggregateInputType = {
     id?: true
+    ventureId?: true
     lat?: true
     lng?: true
     description?: true
@@ -13735,6 +13740,7 @@ export namespace Prisma {
 
   export type VentureLocationCountAggregateInputType = {
     id?: true
+    ventureId?: true
     lat?: true
     lng?: true
     description?: true
@@ -13831,6 +13837,7 @@ export namespace Prisma {
 
   export type VentureLocationGroupByOutputType = {
     id: string
+    ventureId: string | null
     lat: number | null
     lng: number | null
     description: string | null
@@ -13859,16 +13866,18 @@ export namespace Prisma {
 
   export type VentureLocationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    ventureId?: boolean
     lat?: boolean
     lng?: boolean
     description?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    venture?: boolean | VentureLocation$ventureArgs<ExtArgs>
+    Venture?: boolean | VentureLocation$VentureArgs<ExtArgs>
   }, ExtArgs["result"]["ventureLocation"]>
 
   export type VentureLocationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    ventureId?: boolean
     lat?: boolean
     lng?: boolean
     description?: boolean
@@ -13878,6 +13887,7 @@ export namespace Prisma {
 
   export type VentureLocationSelectScalar = {
     id?: boolean
+    ventureId?: boolean
     lat?: boolean
     lng?: boolean
     description?: boolean
@@ -13886,17 +13896,18 @@ export namespace Prisma {
   }
 
   export type VentureLocationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    venture?: boolean | VentureLocation$ventureArgs<ExtArgs>
+    Venture?: boolean | VentureLocation$VentureArgs<ExtArgs>
   }
   export type VentureLocationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
 
   export type $VentureLocationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "VentureLocation"
     objects: {
-      venture: Prisma.$VenturePayload<ExtArgs> | null
+      Venture: Prisma.$VenturePayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
+      ventureId: string | null
       lat: number | null
       lng: number | null
       description: string | null
@@ -14266,7 +14277,7 @@ export namespace Prisma {
    */
   export interface Prisma__VentureLocationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    venture<T extends VentureLocation$ventureArgs<ExtArgs> = {}>(args?: Subset<T, VentureLocation$ventureArgs<ExtArgs>>): Prisma__VentureClient<$Result.GetResult<Prisma.$VenturePayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
+    Venture<T extends VentureLocation$VentureArgs<ExtArgs> = {}>(args?: Subset<T, VentureLocation$VentureArgs<ExtArgs>>): Prisma__VentureClient<$Result.GetResult<Prisma.$VenturePayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -14297,6 +14308,7 @@ export namespace Prisma {
    */ 
   interface VentureLocationFieldRefs {
     readonly id: FieldRef<"VentureLocation", 'String'>
+    readonly ventureId: FieldRef<"VentureLocation", 'String'>
     readonly lat: FieldRef<"VentureLocation", 'Float'>
     readonly lng: FieldRef<"VentureLocation", 'Float'>
     readonly description: FieldRef<"VentureLocation", 'String'>
@@ -14616,9 +14628,9 @@ export namespace Prisma {
   }
 
   /**
-   * VentureLocation.venture
+   * VentureLocation.Venture
    */
-  export type VentureLocation$ventureArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type VentureLocation$VentureArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Venture
      */
@@ -18481,7 +18493,7 @@ export namespace Prisma {
     updatedAt: Date | null
     locationId: string | null
     ownerDetailId: string | null
-    ventureId: string | null
+    ventureContactId: string | null
   }
 
   export type VentureMaxAggregateOutputType = {
@@ -18497,7 +18509,7 @@ export namespace Prisma {
     updatedAt: Date | null
     locationId: string | null
     ownerDetailId: string | null
-    ventureId: string | null
+    ventureContactId: string | null
   }
 
   export type VentureCountAggregateOutputType = {
@@ -18513,7 +18525,7 @@ export namespace Prisma {
     updatedAt: number
     locationId: number
     ownerDetailId: number
-    ventureId: number
+    ventureContactId: number
     _all: number
   }
 
@@ -18531,7 +18543,7 @@ export namespace Prisma {
     updatedAt?: true
     locationId?: true
     ownerDetailId?: true
-    ventureId?: true
+    ventureContactId?: true
   }
 
   export type VentureMaxAggregateInputType = {
@@ -18547,7 +18559,7 @@ export namespace Prisma {
     updatedAt?: true
     locationId?: true
     ownerDetailId?: true
-    ventureId?: true
+    ventureContactId?: true
   }
 
   export type VentureCountAggregateInputType = {
@@ -18563,7 +18575,7 @@ export namespace Prisma {
     updatedAt?: true
     locationId?: true
     ownerDetailId?: true
-    ventureId?: true
+    ventureContactId?: true
     _all?: true
   }
 
@@ -18652,7 +18664,7 @@ export namespace Prisma {
     updatedAt: Date
     locationId: string
     ownerDetailId: string
-    ventureId: string
+    ventureContactId: string
     _count: VentureCountAggregateOutputType | null
     _min: VentureMinAggregateOutputType | null
     _max: VentureMaxAggregateOutputType | null
@@ -18685,7 +18697,7 @@ export namespace Prisma {
     updatedAt?: boolean
     locationId?: boolean
     ownerDetailId?: boolean
-    ventureId?: boolean
+    ventureContactId?: boolean
     detail?: boolean | VentureDetailDefaultArgs<ExtArgs>
     location?: boolean | VentureLocationDefaultArgs<ExtArgs>
     ownerDetail?: boolean | UserDetailDefaultArgs<ExtArgs>
@@ -18708,7 +18720,7 @@ export namespace Prisma {
     updatedAt?: boolean
     locationId?: boolean
     ownerDetailId?: boolean
-    ventureId?: boolean
+    ventureContactId?: boolean
     detail?: boolean | VentureDetailDefaultArgs<ExtArgs>
     location?: boolean | VentureLocationDefaultArgs<ExtArgs>
     ownerDetail?: boolean | UserDetailDefaultArgs<ExtArgs>
@@ -18728,7 +18740,7 @@ export namespace Prisma {
     updatedAt?: boolean
     locationId?: boolean
     ownerDetailId?: boolean
-    ventureId?: boolean
+    ventureContactId?: boolean
   }
 
   export type VentureInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -18770,7 +18782,7 @@ export namespace Prisma {
       updatedAt: Date
       locationId: string
       ownerDetailId: string
-      ventureId: string
+      ventureContactId: string
     }, ExtArgs["result"]["venture"]>
     composites: {}
   }
@@ -19182,7 +19194,7 @@ export namespace Prisma {
     readonly updatedAt: FieldRef<"Venture", 'DateTime'>
     readonly locationId: FieldRef<"Venture", 'String'>
     readonly ownerDetailId: FieldRef<"Venture", 'String'>
-    readonly ventureId: FieldRef<"Venture", 'String'>
+    readonly ventureContactId: FieldRef<"Venture", 'String'>
   }
     
 
@@ -19719,7 +19731,7 @@ export namespace Prisma {
     phoneNumber?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    venture?: boolean | VentureContact$ventureArgs<ExtArgs>
+    Venture?: boolean | VentureContact$VentureArgs<ExtArgs>
   }, ExtArgs["result"]["ventureContact"]>
 
   export type VentureContactSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -19739,14 +19751,14 @@ export namespace Prisma {
   }
 
   export type VentureContactInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    venture?: boolean | VentureContact$ventureArgs<ExtArgs>
+    Venture?: boolean | VentureContact$VentureArgs<ExtArgs>
   }
   export type VentureContactIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
 
   export type $VentureContactPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "VentureContact"
     objects: {
-      venture: Prisma.$VenturePayload<ExtArgs> | null
+      Venture: Prisma.$VenturePayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -20118,7 +20130,7 @@ export namespace Prisma {
    */
   export interface Prisma__VentureContactClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    venture<T extends VentureContact$ventureArgs<ExtArgs> = {}>(args?: Subset<T, VentureContact$ventureArgs<ExtArgs>>): Prisma__VentureClient<$Result.GetResult<Prisma.$VenturePayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
+    Venture<T extends VentureContact$VentureArgs<ExtArgs> = {}>(args?: Subset<T, VentureContact$VentureArgs<ExtArgs>>): Prisma__VentureClient<$Result.GetResult<Prisma.$VenturePayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -20467,9 +20479,9 @@ export namespace Prisma {
   }
 
   /**
-   * VentureContact.venture
+   * VentureContact.Venture
    */
-  export type VentureContact$ventureArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type VentureContact$VentureArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Venture
      */
@@ -29460,6 +29472,7 @@ export namespace Prisma {
 
   export const VentureLocationScalarFieldEnum: {
     id: 'id',
+    ventureId: 'ventureId',
     lat: 'lat',
     lng: 'lng',
     description: 'description',
@@ -29530,7 +29543,7 @@ export namespace Prisma {
     updatedAt: 'updatedAt',
     locationId: 'locationId',
     ownerDetailId: 'ownerDetailId',
-    ventureId: 'ventureId'
+    ventureContactId: 'ventureContactId'
   };
 
   export type VentureScalarFieldEnum = (typeof VentureScalarFieldEnum)[keyof typeof VentureScalarFieldEnum]
@@ -30470,22 +30483,24 @@ export namespace Prisma {
     OR?: VentureLocationWhereInput[]
     NOT?: VentureLocationWhereInput | VentureLocationWhereInput[]
     id?: StringFilter<"VentureLocation"> | string
+    ventureId?: StringNullableFilter<"VentureLocation"> | string | null
     lat?: FloatNullableFilter<"VentureLocation"> | number | null
     lng?: FloatNullableFilter<"VentureLocation"> | number | null
     description?: StringNullableFilter<"VentureLocation"> | string | null
     createdAt?: DateTimeFilter<"VentureLocation"> | Date | string
     updatedAt?: DateTimeFilter<"VentureLocation"> | Date | string
-    venture?: XOR<VentureNullableRelationFilter, VentureWhereInput> | null
+    Venture?: XOR<VentureNullableRelationFilter, VentureWhereInput> | null
   }
 
   export type VentureLocationOrderByWithRelationInput = {
     id?: SortOrder
+    ventureId?: SortOrderInput | SortOrder
     lat?: SortOrderInput | SortOrder
     lng?: SortOrderInput | SortOrder
     description?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    venture?: VentureOrderByWithRelationInput
+    Venture?: VentureOrderByWithRelationInput
   }
 
   export type VentureLocationWhereUniqueInput = Prisma.AtLeast<{
@@ -30493,16 +30508,18 @@ export namespace Prisma {
     AND?: VentureLocationWhereInput | VentureLocationWhereInput[]
     OR?: VentureLocationWhereInput[]
     NOT?: VentureLocationWhereInput | VentureLocationWhereInput[]
+    ventureId?: StringNullableFilter<"VentureLocation"> | string | null
     lat?: FloatNullableFilter<"VentureLocation"> | number | null
     lng?: FloatNullableFilter<"VentureLocation"> | number | null
     description?: StringNullableFilter<"VentureLocation"> | string | null
     createdAt?: DateTimeFilter<"VentureLocation"> | Date | string
     updatedAt?: DateTimeFilter<"VentureLocation"> | Date | string
-    venture?: XOR<VentureNullableRelationFilter, VentureWhereInput> | null
+    Venture?: XOR<VentureNullableRelationFilter, VentureWhereInput> | null
   }, "id">
 
   export type VentureLocationOrderByWithAggregationInput = {
     id?: SortOrder
+    ventureId?: SortOrderInput | SortOrder
     lat?: SortOrderInput | SortOrder
     lng?: SortOrderInput | SortOrder
     description?: SortOrderInput | SortOrder
@@ -30520,6 +30537,7 @@ export namespace Prisma {
     OR?: VentureLocationScalarWhereWithAggregatesInput[]
     NOT?: VentureLocationScalarWhereWithAggregatesInput | VentureLocationScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"VentureLocation"> | string
+    ventureId?: StringNullableWithAggregatesFilter<"VentureLocation"> | string | null
     lat?: FloatNullableWithAggregatesFilter<"VentureLocation"> | number | null
     lng?: FloatNullableWithAggregatesFilter<"VentureLocation"> | number | null
     description?: StringNullableWithAggregatesFilter<"VentureLocation"> | string | null
@@ -30784,7 +30802,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Venture"> | Date | string
     locationId?: StringFilter<"Venture"> | string
     ownerDetailId?: StringFilter<"Venture"> | string
-    ventureId?: StringFilter<"Venture"> | string
+    ventureContactId?: StringFilter<"Venture"> | string
     detail?: XOR<VentureDetailRelationFilter, VentureDetailWhereInput>
     location?: XOR<VentureLocationRelationFilter, VentureLocationWhereInput>
     ownerDetail?: XOR<UserDetailRelationFilter, UserDetailWhereInput>
@@ -30806,7 +30824,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     locationId?: SortOrder
     ownerDetailId?: SortOrder
-    ventureId?: SortOrder
+    ventureContactId?: SortOrder
     detail?: VentureDetailOrderByWithRelationInput
     location?: VentureLocationOrderByWithRelationInput
     ownerDetail?: UserDetailOrderByWithRelationInput
@@ -30820,7 +30838,7 @@ export namespace Prisma {
     slug?: string
     detailId?: string
     locationId?: string
-    ventureId?: string
+    ventureContactId?: string
     AND?: VentureWhereInput | VentureWhereInput[]
     OR?: VentureWhereInput[]
     NOT?: VentureWhereInput | VentureWhereInput[]
@@ -30838,7 +30856,7 @@ export namespace Prisma {
     contact?: XOR<VentureContactRelationFilter, VentureContactWhereInput>
     XVentureVencureCategory?: XVentureVencureCategoryListRelationFilter
     categories?: VentureCategoryListRelationFilter
-  }, "id" | "slug" | "detailId" | "locationId" | "ventureId">
+  }, "id" | "slug" | "detailId" | "locationId" | "ventureContactId">
 
   export type VentureOrderByWithAggregationInput = {
     id?: SortOrder
@@ -30853,7 +30871,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     locationId?: SortOrder
     ownerDetailId?: SortOrder
-    ventureId?: SortOrder
+    ventureContactId?: SortOrder
     _count?: VentureCountOrderByAggregateInput
     _max?: VentureMaxOrderByAggregateInput
     _min?: VentureMinOrderByAggregateInput
@@ -30875,7 +30893,7 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Venture"> | Date | string
     locationId?: StringWithAggregatesFilter<"Venture"> | string
     ownerDetailId?: StringWithAggregatesFilter<"Venture"> | string
-    ventureId?: StringWithAggregatesFilter<"Venture"> | string
+    ventureContactId?: StringWithAggregatesFilter<"Venture"> | string
   }
 
   export type VentureContactWhereInput = {
@@ -30887,7 +30905,7 @@ export namespace Prisma {
     phoneNumber?: StringFilter<"VentureContact"> | string
     createdAt?: DateTimeFilter<"VentureContact"> | Date | string
     updatedAt?: DateTimeFilter<"VentureContact"> | Date | string
-    venture?: XOR<VentureNullableRelationFilter, VentureWhereInput> | null
+    Venture?: XOR<VentureNullableRelationFilter, VentureWhereInput> | null
   }
 
   export type VentureContactOrderByWithRelationInput = {
@@ -30896,7 +30914,7 @@ export namespace Prisma {
     phoneNumber?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    venture?: VentureOrderByWithRelationInput
+    Venture?: VentureOrderByWithRelationInput
   }
 
   export type VentureContactWhereUniqueInput = Prisma.AtLeast<{
@@ -30908,7 +30926,7 @@ export namespace Prisma {
     phoneNumber?: StringFilter<"VentureContact"> | string
     createdAt?: DateTimeFilter<"VentureContact"> | Date | string
     updatedAt?: DateTimeFilter<"VentureContact"> | Date | string
-    venture?: XOR<VentureNullableRelationFilter, VentureWhereInput> | null
+    Venture?: XOR<VentureNullableRelationFilter, VentureWhereInput> | null
   }, "id">
 
   export type VentureContactOrderByWithAggregationInput = {
@@ -32161,46 +32179,51 @@ export namespace Prisma {
 
   export type VentureLocationCreateInput = {
     id?: string
+    ventureId?: string | null
     lat?: number | null
     lng?: number | null
     description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    venture?: VentureCreateNestedOneWithoutLocationInput
+    Venture?: VentureCreateNestedOneWithoutLocationInput
   }
 
   export type VentureLocationUncheckedCreateInput = {
     id?: string
+    ventureId?: string | null
     lat?: number | null
     lng?: number | null
     description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    venture?: VentureUncheckedCreateNestedOneWithoutLocationInput
+    Venture?: VentureUncheckedCreateNestedOneWithoutLocationInput
   }
 
   export type VentureLocationUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    ventureId?: NullableStringFieldUpdateOperationsInput | string | null
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
     lng?: NullableFloatFieldUpdateOperationsInput | number | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    venture?: VentureUpdateOneWithoutLocationNestedInput
+    Venture?: VentureUpdateOneWithoutLocationNestedInput
   }
 
   export type VentureLocationUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    ventureId?: NullableStringFieldUpdateOperationsInput | string | null
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
     lng?: NullableFloatFieldUpdateOperationsInput | number | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    venture?: VentureUncheckedUpdateOneWithoutLocationNestedInput
+    Venture?: VentureUncheckedUpdateOneWithoutLocationNestedInput
   }
 
   export type VentureLocationCreateManyInput = {
     id?: string
+    ventureId?: string | null
     lat?: number | null
     lng?: number | null
     description?: string | null
@@ -32210,6 +32233,7 @@ export namespace Prisma {
 
   export type VentureLocationUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    ventureId?: NullableStringFieldUpdateOperationsInput | string | null
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
     lng?: NullableFloatFieldUpdateOperationsInput | number | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -32219,6 +32243,7 @@ export namespace Prisma {
 
   export type VentureLocationUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
+    ventureId?: NullableStringFieldUpdateOperationsInput | string | null
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
     lng?: NullableFloatFieldUpdateOperationsInput | number | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -32506,7 +32531,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     locationId: string
     ownerDetailId: string
-    ventureId: string
+    ventureContactId: string
     XVentureVencureCategory?: XVentureVencureCategoryUncheckedCreateNestedManyWithoutVentureInput
     categories?: VentureCategoryUncheckedCreateNestedManyWithoutVenturesInput
   }
@@ -32542,7 +32567,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     locationId?: StringFieldUpdateOperationsInput | string
     ownerDetailId?: StringFieldUpdateOperationsInput | string
-    ventureId?: StringFieldUpdateOperationsInput | string
+    ventureContactId?: StringFieldUpdateOperationsInput | string
     XVentureVencureCategory?: XVentureVencureCategoryUncheckedUpdateManyWithoutVentureNestedInput
     categories?: VentureCategoryUncheckedUpdateManyWithoutVenturesNestedInput
   }
@@ -32560,7 +32585,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     locationId: string
     ownerDetailId: string
-    ventureId: string
+    ventureContactId: string
   }
 
   export type VentureUpdateManyMutationInput = {
@@ -32588,7 +32613,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     locationId?: StringFieldUpdateOperationsInput | string
     ownerDetailId?: StringFieldUpdateOperationsInput | string
-    ventureId?: StringFieldUpdateOperationsInput | string
+    ventureContactId?: StringFieldUpdateOperationsInput | string
   }
 
   export type VentureContactCreateInput = {
@@ -32597,7 +32622,7 @@ export namespace Prisma {
     phoneNumber: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    venture?: VentureCreateNestedOneWithoutContactInput
+    Venture?: VentureCreateNestedOneWithoutContactInput
   }
 
   export type VentureContactUncheckedCreateInput = {
@@ -32606,7 +32631,7 @@ export namespace Prisma {
     phoneNumber: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    venture?: VentureUncheckedCreateNestedOneWithoutContactInput
+    Venture?: VentureUncheckedCreateNestedOneWithoutContactInput
   }
 
   export type VentureContactUpdateInput = {
@@ -32615,7 +32640,7 @@ export namespace Prisma {
     phoneNumber?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    venture?: VentureUpdateOneWithoutContactNestedInput
+    Venture?: VentureUpdateOneWithoutContactNestedInput
   }
 
   export type VentureContactUncheckedUpdateInput = {
@@ -32624,7 +32649,7 @@ export namespace Prisma {
     phoneNumber?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    venture?: VentureUncheckedUpdateOneWithoutContactNestedInput
+    Venture?: VentureUncheckedUpdateOneWithoutContactNestedInput
   }
 
   export type VentureContactCreateManyInput = {
@@ -33912,6 +33937,7 @@ export namespace Prisma {
 
   export type VentureLocationCountOrderByAggregateInput = {
     id?: SortOrder
+    ventureId?: SortOrder
     lat?: SortOrder
     lng?: SortOrder
     description?: SortOrder
@@ -33926,6 +33952,7 @@ export namespace Prisma {
 
   export type VentureLocationMaxOrderByAggregateInput = {
     id?: SortOrder
+    ventureId?: SortOrder
     lat?: SortOrder
     lng?: SortOrder
     description?: SortOrder
@@ -33935,6 +33962,7 @@ export namespace Prisma {
 
   export type VentureLocationMinOrderByAggregateInput = {
     id?: SortOrder
+    ventureId?: SortOrder
     lat?: SortOrder
     lng?: SortOrder
     description?: SortOrder
@@ -34168,7 +34196,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     locationId?: SortOrder
     ownerDetailId?: SortOrder
-    ventureId?: SortOrder
+    ventureContactId?: SortOrder
   }
 
   export type VentureMaxOrderByAggregateInput = {
@@ -34184,7 +34212,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     locationId?: SortOrder
     ownerDetailId?: SortOrder
-    ventureId?: SortOrder
+    ventureContactId?: SortOrder
   }
 
   export type VentureMinOrderByAggregateInput = {
@@ -34200,7 +34228,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     locationId?: SortOrder
     ownerDetailId?: SortOrder
-    ventureId?: SortOrder
+    ventureContactId?: SortOrder
   }
 
   export type VentureContactCountOrderByAggregateInput = {
@@ -37381,7 +37409,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     locationId: string
-    ventureId: string
+    ventureContactId: string
     XVentureVencureCategory?: XVentureVencureCategoryUncheckedCreateNestedManyWithoutVentureInput
     categories?: VentureCategoryUncheckedCreateNestedManyWithoutVenturesInput
   }
@@ -37661,7 +37689,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Venture"> | Date | string
     locationId?: StringFilter<"Venture"> | string
     ownerDetailId?: StringFilter<"Venture"> | string
-    ventureId?: StringFilter<"Venture"> | string
+    ventureContactId?: StringFilter<"Venture"> | string
   }
 
   export type VentureSponsorshipUpsertWithWhereUniqueWithoutUserInput = {
@@ -38614,7 +38642,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     ownerDetailId: string
-    ventureId: string
+    ventureContactId: string
     XVentureVencureCategory?: XVentureVencureCategoryUncheckedCreateNestedManyWithoutVentureInput
     categories?: VentureCategoryUncheckedCreateNestedManyWithoutVenturesInput
   }
@@ -38664,7 +38692,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ownerDetailId?: StringFieldUpdateOperationsInput | string
-    ventureId?: StringFieldUpdateOperationsInput | string
+    ventureContactId?: StringFieldUpdateOperationsInput | string
     XVentureVencureCategory?: XVentureVencureCategoryUncheckedUpdateManyWithoutVentureNestedInput
     categories?: VentureCategoryUncheckedUpdateManyWithoutVenturesNestedInput
   }
@@ -39081,6 +39109,7 @@ export namespace Prisma {
 
   export type VentureLocationCreateWithoutVentureInput = {
     id?: string
+    ventureId?: string | null
     lat?: number | null
     lng?: number | null
     description?: string | null
@@ -39090,6 +39119,7 @@ export namespace Prisma {
 
   export type VentureLocationUncheckedCreateWithoutVentureInput = {
     id?: string
+    ventureId?: string | null
     lat?: number | null
     lng?: number | null
     description?: string | null
@@ -39247,6 +39277,7 @@ export namespace Prisma {
 
   export type VentureLocationUpdateWithoutVentureInput = {
     id?: StringFieldUpdateOperationsInput | string
+    ventureId?: NullableStringFieldUpdateOperationsInput | string | null
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
     lng?: NullableFloatFieldUpdateOperationsInput | number | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -39256,6 +39287,7 @@ export namespace Prisma {
 
   export type VentureLocationUncheckedUpdateWithoutVentureInput = {
     id?: StringFieldUpdateOperationsInput | string
+    ventureId?: NullableStringFieldUpdateOperationsInput | string | null
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
     lng?: NullableFloatFieldUpdateOperationsInput | number | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -39512,7 +39544,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     locationId: string
     ownerDetailId: string
-    ventureId: string
+    ventureContactId: string
     categories?: VentureCategoryUncheckedCreateNestedManyWithoutVenturesInput
   }
 
@@ -39597,7 +39629,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     locationId?: StringFieldUpdateOperationsInput | string
     ownerDetailId?: StringFieldUpdateOperationsInput | string
-    ventureId?: StringFieldUpdateOperationsInput | string
+    ventureContactId?: StringFieldUpdateOperationsInput | string
     categories?: VentureCategoryUncheckedUpdateManyWithoutVenturesNestedInput
   }
 
@@ -39708,7 +39740,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     locationId: string
     ownerDetailId: string
-    ventureId: string
+    ventureContactId: string
     XVentureVencureCategory?: XVentureVencureCategoryUncheckedCreateNestedManyWithoutVentureInput
   }
 
@@ -39810,7 +39842,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     locationId: string
     ownerDetailId: string
-    ventureId: string
+    ventureContactId: string
     XVentureVencureCategory?: XVentureVencureCategoryUncheckedCreateNestedManyWithoutVentureInput
     categories?: VentureCategoryUncheckedCreateNestedManyWithoutVenturesInput
   }
@@ -39982,7 +40014,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     locationId?: StringFieldUpdateOperationsInput | string
     ownerDetailId?: StringFieldUpdateOperationsInput | string
-    ventureId?: StringFieldUpdateOperationsInput | string
+    ventureContactId?: StringFieldUpdateOperationsInput | string
     XVentureVencureCategory?: XVentureVencureCategoryUncheckedUpdateManyWithoutVentureNestedInput
     categories?: VentureCategoryUncheckedUpdateManyWithoutVenturesNestedInput
   }
@@ -41154,7 +41186,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     locationId: string
-    ventureId: string
+    ventureContactId: string
   }
 
   export type VentureSponsorshipCreateManyUserInput = {
@@ -41296,7 +41328,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     locationId?: StringFieldUpdateOperationsInput | string
-    ventureId?: StringFieldUpdateOperationsInput | string
+    ventureContactId?: StringFieldUpdateOperationsInput | string
     XVentureVencureCategory?: XVentureVencureCategoryUncheckedUpdateManyWithoutVentureNestedInput
     categories?: VentureCategoryUncheckedUpdateManyWithoutVenturesNestedInput
   }
@@ -41313,7 +41345,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     locationId?: StringFieldUpdateOperationsInput | string
-    ventureId?: StringFieldUpdateOperationsInput | string
+    ventureContactId?: StringFieldUpdateOperationsInput | string
   }
 
   export type VentureSponsorshipUpdateWithoutUserInput = {
@@ -41723,7 +41755,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     locationId?: StringFieldUpdateOperationsInput | string
     ownerDetailId?: StringFieldUpdateOperationsInput | string
-    ventureId?: StringFieldUpdateOperationsInput | string
+    ventureContactId?: StringFieldUpdateOperationsInput | string
     XVentureVencureCategory?: XVentureVencureCategoryUncheckedUpdateManyWithoutVentureNestedInput
   }
 
@@ -41740,7 +41772,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     locationId?: StringFieldUpdateOperationsInput | string
     ownerDetailId?: StringFieldUpdateOperationsInput | string
-    ventureId?: StringFieldUpdateOperationsInput | string
+    ventureContactId?: StringFieldUpdateOperationsInput | string
   }
 
   export type VentureEventCreateManyVentureDetailInput = {

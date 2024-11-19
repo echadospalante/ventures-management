@@ -1,11 +1,13 @@
 import * as Http from '@nestjs/common';
 import { Logger } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 import { Venture } from 'echadospalante-core';
 
 import { VenturesService } from '../../../domain/service/ventures.service';
 import VentureCreateDto from './model/request/venture-create.dto';
 import VenturesQueryDto from './model/request/ventures-query.dto';
+import OwnedVenturesQueryDto from './model/request/owned-ventures-query.dto';
 
 const path = '/ventures';
 
@@ -26,13 +28,44 @@ export class VenturesController {
     return { items, total };
   }
 
+  @Http.Get('/slug/:slug')
+  @Http.HttpCode(Http.HttpStatus.OK)
+  public async getVentureBySlug(
+    @Http.Param('slug') slug: string,
+  ): Promise<Venture> {
+    console.log({ slug });
+    return this.venturesService.getVentureBySlug(slug);
+  }
+
+  @Http.Get('/owned')
+  @Http.HttpCode(Http.HttpStatus.OK)
+  public async getOwnedVentures(
+    @Http.Query() query: OwnedVenturesQueryDto,
+  ): Promise<Venture[]> {
+    const { include, filters, pagination } =
+      OwnedVenturesQueryDto.parseQuery(query);
+    console.log({ query });
+    return this.venturesService.getOwnedVentures(filters, include, pagination);
+  }
+
   @Http.Post()
+  @Http.UseInterceptors(FileInterceptor('coverPhoto'))
   @Http.HttpCode(Http.HttpStatus.CREATED)
   public createVenture(
     @Http.UploadedFile() image: Express.Multer.File,
     @Http.Body() ventureCreateDto: VentureCreateDto,
   ): Promise<Venture> {
-    return this.venturesService.saveVenture(ventureCreateDto, image);
+    console.log({ image, ventureCreateDto });
+    const file: File = new File([image.buffer], image.originalname, {
+      type: image.mimetype,
+    });
+    const ventureCreate = VentureCreateDto.toEntity(ventureCreateDto, file);
+    console.log({ ventureCreate });
+    return this.venturesService.saveVenture(
+      ventureCreate,
+      image,
+      ventureCreateDto.ownerEmail,
+    );
   }
 
   // @Http.Put('/enable/:id')

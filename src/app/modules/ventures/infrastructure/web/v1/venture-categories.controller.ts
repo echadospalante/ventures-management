@@ -22,6 +22,7 @@ export class VentureCategoriesController {
   ) {
     const { include, pagination, filters } =
       VentureCategoriesQueryDto.parseQuery(query);
+
     const [items, total] = await Promise.all([
       this.ventureCategoriesService.getVentureCategories(
         filters,
