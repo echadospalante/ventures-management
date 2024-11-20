@@ -1,8 +1,8 @@
 import { Transform } from 'class-transformer';
 import * as Validate from 'class-validator';
-
 import { ComplexInclude, Pagination, Venture } from 'echadospalante-core';
-import { OwnedVentureFilters } from 'src/app/modules/ventures/domain/core/venture-filters';
+
+import { OwnedVentureFilters } from '../../../../../../ventures/domain/core/venture-filters';
 
 export default class OwnedVenturesQueryDto {
   @Transform(({ value }) => value === 'true')
@@ -28,13 +28,13 @@ export default class OwnedVenturesQueryDto {
   @Validate.IsNumber()
   @Validate.IsInt()
   @Transform((param) => parseInt(param.value))
-  public skip: number;
+  public page: number;
 
   @Transform((param) => parseInt(param.value))
   @Validate.IsNumber()
   @Validate.IsInt()
   @Validate.Min(1)
-  public take: number;
+  public size: number;
 
   @Validate.IsEmail()
   public ownerEmail: string;
@@ -48,8 +48,8 @@ export default class OwnedVenturesQueryDto {
     };
 
     const pagination: Pagination = {
-      skip: query.skip,
-      take: query.take,
+      skip: query.page * query.size,
+      take: query.size,
     };
 
     const filters: OwnedVentureFilters = {

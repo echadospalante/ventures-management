@@ -18,9 +18,9 @@ export class VenturesController {
   public constructor(private readonly venturesService: VenturesService) {}
 
   @Http.Get()
-  @Http.HttpCode(Http.HttpStatus.OK)
   public async getVentures(@Http.Query() query: VenturesQueryDto) {
     const { include, pagination, filters } = VenturesQueryDto.parseQuery(query);
+    console.log(filters);
     const [items, total] = await Promise.all([
       this.venturesService.getVentures(filters, include, pagination),
       this.venturesService.countVentures(filters),
@@ -39,13 +39,16 @@ export class VenturesController {
 
   @Http.Get('/owned')
   @Http.HttpCode(Http.HttpStatus.OK)
-  public async getOwnedVentures(
-    @Http.Query() query: OwnedVenturesQueryDto,
-  ): Promise<Venture[]> {
+  public async getOwnedVentures(@Http.Query() query: OwnedVenturesQueryDto) {
     const { include, filters, pagination } =
       OwnedVenturesQueryDto.parseQuery(query);
-    console.log({ query });
-    return this.venturesService.getOwnedVentures(filters, include, pagination);
+    console.log({ include, filters, pagination });
+
+    const [items, total] = await Promise.all([
+      this.venturesService.getOwnedVentures(filters, include, pagination),
+      this.venturesService.countOwnedVentures(filters),
+    ]);
+    return { items, total };
   }
 
   @Http.Post()
@@ -60,7 +63,6 @@ export class VenturesController {
       type: image.mimetype,
     });
     const ventureCreate = VentureCreateDto.toEntity(ventureCreateDto, file);
-    console.log({ ventureCreate });
     return this.venturesService.saveVenture(
       ventureCreate,
       image,
@@ -111,11 +113,15 @@ export class VenturesController {
   //   });
   // }
 
-  // @Http.Delete(':id')
-  // @Http.HttpCode(Http.HttpStatus.NO_CONTENT)
-  // public deleteVenture(@Http.Param('email') email: string): Promise<void> {
-  //   return this.venturesService.deleteVentureByEmail(email);
-  // }
+  @Http.Delete(':id')
+  @Http.HttpCode(Http.HttpStatus.NO_CONTENT)
+  public deleteVenture(
+    @Http.Param('id') ventureId: string,
+    @Http.Query('requestedBy') requestedBy: string,
+  ): Promise<void> {
+    console.log({ ventureId, requestedBy });
+    return this.venturesService.deleteVentureById(ventureId, requestedBy);
+  }
 
   // @Http.Get('/:slug')
   // @Http.HttpCode(Http.HttpStatus.OK)

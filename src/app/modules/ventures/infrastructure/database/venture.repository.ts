@@ -19,6 +19,37 @@ import { VenturesRepository } from '../../domain/gateway/database/ventures.repos
 @Injectable()
 export class VenturesRepositoryImpl implements VenturesRepository {
   public constructor(private prismaClient: PrismaConfig) {}
+
+  public isVentureOwnerByEmail(
+    ventureId: string,
+    email: string,
+  ): Promise<boolean> {
+    return this.prismaClient.client.venture
+      .count({
+        where: {
+          id: ventureId,
+          ownerDetail: {
+            user: {
+              email,
+            },
+          },
+        },
+      })
+      .then((count) => count > 0);
+  }
+
+  public deleteById(ventureId: string): Promise<void> {
+    return this.prismaClient.client.venture
+      .delete({
+        where: {
+          id: ventureId,
+        },
+      })
+      .then(() => {
+        console.log('Venture deleted');
+      });
+  }
+
   public findOwnedVentures(
     filters: OwnedVentureFilters,
     include: Partial<ComplexInclude<Venture>>,
@@ -39,6 +70,21 @@ export class VenturesRepositoryImpl implements VenturesRepository {
         take: pagination?.take,
       })
       .then((ventures) => ventures as unknown as Venture[]);
+  }
+
+  public countOwnedVentures(filters: OwnedVentureFilters): Promise<number> {
+    const { ownerEmail } = filters;
+    return this.prismaClient.client.venture
+      .count({
+        where: {
+          ownerDetail: {
+            user: {
+              email: ownerEmail,
+            },
+          },
+        },
+      })
+      .then((count) => count);
   }
 
   public findBySlug(

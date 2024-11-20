@@ -1,4 +1,10 @@
-import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Inject,
+  Injectable,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import { CdnService } from 'src/app/modules/shared/domain/service/cdn.service';
 import { VentureAMQPProducer } from '../gateway/amqp/venture.amqp';
 import { VentureCategoriesRepository } from '../gateway/database/venture-categories.repository';
@@ -41,6 +47,20 @@ export class VenturesService {
       include,
       pagination,
     );
+  }
+
+  public async deleteVentureById(
+    ventureId: string,
+    email: string,
+  ): Promise<void> {
+    const isTheOwner = await this.venturesRepository.isVentureOwnerByEmail(
+      ventureId,
+      email,
+    );
+    if (!isTheOwner)
+      throw new ForbiddenException('You are not the owner of this venture');
+
+    return this.venturesRepository.deleteById(ventureId);
   }
 
   public getOwnedVentures(
@@ -103,8 +123,12 @@ export class VenturesService {
   //   return venture;
   // }
 
-  public async countVentures(filters: VentureFilters): Promise<number> {
+  public countVentures(filters: VentureFilters): Promise<number> {
     return this.venturesRepository.countByCriteria(filters);
+  }
+
+  public countOwnedVentures(filters: OwnedVentureFilters): Promise<number> {
+    return this.venturesRepository.countOwnedVentures(filters);
   }
 
   private async buildVentureToSave(

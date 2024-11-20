@@ -6,6 +6,13 @@ import {
 } from '../../core/venture-filters';
 
 export interface VenturesRepository {
+  isVentureOwnerByEmail(ventureId: string, email: string): Promise<boolean>;
+  findById(
+    ventureId: string,
+    include: Partial<ComplexInclude<Venture>>,
+  ): Promise<Venture | null>;
+  deleteById(ventureId: string): Promise<void>;
+  countOwnedVentures(filters: OwnedVentureFilters): Promise<number>;
   findBySlug(
     slug: string,
     include: Partial<ComplexInclude<Venture>>,
