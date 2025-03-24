@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Repository } from 'typeorm';
@@ -13,32 +13,39 @@ import {
 
 @Injectable()
 export class VenturesRepositoryImpl implements VenturesRepository {
+  private readonly logger = new Logger(VenturesRepositoryImpl.name);
   public constructor(
     @InjectRepository(VentureData)
     private venturesRepository: Repository<VentureData>,
   ) {}
 
-  isVentureOwnerByEmail(ventureId: string, email: string): Promise<boolean> {
-    throw new Error('Method not implemented.');
+  findById(id: string): Promise<Venture | null> {
+    return this.venturesRepository
+      .findOneBy({ id })
+      .then((venture) => venture as Venture | null);
   }
 
-  findById(ventureId: string): Promise<Venture | null> {
-    throw new Error('Method not implemented.');
+  deleteById(id: string): Promise<void> {
+    return this.venturesRepository.delete({ id }).then((r) => {
+      this.logger.log(`Venture deleted: ${id} --> ${r.affected}`);
+    });
   }
 
-  deleteById(ventureId: string): Promise<void> {
-    throw new Error('Method not implemented.');
-  }
-
-  countOwnedVentures(filters: OwnedVentureFilters): Promise<number> {
-    throw new Error('Method not implemented.');
-  }
   findBySlug(slug: string): Promise<Venture | null> {
-    throw new Error('Method not implemented.');
+    return this.venturesRepository
+      .findOneBy({ slug })
+      .then((venture) => venture as Venture | null);
   }
 
-  countByCriteria(filter: VentureFilters): Promise<number> {
-    throw new Error('Method not implemented.');
+  save(venture: Venture): Promise<Venture> {
+    console.log({ toSave: venture });
+    return this.venturesRepository
+      .save(venture)
+      .then((result) => result as Venture);
+  }
+
+  existsBySlug(slug: string): Promise<boolean> {
+    return this.venturesRepository.existsBy({ slug });
   }
 
   findAllByCriteria(
@@ -55,11 +62,15 @@ export class VenturesRepositoryImpl implements VenturesRepository {
     throw new Error('Method not implemented.');
   }
 
-  save(venture: Venture): Promise<Venture> {
+  isVentureOwnerByEmail(ventureId: string, email: string): Promise<boolean> {
+    return Promise.resolve(false);
+  }
+
+  countOwnedVentures(filters: OwnedVentureFilters): Promise<number> {
     throw new Error('Method not implemented.');
   }
 
-  existsBySlug(slug: string): Promise<boolean> {
-    throw new Error('Method not implemented.');
+  countByCriteria(filter: VentureFilters): Promise<number> {
+    return Promise.resolve(1);
   }
 }

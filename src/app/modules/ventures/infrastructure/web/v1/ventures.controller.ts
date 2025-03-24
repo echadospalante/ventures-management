@@ -2,6 +2,10 @@ import * as Http from '@nestjs/common';
 import { Logger } from '@nestjs/common';
 
 import { VenturesService } from '../../../domain/service/ventures.service';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { Venture } from 'echadospalante-core';
+import VentureCreateDto from './model/request/venture-create.dto';
+import { UploadedPhotoResultDto } from './model/response/uploaded-photo-result.dto';
 
 const path = '/ventures';
 
@@ -10,6 +14,27 @@ export class VenturesController {
   private readonly logger = new Logger(VenturesController.name);
 
   public constructor(private readonly venturesService: VenturesService) {}
+
+  @Http.Post('/cover-photo')
+  @Http.UseInterceptors(FileInterceptor('file'))
+  @Http.HttpCode(Http.HttpStatus.CREATED)
+  public createVentureCoverPhoto(
+    @Http.UploadedFile() image: Express.Multer.File,
+  ): Promise<UploadedPhotoResultDto> {
+    return this.venturesService.saveVentureCoverPhoto(image);
+  }
+
+  @Http.Post('')
+  @Http.HttpCode(Http.HttpStatus.CREATED)
+  public createVenture(
+    @Http.Body() ventureCreateDto: VentureCreateDto,
+  ): Promise<Venture> {
+    const ventureCreate = VentureCreateDto.toEntity(ventureCreateDto);
+    return this.venturesService.saveVenture(
+      ventureCreate,
+      ventureCreateDto.ownerId,
+    );
+  }
 
   /*
   @Http.Get()
@@ -44,25 +69,6 @@ export class VenturesController {
       this.venturesService.countOwnedVentures(filters),
     ]);
     return { items, total };
-  }
-
-  @Http.Post()
-  @Http.UseInterceptors(FileInterceptor('coverPhoto'))
-  @Http.HttpCode(Http.HttpStatus.CREATED)
-  public createVenture(
-    @Http.UploadedFile() image: Express.Multer.File,
-    @Http.Body() ventureCreateDto: VentureCreateDto,
-  ): Promise<Venture> {
-    console.log({ image, ventureCreateDto });
-    const file: File = new File([image.buffer], image.originalname, {
-      type: image.mimetype,
-    });
-    const ventureCreate = VentureCreateDto.toEntity(ventureCreateDto, file);
-    return this.venturesService.saveVenture(
-      ventureCreate,
-      image,
-      ventureCreateDto.ownerEmail,
-    );
   }
 
   // @Http.Put('/enable/:id')
@@ -123,5 +129,5 @@ export class VenturesController {
   // public getVentureByEmail(@Http.Param('slug') slug: string): Promise<Venture> {
   //   return this.venturesService.getVentureBySlug(slug);
   // }
-*/
+  */
 }

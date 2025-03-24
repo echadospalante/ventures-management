@@ -1,9 +1,16 @@
-import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import {
+  IsArray,
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 import { VentureCreate } from 'echadospalante-core';
 
 export default class VentureCreateDto {
-  @IsEmail()
-  public ownerEmail: string;
+  @IsString()
+  @IsNotEmpty()
+  public ownerId: string;
 
   @IsString()
   @IsNotEmpty()
@@ -13,8 +20,10 @@ export default class VentureCreateDto {
   public description: string;
 
   @IsString()
-  @IsNotEmpty()
-  public categoriesIds: string;
+  public coverPhoto: string;
+
+  @IsArray()
+  public categoriesIds: string[];
 
   @IsEmail()
   @IsOptional()
@@ -36,12 +45,12 @@ export default class VentureCreateDto {
   @IsNotEmpty()
   public locationDescription: string;
 
-  public static toEntity(dto: VentureCreateDto, image: File): VentureCreate {
+  public static toEntity(dto: VentureCreateDto): VentureCreate {
     return {
       name: dto.name,
-      coverPhoto: image,
+      coverPhoto: dto.coverPhoto,
       description: dto.description,
-      categoriesIds: dto.categoriesIds.split(','),
+      categoriesIds: dto.categoriesIds,
       contact: {
         email: dto.contactEmail,
         phoneNumber: dto.contactPhoneNumber,

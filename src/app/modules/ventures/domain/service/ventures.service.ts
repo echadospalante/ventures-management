@@ -1,10 +1,12 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import { stringToSlug } from 'src/app/helpers/functions/slug-generator';
+import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
 
 import { CdnService } from 'src/app/modules/shared/domain/service/cdn.service';
 import { VentureAMQPProducer } from '../gateway/amqp/venture.amqp';
 import { VentureCategoriesRepository } from '../gateway/database/venture-categories.repository';
 import { VenturesRepository } from '../gateway/database/ventures.repository';
 import { UserHttpService } from '../gateway/http/http.gateway';
+import { Venture, VentureCreate } from 'echadospalante-core';
 
 @Injectable()
 export class VenturesService {
@@ -21,6 +23,71 @@ export class VenturesService {
     private userHttpService: UserHttpService,
     private cdnService: CdnService,
   ) {}
+
+  public async saveVentureCoverPhoto(file: Express.Multer.File) {
+    return this.cdnService.uploadFile(file).then((url) => ({ imageUrl: url }));
+  }
+
+  public async saveVenture(
+    venture: VentureCreate,
+    ownerId: string,
+  ): Promise<Venture> {
+    const ventureToSave = await this.buildVentureToSave(venture, ownerId);
+
+    return this.venturesRepository.save(ventureToSave).then((savedVenture) => {
+      this.logger.log(`Venture ${ventureToSave.name} saved successfully`);
+      this.ventureAMQPProducer.emitVentureCreatedEvent(savedVenture);
+      return savedVenture;
+    });
+  }
+
+  private async buildVentureToSave(
+    venture: VentureCreate,
+    ownerId: string,
+  ): Promise<Venture> {
+    let slug = stringToSlug(venture.name);
+    const ventureDB = await this.venturesRepository.existsBySlug(slug);
+    if (ventureDB) {
+      slug = `${slug}-${crypto.randomUUID().substring(0, 8)}`;
+    }
+
+    const categories = await this.ventureCategoriesRepository.findManyById(
+      venture.categoriesIds,
+    );
+
+    const owner = await this.userHttpService.getUserById(ownerId);
+    if (!owner.active) {
+      throw new NotFoundException('User not found');
+    }
+
+    return {
+      ...venture,
+      id: crypto.randomUUID().toString(),
+      slug,
+      categories,
+      coverPhoto: venture.coverPhoto,
+      active: true,
+      verified: owner.verified,
+      ownerDetail: owner.detail,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      contact: {
+        id: crypto.randomUUID().toString(),
+        email: venture.contact?.email || '',
+        phoneNumber: venture.contact?.phoneNumber || '',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      location: {
+        id: crypto.randomUUID().toString(),
+        lat: venture.location?.lat || 0,
+        lng: venture.location?.lng || 0,
+        description: venture.location?.description || '',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    };
+  }
 
   /*
   public getVentures(
@@ -62,23 +129,7 @@ export class VenturesService {
     return ventureDetail;
   }
 
-  public async saveVenture(
-    venture: VentureCreate,
-    coverPhoto: Express.Multer.File,
-    ownerEmail: string,
-  ): Promise<Venture> {
-    const ventureToSave = await this.buildVentureToSave(
-      venture,
-      'https://storage.googleapis.com/echadospalante-ventures-bucket/Universidad-de-Antioquia-Blog-3.jpg',
-      ownerEmail,
-    );
-
-    return this.venturesRepository.save(ventureToSave).then((savedVenture) => {
-      this.logger.log(`Venture ${ventureToSave.name} saved successfully`);
-      this.ventureAMQPProducer.emitVentureCreatedEvent(savedVenture);
-      return savedVenture;
-    });
-  }
+  
 
   // public async getVentureById(ventureId: string): Promise<Venture> {
   //   const venture = await this.venturesRepository.findById(ventureId, {
@@ -104,57 +155,7 @@ export class VenturesService {
     return this.venturesRepository.countOwnedVentures(filters);
   }
 
-  private async buildVentureToSave(
-    venture: VentureCreate,
-    coverPhoto: string,
-    ownerEmail: string,
-  ): Promise<Venture> {
-    let slug = stringToSlug(venture.name);
-    const ventureDB = await this.venturesRepository.existsBySlug(slug);
-    if (ventureDB) {
-      slug = `${slug}-${crypto.randomUUID().substring(0, 8)}`;
-    }
-
-    const categories = await this.ventureCategoriesRepository.findManyById(
-      venture.categoriesIds,
-      {},
-    );
-
-    const owner = await this.userHttpService.getUserByEmail(ownerEmail);
-
-    if (!owner.active) {
-      throw new NotFoundException('User not found');
-    }
-
-    console.log({ owner: owner });
-
-    return {
-      ...venture,
-      id: crypto.randomUUID().toString(),
-      slug,
-      categories,
-      coverPhoto,
-      active: true,
-      verified: owner.verified,
-      ownerDetail: owner.detail,
-      createdAt: new Date(),
-      contact: {
-        id: crypto.randomUUID().toString(),
-        email: venture.contact?.email || '',
-        phoneNumber: venture.contact?.phoneNumber || '',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      location: {
-        id: crypto.randomUUID().toString(),
-        lat: venture.location?.lat || 0,
-        lng: venture.location?.lng || 0,
-        description: venture.location?.description || '',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-    };
-  }
+  
 
   // public async enableVenture(ventureId: string): Promise<Venture | null> {
   //   const venture = await this.venturesRepository.findById(ventureId, {
