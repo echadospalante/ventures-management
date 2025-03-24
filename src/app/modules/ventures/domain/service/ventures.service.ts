@@ -1,12 +1,26 @@
-import { stringToSlug } from 'src/app/helpers/functions/slug-generator';
-import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Inject,
+  Injectable,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 
+import {
+  Pagination,
+  Venture,
+  VentureCreate,
+  VentureUpdate,
+} from 'echadospalante-core';
+
+import { stringToSlug } from 'src/app/helpers/functions/slug-generator';
 import { CdnService } from 'src/app/modules/shared/domain/service/cdn.service';
+import { VentureFilters } from '../core/venture-filters';
 import { VentureAMQPProducer } from '../gateway/amqp/venture.amqp';
 import { VentureCategoriesRepository } from '../gateway/database/venture-categories.repository';
 import { VenturesRepository } from '../gateway/database/ventures.repository';
 import { UserHttpService } from '../gateway/http/http.gateway';
-import { Venture, VentureCreate } from 'echadospalante-core';
 
 @Injectable()
 export class VenturesService {
@@ -39,6 +53,31 @@ export class VenturesService {
       this.ventureAMQPProducer.emitVentureCreatedEvent(savedVenture);
       return savedVenture;
     });
+  }
+
+  public async updateVenture(
+    id: string,
+    ownerId: string,
+    ventureUpdate: VentureUpdate,
+  ) {
+    const ventureDB = await this.venturesRepository.findById(id);
+    if (!ventureDB)
+      throw new NotFoundException(`Emprendimiento con id ${id} no encontrado`);
+
+    const ventureToUpdate = await this.buildVentureToUpdate(
+      id,
+      ownerId,
+      ventureDB,
+      ventureUpdate,
+    );
+
+    return this.venturesRepository
+      .save(ventureToUpdate)
+      .then((savedVenture) => {
+        this.logger.log(`Venture ${ventureToUpdate.name} saved successfully`);
+        this.ventureAMQPProducer.emitVentureCreatedEvent(savedVenture);
+        return savedVenture;
+      });
   }
 
   private async buildVentureToSave(
@@ -74,6 +113,7 @@ export class VenturesService {
       ownerDetail: ownerDetail,
       createdAt: new Date(),
       updatedAt: new Date(),
+      // TODO: Traer el id del registro actual para que en lugar de generar un nuevo registro, lo actualice
       contact: {
         id: crypto.randomUUID().toString(),
         email: venture.contact?.email || '',
@@ -81,10 +121,16 @@ export class VenturesService {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      // TODO: Traer el id del registro actual para que en lugar de generar un nuevo registro, lo actualice
       location: {
         id: crypto.randomUUID().toString(),
-        lat: venture.location?.lat || 0,
-        lng: venture.location?.lng || 0,
+        location:
+          venture.location?.lat && venture.location?.lng
+            ? {
+                type: 'Point',
+                coordinates: [venture.location.lng, venture.location.lat],
+              }
+            : undefined,
         description: venture.location?.description || '',
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -92,12 +138,78 @@ export class VenturesService {
     };
   }
 
-  /*
-  public getVentures(
-    filters: VentureFilters,
-    pagination: Pagination,
-  ): Promise<Venture[]> {
+  private async buildVentureToUpdate(
+    id: string,
+    ownerId: string,
+    ventureDB: Venture,
+    ventureUpdate: VentureUpdate,
+  ): Promise<Venture> {
+    const categories = await this.ventureCategoriesRepository.findManyById(
+      ventureUpdate.categoriesIds,
+    );
+    const slug = stringToSlug(ventureDB.name);
+
+    const [owner, ownerDetail] = await Promise.all([
+      this.userHttpService.getUserById(ownerId),
+      this.userHttpService.getUserDetailById(ownerId),
+    ]);
+    if (!owner.active) {
+      throw new NotFoundException('User not found');
+    }
+
+    return {
+      ...ventureDB,
+      id,
+      slug,
+      categories,
+      coverPhoto: ventureUpdate.coverPhoto || ventureDB.coverPhoto,
+      active: true,
+      verified: owner.verified,
+      ownerDetail: ownerDetail,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      contact: {
+        ...ventureDB.contact,
+        id: crypto.randomUUID(),
+        email: ventureUpdate.contact?.email || ventureDB.contact?.email || '',
+        phoneNumber:
+          ventureUpdate.contact?.phoneNumber ||
+          ventureDB.contact?.phoneNumber ||
+          '',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      location: {
+        location:
+          ventureUpdate.location?.lat && ventureUpdate.location?.lng
+            ? {
+                type: 'Point',
+                coordinates: [
+                  ventureUpdate.location.lng,
+                  ventureUpdate.location.lat,
+                ],
+              }
+            : ventureDB.location?.location,
+        description: ventureDB.location?.description || '',
+        id: crypto.randomUUID(),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    };
+  }
+
+  public getVentures(filters: VentureFilters, pagination: Pagination) {
+    const { take } = pagination;
+    if (take > 100) {
+      throw new BadRequestException(
+        'La página no debe ser mayor a 100 emprendimientos.',
+      );
+    }
     return this.venturesRepository.findAllByCriteria(filters, pagination);
+  }
+
+  public countVentures(filters: VentureFilters): Promise<number> {
+    return this.venturesRepository.countByCriteria(filters);
   }
 
   public async deleteVentureById(
@@ -113,6 +225,7 @@ export class VenturesService {
 
     return this.venturesRepository.deleteById(ventureId);
   }
+  /*
 
   public getOwnedVentures(filters: OwnedVentureFilters): Promise<Venture[]> {
     return this.venturesRepository.findOwnedVentures(filters);
@@ -150,9 +263,6 @@ export class VenturesService {
   //   return venture;
   // }
 
-  public countVentures(filters: VentureFilters): Promise<number> {
-    return this.venturesRepository.countByCriteria(filters);
-  }
 
   public countOwnedVentures(filters: OwnedVentureFilters): Promise<number> {
     return this.venturesRepository.countOwnedVentures(filters);

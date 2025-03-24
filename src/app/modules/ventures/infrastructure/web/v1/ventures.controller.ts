@@ -6,6 +6,8 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { Venture } from 'echadospalante-core';
 import VentureCreateDto from './model/request/venture-create.dto';
 import { UploadedPhotoResultDto } from './model/response/uploaded-photo-result.dto';
+import VenturesQueryDto from './model/request/ventures-query.dto';
+import VentureUpdateDto from './model/request/venture-update.dto';
 
 const path = '/ventures';
 
@@ -26,27 +28,29 @@ export class VenturesController {
 
   @Http.Post('')
   @Http.HttpCode(Http.HttpStatus.CREATED)
-  public createVenture(
-    @Http.Body() ventureCreateDto: VentureCreateDto,
-  ): Promise<Venture> {
-    const ventureCreate = VentureCreateDto.toEntity(ventureCreateDto);
-    return this.venturesService.saveVenture(
-      ventureCreate,
-      ventureCreateDto.ownerId,
-    );
+  public createVenture(@Http.Body() body: VentureCreateDto): Promise<Venture> {
+    const ventureCreate = VentureCreateDto.toEntity(body);
+    return this.venturesService.saveVenture(ventureCreate, body.ownerId);
   }
 
-  /*
-  @Http.Get()
+  @Http.Get('')
   public async getVentures(@Http.Query() query: VenturesQueryDto) {
     const { pagination, filters } = VenturesQueryDto.parseQuery(query);
     console.log(filters);
-    const [items, total] = await Promise.all([
-      this.venturesService.getVentures(filters, pagination),
-      this.venturesService.countVentures(filters),
-    ]);
-    return { items, total };
+    return this.venturesService.getVentures(filters, pagination);
   }
+
+  @Http.Patch('/:id')
+  public async updateVenture(
+    @Http.Param('id') id: string,
+    @Http.Body() body: VentureUpdateDto,
+  ) {
+    const ventureUpdate = VentureUpdateDto.toEntity(body);
+
+    return this.venturesService.updateVenture(id, body.ownerId, ventureUpdate);
+  }
+
+  /*
 
   @Http.Get('/slug/:slug')
   @Http.HttpCode(Http.HttpStatus.OK)

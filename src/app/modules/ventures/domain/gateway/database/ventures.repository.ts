@@ -18,8 +18,8 @@ export interface VenturesRepository {
   countByCriteria(filter: VentureFilters): Promise<number>;
   findAllByCriteria(
     filters: VentureFilters,
-    pagination?: Pagination,
-  ): Promise<Venture[]>;
+    pagination: Pagination,
+  ): Promise<{ items: Venture[]; total: number }>;
   findOwnedVentures(
     filters: OwnedVentureFilters,
 

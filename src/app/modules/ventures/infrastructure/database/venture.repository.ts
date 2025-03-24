@@ -50,9 +50,36 @@ export class VenturesRepositoryImpl implements VenturesRepository {
 
   findAllByCriteria(
     filters: VentureFilters,
-    pagination?: Pagination,
-  ): Promise<Venture[]> {
-    throw new Error('Method not implemented.');
+    pagination: Pagination,
+  ): Promise<{ items: Venture[]; total: number }> {
+    const {
+      search,
+      categoriesIds,
+      // departmentId,
+      // municipalityId,
+      // point,
+      // radius,
+    } = filters;
+
+    const query = this.venturesRepository.createQueryBuilder('venture');
+
+    if (search) {
+      query.andWhere(
+        '(venture.name LIKE :term OR venture.description LIKE :term OR venture.slug LIKE :term)',
+        { term: `%${search}%` },
+      );
+    }
+    if (categoriesIds) {
+      query
+        .innerJoin('venture.categories', 'category')
+        .andWhere('category.id IN (:...ids)', { ids: categoriesIds });
+    }
+
+    query.skip(pagination.skip).take(pagination.take);
+
+    return query
+      .getManyAndCount()
+      .then(([items, total]) => ({ items: items as Venture[], total }));
   }
 
   findOwnedVentures(
