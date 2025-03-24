@@ -55,7 +55,10 @@ export class VenturesService {
       venture.categoriesIds,
     );
 
-    const owner = await this.userHttpService.getUserById(ownerId);
+    const [owner, ownerDetail] = await Promise.all([
+      this.userHttpService.getUserById(ownerId),
+      this.userHttpService.getUserDetailById(ownerId),
+    ]);
     if (!owner.active) {
       throw new NotFoundException('User not found');
     }
@@ -68,7 +71,7 @@ export class VenturesService {
       coverPhoto: venture.coverPhoto,
       active: true,
       verified: owner.verified,
-      ownerDetail: owner.detail,
+      ownerDetail: ownerDetail,
       createdAt: new Date(),
       updatedAt: new Date(),
       contact: {
