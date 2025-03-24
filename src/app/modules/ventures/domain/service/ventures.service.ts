@@ -1,16 +1,6 @@
-import {
-  ForbiddenException,
-  Inject,
-  Injectable,
-  Logger,
-  NotFoundException,
-} from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 
-import { Pagination, Venture, VentureCreate } from 'echadospalante-core';
-
-import { stringToSlug } from 'src/app/helpers/functions/slug-generator';
 import { CdnService } from 'src/app/modules/shared/domain/service/cdn.service';
-import { OwnedVentureFilters, VentureFilters } from '../core/venture-filters';
 import { VentureAMQPProducer } from '../gateway/amqp/venture.amqp';
 import { VentureCategoriesRepository } from '../gateway/database/venture-categories.repository';
 import { VenturesRepository } from '../gateway/database/ventures.repository';
@@ -32,6 +22,7 @@ export class VenturesService {
     private cdnService: CdnService,
   ) {}
 
+  /*
   public getVentures(
     filters: VentureFilters,
     pagination: Pagination,
@@ -326,4 +317,5 @@ export class VenturesService {
   //     this.ventureAMQPProducer.emitVentureUpdatedEvent(venture);
   //   });
   // }
+  */
 }

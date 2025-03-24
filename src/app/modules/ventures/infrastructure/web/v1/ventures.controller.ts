@@ -1,13 +1,7 @@
 import * as Http from '@nestjs/common';
 import { Logger } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
-
-import { Venture } from 'echadospalante-core';
 
 import { VenturesService } from '../../../domain/service/ventures.service';
-import VentureCreateDto from './model/request/venture-create.dto';
-import VenturesQueryDto from './model/request/ventures-query.dto';
-import OwnedVenturesQueryDto from './model/request/owned-ventures-query.dto';
 
 const path = '/ventures';
 
@@ -17,6 +11,7 @@ export class VenturesController {
 
   public constructor(private readonly venturesService: VenturesService) {}
 
+  /*
   @Http.Get()
   public async getVentures(@Http.Query() query: VenturesQueryDto) {
     const { pagination, filters } = VenturesQueryDto.parseQuery(query);
@@ -128,4 +123,5 @@ export class VenturesController {
   // public getVentureByEmail(@Http.Param('slug') slug: string): Promise<Venture> {
   //   return this.venturesService.getVentureBySlug(slug);
   // }
+*/
 }
