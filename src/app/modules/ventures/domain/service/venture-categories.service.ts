@@ -11,6 +11,7 @@ import { VentureCategory } from 'echadospalante-core';
 import { stringToSlug } from '../../../../helpers/functions/slug-generator';
 import { VentureCategoryFilters } from '../core/venture-category-filter';
 import { VentureCategoriesRepository } from '../gateway/database/venture-categories.repository';
+import VentureCategoryCreateDto from '../../infrastructure/web/v1/model/request/venture-category-create.dto';
 
 @Injectable()
 export class VentureCategoriesService {
@@ -52,7 +53,7 @@ export class VentureCategoriesService {
 
   public async updateVentureCategory(
     id: string,
-    categoryUpdate: VentureCategory,
+    categoryUpdate: VentureCategoryCreateDto,
   ) {
     const { name: newName, description } = categoryUpdate;
     const categoryById = await this.usersRepository.findById(id);
@@ -70,7 +71,6 @@ export class VentureCategoriesService {
       throw new ConflictException(
         `La categoría con nombre ${newName} ya existe`,
       );
-
     return this.usersRepository.update(id, {
       name: newName,
       slug,

@@ -25,10 +25,8 @@ export class VentureCategoriesRepositoryImpl
     category: { name: string; slug: string; description: string },
   ): Promise<void> {
     return this.ventureCategoryRepository
-      .update({ ...category }, { id })
-      .then(({ affected }) => {
-        this.logger.log(`Se actualizó ${affected} categorías`);
-      });
+      .save({ ...category, id })
+      .then(() => undefined);
   }
 
   findById(id: string): Promise<VentureCategory | null> {
