@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
 import { RabbitMQConfig } from '../../config/amqp/amqp.connection';
-import { PrismaConfig } from '../../config/prisma/prisma.connection';
 import { SharedModule } from '../shared/shared.module';
 import { VentureAMQPProducer } from './domain/gateway/amqp/venture.amqp';
 import { VentureCategoriesRepository } from './domain/gateway/database/venture-categories.repository';
@@ -16,11 +15,11 @@ import { UserHttpAdapter } from './infrastructure/http/http.service';
 import { VenturesController } from './infrastructure/web/v1/ventures.controller';
 import { VentureCategoriesController } from './infrastructure/web/v1/venture-categories.controller';
 import { VentureCategoriesService } from './domain/service/venture-categories.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   controllers: [VenturesController, VentureCategoriesController],
   providers: [
-    PrismaConfig,
     RabbitMQConfig,
     VenturesService,
     VentureCategoriesService,
@@ -41,6 +40,6 @@ import { VentureCategoriesService } from './domain/service/venture-categories.se
       useClass: UserHttpAdapter,
     },
   ],
-  imports: [ConfigModule, SharedModule],
+  imports: [ConfigModule, SharedModule, TypeOrmModule.forFeature([])],
 })
 export class VentureModule {}

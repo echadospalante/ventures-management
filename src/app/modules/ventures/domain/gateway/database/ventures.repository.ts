@@ -1,4 +1,4 @@
-import { ComplexInclude, Pagination, Venture } from 'echadospalante-core';
+import { Pagination, Venture } from 'echadospalante-core';
 
 import {
   OwnedVentureFilters,
@@ -7,35 +7,28 @@ import {
 
 export interface VenturesRepository {
   isVentureOwnerByEmail(ventureId: string, email: string): Promise<boolean>;
-  findById(
-    ventureId: string,
-    include: Partial<ComplexInclude<Venture>>,
-  ): Promise<Venture | null>;
+  findById(ventureId: string): Promise<Venture | null>;
   deleteById(ventureId: string): Promise<void>;
   countOwnedVentures(filters: OwnedVentureFilters): Promise<number>;
-  findBySlug(
-    slug: string,
-    include: Partial<ComplexInclude<Venture>>,
-  ): Promise<Venture | null>;
+  findBySlug(slug: string): Promise<Venture | null>;
   // findById(
   //   id: string,
-  //   include: Partial<ComplexInclude<Venture>>,
+  //
   // ): Promise<Venture | null>;
   countByCriteria(filter: VentureFilters): Promise<number>;
   findAllByCriteria(
     filters: VentureFilters,
-    include: Partial<ComplexInclude<Venture>>,
     pagination?: Pagination,
   ): Promise<Venture[]>;
   findOwnedVentures(
     filters: OwnedVentureFilters,
-    include: Partial<ComplexInclude<Venture>>,
+
     pagination?: Pagination,
   ): Promise<Venture[]>;
   // deleteByEmail(id: string): Promise<void>;
   save(venture: Venture): Promise<Venture>;
   // findAll(
-  //   include: Partial<ComplexInclude<Venture>>,
+  //
   //   pagination?: Pagination,
   // ): Promise<Venture[]>;
   // lockVenture(id: string): Promise<Venture | null>;

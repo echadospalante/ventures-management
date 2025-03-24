@@ -5,21 +5,16 @@ import {
   Logger,
   NotFoundException,
 } from '@nestjs/common';
+
+import { Pagination, Venture, VentureCreate } from 'echadospalante-core';
+
+import { stringToSlug } from 'src/app/helpers/functions/slug-generator';
 import { CdnService } from 'src/app/modules/shared/domain/service/cdn.service';
+import { OwnedVentureFilters, VentureFilters } from '../core/venture-filters';
 import { VentureAMQPProducer } from '../gateway/amqp/venture.amqp';
 import { VentureCategoriesRepository } from '../gateway/database/venture-categories.repository';
 import { VenturesRepository } from '../gateway/database/ventures.repository';
 import { UserHttpService } from '../gateway/http/http.gateway';
-import { OwnedVentureFilters, VentureFilters } from '../core/venture-filters';
-import {
-  BasicType,
-  ComplexInclude,
-  Pagination,
-  Venture,
-  VentureCreate,
-} from 'echadospalante-core';
-import VentureCreateDto from '../../infrastructure/web/v1/model/request/venture-create.dto';
-import { stringToSlug } from 'src/app/helpers/functions/slug-generator';
 
 @Injectable()
 export class VenturesService {
@@ -39,14 +34,9 @@ export class VenturesService {
 
   public getVentures(
     filters: VentureFilters,
-    include: ComplexInclude<Venture>,
     pagination: Pagination,
   ): Promise<Venture[]> {
-    return this.venturesRepository.findAllByCriteria(
-      filters,
-      include,
-      pagination,
-    );
+    return this.venturesRepository.findAllByCriteria(filters, pagination);
   }
 
   public async deleteVentureById(
@@ -63,16 +53,8 @@ export class VenturesService {
     return this.venturesRepository.deleteById(ventureId);
   }
 
-  public getOwnedVentures(
-    filters: OwnedVentureFilters,
-    include: ComplexInclude<Venture>,
-    pagination: Pagination,
-  ): Promise<Venture[]> {
-    return this.venturesRepository.findOwnedVentures(
-      filters,
-      include,
-      pagination,
-    );
+  public getOwnedVentures(filters: OwnedVentureFilters): Promise<Venture[]> {
+    return this.venturesRepository.findOwnedVentures(filters);
   }
 
   public async getVentureBySlug(slug: string): Promise<Venture> {

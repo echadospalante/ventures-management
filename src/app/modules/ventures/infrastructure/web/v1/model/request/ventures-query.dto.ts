@@ -1,36 +1,11 @@
 import { Transform } from 'class-transformer';
 import * as Validate from 'class-validator';
 
-import { ComplexInclude, Pagination, Venture } from 'echadospalante-core';
+import { Pagination } from 'echadospalante-core';
 
 import { VentureFilters } from '../../../../../domain/core/venture-filters';
 
 export default class VenturesQueryDto {
-  @Transform(({ value }) => value === 'true')
-  @Validate.IsBoolean()
-  @Validate.IsOptional()
-  public includeCategories: boolean;
-
-  @Transform(({ value }) => value === 'true')
-  @Validate.IsBoolean()
-  @Validate.IsOptional()
-  public includeDetail: boolean;
-
-  @Transform(({ value }) => value === 'true')
-  @Validate.IsBoolean()
-  @Validate.IsOptional()
-  public includeOwner: boolean;
-
-  @Transform(({ value }) => value === 'true')
-  @Validate.IsBoolean()
-  @Validate.IsOptional()
-  public includeLocation: boolean;
-
-  @Transform(({ value }) => value === 'true')
-  @Validate.IsBoolean()
-  @Validate.IsOptional()
-  public includeContact: boolean;
-
   @Validate.IsNumber()
   @Validate.IsInt()
   @Transform((param) => parseInt(param.value))
@@ -78,14 +53,6 @@ export default class VenturesQueryDto {
   public radius?: number;
 
   public static parseQuery(query: VenturesQueryDto) {
-    const include: ComplexInclude<Venture> = {
-      categories: query.includeCategories,
-      detail: query.includeDetail,
-      ownerDetail: query.includeOwner,
-      contact: query.includeContact,
-      location: query.includeLocation,
-    };
-
     const pagination: Pagination = {
       skip: query.skip,
       take: query.take,
@@ -102,7 +69,6 @@ export default class VenturesQueryDto {
     };
 
     return {
-      include,
       pagination,
       filters,
     };

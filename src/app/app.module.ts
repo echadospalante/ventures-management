@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { environment } from '../env/env';
-import { JoiValidationSchema } from '../env/joi.config';
+import { environment, JoiValidationSchema } from '../env/joi.config';
 import { RabbitMQConfig } from './config/amqp/amqp.connection';
 import { VentureModule } from './modules/ventures/venture.module';
 import { SharedModule } from './modules/shared/shared.module';
@@ -16,10 +16,30 @@ import { HttpService } from './config/http/axios.config';
     ConfigModule.forRoot({
       envFilePath: ['.env'],
       load: [environment],
+      isGlobal: true,
       validationSchema: JoiValidationSchema,
     }),
     VentureModule,
     SharedModule,
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        type: 'postgres',
+        host: configService.get<string>('DB_HOST'),
+        port: configService.get<number>('DB_PORT'),
+        username: configService.get<string>('DB_USERNAME'),
+        password: configService.get<string>('DB_PASSWORD'),
+        database: configService.get<string>('DB_NAME'),
+        synchronize: configService.get<boolean>('DB_SYNC'),
+        logging: configService.get<boolean>('DB_LOGGING'),
+        migrations: [__dirname + '../../src/app/config/typeorm/migrations'],
+        applicationName: configService.get<string>('APP_NAME'),
+        autoLoadEntities: true,
+        migrationsRun: false,
+        migrationsTableName: 'z_typeorm_migrations',
+      }),
+    }),
   ],
 })
 export class AppModule {}

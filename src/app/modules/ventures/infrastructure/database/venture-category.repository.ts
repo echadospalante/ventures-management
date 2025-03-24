@@ -1,196 +1,114 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 
-import {
-  ComplexInclude,
-  Pagination,
-  VentureCategory,
-} from 'echadospalante-core';
+import { VentureCategory } from 'echadospalante-core';
+import { VentureCategoryData } from 'echadospalante-core/dist/app/modules/infrastructure/database/entities';
+import { In, Repository } from 'typeorm';
 
-import { PrismaConfig } from '../../../../config/prisma/prisma.connection';
-import { VentureCategoriesRepository } from '../../domain/gateway/database/venture-categories.repository';
 import { VentureCategoryFilters } from '../../domain/core/venture-category-filter';
-import { VentureFilters } from '../../domain/core/venture-filters';
+import { VentureCategoriesRepository } from '../../domain/gateway/database/venture-categories.repository';
 
 @Injectable()
 export class VentureCategoriesRepositoryImpl
   implements VentureCategoriesRepository
 {
-  public constructor(private readonly prismaClient: PrismaConfig) {}
+  private readonly logger: Logger = new Logger(
+    VentureCategoriesRepositoryImpl.name,
+  );
+  public constructor(
+    @InjectRepository(VentureCategoryData)
+    private ventureCategoryRepository: Repository<VentureCategoryData>,
+  ) {}
 
-  public count(filters: VentureFilters): Promise<number> {
-    return this.prismaClient.client.ventureCategory
-      .count({
-        where: {
-          OR: [
-            {
-              name: {
-                contains: filters.search ?? '',
-                mode: 'insensitive',
-              },
-            },
-            {
-              description: {
-                contains: filters.search ?? '',
-                mode: 'insensitive',
-              },
-            },
-          ],
-        },
-      })
-      .then((count) => count);
+  update(
+    id: string,
+    category: { name: string; slug: string; description: string },
+  ): Promise<void> {
+    return this.ventureCategoryRepository
+      .update({ ...category }, { id })
+      .then(({ affected }) => {
+        this.logger.log(`Se actualizó ${affected} categorías`);
+      });
   }
 
-  public findAllByCriteria(
+  findById(id: string): Promise<VentureCategory | null> {
+    return this.ventureCategoryRepository
+      .findOneBy({ id })
+      .then((venture) => venture as VentureCategory | null);
+  }
+
+  save(category: {
+    name: string;
+    slug: string;
+    description: string;
+  }): Promise<VentureCategory> {
+    const categoryDB = this.ventureCategoryRepository.create({ ...category });
+    return this.ventureCategoryRepository.save(categoryDB).then((result) => {
+      return result as VentureCategory;
+    });
+  }
+
+  count(filters: VentureCategoryFilters): Promise<number> {
+    const { search } = filters;
+
+    return this.ventureCategoryRepository.count({
+      where: {
+        name: search,
+      },
+    });
+  }
+
+  findAllByCriteria(
     filters: VentureCategoryFilters,
-    include: Partial<ComplexInclude<VentureCategory>>,
-    pagination: Pagination,
   ): Promise<VentureCategory[]> {
-    return this.prismaClient.client.ventureCategory
-      .findMany({
-        where: {
-          OR: [
-            {
-              name: {
-                contains: filters.search ?? '',
-                mode: 'insensitive',
-              },
-            },
-            {
-              description: {
-                contains: filters.search ?? '',
-                mode: 'insensitive',
-              },
-            },
-          ],
-        },
-        take: pagination.take === -1 ? undefined : pagination.take,
-        skip: pagination.skip === -1 ? undefined : pagination.skip,
-        include,
-      })
-      .then(
-        (ventureCategories) =>
-          ventureCategories as unknown as VentureCategory[],
+    const { search } = filters;
+
+    const query =
+      this.ventureCategoryRepository.createQueryBuilder('ventureCategory');
+
+    if (search) {
+      query.andWhere(
+        '(ventureCategory.name LIKE :term OR ventureCategory.description LIKE :term)',
+        { term: `%${search}%` },
       );
+    }
+
+    console.log(query.getSql());
+
+    return query
+      .getMany()
+      .then((categories) => categories as VentureCategory[]);
   }
 
-  public existsBySlug(slug: string): Promise<boolean> {
-    return this.prismaClient.client.ventureCategory
-      .findFirst({
-        where: { slug },
+  existsBySlug(slug: string): Promise<boolean> {
+    return this.ventureCategoryRepository.exists({ where: { slug } });
+  }
+
+  findManyByName(names: string[]): Promise<VentureCategory[]> {
+    return this.ventureCategoryRepository
+      .find({
+        where: { id: In(names) },
       })
-      .then((ventureCategory) => !!ventureCategory);
+      .then((categories) => categories as VentureCategory[]);
   }
 
-  public findManyById(
-    ids: string[],
-    include: Partial<ComplexInclude<VentureCategory>>,
-  ): Promise<VentureCategory[]> {
-    return this.prismaClient.client.ventureCategory
-      .findMany({
-        where: {
-          id: {
-            in: ids,
-          },
-        },
-        include,
+  findManyById(ids: string[]): Promise<VentureCategory[]> {
+    return this.ventureCategoryRepository
+      .find({
+        where: { id: In(ids) },
       })
-      .then(
-        (ventureCategories) =>
-          ventureCategories as unknown as VentureCategory[],
-      );
+      .then((categories) => categories as VentureCategory[]);
   }
 
-  public save(
-    category: {
-      name: string;
-      slug: string;
-      description: string;
-    },
-    include: Partial<ComplexInclude<VentureCategory>>,
-  ): Promise<VentureCategory> {
-    return this.prismaClient.client.ventureCategory
-      .create({
-        data: {
-          name: category.name,
-          slug: category.slug,
-          description: category.description,
-        },
-        include,
-      })
-      .then((ventureCategory) => ventureCategory as unknown as VentureCategory);
+  findByName(name: string): Promise<VentureCategory | null> {
+    return this.ventureCategoryRepository
+      .findOneBy({ name })
+      .then((category) => category as VentureCategory);
   }
 
-  public findManyByName(
-    names: string[],
-    include: Partial<ComplexInclude<VentureCategory>>,
-  ): Promise<VentureCategory[]> {
-    return this.prismaClient.client.ventureCategory
-      .findMany({
-        where: {
-          name: {
-            in: names,
-          },
-        },
-        include,
-      })
-      .then(
-        (ventureCategories) =>
-          ventureCategories as unknown as VentureCategory[],
-      );
+  findAll(): Promise<VentureCategory[]> {
+    return this.ventureCategoryRepository
+      .find()
+      .then((categories) => categories as VentureCategory[]);
   }
-
-  public findByName(
-    name: string,
-    include: Partial<ComplexInclude<VentureCategory>>,
-  ): Promise<VentureCategory | null> {
-    return this.prismaClient.client.ventureCategory
-      .findFirst({
-        where: { name },
-        include,
-      })
-      .then((ventureCategory) => ventureCategory as VentureCategory | null);
-  }
-
-  public findAll(
-    include: Partial<ComplexInclude<VentureCategory>>,
-  ): Promise<VentureCategory[]> {
-    return this.prismaClient.client.ventureCategory
-      .findMany({ include })
-      .then(
-        (ventureCategories) =>
-          ventureCategories as unknown as VentureCategory[],
-      );
-  }
-
-  // public findByName(
-  //   ventureCategory: AppVentureCategory,
-  // ): Promise<VentureCategory | null> {
-  //   return this.prismaClient.client.ventureCategory
-  //     .findFirst({
-  //       where: { name: ventureCategory },
-  //     })
-  //     .then((ventureCategory) => ventureCategory as VentureCategory | null);
-  // }
-
-  // public findAll(
-  //   include: ComplexType<VentureCategory>,
-  // ): Promise<VentureCategory[]> {
-  //   return this.prismaClient.client.ventureCategory
-  //     .findMany({ include })
-  //     .then((ventureCategories) => ventureCategories as VentureCategory[]);
-  // }
-
-  // public findManyByName(
-  //   ventureCategories: AppVentureCategory[],
-  // ): Promise<VentureCategory[]> {
-  //   return this.prismaClient.client.ventureCategory
-  //     .findMany({
-  //       where: {
-  //         name: {
-  //           in: ventureCategories,
-  //         },
-  //       },
-  //     })
-  //     .then((ventureCategories) => ventureCategories as VentureCategory[]);
-  // }
 }

@@ -19,10 +19,10 @@ export class VenturesController {
 
   @Http.Get()
   public async getVentures(@Http.Query() query: VenturesQueryDto) {
-    const { include, pagination, filters } = VenturesQueryDto.parseQuery(query);
+    const { pagination, filters } = VenturesQueryDto.parseQuery(query);
     console.log(filters);
     const [items, total] = await Promise.all([
-      this.venturesService.getVentures(filters, include, pagination),
+      this.venturesService.getVentures(filters, pagination),
       this.venturesService.countVentures(filters),
     ]);
     return { items, total };

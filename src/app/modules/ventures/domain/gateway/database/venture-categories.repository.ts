@@ -1,39 +1,29 @@
-import {
-  ComplexInclude,
-  Pagination,
-  VentureCategory,
-} from 'echadospalante-core';
+import { VentureCategory } from 'echadospalante-core';
+
 import { VentureCategoryFilters } from '../../core/venture-category-filter';
 import { VentureFilters } from '../../core/venture-filters';
 
 export interface VentureCategoriesRepository {
+  update(
+    id: string,
+    category: { name: string; slug: string; description: string },
+  ): Promise<void>;
+  findById(id: string): Promise<VentureCategory | null>;
   count(filters: VentureFilters): Promise<number>;
   findAllByCriteria(
     filters: VentureCategoryFilters,
-    include: { ventures: boolean; users: boolean },
-    pagination: Pagination,
   ): Promise<VentureCategory[]>;
 
   existsBySlug(name: string): Promise<boolean>;
-  save(
-    category: { name: string; slug: string; description: string },
-    include: Partial<ComplexInclude<VentureCategory>>,
-  ): Promise<VentureCategory>;
-  findManyByName(
-    names: string[],
-    include: Partial<ComplexInclude<VentureCategory>>,
-  ): Promise<VentureCategory[]>;
-  findManyById(
-    id: string[],
-    include: Partial<ComplexInclude<VentureCategory>>,
-  ): Promise<VentureCategory[]>;
-  findByName(
-    name: string,
-    include: Partial<ComplexInclude<VentureCategory>>,
-  ): Promise<VentureCategory | null>;
-  findAll(
-    include: Partial<ComplexInclude<VentureCategory>>,
-  ): Promise<VentureCategory[]>;
+  save(category: {
+    name: string;
+    slug: string;
+    description: string;
+  }): Promise<VentureCategory>;
+  findManyByName(names: string[]): Promise<VentureCategory[]>;
+  findManyById(id: string[]): Promise<VentureCategory[]>;
+  findByName(name: string): Promise<VentureCategory | null>;
+  findAll(): Promise<VentureCategory[]>;
 }
 
 export const VentureCategoriesRepository = Symbol(

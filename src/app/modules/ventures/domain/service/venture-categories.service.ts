@@ -1,19 +1,19 @@
-import { ConflictException, Inject, Injectable, Logger } from '@nestjs/common';
-
 import {
-  ComplexInclude,
-  Pagination,
-  VentureCategory,
-} from 'echadospalante-core';
+  ConflictException,
+  Inject,
+  Injectable,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 
-import { VentureCategoriesRepository } from '../gateway/database/venture-categories.repository';
+import { VentureCategory } from 'echadospalante-core';
+
 import { stringToSlug } from '../../../../helpers/functions/slug-generator';
 import { VentureCategoryFilters } from '../core/venture-category-filter';
-import { VentureFilters } from '../core/venture-filters';
+import { VentureCategoriesRepository } from '../gateway/database/venture-categories.repository';
 
 @Injectable()
 export class VentureCategoriesService {
-  
   private readonly logger: Logger = new Logger(VentureCategoriesService.name);
 
   public constructor(
@@ -23,14 +23,12 @@ export class VentureCategoriesService {
 
   public getVentureCategories(
     filters: VentureCategoryFilters,
-    include: ComplexInclude<VentureCategory>,
-    pagination: Pagination,
   ): Promise<VentureCategory[]> {
     this.logger.log('Getting venture categories');
-    return this.usersRepository.findAllByCriteria(filters, include, pagination);
+    return this.usersRepository.findAllByCriteria(filters);
   }
 
-  public countVentureCategories(filters: VentureFilters) {
+  public countVentureCategories(filters: VentureCategoryFilters) {
     this.logger.log('Counting venture categories');
     return this.usersRepository.count(filters);
   }
@@ -40,7 +38,7 @@ export class VentureCategoriesService {
     description: string,
   ): Promise<VentureCategory> {
     this.logger.log(`Creating venture category ${name}`);
-    const category = await this.usersRepository.findByName(name, {});
+    const category = await this.usersRepository.findByName(name);
     const slug = stringToSlug(name);
     if (category)
       throw new ConflictException('Venture category already exists');
@@ -49,6 +47,34 @@ export class VentureCategoriesService {
     if (existsBySlug)
       throw new ConflictException('Venture category already exists');
 
-    return this.usersRepository.save({ name, slug, description }, {});
+    return this.usersRepository.save({ name, slug, description });
+  }
+
+  public async updateVentureCategory(
+    id: string,
+    categoryUpdate: VentureCategory,
+  ) {
+    const { name: newName, description } = categoryUpdate;
+    const categoryById = await this.usersRepository.findById(id);
+    if (!categoryById)
+      throw new NotFoundException(`Categoría con id ${id} no encontrada`);
+
+    const slug = stringToSlug(newName);
+    const categoryByName = await this.usersRepository.findByName(newName);
+    if (categoryByName)
+      throw new ConflictException(
+        `La categoría con nombre ${newName} ya existe`,
+      );
+    const existsBySlug = await this.usersRepository.existsBySlug(newName);
+    if (existsBySlug)
+      throw new ConflictException(
+        `La categoría con nombre ${newName} ya existe`,
+      );
+
+    return this.usersRepository.update(id, {
+      name: newName,
+      slug,
+      description,
+    });
   }
 }

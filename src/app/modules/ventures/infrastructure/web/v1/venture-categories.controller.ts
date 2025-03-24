@@ -3,7 +3,6 @@ import { Logger } from '@nestjs/common';
 
 import { VentureCategoriesService } from '../../../domain/service/venture-categories.service';
 import VentureCategoriesQueryDto from './model/request/venture-categories-query.dto';
-import VentureCreateDto from './model/request/venture-create.dto';
 
 const path = '/ventures/categories';
 
@@ -15,20 +14,15 @@ export class VentureCategoriesController {
     private readonly ventureCategoriesService: VentureCategoriesService,
   ) {}
 
-  @Http.Get()
+  @Http.Get('')
   @Http.HttpCode(Http.HttpStatus.OK)
   public async getVentureCategories(
     @Http.Query() query: VentureCategoriesQueryDto,
   ) {
-    const { include, pagination, filters } =
-      VentureCategoriesQueryDto.parseQuery(query);
+    const filters = VentureCategoriesQueryDto.parseQuery(query);
 
     const [items, total] = await Promise.all([
-      this.ventureCategoriesService.getVentureCategories(
-        filters,
-        include,
-        pagination,
-      ),
+      this.ventureCategoriesService.getVentureCategories(filters),
       this.ventureCategoriesService.countVentureCategories(filters),
     ]);
     return { items, total };

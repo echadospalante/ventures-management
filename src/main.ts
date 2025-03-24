@@ -2,6 +2,7 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 
 import { AppModule } from './app/app.module';
+import { ConfigService } from '@nestjs/config';
 
 const main = async () => {
   const logger = new Logger('main', { timestamp: true });
@@ -23,9 +24,11 @@ const main = async () => {
     methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
     credentials: true,
   });
+  const configService = app.get(ConfigService);
+  const port = configService.get('PORT');
 
-  await app.listen(3030).then(() => {
-    logger.log(`Server up and running on port ${3030}`);
+  await app.listen(port).then(() => {
+    logger.log(`Server up and running on port ${port}`);
   });
 };
 
