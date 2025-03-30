@@ -10,10 +10,6 @@ import { VentureCreate } from 'echadospalante-core';
 export default class VentureCreateDto {
   @IsString()
   @IsNotEmpty()
-  public ownerId: string;
-
-  @IsString()
-  @IsNotEmpty()
   public name: string;
 
   @IsString()

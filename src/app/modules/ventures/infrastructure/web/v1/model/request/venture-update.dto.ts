@@ -9,10 +9,6 @@ import { VentureUpdate } from 'echadospalante-core';
 
 export default class VentureUpdateDto {
   @IsString()
-  @IsNotEmpty()
-  public ownerId: string;
-
-  @IsString()
   public coverPhoto: string;
 
   @IsArray()

@@ -41,9 +41,14 @@ import { UserHttpAdapter } from './infrastructure/http/http.service';
 import { VenturesController } from './infrastructure/web/v1/ventures.controller';
 import { VentureCategoriesController } from './infrastructure/web/v1/venture-categories.controller';
 import { VentureCategoriesService } from './domain/service/venture-categories.service';
+import { VenturesDetailController } from './infrastructure/web/v1/venture-details.controller';
 
 @Module({
-  controllers: [VenturesController, VentureCategoriesController],
+  controllers: [
+    VenturesController,
+    VentureCategoriesController,
+    VenturesDetailController,
+  ],
   providers: [
     RabbitMQConfig,
     VenturesService,

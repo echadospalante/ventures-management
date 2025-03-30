@@ -28,9 +28,13 @@ export class VenturesController {
 
   @Http.Post('')
   @Http.HttpCode(Http.HttpStatus.CREATED)
-  public createVenture(@Http.Body() body: VentureCreateDto): Promise<Venture> {
+  public createVenture(
+    @Http.Body() body: VentureCreateDto,
+    @Http.Headers('X-Requested-By') requestedBy: string,
+  ): Promise<Venture> {
+    console.log({ requestedBy });
     const ventureCreate = VentureCreateDto.toEntity(body);
-    return this.venturesService.saveVenture(ventureCreate, body.ownerId);
+    return this.venturesService.saveVenture(ventureCreate, requestedBy);
   }
 
   @Http.Get('')
@@ -44,10 +48,11 @@ export class VenturesController {
   public async updateVenture(
     @Http.Param('id') id: string,
     @Http.Body() body: VentureUpdateDto,
+    @Http.Headers('X-Requested-By') requestedBy: string,
   ) {
     const ventureUpdate = VentureUpdateDto.toEntity(body);
 
-    return this.venturesService.updateVenture(id, body.ownerId, ventureUpdate);
+    return this.venturesService.updateVenture(id, requestedBy, ventureUpdate);
   }
 
   /*
