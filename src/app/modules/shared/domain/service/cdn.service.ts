@@ -9,7 +9,10 @@ export class CdnService {
     private contentCdn: ContentCdn,
   ) {}
 
-  public async uploadFile(file: Express.Multer.File): Promise<string> {
-    return this.contentCdn.uploadFile(file);
+  public async uploadFile(
+    bucketName: 'VENTURES' | 'EVENTS' | 'PUBLICATIONS',
+    file: Express.Multer.File,
+  ): Promise<string> {
+    return this.contentCdn.uploadFile(bucketName, file);
   }
 }

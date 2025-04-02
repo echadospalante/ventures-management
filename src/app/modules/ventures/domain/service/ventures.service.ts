@@ -39,7 +39,9 @@ export class VenturesService {
   ) {}
 
   public async saveVentureCoverPhoto(file: Express.Multer.File) {
-    return this.cdnService.uploadFile(file).then((url) => ({ imageUrl: url }));
+    return this.cdnService
+      .uploadFile('VENTURES', file)
+      .then((url) => ({ imageUrl: url }));
   }
 
   public async saveVenture(

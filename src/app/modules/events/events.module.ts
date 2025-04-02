@@ -29,47 +29,40 @@ import {
 
 import { RabbitMQConfig } from '../../config/amqp/amqp.connection';
 import { SharedModule } from '../shared/shared.module';
-import { VentureAMQPProducer } from './domain/gateway/amqp/venture.amqp';
-import { VentureCategoriesRepository } from './domain/gateway/database/venture-categories.repository';
-import { VenturesRepository } from './domain/gateway/database/ventures.repository';
+import { EventAMQPProducer } from './domain/gateway/amqp/event.amqp';
+import { EventCategoriesRepository } from './domain/gateway/database/event-categories.repository';
+import { EventsRepository } from './domain/gateway/database/events.repository';
 import { UserHttpService } from './domain/gateway/http/http.gateway';
-import { VenturesService } from './domain/service/ventures.service';
-import { VentureAMQPProducerImpl } from './infrastructure/amqp/producers/venture.amqp';
-import { VentureCategoriesRepositoryImpl } from './infrastructure/database/venture-category.repository';
-import { VenturesRepositoryImpl } from './infrastructure/database/venture.repository';
+import { EventCategoriesService } from './domain/service/event-categories.service';
+import { EventsService } from './domain/service/events.service';
+import { VentureEventAMQPProducerImpl } from './infrastructure/amqp/producers/event.amqp';
+import { EventCategoriesRepositoryImpl } from './infrastructure/database/event-category.repository';
+import { VentureEventsRepositoryImpl } from './infrastructure/database/event.repository';
 import { UserHttpAdapter } from './infrastructure/http/http.service';
-import { VenturesController } from './infrastructure/web/v1/ventures.controller';
-import { VentureCategoriesController } from './infrastructure/web/v1/venture-categories.controller';
-import { VentureCategoriesService } from './domain/service/venture-categories.service';
-import { VenturesDetailController } from './infrastructure/web/v1/venture-details.controller';
-import { VenturesDetailService } from './domain/service/ventures-detail.service';
+import { EventCategoriesController } from './infrastructure/web/v1/event-categories.controller';
+import { VentureEventsController } from './infrastructure/web/v1/events.controller';
 
 @Module({
-  controllers: [
-    VenturesController,
-    VentureCategoriesController,
-    VenturesDetailController,
-  ],
+  controllers: [EventCategoriesController, VentureEventsController],
   providers: [
+    EventCategoriesService,
     RabbitMQConfig,
-    VenturesService,
-    VentureCategoriesService,
-    VenturesDetailService,
+    EventsService,
     {
-      provide: VenturesRepository,
-      useClass: VenturesRepositoryImpl,
+      provide: EventCategoriesRepository,
+      useClass: EventCategoriesRepositoryImpl,
     },
     {
-      provide: VentureCategoriesRepository,
-      useClass: VentureCategoriesRepositoryImpl,
-    },
-    {
-      provide: VentureAMQPProducer,
-      useClass: VentureAMQPProducerImpl,
+      provide: EventsRepository,
+      useClass: VentureEventsRepositoryImpl,
     },
     {
       provide: UserHttpService,
       useClass: UserHttpAdapter,
+    },
+    {
+      provide: EventAMQPProducer,
+      useClass: VentureEventAMQPProducerImpl,
     },
   ],
   imports: [
@@ -101,4 +94,4 @@ import { VenturesDetailService } from './domain/service/ventures-detail.service'
     ]),
   ],
 })
-export class VentureModule {}
+export class EventModule {}

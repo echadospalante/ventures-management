@@ -61,7 +61,7 @@ export class VentureAMQPProducerImpl implements VentureAMQPProducer {
         ),
         rk: this.configService.getOrThrow<string>('RABBIT_VENTURE_DELETED_RK'),
       },
-     
+
       {
         queue: this.configService.getOrThrow<string>(
           'RABBIT_VENTURE_VERIFIED_QUEUE',
@@ -76,7 +76,6 @@ export class VentureAMQPProducerImpl implements VentureAMQPProducer {
           'RABBIT_VENTURE_UNVERIFIED_RK',
         ),
       },
-      
     ];
   }
 
@@ -85,7 +84,9 @@ export class VentureAMQPProducerImpl implements VentureAMQPProducer {
   }
 
   private get venturesExchangeType() {
-    return this.configService.getOrThrow<string>('RABBIT_VENTURES_EXCHANGE_TYPE');
+    return this.configService.getOrThrow<string>(
+      'RABBIT_VENTURES_EXCHANGE_TYPE',
+    );
   }
 
   private sendMessageToQueue<T>(

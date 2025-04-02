@@ -1,19 +1,14 @@
 import * as Http from '@nestjs/common';
+import { VenturesDetailService } from '../../../domain/service/ventures-detail.service';
 
 const path = '/ventures';
 
 @Http.Controller(path)
 export class VenturesDetailController {
+  public constructor(private venturesDetailService: VenturesDetailService) {}
+
   @Http.Get('/:id/detail')
   public getVentureDetail(@Http.Param('id') id: string) {
-    return { id };
-  }
-
-  @Http.Post('/:id/detail')
-  public addVentureDetail(
-    @Http.Param('id') id: string,
-    @Http.Headers('X-Requested-By') requestedBy: string,
-  ) {
-    return { id };
+    return this.venturesDetailService.getVentureDetail(id);
   }
 }
