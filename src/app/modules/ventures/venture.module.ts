@@ -51,6 +51,7 @@ import { VenturesDetailService } from './domain/service/ventures-detail.service'
     VentureCategoriesController,
     VenturesDetailController,
   ],
+  exports: [VenturesService],
   providers: [
     RabbitMQConfig,
     VenturesService,

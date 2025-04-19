@@ -19,6 +19,17 @@ export class VenturesRepositoryImpl implements VenturesRepository {
     private venturesRepository: Repository<VentureData>,
   ) {}
 
+  public isVentureOwner(ventureId: string, ownerId: string): Promise<boolean> {
+    return this.venturesRepository
+      .createQueryBuilder('venture')
+      .leftJoin('venture.ownerDetail', 'owner_detail')
+      .leftJoin('owner_detail.user', 'user')
+      .where('user.id = :ownerId', { ownerId })
+      .andWhere('venture.id = :ventureId', { ventureId })
+      .getOne()
+      .then((res) => !!res);
+  }
+
   findById(id: string): Promise<Venture | null> {
     return this.venturesRepository
       .findOneBy({ id })

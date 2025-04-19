@@ -21,6 +21,7 @@ import { EventAMQPProducer } from '../gateway/amqp/event.amqp';
 import { EventsRepository } from '../gateway/database/events.repository';
 import { UserHttpService } from '../gateway/http/http.gateway';
 import { EventCategoriesService } from './event-categories.service';
+import { VenturesService } from '../../../ventures/domain/service/ventures.service';
 
 @Injectable()
 export class EventsService {
@@ -30,6 +31,7 @@ export class EventsService {
     @Inject(EventsRepository)
     private eventsRepository: EventsRepository,
     private categoriesService: EventCategoriesService,
+    private venturesService: VenturesService,
     @Inject(EventAMQPProducer)
     private eventAMQPProducer: EventAMQPProducer,
     @Inject(UserHttpService)
@@ -45,9 +47,10 @@ export class EventsService {
 
   public async saveEvent(
     event: EventCreate,
+    ventureId: string,
     ownerId: string,
   ): Promise<VentureEvent> {
-    const eventToSave = await this.buildEventToSave(event, ownerId);
+    const eventToSave = await this.buildEventToSave(event, ventureId, ownerId);
 
     return this.eventsRepository.save(eventToSave).then((savedEvent) => {
       this.logger.log(`VentureEvent ${eventToSave.title} saved successfully`);
@@ -81,6 +84,7 @@ export class EventsService {
 
   private async buildEventToSave(
     event: EventCreate,
+    ventureId: string,
     ownerId: string,
   ): Promise<VentureEvent> {
     let slug = stringToSlug(event.title);
@@ -89,14 +93,26 @@ export class EventsService {
       slug = `${slug}-${crypto.randomUUID().substring(0, 8)}`;
     }
 
+    const isOwner = await this.venturesService.isVentureOwner(
+      ventureId,
+      ownerId,
+    );
+
+    if (!isOwner) {
+      throw new ForbiddenException(
+        'El usuario no es el propietario del emprendimiento, no puede crear un evento',
+      );
+    }
+
     const categories = await this.categoriesService.findManyById(
       event.categoriesIds,
     );
 
-    const [owner, ownerDetail] = await Promise.all([
+    const [owner] = await Promise.all([
       this.userHttpService.getUserById(ownerId),
-      this.userHttpService.getUserDetailById(ownerId),
+      // this.userHttpService.getUserDetailById(ownerId),
     ]);
+
     if (!owner.active) {
       throw new NotFoundException('User not found');
     }

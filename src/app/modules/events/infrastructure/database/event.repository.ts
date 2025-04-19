@@ -53,7 +53,6 @@ export class VentureEventsRepositoryImpl implements EventsRepository {
   // }
 
   save(event: VentureEvent): Promise<VentureEvent> {
-    console.log({ toSave: event });
     return this.eventsRepository
       .save(event)
       .then((result) => result as VentureEvent);

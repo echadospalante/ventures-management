@@ -42,6 +42,7 @@ import { VentureEventsRepositoryImpl } from './infrastructure/database/event.rep
 import { UserHttpAdapter } from './infrastructure/http/http.service';
 import { EventCategoriesController } from './infrastructure/web/v1/event-categories.controller';
 import { VentureEventsController } from './infrastructure/web/v1/events.controller';
+import { VentureModule } from '../ventures/venture.module';
 
 @Module({
   controllers: [EventCategoriesController, VentureEventsController],
@@ -69,6 +70,7 @@ import { VentureEventsController } from './infrastructure/web/v1/events.controll
   imports: [
     ConfigModule,
     SharedModule,
+    VentureModule,
     TypeOrmModule.forFeature([
       UserData,
       RoleData,

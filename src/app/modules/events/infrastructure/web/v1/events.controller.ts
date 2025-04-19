@@ -10,7 +10,7 @@ import EventUpdateDto from './model/request/event-update.dto';
 import EventsQueryDto from './model/request/events-query.dto';
 import EventCreateDto from './model/request/event-create.dto';
 
-const path = '/events';
+const path = '/ventures';
 
 @Http.Controller(path)
 export class VentureEventsController {
@@ -27,14 +27,19 @@ export class VentureEventsController {
     return this.eventsService.saveEventCoverPhoto(image);
   }
 
-  @Http.Post('')
+  @Http.Post('/:ventureId/events')
   @Http.HttpCode(Http.HttpStatus.CREATED)
   public createVentureEvent(
     @Http.Body() body: EventCreateDto,
+    @Http.Param('ventureId') ventureId: string,
     @Http.Headers('X-Requested-By') requestedBy: string,
   ): Promise<VentureEvent> {
     const ventureEventCreate = EventCreateDto.toEntity(body);
-    return this.eventsService.saveEvent(ventureEventCreate, requestedBy);
+    return this.eventsService.saveEvent(
+      ventureEventCreate,
+      ventureId,
+      requestedBy,
+    );
   }
 
   @Http.Get('')

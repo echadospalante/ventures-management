@@ -82,6 +82,10 @@ export class VenturesService {
       });
   }
 
+  public isVentureOwner(ventureId: string, ownerId: string): Promise<boolean> {
+    return this.venturesRepository.isVentureOwner(ventureId, ownerId);
+  }
+
   private async buildVentureToSave(
     venture: VentureCreate,
     ownerId: string,
