@@ -16,12 +16,12 @@ import {
 
 import { stringToSlug } from 'src/app/helpers/functions/slug-generator';
 import { CdnService } from 'src/app/modules/shared/domain/service/cdn.service';
+import { VenturesService } from '../../../ventures/domain/service/ventures.service';
 import { EventFilters } from '../core/event-filters';
 import { EventAMQPProducer } from '../gateway/amqp/event.amqp';
 import { EventsRepository } from '../gateway/database/events.repository';
 import { UserHttpService } from '../gateway/http/http.gateway';
 import { EventCategoriesService } from './event-categories.service';
-import { VenturesService } from '../../../ventures/domain/service/ventures.service';
 
 @Injectable()
 export class EventsService {
@@ -52,11 +52,13 @@ export class EventsService {
   ): Promise<VentureEvent> {
     const eventToSave = await this.buildEventToSave(event, ventureId, ownerId);
 
-    return this.eventsRepository.save(eventToSave).then((savedEvent) => {
-      this.logger.log(`VentureEvent ${eventToSave.title} saved successfully`);
-      this.eventAMQPProducer.emitVentureEventCreatedEvent(savedEvent);
-      return savedEvent;
-    });
+    return this.eventsRepository
+      .save(eventToSave, ventureId)
+      .then((savedEvent) => {
+        this.logger.log(`VentureEvent ${eventToSave.title} saved successfully`);
+        this.eventAMQPProducer.emitVentureEventCreatedEvent(savedEvent);
+        return savedEvent;
+      });
   }
 
   public async updateEvent(
@@ -75,7 +77,7 @@ export class EventsService {
       eventUpdate,
     );
 
-    return this.eventsRepository.save(eventToUpdate).then((savedEvent) => {
+    return this.eventsRepository.save(eventToUpdate, '').then((savedEvent) => {
       this.logger.log(`VentureEvent ${eventToUpdate.title} saved successfully`);
       this.eventAMQPProducer.emitVentureEventCreatedEvent(savedEvent);
       return savedEvent;
@@ -161,7 +163,6 @@ export class EventsService {
 
     const [owner] = await Promise.all([
       this.userHttpService.getUserById(ownerId),
-      this.userHttpService.getUserDetailById(ownerId),
     ]);
     if (!owner.active) {
       throw new NotFoundException('User not found');
@@ -178,7 +179,28 @@ export class EventsService {
     };
   }
 
-  public getEvents(filters: EventFilters, pagination: Pagination) {
+  public getVentureEvents(
+    ventureId: string,
+    filters: EventFilters,
+    pagination: Pagination,
+  ) {
+    const { take } = pagination;
+    if (take > 100) {
+      throw new BadRequestException(
+        'La página no debe ser mayor a 100 emprendimientos.',
+      );
+    }
+    return this.eventsRepository.findAllByCriteria(
+      filters,
+      pagination,
+      ventureId,
+    );
+  }
+
+  public getEventsFromAllVentures(
+    filters: EventFilters,
+    pagination: Pagination,
+  ) {
     const { take } = pagination;
     if (take > 100) {
       throw new BadRequestException(

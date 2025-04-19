@@ -4,7 +4,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { Pagination, VentureEvent } from 'echadospalante-core';
-import { VentureEventData } from 'echadospalante-core/dist/app/modules/infrastructure/database/entities';
+import {
+  VentureData,
+  VentureEventData,
+} from 'echadospalante-core/dist/app/modules/infrastructure/database/entities';
 
 import { EventFilters } from '../../domain/core/event-filters';
 import { EventsRepository } from '../../domain/gateway/database/events.repository';
@@ -24,23 +27,22 @@ export class VentureEventsRepositoryImpl implements EventsRepository {
   public isEventOwnerById(eventId: string, userId: string): Promise<boolean> {
     return this.eventsRepository
       .createQueryBuilder('event')
-      .leftJoin('event.ventureDetail', 'venture_detail')
-      .leftJoin('venture_detail.venture', 'venture')
-      .leftJoin('venture.ownerDetail', 'owner_detail')
-      .leftJoin('owner_detail.user', 'user')
+      .leftJoin('event.venture', 'venture')
+      .leftJoin('venture.owner', 'owner')
+      .leftJoin('owner.user', 'user')
       .where('user.id = :userId', { userId })
       .andWhere('event.id = :eventId', { eventId })
       .getOne()
       .then((res) => res !== undefined);
   }
 
-  findById(id: string): Promise<VentureEvent | null> {
+  public findById(id: string): Promise<VentureEvent | null> {
     return this.eventsRepository
       .findOneBy({ id })
       .then((event) => event as VentureEvent | null);
   }
 
-  deleteById(id: string): Promise<void> {
+  public deleteById(id: string): Promise<void> {
     return this.eventsRepository.delete({ id }).then((r) => {
       this.logger.log(`VentureEvent deleted: ${id} --> ${r.affected}`);
     });
@@ -52,19 +54,20 @@ export class VentureEventsRepositoryImpl implements EventsRepository {
   //     .then((event) => event as VentureEvent | null);
   // }
 
-  save(event: VentureEvent): Promise<VentureEvent> {
+  public save(event: VentureEvent, ventureId: string): Promise<VentureEvent> {
     return this.eventsRepository
-      .save(event)
-      .then((result) => result as VentureEvent);
+      .save({ ...event, venture: { id: ventureId } as VentureData })
+      .then((result) => JSON.parse(JSON.stringify(result)) as VentureEvent);
   }
 
   // existsBySlug(slug: string): Promise<boolean> {
   //   return this.eventsRepository.existsBy({ slug });
   // }
 
-  findAllByCriteria(
+  public findAllByCriteria(
     filters: EventFilters,
     pagination: Pagination,
+    ventureId?: string,
   ): Promise<{ items: VentureEvent[]; total: number }> {
     const {
       search,
@@ -88,6 +91,10 @@ export class VentureEventsRepositoryImpl implements EventsRepository {
         '(event.name LIKE :term OR event.description LIKE :term OR event.slug LIKE :term)',
         { term: `%${search}%` },
       );
+    }
+
+    if (ventureId) {
+      query.andWhere('event.venture.id = :ventureId', { ventureId });
     }
 
     if (categoriesIds?.length) {

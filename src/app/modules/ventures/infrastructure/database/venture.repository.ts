@@ -22,8 +22,7 @@ export class VenturesRepositoryImpl implements VenturesRepository {
   public isVentureOwner(ventureId: string, ownerId: string): Promise<boolean> {
     return this.venturesRepository
       .createQueryBuilder('venture')
-      .leftJoin('venture.ownerDetail', 'owner_detail')
-      .leftJoin('owner_detail.user', 'user')
+      .leftJoin('venture.owner', 'user')
       .where('user.id = :ownerId', { ownerId })
       .andWhere('venture.id = :ventureId', { ventureId })
       .getOne()
@@ -90,9 +89,10 @@ export class VenturesRepositoryImpl implements VenturesRepository {
 
     query.skip(pagination.skip).take(pagination.take);
 
-    return query
-      .getManyAndCount()
-      .then(([items, total]) => ({ items: items as Venture[], total }));
+    return query.getManyAndCount().then(([items, total]) => ({
+      items: JSON.parse(JSON.stringify(items)) as Venture[],
+      total,
+    }));
   }
 
   findOwnedVentures(

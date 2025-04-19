@@ -9,6 +9,7 @@ import { SharedModule } from './modules/shared/shared.module';
 import { GoogleCloudStorageConfig } from './config/gce/gce.config';
 import { HttpService } from './config/http/axios.config';
 import { EventModule } from './modules/events/events.module';
+import { SubscriptionsModule } from './modules/subscriptions/subscriptions.module';
 
 @Module({
   providers: [RabbitMQConfig, GoogleCloudStorageConfig, HttpService],
@@ -21,6 +22,7 @@ import { EventModule } from './modules/events/events.module';
       validationSchema: JoiValidationSchema,
     }),
     VentureModule,
+    SubscriptionsModule,
     EventModule,
     SharedModule,
     TypeOrmModule.forRootAsync({

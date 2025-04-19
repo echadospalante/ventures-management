@@ -16,11 +16,9 @@ import {
   RoleData,
   UserContactData,
   UserData,
-  UserDetailData,
   VentureCategoryData,
   VentureContactData,
   VentureData,
-  VentureDetailData,
   VentureEventData,
   VentureLocationData,
   VenturePublicationData,
@@ -30,29 +28,42 @@ import {
 
 import { RabbitMQConfig } from '../../config/amqp/amqp.connection';
 import { SharedModule } from '../shared/shared.module';
+import { VentureModule } from '../ventures/venture.module';
 import { EventAMQPProducer } from './domain/gateway/amqp/event.amqp';
 import { EventCategoriesRepository } from './domain/gateway/database/event-categories.repository';
+import { EventDonationsRepository } from './domain/gateway/database/event-donations.repository';
 import { EventsRepository } from './domain/gateway/database/events.repository';
 import { UserHttpService } from './domain/gateway/http/http.gateway';
 import { EventCategoriesService } from './domain/service/event-categories.service';
 import { EventsService } from './domain/service/events.service';
 import { VentureEventAMQPProducerImpl } from './infrastructure/amqp/producers/event.amqp';
 import { EventCategoriesRepositoryImpl } from './infrastructure/database/event-category.repository';
+import { EventDonationsRepositoryImpl } from './infrastructure/database/event-donation.repository';
 import { VentureEventsRepositoryImpl } from './infrastructure/database/event.repository';
 import { UserHttpAdapter } from './infrastructure/http/http.service';
 import { EventCategoriesController } from './infrastructure/web/v1/event-categories.controller';
+import { EventDonationsController } from './infrastructure/web/v1/event-donations.controller';
 import { VentureEventsController } from './infrastructure/web/v1/events.controller';
-import { VentureModule } from '../ventures/venture.module';
+import { EventDonationsService } from './domain/service/event-donarions.service';
 
 @Module({
-  controllers: [EventCategoriesController, VentureEventsController],
+  controllers: [
+    EventCategoriesController,
+    VentureEventsController,
+    EventDonationsController,
+  ],
   providers: [
     EventCategoriesService,
+    EventDonationsService,
     RabbitMQConfig,
     EventsService,
     {
       provide: EventCategoriesRepository,
       useClass: EventCategoriesRepositoryImpl,
+    },
+    {
+      provide: EventDonationsRepository,
+      useClass: EventDonationsRepositoryImpl,
     },
     {
       provide: EventsRepository,
@@ -75,10 +86,8 @@ import { VentureModule } from '../ventures/venture.module';
       UserData,
       RoleData,
       UserContactData,
-      UserDetailData,
       VentureCategoryData,
       VentureData,
-      VentureDetailData,
       VentureLocationData,
       VentureContactData,
       VentureEventData,

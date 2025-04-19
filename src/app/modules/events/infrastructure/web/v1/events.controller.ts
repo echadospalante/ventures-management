@@ -4,11 +4,10 @@ import { FileInterceptor } from '@nestjs/platform-express';
 
 import { VentureEvent } from 'echadospalante-core';
 
-import { UploadedPhotoResultDto } from './model/response/uploaded-photo-result.dto';
 import { EventsService } from '../../../domain/service/events.service';
-import EventUpdateDto from './model/request/event-update.dto';
-import EventsQueryDto from './model/request/events-query.dto';
 import EventCreateDto from './model/request/event-create.dto';
+import EventsQueryDto from './model/request/events-query.dto';
+import { UploadedPhotoResultDto } from './model/response/uploaded-photo-result.dto';
 
 const path = '/ventures';
 
@@ -18,7 +17,7 @@ export class VentureEventsController {
 
   public constructor(private readonly eventsService: EventsService) {}
 
-  @Http.Post('/cover-photo')
+  @Http.Post('/_/events/cover-photo')
   @Http.UseInterceptors(FileInterceptor('file'))
   @Http.HttpCode(Http.HttpStatus.CREATED)
   public createVentureEventCoverPhoto(
@@ -42,23 +41,31 @@ export class VentureEventsController {
     );
   }
 
-  @Http.Get('')
-  public async getVentureEvents(@Http.Query() query: EventsQueryDto) {
+  @Http.Get('/_/events')
+  public async getEventsFromAllVentures(@Http.Query() query: EventsQueryDto) {
     const { pagination, filters } = EventsQueryDto.parseQuery(query);
-    console.log(filters);
-    return this.eventsService.getEvents(filters, pagination);
+    return this.eventsService.getEventsFromAllVentures(filters, pagination);
   }
 
-  @Http.Patch('/:id')
-  public async updateVentureEvent(
-    @Http.Param('id') id: string,
-    @Http.Body() body: EventUpdateDto,
-    @Http.Headers('X-Requested-By') requestedBy: string,
+  @Http.Get('/:ventureId/events')
+  public async getVentureEvents(
+    @Http.Query() query: EventsQueryDto,
+    @Http.Param('ventureId') ventureId: string,
   ) {
-    const ventureEventUpdate = EventUpdateDto.toEntity(body);
-
-    return this.eventsService.updateEvent(id, requestedBy, ventureEventUpdate);
+    const { pagination, filters } = EventsQueryDto.parseQuery(query);
+    return this.eventsService.getVentureEvents(ventureId, filters, pagination);
   }
+
+  // @Http.Patch('/:id')
+  // public async updateVentureEvent(
+  //   @Http.Param('id') id: string,
+  //   @Http.Body() body: EventUpdateDto,
+  //   @Http.Headers('X-Requested-By') requestedBy: string,
+  // ) {
+  //   const ventureEventUpdate = EventUpdateDto.toEntity(body);
+
+  //   return this.eventsService.updateEvent(id, requestedBy, ventureEventUpdate);
+  // }
 
   /*
 

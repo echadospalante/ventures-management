@@ -42,7 +42,7 @@ export class EventCategoriesRepositoryImpl
   }): Promise<EventCategory> {
     const categoryDB = this.eventCategoryRepository.create({ ...category });
     return this.eventCategoryRepository.save(categoryDB).then((result) => {
-      return result as EventCategory;
+      return JSON.parse(JSON.stringify(result)) as EventCategory;
     });
   }
 
@@ -71,7 +71,12 @@ export class EventCategoriesRepositoryImpl
 
     console.log(query.getSql());
 
-    return query.getMany().then((categories) => categories as EventCategory[]);
+    return query
+      .getMany()
+      .then(
+        (categories) =>
+          JSON.parse(JSON.stringify(categories)) as EventCategory[],
+      );
   }
 
   existsBySlug(slug: string): Promise<boolean> {
@@ -83,7 +88,10 @@ export class EventCategoriesRepositoryImpl
       .find({
         where: { id: In(names) },
       })
-      .then((categories) => categories as EventCategory[]);
+      .then(
+        (categories) =>
+          JSON.parse(JSON.stringify(categories)) as EventCategory[],
+      );
   }
 
   findManyById(ids: string[]): Promise<EventCategory[]> {
@@ -91,18 +99,26 @@ export class EventCategoriesRepositoryImpl
       .find({
         where: { id: In(ids) },
       })
-      .then((categories) => categories as EventCategory[]);
+      .then(
+        (categories) =>
+          JSON.parse(JSON.stringify(categories)) as EventCategory[],
+      );
   }
 
   findByName(name: string): Promise<EventCategory | null> {
     return this.eventCategoryRepository
       .findOneBy({ name })
-      .then((category) => category as EventCategory);
+      .then(
+        (category) => JSON.parse(JSON.stringify(category)) as EventCategory,
+      );
   }
 
   findAll(): Promise<EventCategory[]> {
     return this.eventCategoryRepository
       .find()
-      .then((categories) => categories as EventCategory[]);
+      .then(
+        (categories) =>
+          JSON.parse(JSON.stringify(categories)) as EventCategory[],
+      );
   }
 }

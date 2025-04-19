@@ -16,11 +16,9 @@ import {
   EventContactData,
   UserContactData,
   UserData,
-  UserDetailData,
   VentureCategoryData,
   VentureContactData,
   VentureData,
-  VentureDetailData,
   VentureEventData,
   VentureLocationData,
   VenturePublicationData,
@@ -42,21 +40,14 @@ import { UserHttpAdapter } from './infrastructure/http/http.service';
 import { VenturesController } from './infrastructure/web/v1/ventures.controller';
 import { VentureCategoriesController } from './infrastructure/web/v1/venture-categories.controller';
 import { VentureCategoriesService } from './domain/service/venture-categories.service';
-import { VenturesDetailController } from './infrastructure/web/v1/venture-details.controller';
-import { VenturesDetailService } from './domain/service/ventures-detail.service';
 
 @Module({
-  controllers: [
-    VenturesController,
-    VentureCategoriesController,
-    VenturesDetailController,
-  ],
+  controllers: [VenturesController, VentureCategoriesController],
   exports: [VenturesService],
   providers: [
     RabbitMQConfig,
     VenturesService,
     VentureCategoriesService,
-    VenturesDetailService,
     {
       provide: VenturesRepository,
       useClass: VenturesRepositoryImpl,
@@ -81,10 +72,8 @@ import { VenturesDetailService } from './domain/service/ventures-detail.service'
       UserData,
       RoleData,
       UserContactData,
-      UserDetailData,
       VentureCategoryData,
       VentureData,
-      VentureDetailData,
       VentureLocationData,
       VentureContactData,
       VentureEventData,

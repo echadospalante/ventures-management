@@ -100,9 +100,8 @@ export class VenturesService {
       venture.categoriesIds,
     );
 
-    const [owner, ownerDetail] = await Promise.all([
+    const [owner] = await Promise.all([
       this.userHttpService.getUserById(ownerId),
-      this.userHttpService.getUserDetailById(ownerId),
     ]);
     if (!owner.active) {
       throw new NotFoundException('User not found');
@@ -116,7 +115,7 @@ export class VenturesService {
       coverPhoto: venture.coverPhoto,
       active: true,
       verified: owner.verified,
-      ownerDetail: ownerDetail,
+      owner,
       createdAt: new Date(),
       updatedAt: new Date(),
       // TODO: Traer el id del registro actual para que en lugar de generar un nuevo registro, lo actualice
@@ -141,6 +140,10 @@ export class VenturesService {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      events: [],
+      sponsorships: [],
+      subscriptions: [],
+      publications: [],
     };
   }
 
@@ -155,9 +158,8 @@ export class VenturesService {
     );
     const slug = stringToSlug(ventureDB.name);
 
-    const [owner, ownerDetail] = await Promise.all([
+    const [owner] = await Promise.all([
       this.userHttpService.getUserById(ownerId),
-      this.userHttpService.getUserDetailById(ownerId),
     ]);
     if (!owner.active) {
       throw new NotFoundException('User not found');
@@ -171,7 +173,7 @@ export class VenturesService {
       coverPhoto: ventureUpdate.coverPhoto || ventureDB.coverPhoto,
       active: true,
       verified: owner.verified,
-      ownerDetail: ownerDetail,
+      owner,
       createdAt: new Date(),
       updatedAt: new Date(),
       contact: {
