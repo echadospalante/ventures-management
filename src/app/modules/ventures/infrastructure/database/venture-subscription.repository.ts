@@ -9,14 +9,29 @@ import {
 } from 'echadospalante-core/dist/app/modules/infrastructure/database/entities';
 import { Repository } from 'typeorm';
 
-import { SubscriptionsRepository } from '../../domain/gateway/database/subscriptions.repository';
+import { VentureSubscriptionsRepository } from '../../domain/gateway/database/venture-subscriptions.repository';
+
 @Injectable()
-export class SubscriptionsRepositoryImpl implements SubscriptionsRepository {
-  private readonly logger = new Logger(SubscriptionsRepositoryImpl.name);
+export class VentureSubscriptionsRepositoryImpl
+  implements VentureSubscriptionsRepository
+{
+  private readonly logger = new Logger(VentureSubscriptionsRepositoryImpl.name);
+
   public constructor(
     @InjectRepository(VentureSubscriptionData)
     private subscriptionsRepository: Repository<VentureSubscriptionData>,
   ) {}
+
+  public delete(ventureId: string, subscriberId: string): Promise<boolean> {
+    return this.subscriptionsRepository
+      .delete({ ventureId, subscriberId })
+      .then(
+        (result) =>
+          result.affected !== undefined &&
+          result.affected !== null &&
+          result.affected > 0,
+      );
+  }
 
   public save(
     ventureId: string,

@@ -4,12 +4,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { environment, JoiValidationSchema } from '../env/joi.config';
 import { RabbitMQConfig } from './config/amqp/amqp.connection';
-import { VentureModule } from './modules/ventures/venture.module';
+import { VentureModule } from './modules/ventures/VentureModule';
 import { SharedModule } from './modules/shared/shared.module';
 import { GoogleCloudStorageConfig } from './config/gce/gce.config';
 import { HttpService } from './config/http/axios.config';
 import { EventModule } from './modules/events/events.module';
-import { SubscriptionsModule } from './modules/subscriptions/subscriptions.module';
 
 @Module({
   providers: [RabbitMQConfig, GoogleCloudStorageConfig, HttpService],
@@ -22,7 +21,6 @@ import { SubscriptionsModule } from './modules/subscriptions/subscriptions.modul
       validationSchema: JoiValidationSchema,
     }),
     VentureModule,
-    SubscriptionsModule,
     EventModule,
     SharedModule,
     TypeOrmModule.forRootAsync({

@@ -3,7 +3,7 @@ import { Logger } from '@nestjs/common';
 
 import { VentureSubscription } from 'echadospalante-core';
 
-import { SubscriptionsService } from '../../../domain/service/subscriptions.service';
+import { VentureSubscriptionsService } from '../../../domain/service/venture-subscriptions.service';
 import SubscriptionsQueryDto from './model/request/subscriptions-query.dto';
 
 const path = '/ventures';
@@ -13,7 +13,7 @@ export class SubscriptionsController {
   private readonly logger = new Logger(SubscriptionsController.name);
 
   public constructor(
-    private readonly subscriptionsService: SubscriptionsService,
+    private readonly subscriptionsService: VentureSubscriptionsService,
   ) {}
 
   @Http.Post('/:ventureId/subscriptions')
@@ -23,6 +23,17 @@ export class SubscriptionsController {
     @Http.Headers('X-Requested-By') requestedBy: string,
   ): Promise<VentureSubscription> {
     return this.subscriptionsService.saveSubscription(ventureId, requestedBy);
+  }
+
+  @Http.Delete('/:ventureId/subscriptions')
+  @Http.HttpCode(Http.HttpStatus.CREATED)
+  public deleteSubscription(
+    @Http.Param('ventureId') ventureId: string,
+    @Http.Headers('X-Requested-By') requestedBy: string,
+  ) {
+    return this.subscriptionsService
+      .deleteSubscription(ventureId, requestedBy)
+      .then((deleted) => ({ deleted }));
   }
 
   @Http.Get('/:ventureId/subscriptions')

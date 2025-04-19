@@ -9,18 +9,20 @@ import {
 
 import { Pagination, VentureSubscription } from 'echadospalante-core';
 
-import { VenturesService } from '../../../ventures/domain/service/ventures.service';
+import { VenturesService } from './ventures.service';
 import { SubscriptionAMQPProducer } from '../gateway/amqp/subscription.amqp';
-import { SubscriptionsRepository } from '../gateway/database/subscriptions.repository';
+import { VentureSubscriptionsRepository } from '../gateway/database/venture-subscriptions.repository';
 import { UserHttpService } from '../gateway/http/http.gateway';
 
 @Injectable()
-export class SubscriptionsService {
-  private readonly logger: Logger = new Logger(SubscriptionsService.name);
+export class VentureSubscriptionsService {
+  private readonly logger: Logger = new Logger(
+    VentureSubscriptionsService.name,
+  );
 
   public constructor(
-    @Inject(SubscriptionsRepository)
-    private subscriptionsRepository: SubscriptionsRepository,
+    @Inject(VentureSubscriptionsRepository)
+    private subscriptionsRepository: VentureSubscriptionsRepository,
     private venturesService: VenturesService,
     @Inject(SubscriptionAMQPProducer)
     private subscriptionAMQPProducer: SubscriptionAMQPProducer,
@@ -82,5 +84,12 @@ export class SubscriptionsService {
         total: subs.total,
         items: subs.items.flatMap((s) => s.subscriber),
       }));
+  }
+
+  public deleteSubscription(
+    ventureId: string,
+    requestedBy: string,
+  ): Promise<boolean> {
+    return this.subscriptionsRepository.delete(ventureId, requestedBy);
   }
 }

@@ -1,6 +1,7 @@
 import { Pagination, VentureSubscription } from 'echadospalante-core';
 
-export interface SubscriptionsRepository {
+export interface VentureSubscriptionsRepository {
+  delete(ventureId: string, subscriberId: string): Promise<boolean>;
   save(ventureId: string, subscriberId: string): Promise<VentureSubscription>;
   findPaginated(
     ventureId: string,
@@ -8,4 +9,6 @@ export interface SubscriptionsRepository {
   ): Promise<{ items: VentureSubscription[]; total: number }>;
 }
 
-export const SubscriptionsRepository = Symbol('SubscriptionsRepository');
+export const VentureSubscriptionsRepository = Symbol(
+  'VentureSubscriptionsRepository',
+);

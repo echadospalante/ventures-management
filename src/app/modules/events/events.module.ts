@@ -28,7 +28,7 @@ import {
 
 import { RabbitMQConfig } from '../../config/amqp/amqp.connection';
 import { SharedModule } from '../shared/shared.module';
-import { VentureModule } from '../ventures/venture.module';
+import { VentureModule } from '../ventures/VentureModule';
 import { EventAMQPProducer } from './domain/gateway/amqp/event.amqp';
 import { EventCategoriesRepository } from './domain/gateway/database/event-categories.repository';
 import { EventDonationsRepository } from './domain/gateway/database/event-donations.repository';

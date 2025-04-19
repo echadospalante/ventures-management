@@ -1,32 +1,30 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-
 import {
-  DepartmentData,
-  EventCategoryData,
-  EventContactData,
-  EventDonationData,
-  EventLocationData,
-  MunicipalityData,
-  NotificationData,
+  UserData,
+  RoleData,
+  UserContactData,
+  VentureCategoryData,
+  VentureData,
+  VentureLocationData,
+  VentureContactData,
+  VentureEventData,
+  VenturePublicationData,
   PublicationClapData,
   PublicationCommentData,
   PublicationContentData,
-  RoleData,
-  UserContactData,
-  UserData,
-  VentureCategoryData,
-  VentureContactData,
-  VentureData,
-  VentureEventData,
-  VentureLocationData,
-  VenturePublicationData,
+  EventContactData,
   VentureSponsorshipData,
   VentureSubscriptionData,
-} from 'echadospalante-core/dist/app/modules/infrastructure/database/entities';
-
-import { RabbitMQConfig } from '../../config/amqp/amqp.connection';
+  EventLocationData,
+  EventCategoryData,
+  EventDonationData,
+  MunicipalityData,
+  DepartmentData,
+  NotificationData,
+} from 'echadospalante-core';
+import { RabbitMQConfig } from 'src/app/config/amqp/amqp.connection';
 import { SharedModule } from '../shared/shared.module';
 import { SubscriptionAMQPProducer } from './domain/gateway/amqp/subscription.amqp';
 import { VentureAMQPProducer } from './domain/gateway/amqp/venture.amqp';
@@ -37,7 +35,6 @@ import { UserHttpService } from './domain/gateway/http/http.gateway';
 import { VentureCategoriesService } from './domain/service/venture-categories.service';
 import { VentureSubscriptionsService } from './domain/service/venture-subscriptions.service';
 import { VenturesService } from './domain/service/ventures.service';
-import { SubscriptionAMQPProducerImpl } from './infrastructure/amqp/producers/subscription.amqp';
 import { VentureAMQPProducerImpl } from './infrastructure/amqp/producers/venture.amqp';
 import { VentureCategoriesRepositoryImpl } from './infrastructure/database/venture-category.repository';
 import { VentureSubscriptionsRepositoryImpl } from './infrastructure/database/venture-subscription.repository';
@@ -46,6 +43,7 @@ import { UserHttpAdapter } from './infrastructure/http/http.service';
 import { SubscriptionsController } from './infrastructure/web/v1/subscriptions.controller';
 import { VentureCategoriesController } from './infrastructure/web/v1/venture-categories.controller';
 import { VenturesController } from './infrastructure/web/v1/ventures.controller';
+import { SubscriptionAMQPProducerImpl } from './infrastructure/amqp/producers/subscription.amqp';
 
 @Module({
   controllers: [
