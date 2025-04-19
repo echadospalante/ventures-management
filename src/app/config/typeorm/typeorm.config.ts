@@ -6,6 +6,7 @@ import { DataSource } from 'typeorm';
 import {
   DepartmentData,
   EventCategoryData,
+  EventContactData,
   EventDonationData,
   EventLocationData,
   MunicipalityData,
@@ -47,6 +48,7 @@ export default new DataSource({
     EventCategoryData,
     EventDonationData,
     EventLocationData,
+    EventContactData,
     MunicipalityData,
     NotificationData,
     PublicationClapData,

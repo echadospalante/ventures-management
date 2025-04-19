@@ -1,12 +1,13 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+
 import { Repository } from 'typeorm';
 
 import { Pagination, VentureEvent } from 'echadospalante-core';
 import { VentureEventData } from 'echadospalante-core/dist/app/modules/infrastructure/database/entities';
 
-import { EventsRepository } from '../../domain/gateway/database/events.repository';
 import { EventFilters } from '../../domain/core/event-filters';
+import { EventsRepository } from '../../domain/gateway/database/events.repository';
 
 @Injectable()
 export class VentureEventsRepositoryImpl implements EventsRepository {

@@ -33,7 +33,6 @@ export class VentureEventsController {
     @Http.Body() body: EventCreateDto,
     @Http.Headers('X-Requested-By') requestedBy: string,
   ): Promise<VentureEvent> {
-    console.log({ requestedBy });
     const ventureEventCreate = EventCreateDto.toEntity(body);
     return this.eventsService.saveEvent(ventureEventCreate, requestedBy);
   }

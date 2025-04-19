@@ -38,7 +38,6 @@ export class VenturesRepositoryImpl implements VenturesRepository {
   }
 
   save(venture: Venture): Promise<Venture> {
-    console.log({ toSave: venture });
     return this.venturesRepository
       .save(venture)
       .then((result) => result as Venture);

@@ -102,15 +102,34 @@ export class EventsService {
     }
 
     return {
-      ...event,
       id: crypto.randomUUID().toString(),
+      title: event.title,
+      description: event.description,
       slug,
       categories,
       coverPhoto: event.coverPhoto,
       donations: [],
+      startDate: event.startDate,
+      location: {
+        id: crypto.randomUUID().toString(),
+        location:
+          event.location?.lat && event.location?.lng
+            ? {
+                type: 'Point',
+                coordinates: [event.location.lng, event.location.lat],
+              }
+            : undefined,
+        description: event.location?.description,
+      },
+      contact: {
+        id: crypto.randomUUID().toString(),
+        email: event.contactEmail,
+        phoneNumber: event.contactPhoneNumber,
+      },
+      endDate: event.endDate,
       createdAt: new Date(),
       updatedAt: new Date(),
-    } as VentureEvent;
+    };
   }
 
   private async buildEventToUpdate(

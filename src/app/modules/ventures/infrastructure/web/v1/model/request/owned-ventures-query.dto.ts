@@ -1,6 +1,6 @@
 import { Transform } from 'class-transformer';
 import * as Validate from 'class-validator';
-import { ComplexInclude, Pagination, Venture } from 'echadospalante-core';
+import { Pagination } from 'echadospalante-core';
 
 import { OwnedVentureFilters } from '../../../../../../ventures/domain/core/venture-filters';
 
@@ -40,13 +40,6 @@ export default class OwnedVenturesQueryDto {
   public ownerEmail: string;
 
   public static parseQuery(query: OwnedVenturesQueryDto) {
-    const include: ComplexInclude<Venture> = {
-      categories: query.includeCategories,
-      detail: query.includeDetail,
-      contact: query.includeContact,
-      location: query.includeLocation,
-    };
-
     const pagination: Pagination = {
       skip: query.page * query.size,
       take: query.size,
@@ -57,7 +50,6 @@ export default class OwnedVenturesQueryDto {
     };
 
     return {
-      include,
       pagination,
       filters,
     };

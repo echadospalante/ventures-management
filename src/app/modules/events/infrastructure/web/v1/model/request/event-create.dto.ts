@@ -1,16 +1,18 @@
 import {
   IsArray,
+  IsDateString,
   IsEmail,
   IsNotEmpty,
   IsOptional,
   IsString,
 } from 'class-validator';
+import { EventCreate } from 'echadospalante-core';
 // import { EventCreate } from 'echadospalante-core';
 
 export default class EventCreateDto {
   @IsString()
   @IsNotEmpty()
-  public name: string;
+  public title: string;
 
   @IsString()
   public description: string;
@@ -41,16 +43,22 @@ export default class EventCreateDto {
   @IsNotEmpty()
   public locationDescription: string;
 
-  public static toEntity(dto: EventCreateDto): any {
+  @IsDateString()
+  public startDate: Date;
+
+  @IsDateString()
+  public endDate: Date;
+
+  public static toEntity(dto: EventCreateDto): EventCreate {
     return {
-      name: dto.name,
+      title: dto.title,
       coverPhoto: dto.coverPhoto,
       description: dto.description,
       categoriesIds: dto.categoriesIds,
-      contact: {
-        email: dto.contactEmail,
-        phoneNumber: dto.contactPhoneNumber,
-      },
+      contactEmail: dto.contactEmail,
+      contactPhoneNumber: dto.contactPhoneNumber,
+      startDate: dto.startDate,
+      endDate: dto.endDate,
       location: {
         lat: dto.locationLat ? parseFloat(dto.locationLat) : undefined,
         lng: dto.locationLng ? parseFloat(dto.locationLng) : undefined,
