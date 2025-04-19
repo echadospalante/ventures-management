@@ -62,6 +62,11 @@ export class VenturesRepositoryImpl implements VenturesRepository {
 
     const query = this.venturesRepository.createQueryBuilder('venture');
 
+    // Agregar relaciones explícitamente (aunque tengan eager: true)
+    query
+      .leftJoinAndSelect('venture.categories', 'category')
+      .leftJoinAndSelect('venture.location', 'location');
+
     if (search) {
       query.andWhere(
         '(venture.name LIKE :term OR venture.description LIKE :term OR venture.slug LIKE :term)',
@@ -69,9 +74,7 @@ export class VenturesRepositoryImpl implements VenturesRepository {
       );
     }
     if (categoriesIds) {
-      query
-        .innerJoin('venture.categories', 'category')
-        .andWhere('category.id IN (:...ids)', { ids: categoriesIds });
+      query.andWhere('category.id IN (:...ids)', { ids: categoriesIds });
     }
 
     query.skip(pagination.skip).take(pagination.take);

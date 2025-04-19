@@ -78,23 +78,31 @@ export class VentureEventsRepositoryImpl implements EventsRepository {
 
     const query = this.eventsRepository.createQueryBuilder('event');
 
+    // Agregar relaciones explícitamente (aunque tengan eager: true)
+    query
+      .leftJoinAndSelect('event.categories', 'category')
+      .leftJoinAndSelect('event.location', 'location');
+
+    // Filtros dinámicos
     if (search) {
       query.andWhere(
         '(event.name LIKE :term OR event.description LIKE :term OR event.slug LIKE :term)',
         { term: `%${search}%` },
       );
     }
-    if (categoriesIds) {
-      query
-        .innerJoin('event.categories', 'category')
-        .andWhere('category.id IN (:...ids)', { ids: categoriesIds });
+
+    if (categoriesIds?.length) {
+      query.andWhere('category.id IN (:...ids)', { ids: categoriesIds });
     }
 
     query.skip(pagination.skip).take(pagination.take);
 
-    return query.getManyAndCount().then(([items, total]) => ({
-      items: JSON.parse(JSON.stringify(items)) as VentureEvent[],
-      total,
-    }));
+    return query.getManyAndCount().then(([items, total]) => {
+      console.log({ items });
+      return {
+        items: JSON.parse(JSON.stringify(items)) as VentureEvent[],
+        total,
+      };
+    });
   }
 }
