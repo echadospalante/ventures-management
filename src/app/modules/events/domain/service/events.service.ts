@@ -210,10 +210,10 @@ export class EventsService {
     return this.eventsRepository.findAllByCriteria(filters, pagination);
   }
 
-  public async deleteEventById(eventId: string, email: string): Promise<void> {
+  public async deleteEventById(eventId: string, userId: string): Promise<void> {
     const isTheOwner = await this.eventsRepository.isEventOwnerById(
       eventId,
-      email,
+      userId,
     );
     if (!isTheOwner)
       throw new ForbiddenException('You are not the owner of this event');

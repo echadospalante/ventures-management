@@ -10,6 +10,7 @@ import {
   EventLocationData,
   MunicipalityData,
   NotificationData,
+  PublicationCategoryData,
   PublicationClapData,
   PublicationCommentData,
   PublicationContentData,
@@ -28,13 +29,14 @@ import {
 
 import { RabbitMQConfig } from '../../config/amqp/amqp.connection';
 import { SharedModule } from '../shared/shared.module';
-import { VentureModule } from '../ventures/VentureModule';
+import { VentureModule } from '../ventures/venture.module';
 import { EventAMQPProducer } from './domain/gateway/amqp/event.amqp';
 import { EventCategoriesRepository } from './domain/gateway/database/event-categories.repository';
 import { EventDonationsRepository } from './domain/gateway/database/event-donations.repository';
 import { EventsRepository } from './domain/gateway/database/events.repository';
 import { UserHttpService } from './domain/gateway/http/http.gateway';
 import { EventCategoriesService } from './domain/service/event-categories.service';
+import { EventDonationsService } from './domain/service/event-donarions.service';
 import { EventsService } from './domain/service/events.service';
 import { VentureEventAMQPProducerImpl } from './infrastructure/amqp/producers/event.amqp';
 import { EventCategoriesRepositoryImpl } from './infrastructure/database/event-category.repository';
@@ -44,7 +46,6 @@ import { UserHttpAdapter } from './infrastructure/http/http.service';
 import { EventCategoriesController } from './infrastructure/web/v1/event-categories.controller';
 import { EventDonationsController } from './infrastructure/web/v1/event-donations.controller';
 import { VentureEventsController } from './infrastructure/web/v1/events.controller';
-import { EventDonationsService } from './domain/service/event-donarions.service';
 
 @Module({
   controllers: [
@@ -95,6 +96,7 @@ import { EventDonationsService } from './domain/service/event-donarions.service'
       VenturePublicationData,
       PublicationClapData,
       PublicationCommentData,
+      PublicationCategoryData,
       PublicationContentData,
       VentureSponsorshipData,
       VentureSubscriptionData,

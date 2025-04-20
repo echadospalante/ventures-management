@@ -1,0 +1,20 @@
+import { PublicationComment } from 'echadospalante-core';
+
+export interface PublicationCommentsRepository {
+  deleteComment(commentId: string): Promise<boolean>;
+  save(
+    publicationId: string,
+    authorId: string,
+    content: string,
+  ): Promise<PublicationComment>;
+  findById(commentId: string): Promise<PublicationComment | null>;
+  findByPublicationId(
+    publicationId: string,
+    skip: number,
+    take: number,
+  ): Promise<{ items: PublicationComment[]; total: number }>;
+}
+
+export const PublicationCommentsRepository = Symbol(
+  'PublicationCommentsRepository',
+);
