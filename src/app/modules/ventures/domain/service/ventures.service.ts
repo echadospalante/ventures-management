@@ -14,8 +14,8 @@ import {
   VentureUpdate,
 } from 'echadospalante-core';
 
-import { stringToSlug } from 'src/app/helpers/functions/slug-generator';
-import { CdnService } from 'src/app/modules/shared/domain/service/cdn.service';
+import { stringToSlug } from '../../../../helpers/functions/slug-generator';
+import { CdnService } from '../../../shared/domain/service/cdn.service';
 import { VentureFilters } from '../core/venture-filters';
 import { VentureAMQPProducer } from '../gateway/amqp/venture.amqp';
 import { VentureCategoriesRepository } from '../gateway/database/venture-categories.repository';

@@ -13,13 +13,13 @@ import {
   VenturePublication,
 } from 'echadospalante-core';
 
-import { CdnService } from 'src/app/modules/shared/domain/service/cdn.service';
 import { VenturesService } from '../../../ventures/domain/service/ventures.service';
 import { PublicationFilters } from '../core/publication-filters';
 import { PublicationAMQPProducer } from '../gateway/amqp/publication.amqp';
 import { PublicationsRepository } from '../gateway/database/publications.repository';
 import { UserHttpService } from '../gateway/http/http.gateway';
 import { PublicationCategoriesService } from './publication-categories.service';
+import { CdnService } from '../../../shared/domain/service/cdn.service';
 
 @Injectable()
 export class PublicationsService {

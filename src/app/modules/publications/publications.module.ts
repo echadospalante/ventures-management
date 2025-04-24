@@ -31,18 +31,22 @@ import { SharedModule } from '../shared/shared.module';
 import { VentureModule } from '../ventures/venture.module';
 import { PublicationAMQPProducer } from './domain/gateway/amqp/publication.amqp';
 import { PublicationCategoriesRepository } from './domain/gateway/database/publication-categories.repository';
+import { PublicationClapsRepository } from './domain/gateway/database/publication-claps.repository';
 import { PublicationCommentsRepository } from './domain/gateway/database/publication-comments.repository';
 import { PublicationsRepository } from './domain/gateway/database/publications.repository';
 import { UserHttpService } from './domain/gateway/http/http.gateway';
 import { PublicationCategoriesService } from './domain/service/publication-categories.service';
+import { PublicationClapsService } from './domain/service/publication-claps.service';
 import { PublicationCommentsService } from './domain/service/publication-comments.service';
 import { PublicationsService } from './domain/service/publications.service';
 import { PublicationAMQPProducerImpl } from './infrastructure/amqp/producers/publication.amqp';
 import { PublicationCategoriesRepositoryImpl } from './infrastructure/database/publication-category.repository';
+import { PublicationClapsRepositoryImpl } from './infrastructure/database/publication-clap.repository';
 import { PublicationCommentsRepositoryImpl } from './infrastructure/database/publication-comment.repository';
 import { PublicationsRepositoryImpl } from './infrastructure/database/publication.repository';
 import { UserHttpAdapter } from './infrastructure/http/http.service';
 import { PublicationCategoriesController } from './infrastructure/web/v1/publication-categories.controller';
+import { PublicationClapsController } from './infrastructure/web/v1/publication-claps.controller';
 import { PublicationCommentsController } from './infrastructure/web/v1/publication-comments.controller';
 import { VenturePublicationsController } from './infrastructure/web/v1/publications.controller';
 
@@ -51,10 +55,12 @@ import { VenturePublicationsController } from './infrastructure/web/v1/publicati
     PublicationCategoriesController,
     VenturePublicationsController,
     PublicationCommentsController,
+    PublicationClapsController,
   ],
   providers: [
     PublicationCategoriesService,
     PublicationCommentsService,
+    PublicationClapsService,
     RabbitMQConfig,
     PublicationsService,
     {
@@ -64,6 +70,10 @@ import { VenturePublicationsController } from './infrastructure/web/v1/publicati
     {
       provide: PublicationCommentsRepository,
       useClass: PublicationCommentsRepositoryImpl,
+    },
+    {
+      provide: PublicationClapsRepository,
+      useClass: PublicationClapsRepositoryImpl,
     },
     {
       provide: PublicationsRepository,

@@ -61,10 +61,6 @@ export class PublicationsRepositoryImpl implements PublicationsRepository {
       );
   }
 
-  // existsBySlug(slug: string): Promise<boolean> {
-  //   return this.eventsRepository.existsBy({ slug });
-  // }
-
   public findAllByCriteria(
     filters: PublicationFilters,
     pagination: Pagination,
@@ -85,7 +81,6 @@ export class PublicationsRepositoryImpl implements PublicationsRepository {
       .leftJoinAndSelect('event.categories', 'category')
       .leftJoinAndSelect('event.contents', 'contents');
 
-    // Filtros dinámicos
     if (search) {
       query.andWhere(
         '(event.name LIKE :term OR event.description LIKE :term OR event.slug LIKE :term)',
@@ -104,7 +99,6 @@ export class PublicationsRepositoryImpl implements PublicationsRepository {
     query.skip(pagination.skip).take(pagination.take);
 
     return query.getManyAndCount().then(([items, total]) => {
-      console.log({ items });
       return {
         items: JSON.parse(JSON.stringify(items)) as VenturePublication[],
         total,

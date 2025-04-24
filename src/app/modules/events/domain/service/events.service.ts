@@ -14,14 +14,14 @@ import {
   VentureEvent,
 } from 'echadospalante-core';
 
-import { stringToSlug } from 'src/app/helpers/functions/slug-generator';
-import { CdnService } from 'src/app/modules/shared/domain/service/cdn.service';
+import { stringToSlug } from '../../../../helpers/functions/slug-generator';
 import { VenturesService } from '../../../ventures/domain/service/ventures.service';
 import { EventFilters } from '../core/event-filters';
 import { EventAMQPProducer } from '../gateway/amqp/event.amqp';
 import { EventsRepository } from '../gateway/database/events.repository';
 import { UserHttpService } from '../gateway/http/http.gateway';
 import { EventCategoriesService } from './event-categories.service';
+import { CdnService } from '../../../shared/domain/service/cdn.service';
 
 @Injectable()
 export class EventsService {
