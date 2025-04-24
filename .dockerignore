@@ -2,7 +2,6 @@ generated/
 docs/
 node_modules/
 dist/
-credenciales
 .eslintrc.js
 .gitignore
 
