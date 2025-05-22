@@ -1,7 +1,7 @@
 import { Transform } from 'class-transformer';
 import * as Validate from 'class-validator';
 
-import { Pagination } from 'echadospalante-core';
+import { Pagination } from 'echadospalante-domain';
 
 import { EventFilters } from '../../../../../domain/core/event-filters';
 

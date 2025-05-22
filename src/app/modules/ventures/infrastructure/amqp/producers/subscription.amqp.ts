@@ -5,7 +5,7 @@ import { Channel } from 'amqplib';
 
 import { RabbitMQConfig } from '../../../../../config/amqp/amqp.connection';
 import { SubscriptionAMQPProducer } from '../../../domain/gateway/amqp/subscription.amqp';
-import { VentureSubscription } from 'echadospalante-core';
+import { VentureSubscription } from 'echadospalante-domain';
 
 @Injectable()
 export class SubscriptionAMQPProducerImpl implements SubscriptionAMQPProducer {

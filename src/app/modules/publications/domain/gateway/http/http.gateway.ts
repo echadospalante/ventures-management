@@ -1,4 +1,4 @@
-import { User } from 'echadospalante-core';
+import { User } from 'echadospalante-domain';
 
 export interface UserHttpService {
   getUserById(userId: string): Promise<User>;

@@ -12,7 +12,7 @@ import {
   EventUpdate,
   Pagination,
   VentureEvent,
-} from 'echadospalante-core';
+} from 'echadospalante-domain';
 
 import { stringToSlug } from '../../../../helpers/functions/slug-generator';
 import { VenturesService } from '../../../ventures/domain/service/ventures.service';
@@ -63,7 +63,7 @@ export class EventsService {
 
   public async updateEvent(
     id: string,
-    ownerId: string,
+    requesterEmail: string,
     eventUpdate: EventUpdate,
   ) {
     const eventDB = await this.eventsRepository.findById(id);
@@ -72,7 +72,7 @@ export class EventsService {
 
     const eventToUpdate = await this.buildEventToUpdate(
       id,
-      ownerId,
+      requesterEmail,
       eventDB,
       eventUpdate,
     );
@@ -87,7 +87,7 @@ export class EventsService {
   private async buildEventToSave(
     event: EventCreate,
     ventureId: string,
-    ownerId: string,
+    requesterEmail: string,
   ): Promise<VentureEvent> {
     let slug = stringToSlug(event.title);
     const eventDB = await this.eventsRepository.existsBySlug(slug);
@@ -97,7 +97,7 @@ export class EventsService {
 
     const isOwner = await this.venturesService.isVentureOwner(
       ventureId,
-      ownerId,
+      requesterEmail,
     );
 
     if (!isOwner) {
@@ -111,7 +111,7 @@ export class EventsService {
     );
 
     const [owner] = await Promise.all([
-      this.userHttpService.getUserById(ownerId),
+      this.userHttpService.getUserByEmail(requesterEmail),
       // this.userHttpService.getUserDetailById(ownerId),
     ]);
 
@@ -152,7 +152,7 @@ export class EventsService {
 
   private async buildEventToUpdate(
     id: string,
-    ownerId: string,
+    requesterEmail: string,
     eventDB: VentureEvent,
     eventUpdate: EventUpdate,
   ): Promise<VentureEvent> {
@@ -162,7 +162,7 @@ export class EventsService {
     const slug = stringToSlug(eventDB.title);
 
     const [owner] = await Promise.all([
-      this.userHttpService.getUserById(ownerId),
+      this.userHttpService.getUserByEmail(requesterEmail),
     ]);
     if (!owner.active) {
       throw new NotFoundException('User not found');

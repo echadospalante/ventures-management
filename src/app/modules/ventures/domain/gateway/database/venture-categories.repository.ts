@@ -1,4 +1,4 @@
-import { VentureCategory } from 'echadospalante-core';
+import { VentureCategory } from 'echadospalante-domain';
 
 import { VentureCategoryFilters } from '../../core/venture-category-filter';
 import { VentureFilters } from '../../core/venture-filters';

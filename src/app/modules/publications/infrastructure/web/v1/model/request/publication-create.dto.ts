@@ -1,5 +1,5 @@
 import { IsArray, IsNotEmpty, IsString } from 'class-validator';
-import { PublicationContent, PublicationCreate } from 'echadospalante-core';
+import { PublicationContent, PublicationCreate } from 'echadospalante-domain';
 
 export default class PublicationCreateDto {
   @IsString()

@@ -6,7 +6,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
-import { PublicationCategory } from 'echadospalante-core';
+import { PublicationCategory } from 'echadospalante-domain';
 
 import { stringToSlug } from '../../../../helpers/functions/slug-generator';
 import PublicationCategoryCreateDto from '../../infrastructure/web/v1/model/request/publication-category-create.dto';

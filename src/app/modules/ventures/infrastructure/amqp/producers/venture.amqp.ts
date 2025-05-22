@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 import { Channel } from 'amqplib';
-import { Venture } from 'echadospalante-core';
+import { Venture } from 'echadospalante-domain';
 
 import { RabbitMQConfig } from '../../../../../config/amqp/amqp.connection';
 import { VentureAMQPProducer } from '../../../domain/gateway/amqp/venture.amqp';

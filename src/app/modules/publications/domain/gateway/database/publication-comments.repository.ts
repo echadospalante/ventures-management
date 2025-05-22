@@ -1,4 +1,4 @@
-import { PublicationComment } from 'echadospalante-core';
+import { PublicationComment } from 'echadospalante-domain';
 
 export interface PublicationCommentsRepository {
   deleteComment(commentId: string): Promise<boolean>;

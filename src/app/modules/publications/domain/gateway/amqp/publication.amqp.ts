@@ -1,4 +1,4 @@
-// import { VenturePublicationEvent } from 'echadospalante-core';
+// import { VenturePublicationEvent } from 'echadospalante-domain';
 
 export interface PublicationAMQPProducer {
   emitVenturePublicationCreatedEvent(

@@ -1,7 +1,7 @@
 import { Transform } from 'class-transformer';
 import * as Validate from 'class-validator';
 
-import { Pagination } from 'echadospalante-core';
+import { Pagination } from 'echadospalante-domain';
 import { PublicationFilters } from '../../../../../domain/core/publication-filters';
 
 export default class PublicationsQueryDto {

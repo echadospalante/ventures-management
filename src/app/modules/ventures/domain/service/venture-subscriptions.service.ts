@@ -7,7 +7,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
-import { Pagination, VentureSubscription } from 'echadospalante-core';
+import { Pagination, VentureSubscription } from 'echadospalante-domain';
 
 import { VenturesService } from './ventures.service';
 import { SubscriptionAMQPProducer } from '../gateway/amqp/subscription.amqp';
@@ -62,7 +62,7 @@ export class VentureSubscriptionsService {
     }
 
     const [subscriber] = await Promise.all([
-      this.userHttpService.getUserById(subscriberId),
+      this.userHttpService.getUserByEmail(subscriberId),
       // this.userHttpService.getUserDetailById(ownerId),
     ]);
 

@@ -6,7 +6,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
-import { VentureCategory } from 'echadospalante-core';
+import { VentureCategory } from 'echadospalante-domain';
 
 import { stringToSlug } from '../../../../helpers/functions/slug-generator';
 import { VentureCategoryFilters } from '../core/venture-category-filter';

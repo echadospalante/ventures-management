@@ -5,7 +5,7 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-import { VentureUpdate } from 'echadospalante-core';
+import { VentureUpdate } from 'echadospalante-domain';
 
 export default class VentureUpdateDto {
   @IsString()

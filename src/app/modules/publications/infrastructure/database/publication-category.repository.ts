@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { PublicationCategory } from 'echadospalante-core';
-import { PublicationCategoryData } from 'echadospalante-core/dist/app/modules/infrastructure/database/entities';
+import { PublicationCategory } from 'echadospalante-domain';
+import { PublicationCategoryData } from 'echadospalante-domain/dist/app/modules/infrastructure/database/entities';
 import { In, Repository } from 'typeorm';
 
 import { PublicationCategoriesRepository } from '../../domain/gateway/database/publication-categories.repository';

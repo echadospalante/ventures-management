@@ -1,7 +1,7 @@
 import * as Http from '@nestjs/common';
 import { Logger } from '@nestjs/common';
 
-import { VentureSubscription } from 'echadospalante-core';
+import { VentureSubscription } from 'echadospalante-domain';
 
 import { VentureSubscriptionsService } from '../../../domain/service/venture-subscriptions.service';
 import SubscriptionsQueryDto from './model/request/subscriptions-query.dto';

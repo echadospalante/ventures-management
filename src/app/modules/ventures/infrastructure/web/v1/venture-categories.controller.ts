@@ -34,6 +34,7 @@ export class VentureCategoriesController {
   public async createVentureCategory(
     @Http.Body() body: VentureCategoryCreateDto,
   ) {
+    this.logger.log('Creating venture category' + JSON.stringify(body));
     const { name, description } = body;
     return this.ventureCategoriesService.createVentureCategory(
       name,

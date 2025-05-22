@@ -1,4 +1,4 @@
-import { Venture } from 'echadospalante-core';
+import { Venture } from 'echadospalante-domain';
 
 export interface VentureAMQPProducer {
   emitVentureCreatedEvent(venture: Venture): Promise<boolean>;

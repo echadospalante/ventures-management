@@ -5,11 +5,11 @@ import {
   PublicationCommentData,
   UserData,
   VenturePublicationData,
-} from 'echadospalante-core/dist/app/modules/infrastructure/database/entities';
+} from 'echadospalante-domain/dist/app/modules/infrastructure/database/entities';
 import { DataSource, Repository } from 'typeorm';
 
 import { PublicationCommentsRepository } from '../../domain/gateway/database/publication-comments.repository';
-import { PublicationComment } from 'echadospalante-core';
+import { PublicationComment } from 'echadospalante-domain';
 
 @Injectable()
 export class PublicationCommentsRepositoryImpl

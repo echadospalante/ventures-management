@@ -1,4 +1,4 @@
-import { Pagination, Venture } from 'echadospalante-core';
+import { Pagination, Venture } from 'echadospalante-domain';
 
 import {
   OwnedVentureFilters,
@@ -6,7 +6,7 @@ import {
 } from '../../core/venture-filters';
 
 export interface VenturesRepository {
-  isVentureOwner(ventureId: string, ownerId: string): Promise<boolean>;
+  isVentureOwner(ventureId: string, requesterEmail: string): Promise<boolean>;
   isVentureOwnerByEmail(ventureId: string, email: string): Promise<boolean>;
   findById(ventureId: string): Promise<Venture | null>;
   deleteById(ventureId: string): Promise<void>;

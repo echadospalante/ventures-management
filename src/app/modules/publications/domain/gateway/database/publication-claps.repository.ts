@@ -1,4 +1,4 @@
-import { PublicationClap } from 'echadospalante-core';
+import { PublicationClap } from 'echadospalante-domain';
 
 export interface PublicationClapsRepository {
   deleteClap(clapId: string): Promise<boolean>;

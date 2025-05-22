@@ -2,7 +2,7 @@ import * as Http from '@nestjs/common';
 import { Logger } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 
-import { VentureEvent } from 'echadospalante-core';
+import { VentureEvent } from 'echadospalante-domain';
 
 import { EventsService } from '../../../domain/service/events.service';
 import EventCreateDto from './model/request/event-create.dto';

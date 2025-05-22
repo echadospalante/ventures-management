@@ -1,4 +1,4 @@
-import { Pagination, VenturePublication } from 'echadospalante-core';
+import { Pagination, VenturePublication } from 'echadospalante-domain';
 
 export interface PublicationsRepository {
   isPublicationOwnerById(eventId: string, email: string): unknown;

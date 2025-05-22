@@ -1,4 +1,4 @@
-import { Pagination, VentureSubscription } from 'echadospalante-core';
+import { Pagination, VentureSubscription } from 'echadospalante-domain';
 
 export interface VentureSubscriptionsRepository {
   delete(ventureId: string, subscriberId: string): Promise<boolean>;

@@ -5,11 +5,11 @@ import {
   PublicationClapData,
   UserData,
   VenturePublicationData,
-} from 'echadospalante-core/dist/app/modules/infrastructure/database/entities';
+} from 'echadospalante-domain/dist/app/modules/infrastructure/database/entities';
 import { DataSource, Repository } from 'typeorm';
 
 import { PublicationClapsRepository } from '../../domain/gateway/database/publication-claps.repository';
-import { PublicationClap } from 'echadospalante-core';
+import { PublicationClap } from 'echadospalante-domain';
 
 @Injectable()
 export class PublicationClapsRepositoryImpl

@@ -1,4 +1,4 @@
-import { PublicationCategory } from 'echadospalante-core';
+import { PublicationCategory } from 'echadospalante-domain';
 
 export interface PublicationCategoriesRepository {
   update(

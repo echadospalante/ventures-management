@@ -1,4 +1,4 @@
-// import { SubscriptionSubscription } from 'echadospalante-core';
+// import { SubscriptionSubscription } from 'echadospalante-domain';
 
 export interface SubscriptionAMQPProducer {
   emitSubscriptionCreatedEvent(

@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { EventCategory } from 'echadospalante-core';
-import { EventCategoryData } from 'echadospalante-core/dist/app/modules/infrastructure/database/entities';
+import { EventCategory } from 'echadospalante-domain';
+import { EventCategoryData } from 'echadospalante-domain/dist/app/modules/infrastructure/database/entities';
 import { In, Repository } from 'typeorm';
 
 import { EventCategoryFilters } from '../../domain/core/event-category-filter';

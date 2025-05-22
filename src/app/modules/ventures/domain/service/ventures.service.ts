@@ -12,7 +12,7 @@ import {
   Venture,
   VentureCreate,
   VentureUpdate,
-} from 'echadospalante-core';
+} from 'echadospalante-domain';
 
 import { stringToSlug } from '../../../../helpers/functions/slug-generator';
 import { CdnService } from '../../../shared/domain/service/cdn.service';
@@ -46,9 +46,9 @@ export class VenturesService {
 
   public async saveVenture(
     venture: VentureCreate,
-    ownerId: string,
+    ownerEmail: string,
   ): Promise<Venture> {
-    const ventureToSave = await this.buildVentureToSave(venture, ownerId);
+    const ventureToSave = await this.buildVentureToSave(venture, ownerEmail);
 
     return this.venturesRepository.save(ventureToSave).then((savedVenture) => {
       this.logger.log(`Venture ${ventureToSave.name} saved successfully`);
@@ -82,13 +82,16 @@ export class VenturesService {
       });
   }
 
-  public isVentureOwner(ventureId: string, ownerId: string): Promise<boolean> {
-    return this.venturesRepository.isVentureOwner(ventureId, ownerId);
+  public isVentureOwner(
+    ventureId: string,
+    requesterEmail: string,
+  ): Promise<boolean> {
+    return this.venturesRepository.isVentureOwner(ventureId, requesterEmail);
   }
 
   private async buildVentureToSave(
     venture: VentureCreate,
-    ownerId: string,
+    ownerEmail: string,
   ): Promise<Venture> {
     let slug = stringToSlug(venture.name);
     const ventureDB = await this.venturesRepository.existsBySlug(slug);
@@ -101,7 +104,7 @@ export class VenturesService {
     );
 
     const [owner] = await Promise.all([
-      this.userHttpService.getUserById(ownerId),
+      this.userHttpService.getUserByEmail(ownerEmail),
     ]);
     if (!owner.active) {
       throw new NotFoundException('User not found');

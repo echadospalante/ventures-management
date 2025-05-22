@@ -1,12 +1,12 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { Pagination, VentureSubscription } from 'echadospalante-core';
+import { Pagination, VentureSubscription } from 'echadospalante-domain';
 import {
   UserData,
   VentureData,
   VentureSubscriptionData,
-} from 'echadospalante-core/dist/app/modules/infrastructure/database/entities';
+} from 'echadospalante-domain/dist/app/modules/infrastructure/database/entities';
 import { Repository } from 'typeorm';
 
 import { VentureSubscriptionsRepository } from '../../domain/gateway/database/venture-subscriptions.repository';

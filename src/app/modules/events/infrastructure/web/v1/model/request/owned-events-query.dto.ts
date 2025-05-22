@@ -1,6 +1,6 @@
 import { Transform } from 'class-transformer';
 import * as Validate from 'class-validator';
-import { Pagination } from 'echadospalante-core';
+import { Pagination } from 'echadospalante-domain';
 
 export default class OwnedEventsQueryDto {
   @Transform(({ value }) => value === 'true')

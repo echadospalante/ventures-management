@@ -11,7 +11,7 @@ import {
   Pagination,
   PublicationCreate,
   VenturePublication,
-} from 'echadospalante-core';
+} from 'echadospalante-domain';
 
 import { VenturesService } from '../../../ventures/domain/service/ventures.service';
 import { PublicationFilters } from '../core/publication-filters';

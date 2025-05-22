@@ -6,7 +6,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
-import { EventCategory } from 'echadospalante-core';
+import { EventCategory } from 'echadospalante-domain';
 
 import { stringToSlug } from '../../../../helpers/functions/slug-generator';
 import { EventCategoryFilters } from '../core/event-category-filter';

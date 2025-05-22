@@ -1,4 +1,4 @@
-import { Pagination, VentureEvent } from 'echadospalante-core';
+import { Pagination, VentureEvent } from 'echadospalante-domain';
 import { EventFilters } from '../../core/event-filters';
 
 export interface EventsRepository {

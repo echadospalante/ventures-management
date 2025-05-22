@@ -26,7 +26,7 @@ import {
   VenturePublicationData,
   VentureSponsorshipData,
   VentureSubscriptionData,
-} from 'echadospalante-core/dist/app/modules/infrastructure/database/entities';
+} from 'echadospalante-domain/dist/app/modules/infrastructure/database/entities';
 
 config();
 

@@ -1,4 +1,4 @@
-import { EventDonation } from 'echadospalante-core';
+import { EventDonation } from 'echadospalante-domain';
 
 export interface EventDonationsRepository {
   findAllByEvent(eventId: string): Promise<EventDonation[]>;

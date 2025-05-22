@@ -1,11 +1,11 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { EventDonation } from 'echadospalante-core';
+import { EventDonation } from 'echadospalante-domain';
 import {
   EventDonationData,
   UserData,
-} from 'echadospalante-core/dist/app/modules/infrastructure/database/entities';
+} from 'echadospalante-domain/dist/app/modules/infrastructure/database/entities';
 import { Repository } from 'typeorm';
 
 import { EventDonationsRepository } from '../../domain/gateway/database/event-donations.repository';

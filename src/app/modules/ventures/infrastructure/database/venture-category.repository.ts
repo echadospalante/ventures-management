@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { VentureCategory } from 'echadospalante-core';
-import { VentureCategoryData } from 'echadospalante-core/dist/app/modules/infrastructure/database/entities';
+import { VentureCategory } from 'echadospalante-domain';
+import { VentureCategoryData } from 'echadospalante-domain/dist/app/modules/infrastructure/database/entities';
 import { In, Repository } from 'typeorm';
 
 import { VentureCategoryFilters } from '../../domain/core/venture-category-filter';

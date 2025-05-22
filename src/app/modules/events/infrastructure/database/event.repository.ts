@@ -3,11 +3,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 import { Repository } from 'typeorm';
 
-import { Pagination, VentureEvent } from 'echadospalante-core';
+import { Pagination, VentureEvent } from 'echadospalante-domain';
 import {
   VentureData,
   VentureEventData,
-} from 'echadospalante-core/dist/app/modules/infrastructure/database/entities';
+} from 'echadospalante-domain/dist/app/modules/infrastructure/database/entities';
 
 import { EventFilters } from '../../domain/core/event-filters';
 import { EventsRepository } from '../../domain/gateway/database/events.repository';

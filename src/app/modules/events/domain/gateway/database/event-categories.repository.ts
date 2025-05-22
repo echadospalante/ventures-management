@@ -1,4 +1,4 @@
-import { EventCategory } from 'echadospalante-core';
+import { EventCategory } from 'echadospalante-domain';
 
 import { EventCategoryFilters } from '../../core/event-category-filter';
 import { EventFilters } from '../../core/event-filters';

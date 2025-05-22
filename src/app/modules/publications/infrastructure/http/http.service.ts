@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
-import { User } from 'echadospalante-core';
+import { User } from 'echadospalante-domain';
 
 import { HttpService } from '../../../../config/http/axios.config';
 import { UserHttpService } from '../../domain/gateway/http/http.gateway';

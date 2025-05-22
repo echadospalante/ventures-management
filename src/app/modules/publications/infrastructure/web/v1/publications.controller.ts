@@ -2,7 +2,7 @@ import * as Http from '@nestjs/common';
 import { Logger } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 
-import { VenturePublication } from 'echadospalante-core';
+import { VenturePublication } from 'echadospalante-domain';
 
 import { PublicationsService } from '../../../domain/service/publications.service';
 import PublicationCreateDto from './model/request/publication-create.dto';

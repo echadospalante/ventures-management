@@ -2,10 +2,10 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Repository } from 'typeorm';
-import { VentureData } from 'echadospalante-core/dist/app/modules/infrastructure/database/entities';
+import { VentureData } from 'echadospalante-domain/dist/app/modules/infrastructure/database/entities';
 
 import { VenturesRepository } from '../../domain/gateway/database/ventures.repository';
-import { Venture, Pagination } from 'echadospalante-core';
+import { Venture, Pagination } from 'echadospalante-domain';
 import {
   OwnedVentureFilters,
   VentureFilters,
@@ -19,11 +19,14 @@ export class VenturesRepositoryImpl implements VenturesRepository {
     private venturesRepository: Repository<VentureData>,
   ) {}
 
-  public isVentureOwner(ventureId: string, ownerId: string): Promise<boolean> {
+  public isVentureOwner(
+    ventureId: string,
+    requesterEmail: string,
+  ): Promise<boolean> {
     return this.venturesRepository
       .createQueryBuilder('venture')
       .leftJoin('venture.owner', 'user')
-      .where('user.id = :ownerId', { ownerId })
+      .where('user.email = :requesterEmail', { requesterEmail })
       .andWhere('venture.id = :ventureId', { ventureId })
       .getOne()
       .then((res) => !!res);

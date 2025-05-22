@@ -3,7 +3,7 @@ import { Logger } from '@nestjs/common';
 
 import { VenturesService } from '../../../domain/service/ventures.service';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { Venture } from 'echadospalante-core';
+import { Venture } from 'echadospalante-domain';
 import VentureCreateDto from './model/request/venture-create.dto';
 import { UploadedPhotoResultDto } from './model/response/uploaded-photo-result.dto';
 import VenturesQueryDto from './model/request/ventures-query.dto';
@@ -23,6 +23,7 @@ export class VenturesController {
   public createVentureCoverPhoto(
     @Http.UploadedFile() image: Express.Multer.File,
   ): Promise<UploadedPhotoResultDto> {
+    console.log({ image });
     return this.venturesService.saveVentureCoverPhoto(image);
   }
 

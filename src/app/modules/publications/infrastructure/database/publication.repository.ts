@@ -3,11 +3,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 import { Repository } from 'typeorm';
 
-import { Pagination, VenturePublication } from 'echadospalante-core';
+import { Pagination, VenturePublication } from 'echadospalante-domain';
 import {
   VentureData,
   VenturePublicationData,
-} from 'echadospalante-core/dist/app/modules/infrastructure/database/entities';
+} from 'echadospalante-domain/dist/app/modules/infrastructure/database/entities';
 
 import { PublicationFilters } from '../../domain/core/publication-filters';
 import { PublicationsRepository } from '../../domain/gateway/database/publications.repository';

@@ -6,8 +6,8 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-import { EventCreate } from 'echadospalante-core';
-// import { EventCreate } from 'echadospalante-core';
+import { EventCreate } from 'echadospalante-domain';
+// import { EventCreate } from 'echadospalante-domain';
 
 export default class EventCreateDto {
   @IsString()
