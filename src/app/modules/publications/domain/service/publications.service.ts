@@ -46,12 +46,12 @@ export class PublicationsService {
   public async savePublication(
     publication: PublicationCreate,
     ventureId: string,
-    ownerId: string,
+    requesterEmail: string,
   ): Promise<VenturePublication> {
     const publicationToSave = await this.buildPublicationToSave(
       publication,
       ventureId,
-      ownerId,
+      requesterEmail,
     );
 
     return this.publicationsRepository
@@ -70,11 +70,11 @@ export class PublicationsService {
   private async buildPublicationToSave(
     publication: PublicationCreate,
     ventureId: string,
-    ownerId: string,
+    requesterEmail: string,
   ): Promise<VenturePublication> {
     const isOwner = await this.venturesService.isVentureOwner(
       ventureId,
-      ownerId,
+      requesterEmail,
     );
 
     if (!isOwner) {
@@ -83,11 +83,7 @@ export class PublicationsService {
       );
     }
 
-    const [owner] = await Promise.all([
-      this.userHttpService.getUserById(ownerId),
-      // this.userHttpService.getUserDetailById(ownerId),
-    ]);
-
+    const owner = await this.userHttpService.getUserByEmail(requesterEmail);
     if (!owner.active) {
       throw new NotFoundException('User not found');
     }

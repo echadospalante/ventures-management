@@ -110,10 +110,7 @@ export class EventsService {
       event.categoriesIds,
     );
 
-    const [owner] = await Promise.all([
-      this.userHttpService.getUserByEmail(requesterEmail),
-      // this.userHttpService.getUserDetailById(ownerId),
-    ]);
+    const owner = await this.userHttpService.getUserByEmail(requesterEmail);
 
     if (!owner.active) {
       throw new NotFoundException('User not found');
@@ -127,7 +124,13 @@ export class EventsService {
       categories,
       coverPhoto: event.coverPhoto,
       donations: [],
-      startDate: event.startDate,
+      datesAndHours: event.datesAndHours.map((dateAndHour) => ({
+        date: dateAndHour.date,
+        workingRanges: dateAndHour.workingRanges.map((range) => ({
+          start: range.start,
+          end: range.end,
+        })),
+      })),
       location: {
         id: crypto.randomUUID().toString(),
         location:
@@ -144,7 +147,6 @@ export class EventsService {
         email: event.contactEmail,
         phoneNumber: event.contactPhoneNumber,
       },
-      endDate: event.endDate,
       createdAt: new Date(),
       updatedAt: new Date(),
     };

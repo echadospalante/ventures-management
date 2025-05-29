@@ -35,6 +35,7 @@ export class VenturePublicationsController {
     @Http.Param('ventureId') ventureId: string,
     @Http.Headers('X-Requested-By') requestedBy: string,
   ): Promise<VenturePublication> {
+    console.log('HOLA MUNDO');
     const venturePublicationCreate = PublicationCreateDto.toEntity(body);
     return this.publicationsService.savePublication(
       venturePublicationCreate,

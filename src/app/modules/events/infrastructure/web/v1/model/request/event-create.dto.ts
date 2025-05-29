@@ -1,13 +1,12 @@
 import {
   IsArray,
-  IsDateString,
+  IsDefined,
   IsEmail,
   IsNotEmpty,
   IsOptional,
   IsString,
 } from 'class-validator';
 import { EventCreate } from 'echadospalante-domain';
-// import { EventCreate } from 'echadospalante-domain';
 
 export default class EventCreateDto {
   @IsString()
@@ -43,11 +42,14 @@ export default class EventCreateDto {
   @IsNotEmpty()
   public locationDescription: string;
 
-  @IsDateString()
-  public startDate: Date;
-
-  @IsDateString()
-  public endDate: Date;
+  @IsDefined()
+  public datesAndHours: {
+    date: string;
+    workingRanges: {
+      start: string;
+      end: string;
+    }[];
+  }[];
 
   public static toEntity(dto: EventCreateDto): EventCreate {
     return {
@@ -57,8 +59,13 @@ export default class EventCreateDto {
       categoriesIds: dto.categoriesIds,
       contactEmail: dto.contactEmail,
       contactPhoneNumber: dto.contactPhoneNumber,
-      startDate: dto.startDate,
-      endDate: dto.endDate,
+      datesAndHours: dto.datesAndHours.map((dateAndHour) => ({
+        date: dateAndHour.date,
+        workingRanges: dateAndHour.workingRanges.map((range) => ({
+          start: range.start,
+          end: range.end,
+        })),
+      })),
       location: {
         lat: dto.locationLat ? parseFloat(dto.locationLat) : undefined,
         lng: dto.locationLng ? parseFloat(dto.locationLng) : undefined,
