@@ -1,7 +1,11 @@
 export interface PublicationFilters {
   search?: string;
+  ventureId?: string;
+  dateRange?: {
+    from: string;
+    to: string;
+  };
   categoriesIds?: string[];
-  ownerId?: string;
 }
 
 export interface OwnedEventsFilters {

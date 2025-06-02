@@ -20,14 +20,17 @@ export class PublicationsRepositoryImpl implements PublicationsRepository {
     private publicationsRepository: Repository<VenturePublicationData>,
   ) {}
 
-  public isPublicationOwnerById(eventId: string, userId: string): unknown {
+  public isPublicationOwnerById(
+    publicationsId: string,
+    userId: string,
+  ): unknown {
     return this.publicationsRepository
       .createQueryBuilder('publication')
       .leftJoin('publication.venture', 'venture')
       .leftJoin('venture.owner', 'owner')
       .leftJoin('owner.user', 'user')
       .where('user.id = :userId', { userId })
-      .andWhere('publication.id = :eventId', { eventId })
+      .andWhere('publication.id = :publicationsId', { publicationsId })
       .getOne()
       .then((res) => res !== undefined);
   }
@@ -35,7 +38,7 @@ export class PublicationsRepositoryImpl implements PublicationsRepository {
   public findById(id: string): Promise<VenturePublication | null> {
     return this.publicationsRepository
       .findOneBy({ id })
-      .then((event) => event as VenturePublication | null);
+      .then((publications) => publications as VenturePublication | null);
   }
 
   public deleteById(id: string): Promise<void> {
@@ -45,17 +48,17 @@ export class PublicationsRepositoryImpl implements PublicationsRepository {
   }
 
   // findBySlug(slug: string): Promise<VenturePublication | null> {
-  //   return this.eventsRepository
+  //   return this.publicationssRepository
   //     .findOneBy({ slug })
-  //     .then((event) => event as VenturePublication | null);
+  //     .then((publications) => publications as VenturePublication | null);
   // }
 
   public save(
-    event: VenturePublication,
+    publication: VenturePublication,
     ventureId: string,
   ): Promise<VenturePublication> {
     return this.publicationsRepository
-      .save({ ...event, venture: { id: ventureId } as VentureData })
+      .save({ ...publication, venture: { id: ventureId } as VentureData })
       .then(
         (result) => JSON.parse(JSON.stringify(result)) as VenturePublication,
       );
@@ -69,27 +72,45 @@ export class PublicationsRepositoryImpl implements PublicationsRepository {
     const {
       search,
       categoriesIds,
+      dateRange,
       // departmentId,
       // municipalityId,
       // point,
       // radius,
     } = filters;
 
-    const query = this.publicationsRepository.createQueryBuilder('event');
+    console.log({
+      search,
+      categoriesIds,
+      dateRange,
+      ventureId,
+      pagination,
+    });
+
+    const query =
+      this.publicationsRepository.createQueryBuilder('publications');
 
     query
-      .leftJoinAndSelect('event.categories', 'category')
-      .leftJoinAndSelect('event.contents', 'contents');
+      .leftJoinAndSelect('publications.categories', 'category')
+      .leftJoinAndSelect('publications.contents', 'contents');
 
     if (search) {
       query.andWhere(
-        '(event.name LIKE :term OR event.description LIKE :term OR event.slug LIKE :term)',
+        '(publications.description LIKE :term OR contents.content LIKE :term)',
         { term: `%${search}%` },
       );
     }
 
     if (ventureId) {
-      query.andWhere('event.venture.id = :ventureId', { ventureId });
+      query.andWhere('publications.venture.id = :ventureId', { ventureId });
+    }
+
+    if (dateRange) {
+      const { from, to } = dateRange;
+      query.andWhere('publications.createdAt BETWEEN :from AND :to', {
+        from: new Date(from),
+        to: new Date(to),
+      });
     }
 
     if (categoriesIds?.length) {

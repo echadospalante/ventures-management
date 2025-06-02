@@ -23,12 +23,20 @@ export default class PublicationsQueryDto {
   @Validate.IsPositive()
   @Validate.IsOptional()
   @Validate.IsInt()
-  public categoryIds?: string[];
+  public categoriesIds?: string[];
 
   @Validate.IsPositive()
   @Validate.IsOptional()
   @Validate.IsInt()
   public ownerId?: string;
+
+  @Validate.IsString()
+  @Validate.IsOptional()
+  public from?: string;
+
+  @Validate.IsString()
+  @Validate.IsOptional()
+  public to?: string;
 
   public static parseQuery(query: PublicationsQueryDto) {
     const pagination: Pagination = {
@@ -38,8 +46,14 @@ export default class PublicationsQueryDto {
 
     const filters: PublicationFilters = {
       search: query.search,
-      categoriesIds: query.categoryIds,
-      ownerId: query.ownerId,
+      categoriesIds: query.categoriesIds,
+      dateRange:
+        query.from && query.to
+          ? {
+              from: query.from,
+              to: query.to,
+            }
+          : undefined,
     };
 
     return {

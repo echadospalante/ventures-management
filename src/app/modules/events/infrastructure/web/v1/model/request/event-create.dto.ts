@@ -1,6 +1,5 @@
 import {
   IsArray,
-  IsDefined,
   IsEmail,
   IsNotEmpty,
   IsOptional,
@@ -42,7 +41,7 @@ export default class EventCreateDto {
   @IsNotEmpty()
   public locationDescription: string;
 
-  @IsDefined()
+  @IsArray()
   public datesAndHours: {
     date: string;
     workingRanges: {
@@ -57,8 +56,8 @@ export default class EventCreateDto {
       coverPhoto: dto.coverPhoto,
       description: dto.description,
       categoriesIds: dto.categoriesIds,
-      contactEmail: dto.contactEmail,
-      contactPhoneNumber: dto.contactPhoneNumber,
+      contactEmail: dto.contactEmail || '',
+      contactPhoneNumber: dto.contactPhoneNumber || '',
       datesAndHours: dto.datesAndHours.map((dateAndHour) => ({
         date: dateAndHour.date,
         workingRanges: dateAndHour.workingRanges.map((range) => ({
@@ -66,11 +65,14 @@ export default class EventCreateDto {
           end: range.end,
         })),
       })),
-      location: {
-        lat: dto.locationLat ? parseFloat(dto.locationLat) : undefined,
-        lng: dto.locationLng ? parseFloat(dto.locationLng) : undefined,
-        description: dto.locationDescription,
-      },
+      locationLat: dto.locationLat ? dto.locationLat : '',
+      locationLng: dto.locationLng ? dto.locationLng : '',
+      locationDescription: dto.locationDescription,
+      // location: {
+      //   lat: dto.locationLat ? parseFloat(dto.locationLat) : undefined,
+      //   lng: dto.locationLng ? parseFloat(dto.locationLng) : undefined,
+      //   description: dto.locationDescription,
+      // },
     };
   }
 }

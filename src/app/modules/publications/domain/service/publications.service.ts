@@ -117,6 +117,13 @@ export class PublicationsService {
         'La página no debe ser mayor a 100 publicaciones.',
       );
     }
+
+    console.log({
+      ventureId,
+      filters,
+      pagination,
+    });
+
     return this.publicationsRepository.findAllByCriteria(
       filters,
       pagination,

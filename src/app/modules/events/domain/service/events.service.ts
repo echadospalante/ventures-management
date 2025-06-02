@@ -94,6 +94,10 @@ export class EventsService {
     if (eventDB) {
       slug = `${slug}-${crypto.randomUUID().substring(0, 8)}`;
     }
+    console.log({
+      ventureId,
+      requesterEmail,
+    });
 
     const isOwner = await this.venturesService.isVentureOwner(
       ventureId,
@@ -134,13 +138,13 @@ export class EventsService {
       location: {
         id: crypto.randomUUID().toString(),
         location:
-          event.location?.lat && event.location?.lng
+          event.locationLat && event.locationLng
             ? {
                 type: 'Point',
-                coordinates: [event.location.lng, event.location.lat],
+                coordinates: [+event.locationLng, +event.locationLat],
               }
             : undefined,
-        description: event.location?.description,
+        description: event.locationDescription,
       },
       contact: {
         id: crypto.randomUUID().toString(),
