@@ -19,6 +19,18 @@ export class VenturesRepositoryImpl implements VenturesRepository {
     private venturesRepository: Repository<VentureData>,
   ) {}
 
+  public findRandomVenture(): Promise<Venture | null> {
+    return this.venturesRepository
+      .createQueryBuilder('venture')
+      .leftJoinAndSelect('venture.categories', 'category')
+      .leftJoinAndSelect('venture.location', 'location')
+      .leftJoinAndSelect('venture.owner', 'owner')
+      .orderBy('RANDOM()')
+      .limit(1)
+      .getOne()
+      .then((venture) => venture as Venture | null);
+  }
+
   public isVentureOwner(
     ventureId: string,
     requesterEmail: string,
@@ -50,7 +62,7 @@ export class VenturesRepositoryImpl implements VenturesRepository {
       .then((venture) => venture as Venture | null);
   }
 
-  save(venture: Venture): Promise<Venture> {
+  public save(venture: Venture): Promise<Venture> {
     return this.venturesRepository
       .save(venture)
       .then((result) => result as Venture);
@@ -67,6 +79,7 @@ export class VenturesRepositoryImpl implements VenturesRepository {
     const {
       search,
       categoriesIds,
+      ownerEmail,
       // departmentId,
       // municipalityId,
       // point,
@@ -79,6 +92,12 @@ export class VenturesRepositoryImpl implements VenturesRepository {
     query
       .leftJoinAndSelect('venture.categories', 'category')
       .leftJoinAndSelect('venture.location', 'location');
+
+    if (ownerEmail) {
+      query
+        .leftJoinAndSelect('venture.owner', 'owner')
+        .where('owner.email = :ownerEmail', { ownerEmail });
+    }
 
     if (search) {
       query.andWhere(

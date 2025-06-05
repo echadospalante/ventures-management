@@ -55,6 +55,13 @@ export class VenturePublicationsController {
     );
   }
 
+  @Http.Get('/_/publications/:publicationId')
+  public async getVenturePublicationDetail(
+    @Http.Param('publicationId') publicationId: string,
+  ) {
+    return this.publicationsService.getPublicationDetail(publicationId);
+  }
+
   @Http.Get('/:ventureId/publications')
   public async getVenturePublications(
     @Http.Query() query: PublicationsQueryDto,

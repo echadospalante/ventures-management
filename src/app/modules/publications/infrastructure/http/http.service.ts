@@ -27,4 +27,10 @@ export class UserHttpAdapter implements UserHttpService {
       `${this.BASE_USERS_URL}/api/v1/users/id/${id}`,
     );
   }
+
+  public getRandomUser(): Promise<User | null> {
+    return this.httpService
+      .get<User | null>(`${this.BASE_USERS_URL}/api/v1/seed/users/random`)
+      .then((user) => user || null);
+  }
 }

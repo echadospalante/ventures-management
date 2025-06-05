@@ -1,6 +1,7 @@
 import { Pagination, VenturePublication } from 'echadospalante-domain';
 
 export interface PublicationsRepository {
+  findRandomPublication(): Promise<VenturePublication | null>;
   isPublicationOwnerById(eventId: string, email: string): unknown;
   findById(id: string): Promise<VenturePublication | null>;
   deleteById(id: string): Promise<void>;

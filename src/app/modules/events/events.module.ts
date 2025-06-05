@@ -46,18 +46,22 @@ import { UserHttpAdapter } from './infrastructure/http/http.service';
 import { EventCategoriesController } from './infrastructure/web/v1/event-categories.controller';
 import { EventDonationsController } from './infrastructure/web/v1/event-donations.controller';
 import { VentureEventsController } from './infrastructure/web/v1/events.controller';
+import { SeedService } from './domain/service/seed.service';
+import { SeedController } from './infrastructure/web/v1/seed.controller';
 
 @Module({
   controllers: [
     EventCategoriesController,
     VentureEventsController,
     EventDonationsController,
+    SeedController,
   ],
   providers: [
     EventCategoriesService,
     EventDonationsService,
     RabbitMQConfig,
     EventsService,
+    SeedService,
     {
       provide: EventCategoriesRepository,
       useClass: EventCategoriesRepositoryImpl,

@@ -6,6 +6,7 @@ import {
 } from '../../core/venture-filters';
 
 export interface VenturesRepository {
+  findRandomVenture(): Promise<Venture | null>;
   isVentureOwner(ventureId: string, requesterEmail: string): Promise<boolean>;
   isVentureOwnerByEmail(ventureId: string, email: string): Promise<boolean>;
   findById(ventureId: string): Promise<Venture | null>;

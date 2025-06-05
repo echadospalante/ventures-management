@@ -37,6 +37,10 @@ export class PublicationsService {
     private cdnService: CdnService,
   ) {}
 
+  public getRandomPublication() {
+    return this.publicationsRepository.findRandomPublication();
+  }
+
   public async savePublicationCoverPhoto(file: Express.Multer.File) {
     return this.cdnService
       .uploadFile('PUBLICATIONS', file)
@@ -54,17 +58,16 @@ export class PublicationsService {
       requesterEmail,
     );
 
-    return this.publicationsRepository
-      .save(publicationToSave, ventureId)
-      .then((savedPublication) => {
-        this.logger.log(
-          `VenturePublication ${publicationToSave.id} saved successfully`,
-        );
-        this.publicationAMQPProducer.emitVenturePublicationCreatedEvent(
-          savedPublication,
-        );
-        return savedPublication;
-      });
+    return this.publicationsRepository.save(publicationToSave, ventureId);
+    // .then((savedPublication) => {
+    //   this.logger.log(
+    //     `VenturePublication ${publicationToSave.id} saved successfully`,
+    //   );
+    //   this.publicationAMQPProducer.emitVenturePublicationCreatedEvent(
+    //     savedPublication,
+    //   );
+    //   return savedPublication;
+    // });
   }
 
   private async buildPublicationToSave(
@@ -129,6 +132,10 @@ export class PublicationsService {
       pagination,
       ventureId,
     );
+  }
+
+  public getPublicationDetail(publicationId: string) {
+    return this.publicationsRepository.findById(publicationId);
   }
 
   public getPublicationsFromAllVentures(

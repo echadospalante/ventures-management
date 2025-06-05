@@ -20,6 +20,20 @@ export class PublicationsRepositoryImpl implements PublicationsRepository {
     private publicationsRepository: Repository<VenturePublicationData>,
   ) {}
 
+  public findRandomPublication(): Promise<VenturePublication | null> {
+    return this.publicationsRepository
+      .createQueryBuilder('publication')
+      .leftJoinAndSelect('publication.venture', 'venture')
+      .leftJoinAndSelect('publication.categories', 'categories')
+      .leftJoinAndSelect('publication.contents', 'contents')
+      .orderBy('RANDOM()')
+      .limit(1)
+      .getOne()
+      .then((publication) => {
+        return publication as VenturePublication | null;
+      });
+  }
+
   public isPublicationOwnerById(
     publicationsId: string,
     userId: string,

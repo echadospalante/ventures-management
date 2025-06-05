@@ -49,6 +49,8 @@ import { PublicationCategoriesController } from './infrastructure/web/v1/publica
 import { PublicationClapsController } from './infrastructure/web/v1/publication-claps.controller';
 import { PublicationCommentsController } from './infrastructure/web/v1/publication-comments.controller';
 import { VenturePublicationsController } from './infrastructure/web/v1/publications.controller';
+import { SeedController } from './infrastructure/web/v1/seed.controller';
+import { SeedService } from './domain/service/seed.service';
 
 @Module({
   controllers: [
@@ -56,6 +58,7 @@ import { VenturePublicationsController } from './infrastructure/web/v1/publicati
     VenturePublicationsController,
     PublicationCommentsController,
     PublicationClapsController,
+    SeedController,
   ],
   providers: [
     PublicationCategoriesService,
@@ -63,6 +66,7 @@ import { VenturePublicationsController } from './infrastructure/web/v1/publicati
     PublicationClapsService,
     RabbitMQConfig,
     PublicationsService,
+    SeedService,
     {
       provide: PublicationCategoriesRepository,
       useClass: PublicationCategoriesRepositoryImpl,
@@ -88,6 +92,7 @@ import { VenturePublicationsController } from './infrastructure/web/v1/publicati
       useClass: PublicationAMQPProducerImpl,
     },
   ],
+  exports: [PublicationsService, PublicationCategoriesService],
   imports: [
     ConfigModule,
     SharedModule,

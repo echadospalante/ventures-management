@@ -5,7 +5,7 @@ export interface VentureFilters {
   municipalityId?: number;
   point?: string; // Latitude,Longitude
   radius?: number; // In meters
-  ownerId?: string;
+  ownerEmail?: string;
 }
 
 export interface OwnedVentureFilters {

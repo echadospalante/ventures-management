@@ -35,6 +35,7 @@ import { VentureCategoriesRepository } from './domain/gateway/database/venture-c
 import { VentureSubscriptionsRepository } from './domain/gateway/database/venture-subscriptions.repository';
 import { VenturesRepository } from './domain/gateway/database/ventures.repository';
 import { UserHttpService } from './domain/gateway/http/http.gateway';
+import { SeedService } from './domain/service/seed.service';
 import { VentureCategoriesService } from './domain/service/venture-categories.service';
 import { VentureSubscriptionsService } from './domain/service/venture-subscriptions.service';
 import { VenturesService } from './domain/service/ventures.service';
@@ -44,6 +45,7 @@ import { VentureCategoriesRepositoryImpl } from './infrastructure/database/ventu
 import { VentureSubscriptionsRepositoryImpl } from './infrastructure/database/venture-subscription.repository';
 import { VenturesRepositoryImpl } from './infrastructure/database/venture.repository';
 import { UserHttpAdapter } from './infrastructure/http/http.service';
+import { SeedController } from './infrastructure/web/v1/seed.controller';
 import { SubscriptionsController } from './infrastructure/web/v1/subscriptions.controller';
 import { VentureCategoriesController } from './infrastructure/web/v1/venture-categories.controller';
 import { VenturesController } from './infrastructure/web/v1/ventures.controller';
@@ -53,11 +55,13 @@ import { VenturesController } from './infrastructure/web/v1/ventures.controller'
     VenturesController,
     VentureCategoriesController,
     SubscriptionsController,
+    SeedController,
   ],
-  exports: [VenturesService],
+  exports: [VenturesService, VentureCategoriesService],
   providers: [
     RabbitMQConfig,
     VenturesService,
+    SeedService,
     VentureCategoriesService,
     VentureSubscriptionsService,
     {

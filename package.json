@@ -25,6 +25,7 @@
     "typeorm:migrate": "npm run typeorm -- migration:run -d src/app/config/typeorm/typeorm.config.ts"
   },
   "dependencies": {
+    "@faker-js/faker": "^9.8.0",
     "@google-cloud/storage": "^7.13.0",
     "@nestjs/common": "^10.3.10",
     "@nestjs/config": "^3.2.3",
