@@ -1,19 +1,23 @@
-import { VentureCategory } from 'echadospalante-domain';
+import {
+  PaginatedBody,
+  VentureCategory,
+  VentureCategoryStats,
+} from 'echadospalante-domain';
 
 import { VentureCategoryFilters } from '../../core/venture-category-filter';
-import { VentureFilters } from '../../core/venture-filters';
 
 export interface VentureCategoriesRepository {
+  findCategoriesStats(
+    filters: VentureCategoryFilters,
+  ): Promise<PaginatedBody<VentureCategoryStats>>;
   update(
     id: string,
     category: { name: string; slug: string; description: string },
   ): Promise<void>;
   findById(id: string): Promise<VentureCategory | null>;
-  count(filters: VentureFilters): Promise<number>;
   findAllByCriteria(
     filters: VentureCategoryFilters,
-  ): Promise<VentureCategory[]>;
-
+  ): Promise<PaginatedBody<VentureCategory>>;
   existsBySlug(name: string): Promise<boolean>;
   save(category: {
     name: string;

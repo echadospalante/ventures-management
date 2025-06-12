@@ -1,7 +1,11 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { VentureCategory } from 'echadospalante-domain';
+import {
+  PaginatedBody,
+  VentureCategory,
+  VentureCategoryStats,
+} from 'echadospalante-domain';
 import { VentureCategoryData } from 'echadospalante-domain/dist/app/modules/infrastructure/database/entities';
 import { In, Repository } from 'typeorm';
 
@@ -19,6 +23,39 @@ export class VentureCategoriesRepositoryImpl
     @InjectRepository(VentureCategoryData)
     private ventureCategoryRepository: Repository<VentureCategoryData>,
   ) {}
+
+  findCategoriesStats(
+    filters: VentureCategoryFilters,
+  ): Promise<PaginatedBody<VentureCategoryStats>> {
+    const query =
+      this.ventureCategoryRepository.createQueryBuilder('ventureCategory');
+
+    const selectQuery = query
+      .select([
+        'ventureCategory.id',
+        'ventureCategory.name',
+        'ventureCategory.slug',
+        'COUNT(ventures.id) AS venturesCount',
+      ])
+      .leftJoin('ventureCategory.ventures', 'ventures')
+      .groupBy('ventureCategory.id')
+      .addGroupBy('ventureCategory.name')
+      .addGroupBy('ventureCategory.slug');
+
+    return selectQuery.getRawMany().then((rawResults) => {
+      const categoriesStats: VentureCategoryStats[] = rawResults.map((raw) => ({
+        id: raw.ventureCategory_id,
+        name: raw.ventureCategory_name,
+        slug: raw.ventureCategory_slug,
+        venturesCount: parseInt(raw.venturescount, 10),
+      }));
+
+      return {
+        items: categoriesStats,
+        total: categoriesStats.length,
+      };
+    });
+  }
 
   update(
     id: string,
@@ -46,19 +83,9 @@ export class VentureCategoriesRepositoryImpl
     });
   }
 
-  count(filters: VentureCategoryFilters): Promise<number> {
-    const { search } = filters;
-
-    return this.ventureCategoryRepository.count({
-      where: {
-        name: search,
-      },
-    });
-  }
-
-  findAllByCriteria(
+  public findAllByCriteria(
     filters: VentureCategoryFilters,
-  ): Promise<VentureCategory[]> {
+  ): Promise<PaginatedBody<VentureCategory>> {
     const { search } = filters;
 
     const query =
@@ -73,9 +100,10 @@ export class VentureCategoriesRepositoryImpl
 
     console.log(query.getSql());
 
-    return query
-      .getMany()
-      .then((categories) => categories as VentureCategory[]);
+    return query.getManyAndCount().then(([categories, total]) => ({
+      items: categories as VentureCategory[],
+      total,
+    }));
   }
 
   existsBySlug(slug: string): Promise<boolean> {

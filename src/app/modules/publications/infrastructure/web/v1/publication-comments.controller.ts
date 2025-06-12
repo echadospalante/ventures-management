@@ -32,11 +32,11 @@ export class PublicationCommentsController {
   public async createPublicationCategory(
     @Http.Body() body: { content: string },
     @Http.Param('publicationId') publicationId: string,
-    @Http.Headers('X-Requested-By') requestedBy: string,
+    @Http.Headers('X-Requested-By') requesterEmail: string,
   ) {
     return this.publicationCommentsService.saveComment(
       publicationId,
-      requestedBy,
+      requesterEmail,
       body.content,
     );
   }

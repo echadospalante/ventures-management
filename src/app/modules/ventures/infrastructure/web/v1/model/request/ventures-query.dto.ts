@@ -52,7 +52,9 @@ export default class VenturesQueryDto {
   @Validate.IsInt()
   public radius?: number;
 
-  public static parseQuery(query: VenturesQueryDto, requesterEmail: string) {
+  public static parseQuery(
+    query: VenturesQueryDto /* requesterEmail: string */,
+  ) {
     const pagination: Pagination = {
       skip: query.skip,
       take: query.take,
@@ -65,7 +67,7 @@ export default class VenturesQueryDto {
       municipalityId: query.municipalityId,
       point: query.point,
       radius: query.radius,
-      ownerEmail: query.ownerId || requesterEmail,
+      ownerEmail: query.ownerId,
     };
 
     return {

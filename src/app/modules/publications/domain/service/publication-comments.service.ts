@@ -1,6 +1,7 @@
 import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
 
 import { PublicationCommentsRepository } from '../gateway/database/publication-comments.repository';
+import { UserHttpService } from '../gateway/http/http.gateway';
 
 @Injectable()
 export class PublicationCommentsService {
@@ -9,14 +10,32 @@ export class PublicationCommentsService {
   public constructor(
     @Inject(PublicationCommentsRepository)
     private readonly publicationCategoriesRepository: PublicationCommentsRepository,
+    @Inject(UserHttpService)
+    private readonly userHttpService: UserHttpService,
   ) {}
 
-  public saveComment(publicationId: string, userId: string, comment: string) {
-    return this.publicationCategoriesRepository.save(
-      publicationId,
-      userId,
-      comment,
-    );
+  public async saveComment(
+    publicationId: string,
+    authorEmail: string,
+    comment: string,
+  ) {
+    try {
+      const author = await this.userHttpService.getUserByEmail(authorEmail);
+
+      return this.publicationCategoriesRepository.save(
+        publicationId,
+        author.id,
+        comment,
+      );
+    } catch (error) {
+      this.logger.error(
+        `Error saving comment for publication ${publicationId}: ${error.message}`,
+        error.stack,
+      );
+      throw new NotFoundException(
+        `Publication with id ${publicationId} not found`,
+      );
+    }
   }
 
   public getPublicationComments(

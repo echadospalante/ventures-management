@@ -41,11 +41,11 @@ export class VenturesController {
   @Http.Get('')
   public async getVentures(
     @Http.Query() query: VenturesQueryDto,
-    @Http.Headers('X-Requested-By') requesterEmail: string,
+    // @Http.Headers('X-Requested-By') requesterEmail: string,
   ) {
     const { pagination, filters } = VenturesQueryDto.parseQuery(
       query,
-      requesterEmail,
+      // requesterEmail,
     );
 
     return this.venturesService.getVentures(filters, pagination);

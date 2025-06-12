@@ -53,6 +53,11 @@ export class PublicationCommentsRepositoryImpl
     authorId: string,
     content: string,
   ): Promise<PublicationComment> {
+    console.log({
+      publicationId,
+      authorId,
+      content,
+    });
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();

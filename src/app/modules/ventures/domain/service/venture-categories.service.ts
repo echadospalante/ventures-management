@@ -6,12 +6,16 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
-import { VentureCategory } from 'echadospalante-domain';
+import {
+  PaginatedBody,
+  VentureCategory,
+  VentureCategoryStats,
+} from 'echadospalante-domain';
 
 import { stringToSlug } from '../../../../helpers/functions/slug-generator';
+import VentureCategoryCreateDto from '../../infrastructure/web/v1/model/request/venture-category-create.dto';
 import { VentureCategoryFilters } from '../core/venture-category-filter';
 import { VentureCategoriesRepository } from '../gateway/database/venture-categories.repository';
-import VentureCategoryCreateDto from '../../infrastructure/web/v1/model/request/venture-category-create.dto';
 
 @Injectable()
 export class VentureCategoriesService {
@@ -22,16 +26,9 @@ export class VentureCategoriesService {
     private readonly usersRepository: VentureCategoriesRepository,
   ) {}
 
-  public getVentureCategories(
-    filters: VentureCategoryFilters,
-  ): Promise<VentureCategory[]> {
+  public getVentureCategories(filters: VentureCategoryFilters) {
     this.logger.log('Getting venture categories');
     return this.usersRepository.findAllByCriteria(filters);
-  }
-
-  public countVentureCategories(filters: VentureCategoryFilters) {
-    this.logger.log('Counting venture categories');
-    return this.usersRepository.count(filters);
   }
 
   public async createVentureCategory(
@@ -76,5 +73,11 @@ export class VentureCategoriesService {
       slug,
       description,
     });
+  }
+
+  public getVentureCategoriesStats(
+    filters: VentureCategoryFilters,
+  ): Promise<PaginatedBody<VentureCategoryStats>> {
+    return this.usersRepository.findCategoriesStats(filters);
   }
 }

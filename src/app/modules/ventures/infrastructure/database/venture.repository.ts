@@ -91,12 +91,11 @@ export class VenturesRepositoryImpl implements VenturesRepository {
     // Agregar relaciones explícitamente (aunque tengan eager: true)
     query
       .leftJoinAndSelect('venture.categories', 'category')
-      .leftJoinAndSelect('venture.location', 'location');
+      .leftJoinAndSelect('venture.location', 'location')
+      .leftJoinAndSelect('venture.owner', 'owner');
 
     if (ownerEmail) {
-      query
-        .leftJoinAndSelect('venture.owner', 'owner')
-        .where('owner.email = :ownerEmail', { ownerEmail });
+      query.andWhere('owner.email = :ownerEmail', { ownerEmail });
     }
 
     if (search) {
@@ -112,7 +111,7 @@ export class VenturesRepositoryImpl implements VenturesRepository {
     query.skip(pagination.skip).take(pagination.take);
 
     return query.getManyAndCount().then(([items, total]) => ({
-      items: JSON.parse(JSON.stringify(items)) as Venture[],
+      items: items as Venture[],
       total,
     }));
   }

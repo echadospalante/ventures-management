@@ -22,11 +22,18 @@ export class VentureCategoriesController {
   ) {
     const filters = VentureCategoriesQueryDto.parseQuery(query);
 
-    const [items, total] = await Promise.all([
-      this.ventureCategoriesService.getVentureCategories(filters),
-      this.ventureCategoriesService.countVentureCategories(filters),
-    ]);
+    const { items, total } =
+      await this.ventureCategoriesService.getVentureCategories(filters);
     return { items, total };
+  }
+
+  @Http.Get('/stats')
+  @Http.HttpCode(Http.HttpStatus.OK)
+  public async getVentureCategoriesStats(
+    @Http.Query() query: VentureCategoriesQueryDto,
+  ) {
+    const filters = VentureCategoriesQueryDto.parseQuery(query);
+    return this.ventureCategoriesService.getVentureCategoriesStats(filters);
   }
 
   @Http.Post()

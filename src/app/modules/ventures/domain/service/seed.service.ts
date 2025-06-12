@@ -19,7 +19,7 @@ export class SeedService {
   public async seedVentures(amount: number) {
     const allVentureCategories =
       await this.ventureCategoriesService.getVentureCategories({ search: '' });
-    console.log('FOUND CATEGORIES', allVentureCategories.length);
+    console.log('FOUND CATEGORIES', allVentureCategories.total);
     for await (const _ of Array(amount).keys()) {
       console.log('SEEDING VENTURE ', _ + 1, ' of ', amount);
       const venture: VentureCreate = {
@@ -39,12 +39,13 @@ export class SeedService {
           phoneNumber: faker.phone.number({ style: 'international' }),
         },
         description: faker.lorem.paragraphs(2),
-        categoriesIds: allVentureCategories
-          .slice(
-            0,
-            faker.number.int({ min: 1, max: allVentureCategories.length }),
-          )
-          .map(({ id }) => id),
+        categoriesIds: [],
+        // categoriesIds: allVentureCategories
+        //   .slice(
+        //     0,
+        //     faker.number.int({ min: 1, max: allVentureCategories.length }),
+        //   )
+        //   .map(({ id }) => id),
       };
 
       const randomUser: User | null =

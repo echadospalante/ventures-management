@@ -83,23 +83,7 @@ export class PublicationsRepositoryImpl implements PublicationsRepository {
     pagination: Pagination,
     ventureId?: string,
   ): Promise<{ items: VenturePublication[]; total: number }> {
-    const {
-      search,
-      categoriesIds,
-      dateRange,
-      // departmentId,
-      // municipalityId,
-      // point,
-      // radius,
-    } = filters;
-
-    console.log({
-      search,
-      categoriesIds,
-      dateRange,
-      ventureId,
-      pagination,
-    });
+    const { search, categoriesIds, dateRange } = filters;
 
     const query =
       this.publicationsRepository.createQueryBuilder('publications');
