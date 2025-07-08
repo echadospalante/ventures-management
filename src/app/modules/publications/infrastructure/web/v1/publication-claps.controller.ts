@@ -31,17 +31,22 @@ export class PublicationClapsController {
   @Http.HttpCode(Http.HttpStatus.CREATED)
   public async createPublicationCategory(
     @Http.Param('publicationId') publicationId: string,
-    @Http.Headers('X-Requested-By') requestedBy: string,
+    @Http.Headers('X-Requested-By') requesterEmail: string,
   ) {
-    return this.publicationClapsService.saveClap(publicationId, requestedBy);
+    return this.publicationClapsService.saveClap(publicationId, requesterEmail);
   }
 
-  @Http.Delete('/claps/:clapId')
+  @Http.Delete('/:publicationId/claps/:clapId')
   @Http.HttpCode(Http.HttpStatus.NO_CONTENT)
-  public async deletePublicationCategory(
+  public async deletePublicationClap(
+    @Http.Param('publicationId') publicationId: string,
     @Http.Param('clapId') clapId: string,
-    @Http.Headers('X-Requested-By') requestedBy: string,
+    @Http.Headers('X-Requested-By') requesterEmail: string,
   ) {
-    return this.publicationClapsService.deleteClap(clapId, requestedBy);
+    return this.publicationClapsService.deleteClap(
+      publicationId,
+      clapId,
+      requesterEmail,
+    );
   }
 }

@@ -37,15 +37,42 @@ export class PublicationCommentsRepositoryImpl
       });
   }
 
-  public deleteComment(commentId: string): Promise<boolean> {
-    return this.publicationCommentsRepository
-      .delete({ id: commentId })
-      .then((result) => {
-        if (result.affected === 0) {
-          return false;
-        }
-        return true;
-      });
+  public deleteComment(
+    publicationId: string,
+    commentId: string,
+  ): Promise<boolean> {
+    const queryRunner = this.dataSource.createQueryRunner();
+    return queryRunner
+      .connect()
+      .then(() => queryRunner.startTransaction())
+      .then(() =>
+        queryRunner.manager
+          .findOne(PublicationCommentData, { where: { id: commentId } })
+          .then((comment) => {
+            if (!comment) {
+              throw new Error(`Comment with id ${commentId} not found`);
+            }
+            return queryRunner.manager.remove(comment);
+          }),
+      )
+      .then(() =>
+        queryRunner.manager.decrement(
+          VenturePublicationData,
+          { id: publicationId },
+          'commentsCount',
+          1,
+        ),
+      )
+      .then(() => queryRunner.commitTransaction())
+      .then(() => true)
+      .catch((error) => {
+        this.logger.error(
+          'Error deleting comment with transaction',
+          error.stack,
+        );
+        return queryRunner.rollbackTransaction().then(() => false);
+      })
+      .finally(() => queryRunner.release());
   }
 
   public async save(

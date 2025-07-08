@@ -2,51 +2,53 @@ import { Transform } from 'class-transformer';
 import * as Validate from 'class-validator';
 import { Pagination } from 'echadospalante-domain';
 
-import { OwnedVentureFilters } from '../../../../../../ventures/domain/core/venture-filters';
+import VenturesQueryDto from './ventures-query.dto';
+import { VentureFilters } from '../../../../../domain/core/venture-filters';
 
 export default class OwnedVenturesQueryDto {
-  @Transform(({ value }) => value === 'true')
-  @Validate.IsBoolean()
-  @Validate.IsOptional()
-  public includeCategories: boolean;
-
-  @Transform(({ value }) => value === 'true')
-  @Validate.IsBoolean()
-  @Validate.IsOptional()
-  public includeDetail: boolean;
-
-  @Transform(({ value }) => value === 'true')
-  @Validate.IsBoolean()
-  @Validate.IsOptional()
-  public includeLocation: boolean;
-
-  @Transform(({ value }) => value === 'true')
-  @Validate.IsBoolean()
-  @Validate.IsOptional()
-  public includeContact: boolean;
-
   @Validate.IsNumber()
   @Validate.IsInt()
   @Transform((param) => parseInt(param.value))
-  public page: number;
+  public skip: number;
 
   @Transform((param) => parseInt(param.value))
   @Validate.IsNumber()
   @Validate.IsInt()
   @Validate.Min(1)
-  public size: number;
+  public take: number;
 
-  @Validate.IsEmail()
-  public ownerEmail: string;
+  @Validate.IsString()
+  @Validate.IsOptional()
+  public search?: string;
 
-  public static parseQuery(query: OwnedVenturesQueryDto) {
+  @Validate.IsOptional()
+  @Validate.IsArray()
+  @Validate.IsString({ each: true })
+  public categoryIds?: string[];
+
+  @Validate.IsPositive()
+  @Validate.IsOptional()
+  @Validate.IsInt()
+  public ownerId?: string;
+
+  @Validate.IsOptional()
+  @Validate.IsArray()
+  @Validate.IsInt({ each: true })
+  @Validate.IsPositive({ each: true })
+  @Transform(({ value }) => (Array.isArray(value) ? value.map(Number) : []))
+  public municipalitiesIds?: number[];
+
+  public static parseQuery(query: VenturesQueryDto, requesterEmail: string) {
     const pagination: Pagination = {
-      skip: query.page * query.size,
-      take: query.size,
+      skip: query.skip,
+      take: query.take,
     };
 
-    const filters: OwnedVentureFilters = {
-      ownerEmail: query.ownerEmail,
+    const filters: VentureFilters = {
+      search: query.search,
+      categoriesIds: query.categoryIds,
+      municipalitiesIds: query.municipalitiesIds || [],
+      ownerEmail: requesterEmail,
     };
 
     return {

@@ -5,11 +5,8 @@ import { Repository } from 'typeorm';
 import { VentureData } from 'echadospalante-domain/dist/app/modules/infrastructure/database/entities';
 
 import { VenturesRepository } from '../../domain/gateway/database/ventures.repository';
-import { Venture, Pagination } from 'echadospalante-domain';
-import {
-  OwnedVentureFilters,
-  VentureFilters,
-} from '../../domain/core/venture-filters';
+import { Venture, Pagination, VentureStats } from 'echadospalante-domain';
+import { VentureFilters } from '../../domain/core/venture-filters';
 
 @Injectable()
 export class VenturesRepositoryImpl implements VenturesRepository {
@@ -18,6 +15,38 @@ export class VenturesRepositoryImpl implements VenturesRepository {
     @InjectRepository(VentureData)
     private venturesRepository: Repository<VentureData>,
   ) {}
+
+  public getVenturesStats(ventureId: string): Promise<VentureStats> {
+    const query = this.venturesRepository
+      .createQueryBuilder('venture')
+      .select([
+        'COUNT(DISTINCT publication.id) AS publicationsCount',
+        'COUNT(DISTINCT event.id) AS eventsCount',
+        'COALESCE(SUM(publication.commentsCount), 0) AS commentsCount',
+        'COALESCE(SUM(publication.clapsCount), 0) AS clapsCount',
+      ])
+      .leftJoin('venture.publications', 'publication')
+      .leftJoin('venture.events', 'event')
+      .where('venture.id = :ventureId', { ventureId });
+
+    return query.getRawOne().then((result) => {
+      if (!result) {
+        return {
+          publicationsCount: 0,
+          eventsCount: 0,
+          commentsCount: 0,
+          clapsCount: 0,
+        };
+      }
+
+      return {
+        publicationsCount: parseInt(result.publicationscount, 10) || 0,
+        eventsCount: parseInt(result.eventscount, 10) || 0,
+        commentsCount: parseInt(result.commentscount, 10) || 0,
+        clapsCount: parseInt(result.clapscount, 10) || 0,
+      } as VentureStats;
+    });
+  }
 
   public findRandomVenture(): Promise<Venture | null> {
     return this.venturesRepository
@@ -46,7 +75,19 @@ export class VenturesRepositoryImpl implements VenturesRepository {
 
   findById(id: string): Promise<Venture | null> {
     return this.venturesRepository
-      .findOneBy({ id })
+      .findOne({
+        where: { id },
+        relations: [
+          'categories',
+          'contact',
+          'location',
+          'owner',
+          // 'events',
+          // 'sponsorships',
+          // 'subscriptions',
+          // 'publications',
+        ],
+      })
       .then((venture) => venture as Venture | null);
   }
 
@@ -58,7 +99,19 @@ export class VenturesRepositoryImpl implements VenturesRepository {
 
   findBySlug(slug: string): Promise<Venture | null> {
     return this.venturesRepository
-      .findOneBy({ slug })
+      .findOne({
+        where: { slug },
+        relations: [
+          'categories',
+          'contact',
+          'location',
+          'owner',
+          // 'sponsorships',
+          // 'subscriptions',
+          // 'events',
+          // 'publications',
+        ],
+      })
       .then((venture) => venture as Venture | null);
   }
 
@@ -74,17 +127,9 @@ export class VenturesRepositoryImpl implements VenturesRepository {
 
   findAllByCriteria(
     filters: VentureFilters,
-    pagination: Pagination,
+    pagination?: Pagination,
   ): Promise<{ items: Venture[]; total: number }> {
-    const {
-      search,
-      categoriesIds,
-      ownerEmail,
-      // departmentId,
-      // municipalityId,
-      // point,
-      // radius,
-    } = filters;
+    const { search, categoriesIds, ownerEmail, municipalitiesIds } = filters;
 
     const query = this.venturesRepository.createQueryBuilder('venture');
 
@@ -98,6 +143,14 @@ export class VenturesRepositoryImpl implements VenturesRepository {
       query.andWhere('owner.email = :ownerEmail', { ownerEmail });
     }
 
+    // MunicipalitiesIds has mandatory length 1
+
+    const municipalityId = municipalitiesIds[0];
+
+    // query.andWhere('location.municipalityId = :municipalityId', {
+    //   municipalityId,
+    // });
+
     if (search) {
       query.andWhere(
         '(venture.name LIKE :term OR venture.description LIKE :term OR venture.slug LIKE :term)',
@@ -108,7 +161,9 @@ export class VenturesRepositoryImpl implements VenturesRepository {
       query.andWhere('category.id IN (:...ids)', { ids: categoriesIds });
     }
 
-    query.skip(pagination.skip).take(pagination.take);
+    if (pagination) {
+      query.skip(pagination.skip).take(pagination.take);
+    }
 
     return query.getManyAndCount().then(([items, total]) => ({
       items: items as Venture[],
@@ -116,22 +171,7 @@ export class VenturesRepositoryImpl implements VenturesRepository {
     }));
   }
 
-  findOwnedVentures(
-    filters: OwnedVentureFilters,
-    pagination?: Pagination,
-  ): Promise<Venture[]> {
-    throw new Error('Method not implemented.');
-  }
-
   isVentureOwnerByEmail(ventureId: string, email: string): Promise<boolean> {
     return Promise.resolve(false);
-  }
-
-  countOwnedVentures(filters: OwnedVentureFilters): Promise<number> {
-    throw new Error('Method not implemented.');
-  }
-
-  countByCriteria(filter: VentureFilters): Promise<number> {
-    return Promise.resolve(1);
   }
 }

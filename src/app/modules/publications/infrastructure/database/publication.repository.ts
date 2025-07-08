@@ -20,6 +20,10 @@ export class PublicationsRepositoryImpl implements PublicationsRepository {
     private publicationsRepository: Repository<VenturePublicationData>,
   ) {}
 
+  public existsById(publicationId: string): Promise<boolean> {
+    return this.publicationsRepository.existsBy({ id: publicationId });
+  }
+
   public findRandomPublication(): Promise<VenturePublication | null> {
     return this.publicationsRepository
       .createQueryBuilder('publication')
@@ -81,7 +85,7 @@ export class PublicationsRepositoryImpl implements PublicationsRepository {
   public findAllByCriteria(
     filters: PublicationFilters,
     pagination: Pagination,
-    ventureId?: string,
+    ventureSlug?: string,
   ): Promise<{ items: VenturePublication[]; total: number }> {
     const { search, categoriesIds, dateRange } = filters;
 
@@ -90,7 +94,8 @@ export class PublicationsRepositoryImpl implements PublicationsRepository {
 
     query
       .leftJoinAndSelect('publications.categories', 'category')
-      .leftJoinAndSelect('publications.contents', 'contents');
+      .leftJoinAndSelect('publications.contents', 'contents')
+      .leftJoinAndSelect('publications.venture', 'venture');
 
     if (search) {
       query.andWhere(
@@ -98,9 +103,10 @@ export class PublicationsRepositoryImpl implements PublicationsRepository {
         { term: `%${search}%` },
       );
     }
-
-    if (ventureId) {
-      query.andWhere('publications.venture.id = :ventureId', { ventureId });
+    if (ventureSlug) {
+      query.andWhere('venture.slug = :ventureSlug', {
+        ventureSlug,
+      });
     }
 
     if (dateRange) {

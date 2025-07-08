@@ -1,3 +1,4 @@
+import { Transform } from 'class-transformer';
 import {
   IsArray,
   IsEmail,
@@ -29,6 +30,10 @@ export default class VentureCreateDto {
   @IsOptional()
   public contactPhoneNumber?: string;
 
+  @Transform(({ value }) => parseInt(value, 10))
+  @IsNotEmpty()
+  public municipalityId: number;
+
   @IsString()
   @IsOptional()
   public locationLat?: string;
@@ -52,6 +57,7 @@ export default class VentureCreateDto {
         phoneNumber: dto.contactPhoneNumber,
       },
       location: {
+        municipalityId: dto.municipalityId,
         lat: dto.locationLat ? parseFloat(dto.locationLat) : undefined,
         lng: dto.locationLng ? parseFloat(dto.locationLng) : undefined,
         description: dto.locationDescription,

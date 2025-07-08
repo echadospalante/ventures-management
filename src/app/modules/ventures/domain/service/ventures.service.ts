@@ -18,6 +18,7 @@ import { stringToSlug } from '../../../../helpers/functions/slug-generator';
 import { CdnService } from '../../../shared/domain/service/cdn.service';
 import { VentureFilters } from '../core/venture-filters';
 import { VentureAMQPProducer } from '../gateway/amqp/venture.amqp';
+import { MunicipalitiesRepository } from '../gateway/database/municipalities.repository';
 import { VentureCategoriesRepository } from '../gateway/database/venture-categories.repository';
 import { VenturesRepository } from '../gateway/database/ventures.repository';
 import { UserHttpService } from '../gateway/http/http.gateway';
@@ -31,6 +32,8 @@ export class VenturesService {
     private venturesRepository: VenturesRepository,
     @Inject(VentureCategoriesRepository)
     private ventureCategoriesRepository: VentureCategoriesRepository,
+    @Inject(MunicipalitiesRepository)
+    private municipalitiesRepository: MunicipalitiesRepository,
     @Inject(VentureAMQPProducer)
     private ventureAMQPProducer: VentureAMQPProducer,
     @Inject(UserHttpService)
@@ -103,6 +106,16 @@ export class VenturesService {
       venture.categoriesIds,
     );
 
+    const municipality = await this.municipalitiesRepository.findById(
+      venture.location!.municipalityId!,
+    );
+
+    if (!municipality) {
+      throw new NotFoundException(
+        `Municipality with id ${venture.location!.municipalityId} not found`,
+      );
+    }
+
     const [owner] = await Promise.all([
       this.userHttpService.getUserByEmail(ownerEmail),
     ]);
@@ -118,6 +131,7 @@ export class VenturesService {
       coverPhoto: venture.coverPhoto,
       active: true,
       verified: owner.verified,
+      subscriptionsCount: 0,
       owner,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -132,6 +146,7 @@ export class VenturesService {
       // TODO: Traer el id del registro actual para que en lugar de generar un nuevo registro, lo actualice
       location: {
         id: crypto.randomUUID().toString(),
+        municipality,
         location:
           venture.location?.lat && venture.location?.lng
             ? {
@@ -168,6 +183,15 @@ export class VenturesService {
       throw new NotFoundException('User not found');
     }
 
+    // TODO: Arreglar esto
+    const municipality = await this.municipalitiesRepository.findById(
+      ventureDB.location?.municipality.id || 0,
+    );
+
+    if (!municipality) {
+      throw new NotFoundException(`Municipality not found`);
+    }
+
     return {
       ...ventureDB,
       id,
@@ -191,6 +215,7 @@ export class VenturesService {
         updatedAt: new Date(),
       },
       location: {
+        municipality,
         location:
           ventureUpdate.location?.lat && ventureUpdate.location?.lng
             ? {
@@ -219,8 +244,18 @@ export class VenturesService {
     return this.venturesRepository.findAllByCriteria(filters, pagination);
   }
 
-  public countVentures(filters: VentureFilters): Promise<number> {
-    return this.venturesRepository.countByCriteria(filters);
+  public getOwnedVentures(filters: VentureFilters, pagination: Pagination) {
+    return this.venturesRepository.findAllByCriteria(filters, pagination);
+  }
+
+  public getVenturesForMap(filters: VentureFilters) {
+    const { municipalitiesIds } = filters;
+    if (municipalitiesIds.length !== 1) {
+      throw new BadRequestException(
+        'Debe seleccionar un único municipio para mostrar los emprendimientos en el mapa.',
+      );
+    }
+    return this.venturesRepository.findAllByCriteria(filters);
   }
 
   public async deleteVentureById(
@@ -239,5 +274,16 @@ export class VenturesService {
 
   public async getRandomVenture() {
     return this.venturesRepository.findRandomVenture();
+  }
+
+  public getVenturesStats(ventureId: string) {
+    return this.venturesRepository.getVenturesStats(ventureId);
+  }
+
+  public getVentureDetail(ventureId: string) {
+    return this.venturesRepository.findById(ventureId);
+  }
+  public getVentureDetailBySlug(ventureSlug: string) {
+    return this.venturesRepository.findBySlug(ventureSlug);
   }
 }

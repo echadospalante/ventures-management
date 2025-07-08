@@ -7,7 +7,12 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
-import { Pagination, VentureSubscription } from 'echadospalante-domain';
+import {
+  PaginatedBody,
+  Pagination,
+  User,
+  VentureSubscription,
+} from 'echadospalante-domain';
 
 import { VenturesService } from './ventures.service';
 import { SubscriptionAMQPProducer } from '../gateway/amqp/subscription.amqp';
@@ -30,14 +35,26 @@ export class VentureSubscriptionsService {
     private userHttpService: UserHttpService,
   ) {}
 
+  public getVentureSubscriptionStatus(
+    ventureId: string,
+    requesterEmail: string,
+  ): Promise<boolean> {
+    return this.subscriptionsRepository.exists(ventureId, requesterEmail);
+  }
+
   public async saveSubscription(
     ventureId: string,
-    subscriberId: string,
+    subscriberEmail: string,
   ): Promise<VentureSubscription> {
-    await this.verifySubscriptionConditions(ventureId, subscriberId);
+    const subscriber = await this.verifySubscriptionConditions(
+      ventureId,
+      subscriberEmail,
+    );
+
+    console.log({ subscriber });
 
     return this.subscriptionsRepository
-      .save(ventureId, subscriberId)
+      .save(ventureId, subscriber.id)
       .then((savedSubscription) => {
         this.subscriptionAMQPProducer.emitSubscriptionCreatedEvent(
           savedSubscription,
@@ -48,30 +65,33 @@ export class VentureSubscriptionsService {
 
   private async verifySubscriptionConditions(
     ventureId: string,
-    subscriberId: string,
-  ): Promise<void> {
+    requesterEmail: string,
+  ) {
     const isOwner = await this.venturesService.isVentureOwner(
       ventureId,
-      subscriberId,
+      requesterEmail,
     );
 
-    if (!isOwner) {
+    if (isOwner) {
       throw new ForbiddenException(
         'El usuario no se puede suscribir a su propio emprendimiento',
       );
     }
 
-    const [subscriber] = await Promise.all([
-      this.userHttpService.getUserByEmail(subscriberId),
-      // this.userHttpService.getUserDetailById(ownerId),
-    ]);
+    const subscriber =
+      await this.userHttpService.getUserByEmail(requesterEmail);
 
     if (!subscriber.active) {
       throw new NotFoundException('User not found');
     }
+
+    return subscriber;
   }
 
-  public getVentureSubscriptions(ventureId: string, pagination: Pagination) {
+  public getVentureSubscriptions(
+    ventureId: string,
+    pagination: Pagination,
+  ): Promise<PaginatedBody<User>> {
     const { take } = pagination;
     if (take > 100) {
       throw new BadRequestException(
@@ -82,14 +102,35 @@ export class VentureSubscriptionsService {
       .findPaginated(ventureId, pagination)
       .then((subs) => ({
         total: subs.total,
-        items: subs.items.flatMap((s) => s.subscriber),
+        items: subs.items
+          .flatMap((s) => s.subscriber)
+          .filter((u) => !!u)
+          .map((u) => u as User),
       }));
   }
 
-  public deleteSubscription(
+  public async deleteSubscription(
     ventureId: string,
-    requestedBy: string,
+    requesterEmail: string,
   ): Promise<boolean> {
-    return this.subscriptionsRepository.delete(ventureId, requestedBy);
+    // return this.subscriptionsRepository.delete(ventureId, requestedBy);
+    const user = await this.userHttpService.getUserByEmail(requesterEmail);
+    if (!user) {
+      console.log('User not found:', requesterEmail);
+      throw new NotFoundException(
+        `User with email ${requesterEmail} not found`,
+      );
+    }
+    const subscription =
+      await this.subscriptionsRepository.findByVentureAndUser(
+        ventureId,
+        user.id,
+      );
+    if (!subscription) {
+      console.log('Subscription not found');
+      throw new NotFoundException(`Subscription not found`);
+    }
+
+    return this.subscriptionsRepository.delete(ventureId, subscription.id);
   }
 }

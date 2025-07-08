@@ -29,10 +29,11 @@ export class SubscriptionsController {
   @Http.HttpCode(Http.HttpStatus.CREATED)
   public deleteSubscription(
     @Http.Param('ventureId') ventureId: string,
-    @Http.Headers('X-Requested-By') requestedBy: string,
+    // @Http.Param('subscriptionId') subscriptionId: string,
+    @Http.Headers('X-Requested-By') requesterEmail: string,
   ) {
     return this.subscriptionsService
-      .deleteSubscription(ventureId, requestedBy)
+      .deleteSubscription(ventureId, requesterEmail)
       .then((deleted) => ({ deleted }));
   }
 
@@ -46,5 +47,15 @@ export class SubscriptionsController {
       ventureId,
       pagination,
     );
+  }
+
+  @Http.Get('/:ventureId/subscription-status')
+  public async getVentureSubscriptionStatus(
+    @Http.Param('ventureId') ventureId: string,
+    @Http.Headers('X-Requested-By') requesterEmail: string,
+  ) {
+    return this.subscriptionsService
+      .getVentureSubscriptionStatus(ventureId, requesterEmail)
+      .then((status) => ({ subscribed: status }));
   }
 }

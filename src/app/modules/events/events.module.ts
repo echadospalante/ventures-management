@@ -48,6 +48,8 @@ import { EventCategoriesController } from './infrastructure/web/v1/event-categor
 import { EventDonationsController } from './infrastructure/web/v1/event-donations.controller';
 import { VentureEventsController } from './infrastructure/web/v1/events.controller';
 import { SeedController } from './infrastructure/web/v1/seed.controller';
+import { MunicipalitiesRepository } from '../ventures/domain/gateway/database/municipalities.repository';
+import { MunicipalitiesRepositoryImpl } from '../ventures/infrastructure/database/municipalities.repository';
 
 @Module({
   controllers: [
@@ -65,6 +67,10 @@ import { SeedController } from './infrastructure/web/v1/seed.controller';
     {
       provide: EventCategoriesRepository,
       useClass: EventCategoriesRepositoryImpl,
+    },
+    {
+      provide: MunicipalitiesRepository,
+      useClass: MunicipalitiesRepositoryImpl,
     },
     {
       provide: EventDonationsRepository,

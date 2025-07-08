@@ -1,19 +1,18 @@
 import { Inject, Injectable } from '@nestjs/common';
 
-import { faker } from '@faker-js/faker';
+import { faker } from '@faker-js/faker/locale/es';
 import {
   ContentType,
-  PublicationComment,
   PublicationContent,
   PublicationCreate,
 } from 'echadospalante-domain';
 
+import { VenturesService } from '../../../ventures/domain/service/ventures.service';
 import { UserHttpService } from '../gateway/http/http.gateway';
 import { PublicationCategoriesService } from './../../../publications/domain/service/publication-categories.service';
 import { PublicationsService } from './../../../publications/domain/service/publications.service';
-import { VenturesService } from '../../../ventures/domain/service/ventures.service';
-import { PublicationCommentsService } from './publication-comments.service';
 import { PublicationClapsService } from './publication-claps.service';
+import { PublicationCommentsService } from './publication-comments.service';
 
 @Injectable()
 export class SeedService {
@@ -126,19 +125,22 @@ export class SeedService {
       const arr = Array.from({
         length: faker.number.int({ min: 1, max: batchSize }),
       });
-      await Promise.all(
-        arr.map(() => {
-          return this.publicationCommentsService.saveComment(
-            randomPublication.id,
-            randomUser.id,
-            faker.lorem.paragraphs(1),
-          );
-        }),
-      );
+      try {
+        await Promise.all(
+          arr.map(() => {
+            return this.publicationCommentsService.saveComment(
+              randomPublication.id,
+              randomUser.email,
+              faker.lorem.paragraphs(1),
+            );
+          }),
+        );
+      } catch (error) {}
     }
   }
 
   public async seedClaps(amount: number) {
+    console.log({ 'SEEDING CLAPS': amount });
     const batchSize = 30; // Each user will clap for a random number of publications between 1 and batchSize
     for await (const _ of Array(amount).keys()) {
       const randomPublications = await Promise.all(
@@ -157,7 +159,10 @@ export class SeedService {
       try {
         await Promise.all(
           randomPublications.map((pub) => {
-            return this.publicationClapsService.saveClap(pub.id, randomUser.id);
+            return this.publicationClapsService.saveClap(
+              pub.id,
+              randomUser.email,
+            );
           }),
         );
       } catch (error) {

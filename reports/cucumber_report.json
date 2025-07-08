@@ -1,0 +1,359 @@
+[
+  {
+    "description": "",
+    "elements": [
+      {
+        "description": "",
+        "id": "create-venture;create-a-new-event-fail",
+        "keyword": "Scenario",
+        "line": 3,
+        "name": "Create a new event fail",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 4,
+            "name": "I am a registered user, I want to create a new event",
+            "match": {
+              "location": "test/steps/create-event-fail.steps.ts:13"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1097968189
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 5,
+            "name": "I fill in the event create fields",
+            "match": {
+              "location": "test/steps/create-event-fail.steps.ts:31"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 366638
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 6,
+            "name": "I click the Create Event button",
+            "match": {
+              "location": "test/steps/create-event-fail.steps.ts:53"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 139442017
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 7,
+            "name": "Since I am not the owner of the venture, so I cannot create an event, I should receive a 403 status code",
+            "match": {
+              "location": "test/steps/create-event-fail.steps.ts:62"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 618132
+            }
+          }
+        ],
+        "tags": [],
+        "type": "scenario"
+      }
+    ],
+    "id": "create-venture",
+    "line": 1,
+    "keyword": "Feature",
+    "name": "Create Venture",
+    "tags": [],
+    "uri": "test/features/create-event-fail.feature"
+  },
+  {
+    "description": "",
+    "elements": [
+      {
+        "description": "",
+        "id": "create-venture;create-a-new-venture-fail",
+        "keyword": "Scenario",
+        "line": 3,
+        "name": "Create a new venture fail",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 4,
+            "name": "I am a registered user, I want to create a new publication",
+            "match": {
+              "location": "test/steps/create-publication-fail.steps.ts:13"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 686876435
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 5,
+            "name": "I fill in the publication create fields",
+            "match": {
+              "location": "test/steps/create-publication-fail.steps.ts:31"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3609854
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 6,
+            "name": "I click the Create Publication button",
+            "match": {
+              "location": "test/steps/create-publication-fail.steps.ts:60"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 36075892
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 7,
+            "name": "Since I am not the owner of the venture, so I cannot create a publication, I should receive a 403 status code",
+            "match": {
+              "location": "test/steps/create-publication-fail.steps.ts:69"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 384144
+            }
+          }
+        ],
+        "tags": [],
+        "type": "scenario"
+      }
+    ],
+    "id": "create-venture",
+    "line": 1,
+    "keyword": "Feature",
+    "name": "Create Venture",
+    "tags": [],
+    "uri": "test/features/create-publication-fail.feature"
+  },
+  {
+    "description": "",
+    "elements": [
+      {
+        "description": "",
+        "id": "create-venture;create-a-new-venture",
+        "keyword": "Scenario",
+        "line": 3,
+        "name": "Create a new venture",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 4,
+            "name": "I am user active and allowed to create ventures",
+            "match": {
+              "location": "test/steps/create-venture.steps.ts:13"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 634684019
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 5,
+            "name": "I am on the \"Create Venture\" page",
+            "match": {
+              "location": "test/steps/create-venture.steps.ts:30"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 609186
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 6,
+            "name": "I fill in the venture create fields",
+            "match": {
+              "location": "test/steps/create-venture.steps.ts:37"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 301842
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 7,
+            "name": "I click the \"Create Venture\" button",
+            "match": {
+              "location": "test/steps/create-venture.steps.ts:55"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 292697783
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 8,
+            "name": "I should receive a 201 status code",
+            "match": {
+              "location": "test/steps/create-venture.steps.ts:67"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 575812
+            }
+          }
+        ],
+        "tags": [],
+        "type": "scenario"
+      }
+    ],
+    "id": "create-venture",
+    "line": 1,
+    "keyword": "Feature",
+    "name": "Create Venture",
+    "tags": [],
+    "uri": "test/features/create-venture.feature"
+  },
+  {
+    "description": "",
+    "elements": [
+      {
+        "description": "",
+        "id": "login;login-with-valid-credentials",
+        "keyword": "Scenario",
+        "line": 3,
+        "name": "Login with valid credentials",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 4,
+            "name": "I am a registered user",
+            "match": {
+              "location": "test/steps/login.steps.ts:13"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 603933718
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 5,
+            "name": "I login with my Google account",
+            "match": {
+              "location": "test/steps/login.steps.ts:24"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 58476017
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 6,
+            "name": "I should get a 200 status code, and redirected to the dashboard",
+            "match": {
+              "location": "test/steps/login.steps.ts:33"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 281942
+            }
+          }
+        ],
+        "tags": [],
+        "type": "scenario"
+      }
+    ],
+    "id": "login",
+    "line": 1,
+    "keyword": "Feature",
+    "name": "Login",
+    "tags": [],
+    "uri": "test/features/login copy.feature"
+  },
+  {
+    "description": "",
+    "elements": [
+      {
+        "description": "",
+        "id": "refresh-auth;refresh-authentication-token-with-valid-credentials",
+        "keyword": "Scenario",
+        "line": 3,
+        "name": "Refresh authentication token with valid credentials",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 4,
+            "name": "I am a registered user and I have an active session",
+            "match": {
+              "location": "test/steps/refresh-auth.steps.ts:13"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 485357342
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 5,
+            "name": "I refresh my authentication token",
+            "match": {
+              "location": "test/steps/refresh-auth.steps.ts:27"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 71926054
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 6,
+            "name": "I should get a 200 status code, and a new authentication token",
+            "match": {
+              "location": "test/steps/refresh-auth.steps.ts:36"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 246538
+            }
+          }
+        ],
+        "tags": [],
+        "type": "scenario"
+      }
+    ],
+    "id": "refresh-auth",
+    "line": 1,
+    "keyword": "Feature",
+    "name": "Refresh Auth",
+    "tags": [],
+    "uri": "test/features/refresh-auth.feature"
+  }
+]

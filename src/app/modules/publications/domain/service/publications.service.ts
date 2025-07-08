@@ -110,7 +110,7 @@ export class PublicationsService {
   }
 
   public getVenturePublications(
-    ventureId: string,
+    ventureSlug: string,
     filters: PublicationFilters,
     pagination: Pagination,
   ) {
@@ -121,20 +121,19 @@ export class PublicationsService {
       );
     }
 
-    console.log({
-      ventureId,
-      filters,
-      pagination,
-    });
-
     return this.publicationsRepository.findAllByCriteria(
       filters,
       pagination,
-      ventureId,
+      ventureSlug,
     );
   }
 
-  public getPublicationDetail(publicationId: string) {
+  public async getPublicationDetail(publicationId: string) {
+    const existsById =
+      await this.publicationsRepository.existsById(publicationId);
+    if (!existsById) {
+      throw new NotFoundException('Publication not found');
+    }
     return this.publicationsRepository.findById(publicationId);
   }
 

@@ -1,7 +1,7 @@
 import { PublicationComment } from 'echadospalante-domain';
 
 export interface PublicationCommentsRepository {
-  deleteComment(commentId: string): Promise<boolean>;
+  deleteComment(publicationId: string, commentId: string): Promise<boolean>;
   save(
     publicationId: string,
     authorId: string,

@@ -5,7 +5,7 @@ import { Pagination } from 'echadospalante-domain';
 
 import { VentureFilters } from '../../../../../domain/core/venture-filters';
 
-export default class VenturesQueryDto {
+export default class OwnedVenturesQueryDto {
   @Validate.IsNumber()
   @Validate.IsInt()
   @Transform((param) => parseInt(param.value))
@@ -39,7 +39,7 @@ export default class VenturesQueryDto {
   public municipalitiesIds?: number[];
 
   public static parseQuery(
-    query: VenturesQueryDto /* requesterEmail: string */,
+    query: OwnedVenturesQueryDto /* requesterEmail: string */,
   ) {
     const pagination: Pagination = {
       skip: query.skip,

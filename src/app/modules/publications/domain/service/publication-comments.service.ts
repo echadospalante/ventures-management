@@ -50,18 +50,25 @@ export class PublicationCommentsService {
     );
   }
 
-  public async deleteComment(commentId: string, requestedBy: string) {
+  public async deleteComment(
+    publicationId: string,
+    commentId: string,
+    requesterEmail: string,
+  ) {
     const comment =
       await this.publicationCategoriesRepository.findById(commentId);
     if (!comment) {
       throw new NotFoundException(`Comment with id ${commentId} not found`);
     }
-    if (comment.author.id !== requestedBy) {
+    if (comment.author.email !== requesterEmail) {
       throw new NotFoundException(
-        `Comment with id ${commentId} not found for user ${requestedBy}`,
+        `Comment with id ${commentId} not found for user ${requesterEmail}`,
       );
     }
 
-    return this.publicationCategoriesRepository.deleteComment(commentId);
+    return this.publicationCategoriesRepository.deleteComment(
+      publicationId,
+      commentId,
+    );
   }
 }

@@ -1,7 +1,13 @@
 import { Pagination, VentureSubscription } from 'echadospalante-domain';
 
 export interface VentureSubscriptionsRepository {
-  delete(ventureId: string, subscriberId: string): Promise<boolean>;
+  exists(ventureId: string, requesterEmail: string): Promise<boolean>;
+  findById(subscriptionId: string): Promise<VentureSubscription | null>;
+  findByVentureAndUser(
+    ventureId: string,
+    subscriberId: string,
+  ): Promise<VentureSubscription | null>;
+  delete(ventureId: string, subscriptionId: string): Promise<boolean>;
   save(ventureId: string, subscriberId: string): Promise<VentureSubscription>;
   findPaginated(
     ventureId: string,

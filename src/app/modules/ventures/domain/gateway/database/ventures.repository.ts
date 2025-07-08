@@ -1,32 +1,26 @@
-import { Pagination, Venture } from 'echadospalante-domain';
+import { Pagination, Venture, VentureStats } from 'echadospalante-domain';
 
 import {
-  OwnedVentureFilters,
   VentureFilters,
 } from '../../core/venture-filters';
 
 export interface VenturesRepository {
+  getVenturesStats(ventureId: string): Promise<VentureStats>;
   findRandomVenture(): Promise<Venture | null>;
   isVentureOwner(ventureId: string, requesterEmail: string): Promise<boolean>;
   isVentureOwnerByEmail(ventureId: string, email: string): Promise<boolean>;
   findById(ventureId: string): Promise<Venture | null>;
   deleteById(ventureId: string): Promise<void>;
-  countOwnedVentures(filters: OwnedVentureFilters): Promise<number>;
+
   findBySlug(slug: string): Promise<Venture | null>;
   // findById(
   //   id: string,
   //
   // ): Promise<Venture | null>;
-  countByCriteria(filter: VentureFilters): Promise<number>;
   findAllByCriteria(
     filters: VentureFilters,
-    pagination: Pagination,
-  ): Promise<{ items: Venture[]; total: number }>;
-  findOwnedVentures(
-    filters: OwnedVentureFilters,
-
     pagination?: Pagination,
-  ): Promise<Venture[]>;
+  ): Promise<{ items: Venture[]; total: number }>;
   // deleteByEmail(id: string): Promise<void>;
   save(venture: Venture): Promise<Venture>;
   // findAll(

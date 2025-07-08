@@ -6,6 +6,7 @@ import {
   Logger,
   NotFoundException,
 } from '@nestjs/common';
+import { MunicipalitiesRepository } from './../../../ventures/domain/gateway/database/municipalities.repository';
 
 import {
   EventCreate,
@@ -32,6 +33,8 @@ export class EventsService {
     private eventsRepository: EventsRepository,
     private categoriesService: EventCategoriesService,
     private venturesService: VenturesService,
+    @Inject(MunicipalitiesRepository)
+    private municipalitiesRepository: MunicipalitiesRepository,
     @Inject(EventAMQPProducer)
     private eventAMQPProducer: EventAMQPProducer,
     @Inject(UserHttpService)
@@ -120,6 +123,16 @@ export class EventsService {
       throw new NotFoundException('User not found');
     }
 
+    const municipality = await this.municipalitiesRepository.findById(
+      event.municipalityId,
+    );
+
+    if (!municipality) {
+      throw new NotFoundException(
+        `Municipality with id ${event.municipalityId} not found`,
+      );
+    }
+
     return {
       id: crypto.randomUUID().toString(),
       title: event.title,
@@ -145,6 +158,7 @@ export class EventsService {
               }
             : undefined,
         description: event.locationDescription,
+        municipality,
       },
       contact: {
         id: crypto.randomUUID().toString(),

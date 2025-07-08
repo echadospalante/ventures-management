@@ -15,7 +15,7 @@ export class VentureCategoriesController {
     private readonly ventureCategoriesService: VentureCategoriesService,
   ) {}
 
-  @Http.Get('')
+  @Http.Get('/all')
   @Http.HttpCode(Http.HttpStatus.OK)
   public async getVentureCategories(
     @Http.Query() query: VentureCategoriesQueryDto,
@@ -27,7 +27,7 @@ export class VentureCategoriesController {
     return { items, total };
   }
 
-  @Http.Get('/stats')
+  @Http.Get('/count-stats')
   @Http.HttpCode(Http.HttpStatus.OK)
   public async getVentureCategoriesStats(
     @Http.Query() query: VentureCategoriesQueryDto,

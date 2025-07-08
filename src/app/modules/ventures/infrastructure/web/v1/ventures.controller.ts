@@ -8,6 +8,8 @@ import VentureCreateDto from './model/request/venture-create.dto';
 import { UploadedPhotoResultDto } from './model/response/uploaded-photo-result.dto';
 import VenturesQueryDto from './model/request/ventures-query.dto';
 import VentureUpdateDto from './model/request/venture-update.dto';
+import VenturesMapQueryDto from './model/request/ventures-map-query.dto';
+import OwnedVenturesQueryDto from './model/request/owned-ventures-query.dto';
 
 const path = '/ventures';
 
@@ -33,7 +35,7 @@ export class VenturesController {
     @Http.Body() body: VentureCreateDto,
     @Http.Headers('X-Requested-By') requestedBy: string,
   ): Promise<Venture> {
-    console.log({ requestedBy });
+    console.log({ requestedBy, body });
     const ventureCreate = VentureCreateDto.toEntity(body);
     return this.venturesService.saveVenture(ventureCreate, requestedBy);
   }
@@ -49,6 +51,46 @@ export class VenturesController {
     );
 
     return this.venturesService.getVentures(filters, pagination);
+  }
+
+  @Http.Get('/owned')
+  public async getOwnedVentures(
+    @Http.Query() query: OwnedVenturesQueryDto,
+    @Http.Headers('X-Requested-By') requesterEmail: string,
+  ) {
+    const { pagination, filters } = OwnedVenturesQueryDto.parseQuery(
+      query,
+      requesterEmail,
+    );
+
+    return this.venturesService.getOwnedVentures(filters, pagination);
+  }
+
+  @Http.Get('/map')
+  public async getVenturesForMap(
+    @Http.Query() query: VenturesMapQueryDto,
+    // @Http.Headers('X-Requested-By') requesterEmail: string,
+  ) {
+    const { filters } = VenturesMapQueryDto.parseQuery(query);
+
+    return this.venturesService.getVenturesForMap(filters);
+  }
+
+  @Http.Get('/:ventureId/stats')
+  public async getVentureStats(@Http.Param('ventureId') ventureId: string) {
+    return this.venturesService.getVenturesStats(ventureId);
+  }
+
+  @Http.Get('/:ventureId')
+  public async getVentureDetail(@Http.Param('ventureId') ventureId: string) {
+    return this.venturesService.getVentureDetail(ventureId);
+  }
+
+  @Http.Get('/slug/:ventureSlug')
+  public async getVentureDetailBySlug(
+    @Http.Param('ventureSlug') ventureSlug: string,
+  ) {
+    return this.venturesService.getVentureDetailBySlug(ventureSlug);
   }
 
   @Http.Patch('/:id')

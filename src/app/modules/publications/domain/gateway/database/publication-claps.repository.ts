@@ -1,8 +1,8 @@
 import { PublicationClap } from 'echadospalante-domain';
 
 export interface PublicationClapsRepository {
-  deleteClap(clapId: string): Promise<boolean>;
-  save(publicationId: string, authorId: string): Promise<PublicationClap>;
+  deleteClap(publicationId: string, clapId: string): Promise<boolean>;
+  save(publicationId: string, userId: string): Promise<PublicationClap>;
   findById(clapId: string): Promise<PublicationClap | null>;
   findByPublicationId(
     publicationId: string,

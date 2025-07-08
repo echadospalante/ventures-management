@@ -37,20 +37,41 @@ export class PublicationClapsRepositoryImpl
       });
   }
 
-  public deleteClap(clapId: string): Promise<boolean> {
-    return this.publicationClapsRepository
-      .delete({ id: clapId })
-      .then((result) => {
-        if (result.affected === 0) {
-          return false;
-        }
-        return true;
-      });
+  public deleteClap(publicationId: string, clapId: string): Promise<boolean> {
+    const queryRunner = this.dataSource.createQueryRunner();
+    return queryRunner
+      .connect()
+      .then(() => queryRunner.startTransaction())
+      .then(() =>
+        queryRunner.manager
+          .findOne(PublicationClapData, { where: { id: clapId } })
+          .then((clap) => {
+            if (!clap) {
+              throw new Error(`Clap with id ${clapId} not found`);
+            }
+            return queryRunner.manager.remove(clap);
+          }),
+      )
+      .then(() =>
+        queryRunner.manager.decrement(
+          VenturePublicationData,
+          { id: publicationId },
+          'clapsCount',
+          1,
+        ),
+      )
+      .then(() => queryRunner.commitTransaction())
+      .then(() => true)
+      .catch((error) => {
+        this.logger.error('Error deleting clap with transaction', error.stack);
+        return queryRunner.rollbackTransaction().then(() => false);
+      })
+      .finally(() => queryRunner.release());
   }
 
   public async save(
     publicationId: string,
-    authorId: string,
+    userId: string,
   ): Promise<PublicationClap> {
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
@@ -59,7 +80,7 @@ export class PublicationClapsRepositoryImpl
     try {
       const newClap = queryRunner.manager.create(PublicationClapData, {
         publication: { id: publicationId } as VenturePublicationData,
-        user: { id: authorId } as UserData,
+        user: { id: userId } as UserData,
       });
 
       const savedClap = await queryRunner.manager.save(newClap);

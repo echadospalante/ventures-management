@@ -49,6 +49,8 @@ import { SeedController } from './infrastructure/web/v1/seed.controller';
 import { SubscriptionsController } from './infrastructure/web/v1/subscriptions.controller';
 import { VentureCategoriesController } from './infrastructure/web/v1/venture-categories.controller';
 import { VenturesController } from './infrastructure/web/v1/ventures.controller';
+import { MunicipalitiesRepository } from './domain/gateway/database/municipalities.repository';
+import { MunicipalitiesRepositoryImpl } from './infrastructure/database/municipalities.repository';
 
 @Module({
   controllers: [
@@ -67,6 +69,10 @@ import { VenturesController } from './infrastructure/web/v1/ventures.controller'
     {
       provide: VenturesRepository,
       useClass: VenturesRepositoryImpl,
+    },
+    {
+      provide: MunicipalitiesRepository,
+      useClass: MunicipalitiesRepositoryImpl,
     },
     {
       provide: VentureCategoriesRepository,

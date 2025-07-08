@@ -1,3 +1,4 @@
+import { Transform } from 'class-transformer';
 import {
   IsArray,
   IsEmail,
@@ -24,6 +25,10 @@ export default class EventCreateDto {
   @IsEmail()
   @IsOptional()
   public contactEmail?: string;
+
+  @Transform(({ value }) => parseInt(value, 10))
+  @IsNotEmpty()
+  public municipalityId: number;
 
   @IsString()
   @IsOptional()
@@ -57,6 +62,7 @@ export default class EventCreateDto {
       description: dto.description,
       categoriesIds: dto.categoriesIds,
       contactEmail: dto.contactEmail || '',
+      municipalityId: dto.municipalityId,
       contactPhoneNumber: dto.contactPhoneNumber || '',
       datesAndHours: dto.datesAndHours.map((dateAndHour) => ({
         date: dateAndHour.date,

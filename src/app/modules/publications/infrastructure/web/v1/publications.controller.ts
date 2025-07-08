@@ -28,7 +28,7 @@ export class VenturePublicationsController {
     return this.publicationsService.savePublicationCoverPhoto(image);
   }
 
-  @Http.Post('/:ventureId/publications')
+  @Http.Post('/:ventureSlug/publications')
   @Http.HttpCode(Http.HttpStatus.CREATED)
   public createVenturePublication(
     @Http.Body() body: PublicationCreateDto,
@@ -62,14 +62,14 @@ export class VenturePublicationsController {
     return this.publicationsService.getPublicationDetail(publicationId);
   }
 
-  @Http.Get('/:ventureId/publications')
+  @Http.Get('/:ventureSlug/publications')
   public async getVenturePublications(
     @Http.Query() query: PublicationsQueryDto,
-    @Http.Param('ventureId') ventureId: string,
+    @Http.Param('ventureSlug') ventureSlug: string,
   ) {
     const { pagination, filters } = PublicationsQueryDto.parseQuery(query);
     return this.publicationsService.getVenturePublications(
-      ventureId,
+      ventureSlug,
       filters,
       pagination,
     );

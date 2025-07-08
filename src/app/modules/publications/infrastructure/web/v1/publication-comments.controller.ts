@@ -41,13 +41,15 @@ export class PublicationCommentsController {
     );
   }
 
-  @Http.Delete('/comments/:commentId')
+  @Http.Delete('/:publicationId/comments/:commentId')
   @Http.HttpCode(Http.HttpStatus.NO_CONTENT)
   public async deletePublicationCategory(
+    @Http.Param('publicationId') publicationId: string,
     @Http.Param('commentId') commentId: string,
     @Http.Headers('X-Requested-By') requestedBy: string,
   ) {
     return this.publicationCommentsService.deleteComment(
+      publicationId,
       commentId,
       requestedBy,
     );

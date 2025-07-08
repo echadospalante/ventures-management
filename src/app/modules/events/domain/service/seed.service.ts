@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 
-import { faker } from '@faker-js/faker';
+import { faker } from '@faker-js/faker/locale/es';
 import { EventCreate } from 'echadospalante-domain';
 import { DatesAndHour } from 'echadospalante-domain/dist/app/modules/domain/events/event';
 
@@ -20,6 +20,23 @@ export class SeedService {
     private userHttpService: UserHttpService,
   ) {}
 
+  getRandomColombiaCoordinatesLand() {
+    const bounds = {
+      north: 12.0,
+      south: -3.5,
+      east: -67.5,
+      west: -79.0,
+    };
+
+    const lat = Math.random() * (bounds.north - bounds.south) + bounds.south;
+    const lng = Math.random() * (bounds.east - bounds.west) + bounds.west;
+
+    return {
+      lat: parseFloat(lat.toFixed(6)),
+      lng: parseFloat(lng.toFixed(6)),
+    };
+  }
+
   public async seedEvents(amount: number) {
     const categories = await this.eventCategoriesService.getEventCategories({});
     const batchSize = 50; // Change to 10 or 100 for larger batches
@@ -27,6 +44,7 @@ export class SeedService {
       const randomVenture = await this.venturesService.getRandomVenture();
       console.log(`Seeding event: `, (_ + 1) * batchSize);
       if (!randomVenture) continue;
+      const { lat, lng } = this.getRandomColombiaCoordinatesLand();
       const arr = Array.from({ length: batchSize });
       await Promise.all(
         arr.map(() => {
@@ -51,10 +69,11 @@ export class SeedService {
             contactPhoneNumber: faker.phone.number({
               style: 'international',
             }),
-            locationLat: faker.location.latitude() + '',
-            locationLng: faker.location.longitude() + '',
+            locationLat: lat + '',
+            locationLng: lng + '',
             datesAndHours: this.getRandomDatesAndHours(),
             locationDescription: faker.location.streetAddress({}),
+            municipalityId: faker.number.int({ min: 733, max: 1232 }),
           };
           return this.eventsService.saveEvent(
             eventCreate,
