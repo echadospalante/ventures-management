@@ -15,6 +15,15 @@ export class EventCategoriesController {
     private readonly eventCategoriesService: EventCategoriesService,
   ) {}
 
+  @Http.Get('/count-stats')
+  @Http.HttpCode(Http.HttpStatus.OK)
+  public async getVentureCategoriesStats(
+    @Http.Query() query: EventCategoriesQueryDto,
+  ) {
+    const filters = EventCategoriesQueryDto.parseQuery(query);
+    return this.eventCategoriesService.getEventCategoriesStats(filters);
+  }
+
   @Http.Get('')
   @Http.HttpCode(Http.HttpStatus.OK)
   public async getEventCategories(

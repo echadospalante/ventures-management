@@ -51,8 +51,6 @@ export class VentureSubscriptionsService {
       subscriberEmail,
     );
 
-    console.log({ subscriber });
-
     return this.subscriptionsRepository
       .save(ventureId, subscriber.id)
       .then((savedSubscription) => {
@@ -132,5 +130,39 @@ export class VentureSubscriptionsService {
     }
 
     return this.subscriptionsRepository.delete(ventureId, subscription.id);
+  }
+
+  public getOwnedSubscriptions(
+    ventureCategoryId: string,
+    requesterEmail: string,
+    pagination: Pagination,
+  ) {
+    return this.subscriptionsRepository.findOwnedSubscriptions(
+      ventureCategoryId,
+      requesterEmail,
+      pagination,
+    );
+  }
+
+  public getOwnedSubscriptionsStats(requesterEmail: string) {
+    return this.subscriptionsRepository.getOwnedSubscriptionsStats(
+      requesterEmail,
+    );
+  }
+
+  public getSubscriptionsCountByUser(email: string) {
+    return this.subscriptionsRepository
+      .countByUserEmail(email)
+      .then((result) => ({
+        result,
+      }));
+  }
+
+  public getSubscribersCountByUser(email: string) {
+    return this.subscriptionsRepository
+      .getSubscribersCountByUserEmail(email)
+      .then((result) => ({
+        result,
+      }));
   }
 }

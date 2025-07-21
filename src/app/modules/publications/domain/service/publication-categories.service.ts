@@ -6,10 +6,11 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
-import { PublicationCategory } from 'echadospalante-domain';
+import { PaginatedBody, PublicationCategory } from 'echadospalante-domain';
 
 import { stringToSlug } from '../../../../helpers/functions/slug-generator';
 import PublicationCategoryCreateDto from '../../infrastructure/web/v1/model/request/publication-category-create.dto';
+import { PublicationCategoryStats } from '../core/publication-category-stats';
 import { PublicationCategoriesRepository } from '../gateway/database/publication-categories.repository';
 
 @Injectable()
@@ -82,5 +83,11 @@ export class PublicationCategoriesService {
       slug,
       description,
     });
+  }
+
+  public getPublicationCategoriesStats(): Promise<
+    PaginatedBody<PublicationCategoryStats>
+  > {
+    return this.publicationCategoriesRepository.findCategoriesStats();
   }
 }

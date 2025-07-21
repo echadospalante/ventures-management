@@ -24,6 +24,14 @@ export class PublicationCommentsRepositoryImpl
     private dataSource: DataSource,
   ) {}
 
+  public countCommentsByUser(email: string): Promise<number> {
+    return this.publicationCommentsRepository.count({
+      where: {
+        author: { email },
+      },
+    });
+  }
+
   public findById(commentId: string): Promise<PublicationComment | null> {
     return this.publicationCommentsRepository
       .findOne({

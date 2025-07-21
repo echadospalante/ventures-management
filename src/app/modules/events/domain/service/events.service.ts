@@ -139,6 +139,8 @@ export class EventsService {
       description: event.description,
       slug,
       categories,
+      donationsCount: 0,
+      totalDonations: 0,
       coverPhoto: event.coverPhoto,
       donations: [],
       datesAndHours: event.datesAndHours.map((dateAndHour) => ({
@@ -240,211 +242,106 @@ export class EventsService {
 
     return this.eventsRepository.deleteById(eventId);
   }
-  /*
 
-  public getOwnedEvents(filters: OwnedEventFilters): Promise<VentureEvent[]> {
-    return this.eventsRepository.findOwnedEvents(filters);
+  public async getHighlightedEvents(
+    filters: EventFilters,
+    pagination: Pagination,
+  ) {
+    const events = await this.eventsRepository.findAllByCriteria(
+      filters,
+      pagination,
+    );
+
+    const now = new Date();
+
+    const currentEvents = events.items
+      .filter((event) => {
+        return event.datesAndHours.some((dateAndHour) => {
+          return dateAndHour.workingRanges.some((range) => {
+            const [startHour, startMinute] = range.start.split(':').map(Number);
+            const [endHour, endMinute] = range.end.split(':').map(Number);
+
+            const start = new Date(dateAndHour.date);
+            start.setHours(startHour, startMinute, 0, 0);
+
+            const end = new Date(dateAndHour.date);
+            end.setHours(endHour, endMinute, 0, 0);
+
+            return now >= start && now <= end;
+          });
+        });
+      })
+      .sort((a, b) => {
+        // Ordenar por la fecha más próxima que tenga rangos de trabajo
+        const aEarliestDate = a.datesAndHours
+          .map((d) => new Date(d.date))
+          .sort((x, y) => x.getTime() - y.getTime())[0];
+
+        const bEarliestDate = b.datesAndHours
+          .map((d) => new Date(d.date))
+          .sort((x, y) => x.getTime() - y.getTime())[0];
+
+        return aEarliestDate.getTime() - bEarliestDate.getTime();
+      })
+      .slice(0, 10);
+
+    const upcomingEvents = events.items
+      .filter((event) => {
+        return event.datesAndHours.some((dateAndHour) => {
+          return dateAndHour.workingRanges.some((range) => {
+            const [startHour, startMinute] = range.start.split(':').map(Number);
+
+            const start = new Date(dateAndHour.date);
+            start.setHours(startHour, startMinute, 0, 0);
+
+            return now < start;
+          });
+        });
+      })
+      .sort((a, b) => {
+        // Encontrar la próxima fecha/hora más cercana para cada evento
+        const getNextDateTime = (event: VentureEvent) => {
+          const nextTimes: Date[] = [];
+
+          event.datesAndHours.forEach((dateAndHour) => {
+            dateAndHour.workingRanges.forEach((range) => {
+              const [startHour, startMinute] = range.start
+                .split(':')
+                .map(Number);
+              const start = new Date(dateAndHour.date);
+              start.setHours(startHour, startMinute, 0, 0);
+
+              if (start > now) {
+                nextTimes.push(start);
+              }
+            });
+          });
+
+          return nextTimes.sort((x, y) => x.getTime() - y.getTime())[0];
+        };
+
+        const aNext = getNextDateTime(a);
+        const bNext = getNextDateTime(b);
+
+        if (!aNext) return 1;
+        if (!bNext) return -1;
+
+        return aNext.getTime() - bNext.getTime();
+      })
+      .slice(0, 10);
+
+    console.log('Current events found:', currentEvents.length);
+    console.log('Upcoming events found:', upcomingEvents.length);
+
+    return {
+      current: currentEvents,
+      upcoming: upcomingEvents,
+    };
   }
 
-  public async getEventBySlug(slug: string): Promise<VentureEvent> {
-    const eventDetail = await this.eventsRepository.findBySlug(slug, {
-      categories: true,
-      contact: true,
-      detail: true,
-      location: true,
-      ownerDetail: true,
-    });
-
-    if (!eventDetail) throw new NotFoundException('VentureEvent not found');
-
-    return eventDetail;
+  public getEventsCountByUser(email: string) {
+    return this.eventsRepository
+      .countByUserEmail(email)
+      .then((result) => ({ result }));
   }
-
-  
-
-  // public async getEventById(eventId: string): Promise<VentureEvent> {
-  //   const event = await this.eventsRepository.findById(eventId, {
-  //     categories: true,
-  //     detail: false,
-  //     owner: true,
-  //   });
-  //   if (!event) throw new NotFoundException('VentureEvent not found');
-  //   return event;
-  // }
-
-  // public async getEventBySlug(slug: string): Promise<VentureEvent> {
-  //   const event = await this.eventsRepository.findBySlug(slug, {});
-  //   if (!event) throw new NotFoundException('VentureEvent not found');
-  //   return event;
-  // }
-
-
-  public countOwnedEvents(filters: OwnedEventFilters): Promise<number> {
-    return this.eventsRepository.countOwnedEvents(filters);
-  }
-
-  
-
-  // public async enableEvent(eventId: string): Promise<VentureEvent | null> {
-  //   const event = await this.eventsRepository.findById(eventId, {
-  //     roles: true,
-  //   });
-  //   if (!event) {
-  //     throw new NotFoundException('VentureEvent not found');
-  //   }
-  //   if (event.active) {
-  //     throw new BadRequestException('VentureEvent is already enabled');
-  //   }
-
-  //   return this.eventsRepository
-  //     .unlockAccount(event.email)
-  //     .then((eventDB) => {
-  //       if (!eventDB) {
-  //         throw new BadRequestException('VentureEvent could not be enabled');
-  //       }
-  //       this.eventAMQPProducer.emitVentureEventEnabledEvent(eventDB);
-  //       return eventDB;
-  //     });
-  // }
-
-  // public async disableEvent(eventId: string): Promise<VentureEvent | null> {
-  //   const event = await this.eventsRepository.findById(eventId, {
-  //     roles: true,
-  //   });
-  //   if (!event) throw new NotFoundException('VentureEvent not found');
-
-  //   if (!event.active)
-  //     throw new BadRequestException('VentureEvent is already disabled');
-
-  //   const isAdmin = event.roles.some(({ name }) => name === AppRole.ADMIN);
-  //   if (isAdmin)
-  //     throw new ForbiddenException('Admin event cannot be disabled');
-
-  //   return this.eventsRepository
-  //     .lockAccount(event.email)
-  //     .then((eventDB) => {
-  //       if (!eventDB) {
-  //         throw new BadRequestException('VentureEvent could not be disabled');
-  //       }
-  //       this.eventAMQPProducer.emitVentureEventDisabledEvent(eventDB);
-  //       return eventDB;
-  //     });
-  // }
-
-  // public async verifyEvent(email: string): Promise<VentureEvent | null> {
-  //   const event = await this.eventsRepository.findById(email, {});
-  //   if (!event) throw new NotFoundException('VentureEvent not found');
-
-  //   if (event.verified)
-  //     throw new BadRequestException('VentureEvent is already verified');
-
-  //   return this.eventsRepository
-  //     .verifyAccount(event.email)
-  //     .then((eventDB) => {
-  //       if (!eventDB) {
-  //         throw new BadRequestException('VentureEvent could not be verified');
-  //       }
-  //       this.eventAMQPProducer.emitVentureEventVerifiedEvent(eventDB);
-  //       return eventDB;
-  //     });
-  // }
-
-  // public async unverifyEvent(email: string): Promise<VentureEvent | null> {
-  //   const event = await this.eventsRepository.findById(email, {
-  //     roles: true,
-  //   });
-  //   if (!event) throw new NotFoundException('VentureEvent not found');
-  //   console.log({ USER: event });
-  //   if (!event.verified)
-  //     throw new BadRequestException('VentureEvent is already unverified');
-
-  //   const isAdmin = event.roles.some(({ name }) => name === AppRole.ADMIN);
-  //   if (isAdmin)
-  //     throw new ForbiddenException('Admin event cannot be unverified');
-
-  //   return this.eventsRepository
-  //     .unverifyAccount(event.email)
-  //     .then((eventDB) => {
-  //       if (!eventDB) {
-  //         throw new BadRequestException('VentureEvent could not be unverified');
-  //       }
-  //       this.eventAMQPProducer.emitVentureEventUnverifiedEvent(eventDB);
-  //       return eventDB;
-  //     });
-  // }
-
-  // public async updateEventImage(
-  //   eventId: string,
-  //   image: { buffer: Buffer; mimetype: string },
-  // ): Promise<void> {
-  //   return Promise.resolve();
-  // const eventsCache = await this.eventsCache.getMany('betting_house_*');
-  // const event = eventsCache.find(({ id }) => {
-  //   return id === eventId;
-  // });
-  // if (!event) {
-  //   throw new ConflictException('Betting house does not exists');
-  // }
-  // const { fullName } = event;
-  // this.deleteEventImage(fullName);
-  // const format = image.mimetype.split('/')[1];
-  // const imagePath = `${this.BETTING_HOUSES_IMAGES_FOLDER}/${fullName}.${format}`;
-  // mkdirSync(`${this.BETTING_HOUSES_IMAGES_FOLDER}`, { recursive: true });
-  // writeFileSync(`${imagePath}`, image.buffer);
-  // }
-
-  // public deleteEventByEmail(email: string): Promise<void> {
-  //   return this.eventsRepository.deleteByEmail(email);
-  // }
-
-  // public getEventPreferences(eventId: string) {
-  //   return this.eventsRepository
-  //     .findById(eventId, {
-  //       preferences: true,
-  //     })
-  //     .then((event) => {
-  //       if (!event) throw new NotFoundException('VentureEvent not found');
-  //       return event.preferences;
-  //     });
-  // }
-
-  // public getRoles() {
-  //   return this.eventCategoriesRepository.findAll({});
-  // }
-
-  // public async updateRolesToEvent(
-  //   email: string,
-  //   roles: AppRole[],
-  // ): Promise<void> {
-  //   const event = await this.eventsRepository.findById(email, {
-  //     roles: true,
-  //   });
-  //   if (!event) throw new NotFoundException('VentureEvent not found');
-  //   if (roles.includes(AppRole.ADMIN) || roles.includes(AppRole.USER))
-  //     throw new BadRequestException('Admin or event role cannot be added');
-  //   const baseRoles = event.roles.filter(
-  //     ({ name }) => name === AppRole.ADMIN || name === AppRole.USER,
-  //   );
-  //   const addedRoles = roles.filter(
-  //     (role) => !event.roles.some(({ name }) => name === role),
-  //   );
-  //   const removedRoles = event.roles
-  //     .map(({ name }) => name)
-  //     .filter((role) => !baseRoles.some(({ name }) => role === name))
-  //     .filter((role) => !roles.some((name) => role === name));
-
-  //   const rolesToAdd =
-  //     await this.eventCategoriesRepository.findManyByName(addedRoles);
-  //   const rolesToRemove =
-  //     await this.eventCategoriesRepository.findManyByName(removedRoles);
-
-  //   return Promise.all([
-  //     this.eventsRepository.addEventRoles(email, rolesToAdd),
-  //     this.eventsRepository.removeEventRoles(email, rolesToRemove),
-  //   ]).then(() => {
-  //     this.logger.log(`Roles updated for event ${email}`);
-  //     this.eventAMQPProducer.emitVentureEventUpdatedEvent(event);
-  //   });
-  // }
-  */
 }

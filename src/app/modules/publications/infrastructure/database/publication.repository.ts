@@ -20,6 +20,53 @@ export class PublicationsRepositoryImpl implements PublicationsRepository {
     private publicationsRepository: Repository<VenturePublicationData>,
   ) {}
 
+  public findSorted(
+    filters: PublicationFilters,
+    pagination: Pagination,
+    sortBy: 'createdAt' | 'reactions',
+  ): Promise<VenturePublication[]> {
+    const query = this.publicationsRepository
+      .createQueryBuilder('publication')
+      .leftJoinAndSelect('publication.venture', 'venture')
+      .leftJoinAndSelect('publication.categories', 'categories')
+      .leftJoinAndSelect('publication.contents', 'contents');
+
+    if (filters.search) {
+      query.andWhere(
+        '(publication.description LIKE :term OR contents.content LIKE :term)',
+        { term: `%${filters.search}%` },
+      );
+    }
+
+    if (filters.categoriesIds?.length) {
+      query.andWhere('categories.id IN (:...ids)', {
+        ids: filters.categoriesIds,
+      });
+    }
+
+    if (filters.dateRange) {
+      const { from, to } = filters.dateRange;
+      query.andWhere('publication.createdAt BETWEEN :from AND :to', {
+        from: new Date(from),
+        to: new Date(to),
+      });
+    }
+
+    query.skip(pagination.skip).take(pagination.take);
+
+    if (sortBy === 'createdAt') {
+      query.orderBy('publication.createdAt', 'DESC');
+    } else if (sortBy === 'reactions') {
+      query.orderBy('publication.clapsCount', 'DESC');
+    }
+
+    return query.getMany().then((items) => {
+      return items.map((item) =>
+        JSON.parse(JSON.stringify(item)),
+      ) as VenturePublication[];
+    });
+  }
+
   public existsById(publicationId: string): Promise<boolean> {
     return this.publicationsRepository.existsBy({ id: publicationId });
   }
@@ -129,5 +176,15 @@ export class PublicationsRepositoryImpl implements PublicationsRepository {
         total,
       };
     });
+  }
+
+  public countByUserEmail(email: string): Promise<number> {
+    const query = this.publicationsRepository
+      .createQueryBuilder('publication')
+      .leftJoin('publication.venture', 'venture')
+      .leftJoin('venture.owner', 'owner')
+      .where('owner.email = :email', { email });
+
+    return query.getCount();
   }
 }

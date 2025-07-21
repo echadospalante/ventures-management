@@ -31,15 +31,16 @@ export default class EventsQueryDto {
   @Validate.IsInt()
   public ownerId?: string;
 
-  @Validate.IsPositive()
-  @Validate.IsOptional()
-  @Validate.IsInt()
-  public departmentId?: number;
+  // @Validate.IsPositive()
+  // @Validate.IsOptional()
+  // @Validate.IsInt()
+  // public departmentId?: number;
 
-  @Validate.IsPositive()
-  @Validate.IsOptional()
+  @Transform((param) => parseInt(param.value))
+  @Validate.IsNumber()
   @Validate.IsInt()
-  public municipalityId?: number;
+  @Validate.IsPositive()
+  public municipalityId: number;
 
   // latitude,longitude
   @Validate.IsString()
@@ -52,6 +53,14 @@ export default class EventsQueryDto {
   @Validate.IsInt()
   public radius?: number;
 
+  @Validate.IsString()
+  @Validate.IsDateString()
+  public from: Date;
+
+  @Validate.IsString()
+  @Validate.IsDateString()
+  public to: Date;
+
   public static parseQuery(query: EventsQueryDto) {
     const pagination: Pagination = {
       skip: query.skip,
@@ -61,11 +70,13 @@ export default class EventsQueryDto {
     const filters: EventFilters = {
       search: query.search,
       categoriesIds: query.categoryIds,
-      departmentId: query.departmentId,
+      // departmentId: query.departmentId,
       municipalityId: query.municipalityId,
       point: query.point,
       radius: query.radius,
       ownerId: query.ownerId,
+      from: query.from,
+      to: query.to,
     };
 
     return {

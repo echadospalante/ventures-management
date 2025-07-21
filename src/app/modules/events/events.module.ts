@@ -36,7 +36,7 @@ import { EventDonationsRepository } from './domain/gateway/database/event-donati
 import { EventsRepository } from './domain/gateway/database/events.repository';
 import { UserHttpService } from './domain/gateway/http/http.gateway';
 import { EventCategoriesService } from './domain/service/event-categories.service';
-import { EventDonationsService } from './domain/service/event-donarions.service';
+import { EventDonationsService } from './domain/service/event-donations.service';
 import { EventsService } from './domain/service/events.service';
 import { SeedService } from './domain/service/seed.service';
 import { VentureEventAMQPProducerImpl } from './infrastructure/amqp/producers/event.amqp';

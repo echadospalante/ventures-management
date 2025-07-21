@@ -7,6 +7,7 @@ import { VentureEvent } from 'echadospalante-domain';
 import { EventsService } from '../../../domain/service/events.service';
 import EventCreateDto from './model/request/event-create.dto';
 import EventsQueryDto from './model/request/events-query.dto';
+import HighLightedEventsQueryDto from './model/request/highlighted-events-query';
 import { UploadedPhotoResultDto } from './model/response/uploaded-photo-result.dto';
 
 const path = '/ventures';
@@ -24,6 +25,37 @@ export class VentureEventsController {
     @Http.UploadedFile() image: Express.Multer.File,
   ): Promise<UploadedPhotoResultDto> {
     return this.eventsService.saveEventCoverPhoto(image);
+  }
+
+  // Not exposed in the gateway, only used internally
+  @Http.Get('/_/events/stats/count-by-user/:email')
+  public async getVentureStatsCountByUser(@Http.Param('email') email: string) {
+    return this.eventsService.getEventsCountByUser(email);
+  }
+
+  @Http.Get('/_/events/highlighted')
+  public async getHighlightedEvents(
+    @Http.Query('search') search: string,
+    @Http.Query('categoriesIds') categoriesIds: string,
+    @Http.Query('municipalityId') municipalityId: number,
+    @Http.Query('from') from: string,
+    @Http.Query('to') to: string,
+  ) {
+    console.log({
+      search,
+      categoriesIds,
+      municipalityId,
+      from,
+      to,
+    });
+    const { filters, pagination } = HighLightedEventsQueryDto.fromQueryParams(
+      search,
+      categoriesIds,
+      from,
+      to,
+      municipalityId,
+    );
+    return this.eventsService.getHighlightedEvents(filters, pagination);
   }
 
   @Http.Post('/:ventureId/events')

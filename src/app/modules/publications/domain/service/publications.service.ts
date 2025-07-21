@@ -75,6 +75,10 @@ export class PublicationsService {
     ventureId: string,
     requesterEmail: string,
   ): Promise<VenturePublication> {
+    console.log({
+      ventureId,
+      requesterEmail,
+    });
     const isOwner = await this.venturesService.isVentureOwner(
       ventureId,
       requesterEmail,
@@ -162,5 +166,25 @@ export class PublicationsService {
       throw new ForbiddenException('You are not the owner of this event');
 
     return this.publicationsRepository.deleteById(eventId);
+  }
+
+  public async getHighlightedPublications(
+    filters: PublicationFilters,
+    pagination: Pagination,
+  ) {
+    const [latestVentures, trendingVentures] = await Promise.all([
+      this.publicationsRepository.findSorted(filters, pagination, 'createdAt'),
+      this.publicationsRepository.findSorted(filters, pagination, 'reactions'),
+    ]);
+    return {
+      latest: latestVentures,
+      trending: trendingVentures,
+    };
+  }
+
+  public getPublicationsCountByUser(email: string) {
+    return this.publicationsRepository
+      .countByUserEmail(email)
+      .then((result) => ({ result }));
   }
 }

@@ -16,6 +16,12 @@ export class VenturesRepositoryImpl implements VenturesRepository {
     private venturesRepository: Repository<VentureData>,
   ) {}
 
+  public countByUserEmail(email: string): Promise<number> {
+    return this.venturesRepository.count({
+      where: { owner: { email } },
+    });
+  }
+
   public getVenturesStats(ventureId: string): Promise<VentureStats> {
     const query = this.venturesRepository
       .createQueryBuilder('venture')
@@ -133,11 +139,14 @@ export class VenturesRepositoryImpl implements VenturesRepository {
 
     const query = this.venturesRepository.createQueryBuilder('venture');
 
-    // Agregar relaciones explícitamente (aunque tengan eager: true)
     query
       .leftJoinAndSelect('venture.categories', 'category')
       .leftJoinAndSelect('venture.location', 'location')
       .leftJoinAndSelect('venture.owner', 'owner');
+
+    console.log({
+      ownerEmail,
+    });
 
     if (ownerEmail) {
       query.andWhere('owner.email = :ownerEmail', { ownerEmail });

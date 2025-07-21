@@ -18,11 +18,20 @@ export class PublicationClapsRepositoryImpl
   private readonly logger: Logger = new Logger(
     PublicationClapsRepositoryImpl.name,
   );
+
   public constructor(
     @InjectRepository(PublicationClapData)
     private publicationClapsRepository: Repository<PublicationClapData>,
     private dataSource: DataSource,
   ) {}
+
+  public countClapsByUser(email: string): Promise<number> {
+    return this.publicationClapsRepository.count({
+      where: {
+        user: { email },
+      },
+    });
+  }
 
   public findById(clapId: string): Promise<PublicationClap | null> {
     return this.publicationClapsRepository

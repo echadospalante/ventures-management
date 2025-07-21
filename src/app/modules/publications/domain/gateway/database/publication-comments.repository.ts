@@ -1,6 +1,7 @@
 import { PublicationComment } from 'echadospalante-domain';
 
 export interface PublicationCommentsRepository {
+  countCommentsByUser(email: string): Promise<number>;
   deleteComment(publicationId: string, commentId: string): Promise<boolean>;
   save(
     publicationId: string,

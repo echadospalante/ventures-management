@@ -1,6 +1,8 @@
-import { PublicationCategory } from 'echadospalante-domain';
+import { PaginatedBody, PublicationCategory } from 'echadospalante-domain';
+import { PublicationCategoryStats } from '../../core/publication-category-stats';
 
 export interface PublicationCategoriesRepository {
+  findCategoriesStats(): Promise<PaginatedBody<PublicationCategoryStats>>;
   update(
     id: string,
     category: { name: string; slug: string; description: string },

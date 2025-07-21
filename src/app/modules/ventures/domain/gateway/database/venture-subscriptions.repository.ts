@@ -1,6 +1,21 @@
-import { Pagination, VentureSubscription } from 'echadospalante-domain';
+import {
+  PaginatedBody,
+  Pagination,
+  VentureCategory,
+  VentureSubscription,
+} from 'echadospalante-domain';
 
 export interface VentureSubscriptionsRepository {
+  getSubscribersCountByUserEmail(email: string): Promise<number>;
+  countByUserEmail(email: string): Promise<number>;
+  findOwnedSubscriptions(
+    ventureCategoryId: string,
+    requesterEmail: string,
+    pagination: Pagination,
+  ): Promise<PaginatedBody<VentureSubscription>>;
+  getOwnedSubscriptionsStats(
+    requesterEmail: string,
+  ): Promise<{ category: VentureCategory; total: number }[]>;
   exists(ventureId: string, requesterEmail: string): Promise<boolean>;
   findById(subscriptionId: string): Promise<VentureSubscription | null>;
   findByVentureAndUser(

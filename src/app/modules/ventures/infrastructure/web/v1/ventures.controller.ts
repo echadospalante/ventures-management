@@ -40,6 +40,12 @@ export class VenturesController {
     return this.venturesService.saveVenture(ventureCreate, requestedBy);
   }
 
+  // Not exposed in the gateway, only used internally
+  @Http.Get('/stats/count-by-user/:email')
+  public async getVentureStatsCountByUser(@Http.Param('email') email: string) {
+    return this.venturesService.getVenturesCountByUser(email);
+  }
+
   @Http.Get('')
   public async getVentures(
     @Http.Query() query: VenturesQueryDto,

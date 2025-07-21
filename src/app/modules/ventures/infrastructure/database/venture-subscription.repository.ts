@@ -1,7 +1,12 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { Pagination, VentureSubscription } from 'echadospalante-domain';
+import {
+  PaginatedBody,
+  Pagination,
+  VentureCategory,
+  VentureSubscription,
+} from 'echadospalante-domain';
 import {
   UserData,
   VentureData,
@@ -22,6 +27,99 @@ export class VentureSubscriptionsRepositoryImpl
     private subscriptionsRepository: Repository<VentureSubscriptionData>,
     private dataSource: DataSource,
   ) {}
+
+  public getSubscribersCountByUserEmail(email: string): Promise<number> {
+    return this.subscriptionsRepository.count({
+      where: {
+        venture: { owner: { email } },
+      },
+    });
+  }
+
+  public countByUserEmail(email: string): Promise<number> {
+    return this.subscriptionsRepository.count({
+      where: {
+        subscriber: { email },
+      },
+    });
+  }
+
+  public async findOwnedSubscriptions(
+    ventureCategoryId: string,
+    requesterEmail: string,
+    pagination: Pagination,
+  ): Promise<PaginatedBody<VentureSubscription>> {
+    try {
+      const queryBuilder = this.subscriptionsRepository
+        .createQueryBuilder('subscription')
+        .innerJoin('subscription.subscriber', 'user')
+        .innerJoin('subscription.venture', 'venture')
+        .innerJoin('venture.categories', 'category')
+        .where('user.email = :email', { email: requesterEmail })
+        .andWhere('category.id = :ventureCategoryId', { ventureCategoryId })
+        .leftJoinAndSelect('venture.categories', 'ventureCategories')
+        .select([
+          'subscription.id',
+          'subscription.createdAt',
+          'venture.id',
+          'venture.name',
+          'venture.slug',
+          'venture.coverPhoto',
+          'venture.description',
+          'venture.active',
+          'venture.verified',
+          'venture.subscriptionsCount',
+          'ventureCategories.id',
+          'ventureCategories.name',
+          'ventureCategories.slug',
+          'ventureCategories.description',
+        ])
+        .orderBy('subscription.createdAt', 'DESC');
+
+      const [items, total] = await queryBuilder
+        .skip(pagination.skip)
+        .take(pagination.take)
+        .getManyAndCount();
+      return {
+        items: JSON.parse(JSON.stringify(items)) as VentureSubscription[],
+        total,
+      };
+    } catch (error) {
+      this.logger.error('Error finding owned subscriptions', error);
+      throw error;
+    }
+  }
+
+  async getOwnedSubscriptionsStats(
+    requesterEmail: string,
+  ): Promise<{ category: VentureCategory; total: number }[]> {
+    const result = await this.subscriptionsRepository
+      .createQueryBuilder('subscription')
+      .innerJoin('subscription.venture', 'venture')
+      .innerJoin('subscription.subscriber', 'user')
+      .innerJoin('venture.categories', 'category')
+      .where('user.email = :email', { email: requesterEmail })
+      .select([
+        'category.id AS categoryId',
+        'category.name AS categoryName',
+        'category.slug AS categorySlug',
+        'category.description AS categoryDescription',
+        'COUNT(DISTINCT subscription.id) AS total',
+      ])
+      .groupBy('category.id, category.name')
+      .getRawMany();
+    console.log({ result });
+    return result.map((row) => ({
+      category: {
+        id: row.categoryid,
+        name: row.categoryname,
+        slug: row.categoryslug,
+        description: row.categorydescription,
+      } as VentureCategory,
+      total: parseInt(row.total, 10),
+    }));
+  }
+
   public findByVentureAndUser(
     ventureId: string,
     subscriberId: string,

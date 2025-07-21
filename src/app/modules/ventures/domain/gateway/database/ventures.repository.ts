@@ -1,10 +1,9 @@
 import { Pagination, Venture, VentureStats } from 'echadospalante-domain';
 
-import {
-  VentureFilters,
-} from '../../core/venture-filters';
+import { VentureFilters } from '../../core/venture-filters';
 
 export interface VenturesRepository {
+  countByUserEmail(email: string): Promise<number>;
   getVenturesStats(ventureId: string): Promise<VentureStats>;
   findRandomVenture(): Promise<Venture | null>;
   isVentureOwner(ventureId: string, requesterEmail: string): Promise<boolean>;

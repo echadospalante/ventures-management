@@ -1,7 +1,7 @@
 import * as Http from '@nestjs/common';
 import { Logger } from '@nestjs/common';
 
-import { EventDonationsService } from '../../../domain/service/event-donarions.service';
+import { EventDonationsService } from '../../../domain/service/event-donations.service';
 
 const path = '/events';
 
@@ -13,22 +13,52 @@ export class EventDonationsController {
     private readonly eventDonationsService: EventDonationsService,
   ) {}
 
+  @Http.Get('/_/donations/sent')
+  public async getSentEventDonations(
+    @Http.Headers('X-Requested-By') requesterEmail: string,
+    @Http.Query('skip') skip: number,
+    @Http.Query('take') take: number,
+  ) {
+    return this.eventDonationsService.getSentEventDonations(
+      requesterEmail,
+      skip,
+      take,
+    );
+  }
+
+  @Http.Get('/_/donations/received')
+  public async getReceivedEventDonations(
+    @Http.Headers('X-Requested-By') requesterEmail: string,
+    @Http.Query('skip') skip: number,
+    @Http.Query('take') take: number,
+  ) {
+    return this.eventDonationsService.getReceivedEventDonations(
+      requesterEmail,
+      skip,
+      take,
+    );
+  }
+
+  @Http.Get('/:eventId/donations')
+  public async getEventDonations(
+    @Http.Param('eventId') eventId: string,
+    @Http.Query('skip') skip: number,
+    @Http.Query('take') take: number,
+  ) {
+    return this.eventDonationsService.getEventDonations(eventId, skip, take);
+  }
+
   @Http.Post('/:eventId/donations')
+  @Http.HttpCode(Http.HttpStatus.CREATED)
   public async createEventDonation(
     @Http.Param('eventId') eventId: string,
     @Http.Headers('X-Requested-By') requestedBy: string,
-    @Http.Body() body: { amount: number; currency: string },
+    @Http.Body() body: { amount: number },
   ) {
     return this.eventDonationsService.createDonation(
       eventId,
       requestedBy,
       body.amount,
-      body.currency,
     );
-  }
-
-  @Http.Get('/:eventId/donations')
-  public async getEventDonations(@Http.Param('eventId') eventId: string) {
-    return this.eventDonationsService.getEventDonations(eventId);
   }
 }

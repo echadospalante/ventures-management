@@ -13,6 +13,12 @@ export class PublicationCommentsController {
     private readonly publicationCommentsService: PublicationCommentsService,
   ) {}
 
+  // Not exposed in the gateway, only used internally
+  @Http.Get('/_/stats/comments-count-by-user/:email')
+  public async getCommentsStatsCountByUser(@Http.Param('email') email: string) {
+    return this.publicationCommentsService.getCommentsCountByUser(email);
+  }
+
   @Http.Get('/:publicationId/comments')
   @Http.HttpCode(Http.HttpStatus.OK)
   public async getPublicationCategories(

@@ -9,7 +9,7 @@ export class PublicationCommentsService {
 
   public constructor(
     @Inject(PublicationCommentsRepository)
-    private readonly publicationCategoriesRepository: PublicationCommentsRepository,
+    private readonly publicationCommentsRepository: PublicationCommentsRepository,
     @Inject(UserHttpService)
     private readonly userHttpService: UserHttpService,
   ) {}
@@ -22,7 +22,7 @@ export class PublicationCommentsService {
     try {
       const author = await this.userHttpService.getUserByEmail(authorEmail);
 
-      return this.publicationCategoriesRepository.save(
+      return this.publicationCommentsRepository.save(
         publicationId,
         author.id,
         comment,
@@ -43,7 +43,7 @@ export class PublicationCommentsService {
     skip: number,
     take: number,
   ) {
-    return this.publicationCategoriesRepository.findByPublicationId(
+    return this.publicationCommentsRepository.findByPublicationId(
       publicationId,
       skip,
       take,
@@ -56,7 +56,7 @@ export class PublicationCommentsService {
     requesterEmail: string,
   ) {
     const comment =
-      await this.publicationCategoriesRepository.findById(commentId);
+      await this.publicationCommentsRepository.findById(commentId);
     if (!comment) {
       throw new NotFoundException(`Comment with id ${commentId} not found`);
     }
@@ -66,9 +66,15 @@ export class PublicationCommentsService {
       );
     }
 
-    return this.publicationCategoriesRepository.deleteComment(
+    return this.publicationCommentsRepository.deleteComment(
       publicationId,
       commentId,
     );
+  }
+
+  public getCommentsCountByUser(email: string) {
+    return this.publicationCommentsRepository
+      .countCommentsByUser(email)
+      .then((result) => ({ result }));
   }
 }

@@ -13,6 +13,12 @@ export class PublicationClapsService {
     private readonly userHttpService: UserHttpService,
   ) {}
 
+  public getClapsCountByUser(email: string) {
+    return this.publicationClapsRepository
+      .countClapsByUser(email)
+      .then((result) => ({ result }));
+  }
+
   public async saveClap(publicationId: string, authorEmail: string) {
     const author = await this.userHttpService.getUserByEmail(authorEmail);
     console.log({

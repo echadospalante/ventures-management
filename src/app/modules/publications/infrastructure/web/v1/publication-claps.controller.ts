@@ -13,6 +13,12 @@ export class PublicationClapsController {
     private readonly publicationClapsService: PublicationClapsService,
   ) {}
 
+  // Not exposed in the gateway, only used internally
+  @Http.Get('/_/stats/claps-count-by-user/:email')
+  public async getClapsStatsCountByUser(@Http.Param('email') email: string) {
+    return this.publicationClapsService.getClapsCountByUser(email);
+  }
+
   @Http.Get('/:publicationId/claps')
   @Http.HttpCode(Http.HttpStatus.OK)
   public async getPublicationCategories(

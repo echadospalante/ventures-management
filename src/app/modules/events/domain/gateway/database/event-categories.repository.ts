@@ -1,15 +1,18 @@
-import { EventCategory } from 'echadospalante-domain';
+import { EventCategory, PaginatedBody } from 'echadospalante-domain';
 
 import { EventCategoryFilters } from '../../core/event-category-filter';
-import { EventFilters } from '../../core/event-filters';
+import { EventCategoryStats } from '../../core/event-category-stats';
 
 export interface EventCategoriesRepository {
+  findCategoriesStats(
+    filters: EventCategoryFilters,
+  ): Promise<PaginatedBody<EventCategoryStats>>;
   update(
     id: string,
     category: { name: string; slug: string; description: string },
   ): Promise<void>;
   findById(id: string): Promise<EventCategory | null>;
-  count(filters: EventFilters): Promise<number>;
+  count(filters: EventCategoryFilters): Promise<number>;
   findAllByCriteria(filters: EventCategoryFilters): Promise<EventCategory[]>;
 
   existsBySlug(name: string): Promise<boolean>;

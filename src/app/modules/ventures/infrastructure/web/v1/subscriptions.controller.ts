@@ -5,6 +5,7 @@ import { VentureSubscription } from 'echadospalante-domain';
 
 import { VentureSubscriptionsService } from '../../../domain/service/venture-subscriptions.service';
 import SubscriptionsQueryDto from './model/request/subscriptions-query.dto';
+import OwnedSubscriptionsQueryDto from './model/request/owned-subscriptions-query.dto';
 
 const path = '/ventures';
 
@@ -15,6 +16,42 @@ export class SubscriptionsController {
   public constructor(
     private readonly subscriptionsService: VentureSubscriptionsService,
   ) {}
+
+  // Not exposed in the gateway, only used internally
+  @Http.Get('/_/subscriptions/stats/count-by-user/:email')
+  public async getVentureStatsCountByUser(@Http.Param('email') email: string) {
+    return this.subscriptionsService.getSubscriptionsCountByUser(email);
+  }
+
+  // Not exposed in the gateway, only used internally
+  @Http.Get('/_/subscribers/stats/count-by-user/:email')
+  public async getSubscribersStatsCountByUser(
+    @Http.Param('email') email: string,
+  ) {
+    return this.subscriptionsService.getSubscribersCountByUser(email);
+  }
+
+  @Http.Get('/owned/subscriptions/stats')
+  public async getUserSubscriptionsStats(
+    @Http.Headers('X-Requested-By') requesterEmail: string,
+  ) {
+    console.log('Getting user subscriptions stats for', requesterEmail);
+    return this.subscriptionsService.getOwnedSubscriptionsStats(requesterEmail);
+  }
+
+  @Http.Get('/owned/subscriptions/:ventureCategoryId')
+  public async getUserSubscriptions(
+    @Http.Headers('X-Requested-By') requesterEmail: string,
+    @Http.Query() query: OwnedSubscriptionsQueryDto,
+    @Http.Param('ventureCategoryId') ventureCategoryId: string,
+  ) {
+    const { pagination } = OwnedSubscriptionsQueryDto.parseQuery(query);
+    return this.subscriptionsService.getOwnedSubscriptions(
+      ventureCategoryId,
+      requesterEmail,
+      pagination,
+    );
+  }
 
   @Http.Post('/:ventureId/subscriptions')
   @Http.HttpCode(Http.HttpStatus.CREATED)

@@ -8,6 +8,7 @@ import { PublicationsService } from '../../../domain/service/publications.servic
 import PublicationCreateDto from './model/request/publication-create.dto';
 import PublicationsQueryDto from './model/request/publications-query.dto';
 import { UploadedPhotoResultDto } from './model/response/uploaded-photo-result.dto';
+import HighLightedPublicationsQueryDto from './model/request/highlighted-publications-query';
 
 const path = '/ventures';
 
@@ -28,14 +29,19 @@ export class VenturePublicationsController {
     return this.publicationsService.savePublicationCoverPhoto(image);
   }
 
-  @Http.Post('/:ventureSlug/publications')
+  // Not exposed in the gateway, only used internally
+  @Http.Get('/_/publications/stats/count-by-user/:email')
+  public async getVentureStatsCountByUser(@Http.Param('email') email: string) {
+    return this.publicationsService.getPublicationsCountByUser(email);
+  }
+
+  @Http.Post('/:ventureId/publications')
   @Http.HttpCode(Http.HttpStatus.CREATED)
   public createVenturePublication(
     @Http.Body() body: PublicationCreateDto,
     @Http.Param('ventureId') ventureId: string,
     @Http.Headers('X-Requested-By') requestedBy: string,
   ): Promise<VenturePublication> {
-    console.log('HOLA MUNDO');
     const venturePublicationCreate = PublicationCreateDto.toEntity(body);
     return this.publicationsService.savePublication(
       venturePublicationCreate,
@@ -50,6 +56,26 @@ export class VenturePublicationsController {
   ) {
     const { pagination, filters } = PublicationsQueryDto.parseQuery(query);
     return this.publicationsService.getPublicationsFromAllVentures(
+      filters,
+      pagination,
+    );
+  }
+
+  @Http.Get('/_/publications/highlighted')
+  public async getHighlightedPublications(
+    @Http.Query('search') search: string,
+    @Http.Query('categoriesIds') categoriesIds: string,
+    @Http.Query('from') from: string,
+    @Http.Query('to') to: string,
+  ) {
+    const { filters, pagination } =
+      HighLightedPublicationsQueryDto.fromQueryParams(
+        search,
+        categoriesIds,
+        from,
+        to,
+      );
+    return this.publicationsService.getHighlightedPublications(
       filters,
       pagination,
     );

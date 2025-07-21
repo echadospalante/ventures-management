@@ -15,6 +15,12 @@ export class PublicationCategoriesController {
     private readonly publicationCategoriesService: PublicationCategoriesService,
   ) {}
 
+  @Http.Get('/count-stats')
+  @Http.HttpCode(Http.HttpStatus.OK)
+  public async getPublicationCategoriesStats() { // @Http.Query() query: PublicationCategoriesQueryDto,
+    return this.publicationCategoriesService.getPublicationCategoriesStats();
+  }
+
   @Http.Get('')
   @Http.HttpCode(Http.HttpStatus.OK)
   public async getPublicationCategories(

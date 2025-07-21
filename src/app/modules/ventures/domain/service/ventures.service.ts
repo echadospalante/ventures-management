@@ -286,4 +286,10 @@ export class VenturesService {
   public getVentureDetailBySlug(ventureSlug: string) {
     return this.venturesRepository.findBySlug(ventureSlug);
   }
+
+  public getVenturesCountByUser(email: string) {
+    return this.venturesRepository
+      .countByUserEmail(email)
+      .then((result) => ({ result }));
+  }
 }

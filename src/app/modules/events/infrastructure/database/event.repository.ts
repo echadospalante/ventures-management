@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 import { Repository } from 'typeorm';
 
-import { Pagination, VentureEvent } from 'echadospalante-domain';
+import { PaginatedBody, Pagination, VentureEvent } from 'echadospalante-domain';
 import {
   VentureData,
   VentureEventData,
@@ -19,6 +19,16 @@ export class VentureEventsRepositoryImpl implements EventsRepository {
     @InjectRepository(VentureEventData)
     private eventsRepository: Repository<VentureEventData>,
   ) {}
+
+  public countByUserEmail(email: string): Promise<number> {
+    const query = this.eventsRepository
+      .createQueryBuilder('event')
+      .leftJoin('event.venture', 'venture')
+      .leftJoin('venture.owner', 'owner')
+      .where('owner.email = :email', { email });
+
+    return query.getCount();
+  }
 
   public existsBySlug(slug: string): Promise<boolean> {
     return this.eventsRepository.exists({ where: { slug } });
@@ -68,7 +78,7 @@ export class VentureEventsRepositoryImpl implements EventsRepository {
     filters: EventFilters,
     pagination: Pagination,
     ventureId?: string,
-  ): Promise<{ items: VentureEvent[]; total: number }> {
+  ): Promise<PaginatedBody<VentureEvent>> {
     const {
       search,
       categoriesIds,
@@ -83,7 +93,9 @@ export class VentureEventsRepositoryImpl implements EventsRepository {
     // Agregar relaciones explícitamente (aunque tengan eager: true)
     query
       .leftJoinAndSelect('event.categories', 'category')
-      .leftJoinAndSelect('event.location', 'location');
+      .leftJoinAndSelect('event.location', 'location')
+      .leftJoinAndSelect('event.venture', 'venture')
+      .leftJoinAndSelect('venture.owner', 'owner');
 
     // Filtros dinámicos
     if (search) {
@@ -104,9 +116,8 @@ export class VentureEventsRepositoryImpl implements EventsRepository {
     query.skip(pagination.skip).take(pagination.take);
 
     return query.getManyAndCount().then(([items, total]) => {
-      console.log({ items });
       return {
-        items: JSON.parse(JSON.stringify(items)) as VentureEvent[],
+        items: items as unknown as VentureEvent[],
         total,
       };
     });

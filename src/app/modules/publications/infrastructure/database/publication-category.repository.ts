@@ -1,11 +1,12 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { PublicationCategory } from 'echadospalante-domain';
+import { PaginatedBody, PublicationCategory } from 'echadospalante-domain';
 import { PublicationCategoryData } from 'echadospalante-domain/dist/app/modules/infrastructure/database/entities';
 import { In, Repository } from 'typeorm';
 
 import { PublicationCategoriesRepository } from '../../domain/gateway/database/publication-categories.repository';
+import { PublicationCategoryStats } from '../../domain/core/publication-category-stats';
 
 @Injectable()
 export class PublicationCategoriesRepositoryImpl
@@ -18,6 +19,43 @@ export class PublicationCategoriesRepositoryImpl
     @InjectRepository(PublicationCategoryData)
     private publicationCategoryRepository: Repository<PublicationCategoryData>,
   ) {}
+
+  public findCategoriesStats(): Promise<
+    PaginatedBody<PublicationCategoryStats>
+  > {
+    const query = this.publicationCategoryRepository.createQueryBuilder(
+      'publicationCategory',
+    );
+
+    const selectQuery = query
+      .select([
+        'publicationCategory.id as eventCategory_id',
+        'publicationCategory.name as eventCategory_name',
+        'publicationCategory.slug as eventCategory_slug',
+        'COUNT(publications.id) AS publicationsCount',
+      ])
+      .leftJoin('publicationCategory.publications', 'publications')
+      .groupBy('publicationCategory.id')
+      .addGroupBy('publicationCategory.name')
+      .addGroupBy('publicationCategory.slug');
+
+    return selectQuery.getRawMany().then((rawResults) => {
+      console.log(rawResults);
+      const categoriesStats: PublicationCategoryStats[] = rawResults.map(
+        (raw) => ({
+          id: raw.eventcategory_id,
+          name: raw.eventcategory_name,
+          slug: raw.eventcategory_slug,
+          publicationsCount: parseInt(raw.publicationscount, 10),
+        }),
+      );
+
+      return {
+        items: categoriesStats,
+        total: categoriesStats.length,
+      };
+    });
+  }
 
   update(
     id: string,
