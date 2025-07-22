@@ -30,7 +30,7 @@ export class EventDonationsRepositoryImpl implements EventDonationsRepository {
     const [donations, total] = await this.eventDonationRepository
       .createQueryBuilder('eventDonation')
       .leftJoinAndSelect('eventDonation.donor', 'donor')
-      .leftJoinAndSelect('eventDonation.event', 'event')
+      .leftJoinAndSelect('event.venture', 'venture')
       .where('event.id = :eventId', { eventId })
       .skip(skip)
       .take(take)
@@ -105,6 +105,7 @@ export class EventDonationsRepositoryImpl implements EventDonationsRepository {
       .createQueryBuilder('eventDonation')
       .leftJoinAndSelect('eventDonation.event', 'event')
       .leftJoinAndSelect('eventDonation.donor', 'donor')
+      .leftJoinAndSelect('event.venture', 'venture')
       .where('donor.email = :donorEmail', { donorEmail: userEmail })
       .skip(skip)
       .take(take)
@@ -125,6 +126,7 @@ export class EventDonationsRepositoryImpl implements EventDonationsRepository {
     return this.eventDonationRepository
       .createQueryBuilder('eventDonation')
       .leftJoinAndSelect('eventDonation.event', 'event')
+      .leftJoinAndSelect('event.location', 'location')
       .leftJoinAndSelect('event.venture', 'venture')
       .leftJoinAndSelect('eventDonation.donor', 'donor')
       .leftJoinAndSelect('venture.owner', 'user')
