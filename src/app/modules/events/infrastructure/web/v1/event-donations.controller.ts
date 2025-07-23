@@ -26,6 +26,22 @@ export class EventDonationsController {
     );
   }
 
+  // Not exposed in the gateway, only used internally
+  @Http.Get('/_/donations/stats/given-count-by-user/:email')
+  public async getDonationsStatsGivenCount(@Http.Param('email') email: string) {
+    return this.eventDonationsService.getDonationsGivenCountByUserEmail(email);
+  }
+
+  // Not exposed in the gateway, only used internally
+  @Http.Get('/_/donations/stats/received-count-by-user/:email')
+  public async getDonationsStatsReceivedCount(
+    @Http.Param('email') email: string,
+  ) {
+    return this.eventDonationsService.getDonationsReceivedCountByUserEmail(
+      email,
+    );
+  }
+
   @Http.Get('/_/donations/received')
   public async getReceivedEventDonations(
     @Http.Headers('X-Requested-By') requesterEmail: string,

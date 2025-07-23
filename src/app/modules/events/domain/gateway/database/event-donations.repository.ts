@@ -1,6 +1,9 @@
 import { EventDonation, PaginatedBody } from 'echadospalante-domain';
 
 export interface EventDonationsRepository {
+  getDonationsGivenCountByUser(email: string): Promise<number>;
+
+  getDonationsReceivedCountByUser(email: string): Promise<number>;
   findManySent(
     userEmail: string,
     skip: number,

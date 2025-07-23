@@ -13,6 +13,37 @@ export class VentureSponsorshipsController {
     private readonly ventureSponsorshipsService: VentureSponsorshipsService,
   ) {}
 
+  @Http.Get('/:ventureId/sponsorships/status')
+  public async getSponsorshipStatus(
+    @Http.Param('ventureId') ventureId: string,
+    @Http.Headers('X-Requested-By') requesterEmail: string,
+  ) {
+    return this.ventureSponsorshipsService.getSponsorshipStatus(
+      ventureId,
+      requesterEmail,
+    );
+  }
+
+  // Not exposed in the gateway, only used internally
+  @Http.Get('/_/sponsorships/stats/given-count-by-user/:email')
+  public async getSponsorshipsStatsGivenCount(
+    @Http.Param('email') email: string,
+  ) {
+    return this.ventureSponsorshipsService.getSponsorshipsGivenCountByUserEmail(
+      email,
+    );
+  }
+
+  // Not exposed in the gateway, only used internally
+  @Http.Get('/_/sponsorships/stats/received-count-by-user/:email')
+  public async getSponsorshipsStatsReceivedCount(
+    @Http.Param('email') email: string,
+  ) {
+    return this.ventureSponsorshipsService.getSponsorshipsReceivedCountByUserEmail(
+      email,
+    );
+  }
+
   @Http.Get('/_/sponsorships/sent')
   public async getSentVentureSponsorships(
     @Http.Headers('X-Requested-By') requesterEmail: string,

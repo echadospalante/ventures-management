@@ -87,4 +87,22 @@ export class VentureSponsorshipsService {
       take,
     );
   }
+
+  public getSponsorshipsGivenCountByUserEmail(email: string) {
+    return this.ventureSponsorshipsRepository
+      .getSponsorshipsGivenCountByUser(email)
+      .then((result) => ({ result }));
+  }
+
+  public getSponsorshipsReceivedCountByUserEmail(email: string) {
+    return this.ventureSponsorshipsRepository
+      .getSponsorshipsReceivedCountByUser(email)
+      .then((result) => ({ result }));
+  }
+
+  public getSponsorshipStatus(ventureId: string, requesterEmail: string) {
+    return this.ventureSponsorshipsRepository
+      .getSponsorshipStatus(ventureId, requesterEmail)
+      .then((result) => result);
+  }
 }

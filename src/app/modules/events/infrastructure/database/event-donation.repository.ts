@@ -22,6 +22,24 @@ export class EventDonationsRepositoryImpl implements EventDonationsRepository {
     private dataSource: DataSource,
   ) {}
 
+  public getDonationsGivenCountByUser(email: string): Promise<number> {
+    return this.eventDonationRepository
+      .createQueryBuilder('eventDonation')
+      .leftJoinAndSelect('eventDonation.donor', 'donor')
+      .where('donor.email = :email', { email })
+      .getCount();
+  }
+
+  public getDonationsReceivedCountByUser(email: string): Promise<number> {
+    return this.eventDonationRepository
+      .createQueryBuilder('eventDonation')
+      .leftJoinAndSelect('eventDonation.event', 'event')
+      .leftJoinAndSelect('event.venture', 'venture')
+      .leftJoinAndSelect('venture.owner', 'user')
+      .where('user.email = :email', { email })
+      .getCount();
+  }
+
   public async findManyByEvent(
     eventId: string,
     skip: number,

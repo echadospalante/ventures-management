@@ -66,4 +66,16 @@ export class EventDonationsService {
       take,
     );
   }
+
+  public getDonationsGivenCountByUserEmail(email: string) {
+    return this.eventDonationsRepository
+      .getDonationsGivenCountByUser(email)
+      .then((result) => ({ result }));
+  }
+
+  public getDonationsReceivedCountByUserEmail(email: string) {
+    return this.eventDonationsRepository
+      .getDonationsReceivedCountByUser(email)
+      .then((result) => ({ result }));
+  }
 }

@@ -24,6 +24,44 @@ export class VentureSponsorshipsRepositoryImpl
     private dataSource: DataSource,
   ) {}
 
+  public getSponsorshipStatus(
+    ventureId: string,
+    requesterEmail: string,
+  ): Promise<{ status: boolean; subscriptionId: string }> {
+    return this.ventureSponsorshipRepository
+      .createQueryBuilder('ventureSponsorship')
+      .leftJoinAndSelect('ventureSponsorship.sponsor', 'sponsor')
+      .where('ventureSponsorship.venture.id = :ventureId', { ventureId })
+      .andWhere('sponsor.email = :email', { email: requesterEmail })
+      .getOne()
+      .then((sponsorship) => {
+        if (!sponsorship) {
+          return { status: false, subscriptionId: '' };
+        }
+        return {
+          status: true,
+          subscriptionId: sponsorship.id,
+        };
+      });
+  }
+
+  public getSponsorshipsGivenCountByUser(email: string): Promise<number> {
+    return this.ventureSponsorshipRepository
+      .createQueryBuilder('ventureSponsorship')
+      .leftJoin('ventureSponsorship.sponsor', 'sponsor')
+      .where('sponsor.email = :email', { email })
+      .getCount();
+  }
+
+  public getSponsorshipsReceivedCountByUser(email: string): Promise<number> {
+    return this.ventureSponsorshipRepository
+      .createQueryBuilder('ventureSponsorship')
+      .leftJoin('ventureSponsorship.venture', 'venture')
+      .leftJoin('venture.owner', 'user')
+      .where('user.email = :email', { email })
+      .getCount();
+  }
+
   public findById(sponsorshipId: string): Promise<VentureSponsorship | null> {
     return this.ventureSponsorshipRepository
       .createQueryBuilder('ventureSponsorship')
