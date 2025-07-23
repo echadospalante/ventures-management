@@ -83,24 +83,21 @@ export class VentureEventsRepositoryImpl implements EventsRepository {
       search,
       categoriesIds,
       // departmentId,
-      // municipalityId,
-      // point,
+      municipalityId,
       // radius,
     } = filters;
 
     const query = this.eventsRepository.createQueryBuilder('event');
 
-    // Agregar relaciones explícitamente (aunque tengan eager: true)
     query
       .leftJoinAndSelect('event.categories', 'category')
       .leftJoinAndSelect('event.location', 'location')
       .leftJoinAndSelect('event.venture', 'venture')
       .leftJoinAndSelect('venture.owner', 'owner');
 
-    // Filtros dinámicos
     if (search) {
       query.andWhere(
-        '(event.name LIKE :term OR event.description LIKE :term OR event.slug LIKE :term)',
+        '(event.title LIKE :term OR event.description LIKE :term OR event.slug LIKE :term)',
         { term: `%${search}%` },
       );
     }
@@ -113,8 +110,13 @@ export class VentureEventsRepositoryImpl implements EventsRepository {
       query.andWhere('category.id IN (:...ids)', { ids: categoriesIds });
     }
 
-    query.skip(pagination.skip).take(pagination.take);
+    if (municipalityId) {
+      query.andWhere('location.municipalityId = :municipalityId', {
+        municipalityId,
+      });
+    }
 
+    query.skip(pagination.skip).take(pagination.take);
     return query.getManyAndCount().then(([items, total]) => {
       return {
         items: items as unknown as VentureEvent[],

@@ -128,6 +128,8 @@ export class VenturesService {
       id: crypto.randomUUID().toString(),
       slug,
       categories,
+      sponsorshipsCount: 0,
+      totalSponsorships: 0,
       coverPhoto: venture.coverPhoto,
       active: true,
       verified: owner.verified,

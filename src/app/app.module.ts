@@ -37,7 +37,7 @@ import { VentureModule } from './modules/ventures/venture.module';
         database: configService.get<string>('DB_NAME'),
         synchronize: true,
         // logging: configService.get<boolean>('DB_LOGGING'),
-        logging: false,
+        logging: true,
         applicationName: configService.get<string>('APP_NAME'),
         autoLoadEntities: true,
         migrationsRun: false,

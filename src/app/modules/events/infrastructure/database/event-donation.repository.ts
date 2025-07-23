@@ -29,6 +29,7 @@ export class EventDonationsRepositoryImpl implements EventDonationsRepository {
   ): Promise<PaginatedBody<EventDonation>> {
     const [donations, total] = await this.eventDonationRepository
       .createQueryBuilder('eventDonation')
+      .leftJoinAndSelect('eventDonation.event', 'event')
       .leftJoinAndSelect('eventDonation.donor', 'donor')
       .leftJoinAndSelect('event.venture', 'venture')
       .where('event.id = :eventId', { eventId })

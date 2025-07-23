@@ -252,34 +252,40 @@ export class EventsService {
       pagination,
     );
 
-    const now = new Date();
+    const nowUTC = new Date();
+    const todayUTC = new Date(
+      Date.UTC(
+        nowUTC.getUTCFullYear(),
+        nowUTC.getUTCMonth(),
+        nowUTC.getUTCDate(),
+      ),
+    );
+    const tomorrowUTC = new Date(todayUTC);
+    tomorrowUTC.setUTCDate(todayUTC.getUTCDate() + 1);
 
     const currentEvents = events.items
       .filter((event) => {
-        return event.datesAndHours.some((dateAndHour) => {
-          return dateAndHour.workingRanges.some((range) => {
-            const [startHour, startMinute] = range.start.split(':').map(Number);
-            const [endHour, endMinute] = range.end.split(':').map(Number);
+        const eventDates = event.datesAndHours.map(
+          (d) => new Date(d.date + 'T00:00:00.000Z'),
+        );
+        const earliestDate = eventDates.reduce((min, date) =>
+          date < min ? date : min,
+        );
+        const latestDate = eventDates.reduce((max, date) =>
+          date > max ? date : max,
+        );
 
-            const start = new Date(dateAndHour.date);
-            start.setHours(startHour, startMinute, 0, 0);
-
-            const end = new Date(dateAndHour.date);
-            end.setHours(endHour, endMinute, 0, 0);
-
-            return now >= start && now <= end;
-          });
-        });
+        return earliestDate <= todayUTC && latestDate >= todayUTC;
       })
       .sort((a, b) => {
-        // Ordenar por la fecha más próxima que tenga rangos de trabajo
-        const aEarliestDate = a.datesAndHours
-          .map((d) => new Date(d.date))
-          .sort((x, y) => x.getTime() - y.getTime())[0];
+        const getEarliestDate = (event: VentureEvent) => {
+          return event.datesAndHours
+            .map((d) => new Date(d.date + 'T00:00:00.000Z'))
+            .reduce((min, date) => (date < min ? date : min));
+        };
 
-        const bEarliestDate = b.datesAndHours
-          .map((d) => new Date(d.date))
-          .sort((x, y) => x.getTime() - y.getTime())[0];
+        const aEarliestDate = getEarliestDate(a);
+        const bEarliestDate = getEarliestDate(b);
 
         return aEarliestDate.getTime() - bEarliestDate.getTime();
       })
@@ -287,51 +293,59 @@ export class EventsService {
 
     const upcomingEvents = events.items
       .filter((event) => {
-        return event.datesAndHours.some((dateAndHour) => {
-          return dateAndHour.workingRanges.some((range) => {
-            const [startHour, startMinute] = range.start.split(':').map(Number);
-
-            const start = new Date(dateAndHour.date);
-            start.setHours(startHour, startMinute, 0, 0);
-
-            return now < start;
-          });
+        const hasFutureSessions = event.datesAndHours.some((dateAndHour) => {
+          const eventDate = new Date(dateAndHour.date + 'T00:00:00.000Z');
+          return eventDate >= tomorrowUTC;
         });
+
+        const eventDates = event.datesAndHours.map(
+          (d) => new Date(d.date + 'T00:00:00.000Z'),
+        );
+        const earliestDate = eventDates.reduce((min, date) =>
+          date < min ? date : min,
+        );
+        const latestDate = eventDates.reduce((max, date) =>
+          date > max ? date : max,
+        );
+        const isCurrentEvent =
+          earliestDate <= todayUTC && latestDate >= todayUTC;
+
+        return hasFutureSessions && !isCurrentEvent;
       })
       .sort((a, b) => {
-        // Encontrar la próxima fecha/hora más cercana para cada evento
         const getNextDateTime = (event: VentureEvent) => {
-          const nextTimes: Date[] = [];
+          const futureTimes: Date[] = [];
 
           event.datesAndHours.forEach((dateAndHour) => {
-            dateAndHour.workingRanges.forEach((range) => {
-              const [startHour, startMinute] = range.start
-                .split(':')
-                .map(Number);
-              const start = new Date(dateAndHour.date);
-              start.setHours(startHour, startMinute, 0, 0);
+            const eventDate = new Date(dateAndHour.date + 'T00:00:00.000Z');
 
-              if (start > now) {
-                nextTimes.push(start);
-              }
-            });
+            if (eventDate >= tomorrowUTC) {
+              dateAndHour.workingRanges.forEach((range) => {
+                const [startHour, startMinute] = range.start
+                  .split(':')
+                  .map(Number);
+                const startDateTime = new Date(eventDate);
+                startDateTime.setUTCHours(startHour, startMinute, 0, 0);
+                futureTimes.push(startDateTime);
+              });
+            }
           });
 
-          return nextTimes.sort((x, y) => x.getTime() - y.getTime())[0];
+          return futureTimes.length > 0
+            ? futureTimes.sort((x, y) => x.getTime() - y.getTime())[0]
+            : null;
         };
 
         const aNext = getNextDateTime(a);
         const bNext = getNextDateTime(b);
 
+        if (!aNext && !bNext) return 0;
         if (!aNext) return 1;
         if (!bNext) return -1;
 
         return aNext.getTime() - bNext.getTime();
       })
       .slice(0, 10);
-
-    console.log('Current events found:', currentEvents.length);
-    console.log('Upcoming events found:', upcomingEvents.length);
 
     return {
       current: currentEvents,
